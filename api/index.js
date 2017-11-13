@@ -7,21 +7,21 @@ var root = '/api'
 var axios = require('axios')
 // 自定义判断元素类型JS
 function toType (obj) {
-  return ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase()
+	return ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase()
 }
 // 参数过滤函数
 function filterNull (o) {
   for (var key in o) {
     if (o[key] === null) {
-      delete o[key]
+		delete o[key]
     }
-    if (toType(o[key]) === 'string') {
-      o[key] = o[key].trim()
-    } else if (toType(o[key]) === 'object') {
-      o[key] = filterNull(o[key])
-    } else if (toType(o[key]) === 'array') {
-      o[key] = filterNull(o[key])
-    }
+	if (toType(o[key]) === 'string') {
+		o[key] = o[key].trim()
+	} else if (toType(o[key]) === 'object') {
+		o[key] = filterNull(o[key])
+	} else if (toType(o[key]) === 'array') {
+		o[key] = filterNull(o[key])
+	}
   }
   return o
 }
@@ -29,11 +29,11 @@ function filterNull (o) {
 function todd(method,data){
     // Do whatever you want to transform the data
     if(method === 'POST'){
-      let ret = ''
-      for (let it in data) {
-          ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
-      }
-      return ret;
+		let ret = '';
+		for (let it in data) {
+			ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&';
+		}
+		return ret;
     }
     return data;
 }
@@ -49,10 +49,10 @@ function todd(method,data){
 
 function apiAxios (method, url, params, success, failure,ignoreCookie) {
   let cookie = Cookies.get('islogin');
-//   if(cookie === ''){
-//     Vue.prototype.$message('登录过期，请重新登录');
-//     location.reload();
-//   }
+  if(cookie === ''){
+    Vue.prototype.$message('登录过期，请重新登录');
+    location.reload();
+  }
   if (params) {
     params = todd(method,params)
   }
