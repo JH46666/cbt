@@ -40,7 +40,7 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: [resolve('../src_pc'), resolve('../test')]
+        include: [resolve('../src_pc'), resolve('../api'), resolve('../store'), resolve('../utils')]
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
