@@ -11,13 +11,11 @@ import * as utils from 'utils';
 Vue.config.productionTip = false
 
 
-
+alert(1)
 // 全局方法
 Vue.prototype.$api = $api;
 Vue.prototype.$http = axios;
 Vue.prototype.$tool = utils;
-
-
 
 
 
