@@ -11,6 +11,7 @@ function resolve (dir) {
 module.exports = {
   context: path.resolve(__dirname, '../'),
   entry: {
+    vendor: ['vue','vuex','vue-router','mint-ui'],
     app: '../src_wap/main.js'
   },
   output: {

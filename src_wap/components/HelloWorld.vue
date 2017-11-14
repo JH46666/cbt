@@ -27,11 +27,6 @@ export default {
     return {
       msg: 'Welcome to Your Vue.js App'
     }
-  },
-  created() {
-    this.$api.get('baseRegion/getRegionTree',{},res => {
-      console.log(res)
-    })
   }
 }
 </script>

@@ -1,8 +1,14 @@
 <template>
-  <div id="app">
-    <img src="./assets/logo.png">
-    <router-view/>
-  </div>
+	<div id="app">
+		<mt-header title="多个按钮">
+			<router-link to="/" slot="left">
+				<mt-button icon="back">返回</mt-button>
+				<mt-button>关闭</mt-button>
+			</router-link>
+			<mt-button icon="more" slot="right"></mt-button>
+		</mt-header>
+		<router-view/>
+	</div>
 </template>
 
 <script>
@@ -18,6 +24,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>

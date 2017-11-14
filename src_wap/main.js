@@ -8,10 +8,16 @@ import $api from 'api';
 import axios from 'axios';
 import * as utils from 'utils';
 
+// UI 框架
+import MintUI from 'mint-ui'
+import 'mint-ui/lib/style.css'
+Vue.use(MintUI)
+
+import './assets/style/common.less'
+
+
 Vue.config.productionTip = false
 
-
-alert(1)
 // 全局方法
 Vue.prototype.$api = $api;
 Vue.prototype.$http = axios;
