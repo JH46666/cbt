@@ -47,20 +47,10 @@ function todd(method,data){
   另外，不同的项目的处理方法也是不一致的，这里出错就是简单的alert
 */
 
-function apiAxios (method, url, params, success, failure,ignoreCookie) {
+function apiAxios (method, url, params, success, failure) {
   let cookie = Cookies.get('islogin');
-  if(cookie === ''){
-    Vue.prototype.$message('登录过期，请重新登录');
-    location.reload();
-  }
   if (params) {
     params = todd(method,params)
-  }
-  if(!ignoreCookie) {
-    let cookie = Cookies.get('islogin');
-    if(!cookie) {
-      router.push('/login');
-    }
   }
   axios({
     method: method,
@@ -87,9 +77,9 @@ function apiAxios (method, url, params, success, failure,ignoreCookie) {
       window.alert('api error, HTTP CODE: ' + res.status)
     }
   })
-  let m = new Date();
-  let n = new Date(m.getTime() + 30*60*1000);
-  Cookies.set('islogin',true,{expires: n});
+  // let m = new Date();
+  // let n = new Date(m.getTime() + 30*60*1000);
+  // Cookies.set('islogin',true,{expires: n});
 }
 
 // 返回在vue模板中的调用接口
