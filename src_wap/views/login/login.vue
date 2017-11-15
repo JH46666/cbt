@@ -10,7 +10,7 @@
             <mt-tab-container v-model="selected">
                 <mt-tab-container-item id="1">
                     <div class="form_item">
-                        <input type="text" placeholder="手机号码" v-model="regInfo.phone" v-verify="regInfo.phone">
+                        <input type="text" placeholder="手机号码" v-model="regInfo.phone" v-verify="regInfo.phone" maxlength="11">
                         <label class="fl" v-remind="regInfo.phone"></label>
                     </div>
                     <div class="form_item">
@@ -27,7 +27,7 @@
                         <label class="fl" v-remind="regInfo.phone"></label>
                     </div>
                     <div class="form_item">
-                        <input v-if="visFlag" type="text" placeholder="登录密码" v-model="regInfo.mesCode" v-verify="regInfo.password">
+                        <input v-if="visFlag" type="text" placeholder="登录密码" v-model="regInfo.mesCode" v-verify="regInfo.password" maxlength="11">
                         <input v-else type="password" placeholder="登录密码" v-model="regInfo.mesCode" v-verify="regInfo.password">
                         <a @click="visFlag = !visFlag" class="vis_flag color_ad"><i class="iconfont" :class="{'icon-xianshimima': visFlag,'icon-yincangmima': !visFlag}"></i></a>
                         <label class="fl" v-remind="regInfo.phone"></label>
