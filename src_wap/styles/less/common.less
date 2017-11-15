@@ -1,7 +1,59 @@
 @import url('../base/reset.less');
 @import url('../base/tools.less');
+@import url('../../../static/font/iconfont.css');
 
-html,body,#app{
+html,body,#app,#container{
     width: 100%;
     height: 100%;
+}
+
+#container{
+    .flex;
+    .flex-dir;
+}
+.content{
+    .flex-1;
+    .paddingB(.98rem);
+    .ipScroll;
+    overflow-y: auto;
+}
+
+// 头部
+.cbt-header{
+    height: .88rem;
+    .bg(#1c1b20)
+}
+
+// 导航条
+.cbt-footer{
+    height: .98rem;
+    .mint-tab-item{
+        .position(r);
+        &.is-selected{
+            color: #f08200;
+        }
+
+        // iconfont
+        i {
+            .iconfont;
+            .fontSize(.4rem);
+            .line(.4rem);
+        }
+        // 右上角圆点
+        .mint-badge{
+            .position(a);
+            .reduis(20px);
+            top: 0;
+            right: 0;
+        }
+
+        // 重置默认样式
+        .mint-tab-item-icon{
+            margin-bottom: 0;
+        }
+        .mint-tab-item-label{
+            .fontSize(.18rem);
+            .line(1.5);
+        }
+    }
 }
