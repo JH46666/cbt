@@ -2,7 +2,7 @@
     <div id="container">
         <cbt-header v-if="!$tool.isWx()"></cbt-header>
         <router-view class="content"></router-view>
-        <cbt-Footer></cbt-Footer>
+        <cbt-Footer v-if="!$route.meta.hideFooter"></cbt-Footer>
     </div>
 </template>
 

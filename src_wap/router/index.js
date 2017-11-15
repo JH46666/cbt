@@ -16,6 +16,21 @@ export default new Router({
 					component: resolve => require(['@/views/index/index.vue'],resolve)
 				}
 			]
+		},
+		{
+			path: '/center',
+			name: '个人中心',
+			component: resolve => require(['@/views/layout/mainWrap.vue'],resolve),
+			children: [
+				{
+					path: 'address',
+					name: '地址管理',
+					component: resolve => require(['@/views/center/address.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				}
+			]
 		}
   	]
 })
