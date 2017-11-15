@@ -4,7 +4,7 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 export default new Router({
-  routes: [
+	routes: [
 		{
 			path: '/',
 			component: resolve => require(['@/views/layout/mainWrap.vue'],resolve),
@@ -13,6 +13,11 @@ export default new Router({
 					path: '/',
 					name: '首页',
 					component: resolve => require(['@/views/index/index.vue'],resolve)
+				},
+				{
+					path: 'login',
+					name: '账户登录',
+					component: resolve => require(['@/views/login/login.vue'],resolve)
 				}
 			]
 		},
@@ -31,5 +36,6 @@ export default new Router({
 				}
 			]
 		}
-  	]
+		
+	]
 })
