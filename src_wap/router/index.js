@@ -7,7 +7,6 @@ export default new Router({
   routes: [
 		{
 			path: '/',
-			name: '茶帮通商城',
 			component: resolve => require(['@/views/layout/mainWrap.vue'],resolve),
 			children: [
 				{
