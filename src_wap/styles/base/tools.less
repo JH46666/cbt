@@ -154,6 +154,13 @@
     flex: 1;
     .position(r);
 }
+.flex_num(@num) {
+    -webkit-box-flex: @num;
+    -webkit-flex: @num;
+    -ms-flex: @num;
+    flex: @num;
+    .position(r);
+}
 // 主轴 y轴
 .flex-dir(@dir: column) {
     -webkit-box-orient: vertical;
@@ -195,4 +202,10 @@
 }
 .scroll-x(h) {
     overflow-x: hidden;
+}
+.w(@w){
+    width: @w;
+}
+.h(@h){
+    height: @h;
 }
