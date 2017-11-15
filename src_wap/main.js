@@ -14,7 +14,7 @@ import 'mint-ui/lib/style.css'
 Vue.use(MintUI)
 
 
-import './assets/style/common.less'
+import './styles/less/common.less'
 
 
 Vue.config.productionTip = false

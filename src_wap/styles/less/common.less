@@ -1,21 +1,7 @@
-@@import '../base/reset.less';
-.container{
-    .flex;
-    .flex-dir;
+@import url('../base/reset.less');
+@import url('../base/tools.less');
+
+html,body,#app{
     width: 100%;
     height: 100%;
-    .cbt_header{
-        height: 48px;
-        .bg(red);
-    }
-    .cbt_section{
-        .flex-1;
-        .bg(@b-0);
-        -webkit-overflow-scrolling : touch;
-        overflow-y: auto;
-    }
-    .cbt_footer{
-        height: 54px;
-        .bg(green);
-    }
 }
