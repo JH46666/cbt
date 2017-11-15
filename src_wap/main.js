@@ -7,7 +7,9 @@ import store from 'store';
 import $api from 'api';
 import axios from 'axios';
 import * as utils from 'utils';
-import VueHead from 'vue-head'
+import VueHead from 'vue-head';
+
+
 
 
 // UI 框架
@@ -17,6 +19,8 @@ Vue.use(MintUI)
 
 // SEO
 Vue.use(VueHead)
+
+
 import './styles/less/common.less'
 
 
