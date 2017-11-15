@@ -4,10 +4,9 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 export default new Router({
-  routes: [
+	routes: [
 		{
 			path: '/',
-			name: '茶帮通商城',
 			component: resolve => require(['@/views/layout/mainWrap.vue'],resolve),
 			children: [
 				{
@@ -17,11 +16,16 @@ export default new Router({
 				},
                 {
 					path: 'detail',
-					name: '地址管理',
+					name: '商品详情',
 					component: resolve => require(['@/views/goods/detail.vue'],resolve),
 					meta: {
 						hideFooter: true
 					}
+                },
+				{
+					path: 'login',
+					name: '账户登录',
+					component: resolve => require(['@/views/login/login.vue'],resolve)
 				}
 			]
 		},
@@ -40,5 +44,6 @@ export default new Router({
 				}
 			]
 		}
-  	]
+
+	]
 })
