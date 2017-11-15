@@ -1,48 +1,51 @@
 <template>
-    <div id="integral">
+    <div id="balance">
         <div class="hd">
-            <div class="title">账户积分</div>
-            <div class="integral-num">99999999999999</div>
+            <div class="left">
+                <div class="title">账户余额(元)</div>
+                <div class="integral-num">99999999999999.00</div>
+            </div>
+            <div class="right">
+                <mt-button type="default">充值</mt-button>
+            </div>
         </div>
         <div class="bd">
             <div class="item-wrap">
                 <div class="item">
-                    <div class="left">积分过期</div>
+                    <div class="left">
+                        <div class="title">充值</div>
+                        <div class="resdue">余额：99999999999.00</div>
+                    </div>
                     <div class="right">
                         <div class="count">+ 99999999999999999</div>
                         <div class="date">2099-10-01 19:00:00</div>
                     </div>
                 </div>
                 <div class="item">
-                    <div class="left">积分过期</div>
+                    <div class="left">
+                        <div class="title">充值</div>
+                        <div class="resdue">余额：99999999999.00</div>
+                    </div>
                     <div class="right">
                         <div class="count">+ 99999999999999999</div>
                         <div class="date">2099-10-01 19:00:00</div>
                     </div>
                 </div>
                 <div class="item">
-                    <div class="left">积分过期</div>
+                    <div class="left">
+                        <div class="title">充值</div>
+                        <div class="resdue">余额：99999999999.00</div>
+                    </div>
                     <div class="right">
                         <div class="count">+ 99999999999999999</div>
                         <div class="date">2099-10-01 19:00:00</div>
                     </div>
                 </div>
                 <div class="item">
-                    <div class="left">积分过期</div>
-                    <div class="right">
-                        <div class="count">+ 99999999999999999</div>
-                        <div class="date">2099-10-01 19:00:00</div>
+                    <div class="left">
+                        <div class="title">充值</div>
+                        <div class="resdue">余额：99999999999.00</div>
                     </div>
-                </div>
-                <div class="item">
-                    <div class="left">积分过期</div>
-                    <div class="right">
-                        <div class="count">+ 99999999999999999</div>
-                        <div class="date">2099-10-01 19:00:00</div>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="left">积分过期</div>
                     <div class="right">
                         <div class="count">+ 99999999999999999</div>
                         <div class="date">2099-10-01 19:00:00</div>
@@ -50,8 +53,8 @@
                 </div>
             </div>
             <div class="empty">
-                <img src="../../assets/images/nodata.png" alt="">
-                <p class="tip">您没有任何积分记录哟~</p>
+                <img src="../../assets/images/yue_empty.png" alt="">
+                <p class="tip">钱包空空的耶~</p>
             </div>
         </div>
     </div>

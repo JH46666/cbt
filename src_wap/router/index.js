@@ -41,6 +41,14 @@ export default new Router({
 					meta: {
 						hideFooter: true
 					}
+				},
+				{
+					path: 'balance',
+					name: '账户余额',
+					component: resolve => require(['@/views/center/balance.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
 				}
 			]
 		}
