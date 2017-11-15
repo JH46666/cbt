@@ -33,6 +33,14 @@ export default new Router({
 					meta: {
 						hideFooter: true
 					}
+				},
+				{
+					path: 'integral',
+					name: '积分记录',
+					component: resolve => require(['@/views/center/integral.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
 				}
 			]
 		}
