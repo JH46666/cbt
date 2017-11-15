@@ -36,6 +36,22 @@ export default new Router({
 					meta: {
 						hideFooter: true
 					}
+				},
+				{
+					path: 'integral',
+					name: '积分记录',
+					component: resolve => require(['@/views/center/integral.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+				{
+					path: 'balance',
+					name: '账户余额',
+					component: resolve => require(['@/views/center/balance.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
 				}
 			]
 		}
