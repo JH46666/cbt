@@ -1,6 +1,13 @@
-<template lang="html">
+<template>
     <div class="detail">
-        
+        <div class="detail_wrapper">
+            <div class="detail_img">
+                <img src="../../assets/detail.png" alt="">
+            </div>
+        </div>
+        <div class="detail_footer">
+
+        </div>
     </div>
 </template>
 
@@ -11,5 +18,6 @@ export default {
 </script>
 
 <style lang="less">
-@import '~@/styles/base/tools.less';
+@import '~@/styles/less/detail.less';
+
 </style>

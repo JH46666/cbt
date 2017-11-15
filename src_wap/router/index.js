@@ -16,9 +16,12 @@ export default new Router({
 					component: resolve => require(['@/views/index/index.vue'],resolve)
 				},
                 {
-					path: '/detail',
-					name: '详情',
-					component: resolve => require(['@/views/goods/detail.vue'],resolve)
+					path: 'detail',
+					name: '地址管理',
+					component: resolve => require(['@/views/goods/detail.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
 				}
 			]
 		},
