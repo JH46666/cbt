@@ -17,7 +17,10 @@ export default new Router({
 				{
 					path: 'login',
 					name: '账户登录',
-					component: resolve => require(['@/views/login/login.vue'],resolve)
+					component: resolve => require(['@/views/login/login.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
 				}
 			]
 		},
