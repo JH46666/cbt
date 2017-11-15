@@ -14,6 +14,11 @@ export default new Router({
 					path: '/',
 					name: '首页',
 					component: resolve => require(['@/views/index/index.vue'],resolve)
+				},
+                {
+					path: '/detail',
+					name: '详情',
+					component: resolve => require(['@/views/goods/detail.vue'],resolve)
 				}
 			]
 		}
