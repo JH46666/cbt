@@ -14,6 +14,14 @@ export default new Router({
 					name: '首页',
 					component: resolve => require(['@/views/index/index.vue'],resolve)
 				},
+                {
+					path: 'detail',
+					name: '商品详情',
+					component: resolve => require(['@/views/goods/detail.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+                },
 				{
 					path: 'login',
 					name: '账户登录',
@@ -52,6 +60,6 @@ export default new Router({
 				}
 			]
 		}
-		
+
 	]
 })
