@@ -37,14 +37,26 @@ export default new Router({
 					meta: {
 						hideFooter: true
 					}
+				},
+				{
+					path: '/search',
+					component: resolve => require(['@/views/search/index.vue'],resolve),
+					meta: {
+						transition: 'fadeDown',
+						hideFooter: true
+					}
 				}
 			]
 		},
 		{
 			path: '/center',
-			name: '个人中心',
 			component: resolve => require(['@/views/layout/mainWrap.vue'],resolve),
 			children: [
+				{
+					path: '/',
+					name: '个人中心',
+					component: resolve => require(['@/views/center/index.vue'],resolve)
+				},
 				{
 					path: 'address',
 					name: '地址管理',
