@@ -1,0 +1,103 @@
+@import '~@/styles/base/tools.less';
+.seller_wrapper{
+    img{
+        .w(100%);
+    }
+    :-ms-input-placeholder{
+        .color(#adadad);
+    }
+    ::-webkit-input-placeholder{
+        .color(#adadad);
+    }
+    .t_txt{
+        padding: .2rem .26rem .26rem;
+    }
+    .seller_content{
+        .bg(#fff);
+        .position(r);
+        padding: .3rem;
+        .shop_img{
+            .w(100%);
+            .h(3.88rem);
+            .position(r);
+            border: 1px dotted #e6e6e6;
+            .bg(#fafafa);
+            .camera_box{
+                .algin(c);
+                .fontSize(.28rem);
+                font-weight: bold;
+                img{
+                    display: block;
+                    .w(1.44rem);
+                    .h(1.44rem);
+                    margin: .9rem auto .2rem;
+                }
+            }
+            .uploaded_box{
+                display: block;
+                .shop{
+                    .w(100%);
+                    .h(100%);
+                    .position(a);
+                    top: 0;
+                    left: 0;
+                }
+                .small_camera{
+                    .w(.56rem);
+                    .position(a);
+                    bottom: .23rem;
+                    right: .23rem;
+                }
+            }
+        }
+        .shop_info{
+            .position(r);
+            .form_item{
+                .align_items_end{
+                    border-bottom: 1px solid #e6e6e6;
+                    .fontSize(.28rem);
+                    .h(1.1rem);
+                    padding-bottom: .2rem;
+                    &.error_color{
+                        border-color: #ff3600;
+                    }
+                    label{
+                        .color(#666);
+                        .w(2rem);
+                    }
+                    input{
+                        .bg(#fff);
+                    }
+                    a{
+                        .color(#adadad);
+                    }
+                }
+            }
+            .examine_img{
+                .w(1.45rem);
+                .position(a);
+                top: .2rem;
+                right: 0;
+            }
+        }
+        .mint-button{
+            margin-top: .6rem;
+            .bg(#f08200);
+            .fontSize(.3rem);
+        }
+        .go_index{
+            .algin(c);
+            margin: .5rem auto .76rem;
+            a{
+                .reduis(20px);
+                display: inline-block;
+                padding: 0 .56rem;
+                .h(.56rem);
+                .line(.56rem);
+                border: 1px solid #999;
+                .fontSize(.26rem);
+                .color(#333);
+            }
+        }
+    }
+}
