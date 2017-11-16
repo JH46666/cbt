@@ -29,6 +29,14 @@ export default new Router({
 					meta: {
 						hideFooter: true
 					}
+				},
+				{
+					path: 'forget',
+					name: '忘记密码',
+					component: resolve => require(['@/views/login/forget.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
 				}
 			]
 		},
@@ -62,7 +70,37 @@ export default new Router({
 					}
 				}
 			]
+		},
+		{
+			path: '/regist',
+			name: '茶帮通注册',
+			component: resolve => require(['@/views/layout/mainWrap.vue'],resolve),
+			children: [
+				{
+					path: 'buyer',
+					name: '茶帮通注册',
+					component: resolve => require(['@/views/regist/buyer.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+				{
+					path: 'seller',
+					name: '茶帮通注册',
+					component: resolve => require(['@/views/regist/seller.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+				{
+					path: 'examine',
+					name: '茶帮通注册',
+					component: resolve => require(['@/views/regist/examine.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				}
+			]
 		}
-
 	]
 })

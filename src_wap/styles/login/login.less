@@ -1,0 +1,107 @@
+@import '~@/styles/base/tools.less';
+.login_wrapper{
+    padding: 0 .4rem;
+    .bg(#fff);
+    img{
+        .w(100%);
+    }
+    .logo_img{
+        .w(3.1rem);
+        margin: .6rem auto;
+    }
+    .mint-navbar{
+        padding: 0 1.3rem;
+        margin-bottom: .3rem;
+        .mint-tab-item{
+            padding: .15rem 0;
+            .color(#999);
+            &+.mint-tab-item{
+                margin-left: 1rem;
+            }
+            .mint-tab-item-label{
+                .fontSize(.3rem);
+            }
+        }
+        .is-selected{
+            border-bottom: 2px solid #f08200;
+            .color(@mainTitle);
+        }
+    }
+    .mint-tab-container-item{
+        .form_item{
+            margin-bottom: .3rem;
+            position: relative;
+            label{
+                color:#ff3600;
+            }
+            .vis_flag{
+                position: absolute;
+                line-height: .48rem;
+                right: 0;
+                padding: .25rem .4rem;
+                top: 0;
+            }
+            .mes_code{
+                .flex_num(6);
+                margin-right: .3rem;
+            }
+            .get_code{
+                .flex_num(4);
+                .line(.98rem);
+                border: 1px solid #e5e5e5;
+                border-radius: 3px;
+                border: 1px solid #f08200;
+                .algin(c);
+                .color(#f08200);
+                font-size: .3rem;
+            }
+        }
+        input{
+            padding: .25rem 0;
+            text-indent: .3rem;
+            .w(100%);
+            outline: none;
+            border: 1px solid #e5e5e5;
+            .reduis(3px);
+            .line(.48rem);
+            .fontSize(.26rem);
+        }
+    }
+    .mint-button{
+        height: .98rem;
+        font-size: .3rem;
+        color: #fff;
+        .bg(#f08200);
+    }
+    .btns{
+        margin-top: .34rem;
+        font-size: .3rem;
+    }
+    .illegal_popup{
+        .popup_inner{
+            .w(6.2rem);
+            .h(2.86rem);
+            .bg(#fff);
+            .position(a);
+            top: 50%;
+            left: 50%;
+            margin-top: -1.93rem;
+            margin-left: -3.1rem;
+            .reduis(5px);
+            .algin(c);
+            padding-top: .5rem;
+            p{
+                padding-bottom: .5rem;
+                .fontSize(.32rem);
+                border-bottom: 1px solid #e6e6e6;
+                .line(1.5);
+            }
+            a{
+                display: block;
+                .line(.98rem);
+                .fontSize(.36rem);
+            }
+        }
+    }
+    
+}
