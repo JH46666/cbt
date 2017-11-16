@@ -8,7 +8,7 @@ import $api from 'api';
 import axios from 'axios';
 import * as utils from 'utils';
 import VueHead from 'vue-head';
-
+import cbtComponents from './components';
 
 
 
@@ -20,6 +20,8 @@ Vue.use(MintUI)
 // SEO
 Vue.use(VueHead)
 
+// 茶帮通组件
+Vue.use(cbtComponents)
 
 import './styles/less/common.less'
 

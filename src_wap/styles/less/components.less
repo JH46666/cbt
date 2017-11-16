@@ -1,0 +1,64 @@
+@import url('../base/tools.less');
+
+// 搜索块组件
+.cbt-search-bar{
+    width: 4.85rem;
+    .flex;
+    .search-text{
+        .flex_num(8);
+        .paddingL(.2rem);
+        .h(.52rem);
+        .line(.52rem);
+        border: 1px solid @borCol;
+        border-right: 0;
+        border-radius: 20px 0 0 20px;
+    }
+    .mint-button{
+        .flex_num(2);
+        .bg(@mainCol);
+        .h(.52rem);
+        .color(#fff);
+        border-radius: 0 20px 20px 0;
+        i{
+            .iconfont;
+        }
+    }
+}
+
+// 商品加减组件
+.plusOreduce{
+    display: inline-block;
+    .fontSize(0);
+    span{
+        display: inline-block;
+        width: .5rem;
+        height: .5rem;
+        border: 1px solid #e5e5e5;
+        .bg(#fff);
+        .color(#333);
+        .line(.5rem);
+        .algin(c);
+        cursor: pointer;
+        .fontSize(.3rem);
+        vertical-align: top;
+        &.plus{
+            border-radius: 0 3px 3px 0;
+        }
+        &.reduce{
+            border-radius: 3px 0 0 3px;
+        }
+    }
+    input{
+        display: inline-block;
+        width: .8rem;
+        height: .5rem;
+        border-top: 1px solid #e5e5e5;
+        border-bottom: 1px solid #e5e5e5;
+        .bg(#fff);
+        .color(#333);
+        .line(.5rem);
+        .algin(c);
+        vertical-align: top;
+        .fontSize(.24rem);
+    }
+}

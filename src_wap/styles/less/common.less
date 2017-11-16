@@ -1,6 +1,7 @@
 @import url('../base/reset.less');
 @import url('../base/tools.less');
 @import url('../../../static/font/iconfont.css');
+@import url('./components.less');
 
 html,body,#app,#container{
     width: 100%;
@@ -36,6 +37,10 @@ html,body,#app,#container{
     text-align: center;
 }
 
+.align_items_end{
+    .align-items(flex-end);
+}
+
 #container{
     .flex;
     .flex-dir;
@@ -58,7 +63,8 @@ html,body,#app,#container{
 // 头部
 .cbt-header{
     height: .88rem;
-    .bg(#1c1b20)
+    .bg(#1c1b20);
+    z-index: 100;
 }
 
 // 导航条
@@ -94,4 +100,116 @@ html,body,#app,#container{
             .line(1.5);
         }
     }
+}
+// 验证码弹窗
+.popup{
+    .position(f);
+    .w(100%);
+    .h(100%);
+    top: 0;
+    left: 0;
+    .bg(rgba(0,0,0,.5));
+}
+.verify_popup{
+    .popup_inner{
+        .h(3.9rem);
+        .w(6.2rem);
+        .bg(#fff);
+        .position(a);
+        top: 1.8rem;
+        left: 50%;
+        margin-left: -3.1rem;
+        padding: 0 .6rem .6rem;
+        img{
+            .w(100%);
+        }
+        .close_popup{
+            .position(a);
+            .color(#fff);
+            top: -.7rem;
+            right: 0;
+            i{
+                .fontSize(.36rem);
+            }
+        }
+        .error_tips{
+            .color(#ff3600);
+            .line(.6rem);
+            .h(.6rem);
+            i{
+                margin-right: .1rem;
+                .position(r);
+                top: .02rem;
+            }
+        }
+        .img_box{
+            border: 1px solid #e6e6e6;
+            .img_code{
+                .flex_num(3);
+                img{
+                    .h(100%);
+                }
+            }
+            .refresh{
+                .flex_num(1);
+                border-left: 1px solid #e6e6e6;
+                background-color: #f5f5f5;
+                line-height: 1.3rem;
+                text-align: center;
+                color: #c2c2c2;
+                -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+                i{
+                    .fontSize(.5rem);
+                }
+            }
+        }
+        .img_code_input{
+            input{
+                width: 1rem;
+                height: 1rem;
+                float: left;
+                border: 1px solid #e6e6e6;
+                margin-top: .3rem;
+                &.on{
+                    border-color: #f08200;
+                }
+                &+input{
+                    margin-left: .3rem;
+                }
+            }
+        }
+    }
+}
+
+// 动画效果
+.move-enter-active, .move-leave-active {
+    transition:  .4s;
+    transform: translateX(0);
+    opacity: 1;
+}
+.move-enter{
+    transform: translateX(200%);
+    opacity: 0;
+}
+ .move-leave-to{
+    transform: translateX(-100%);
+    opacity: 0;
+}
+
+.fadeDown-enter{
+    transform: translateY(-100%);
+    opacity: 0;
+}
+.fadeDown-enter-to{
+    transform: translateY(0%);
+}
+.fadeDown-enter-active, .fadeDown-leave-active {
+    transition:  .6s;
+    transform: translateY(0%);
+    opacity: 1;
+}
+.fadeDown-leave-to{
+    transform: translateY(200%);
+    opacity: 0;
 }
