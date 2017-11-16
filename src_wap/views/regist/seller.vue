@@ -19,21 +19,21 @@
                                 <label for="">登录账号</label>
                                 <input class="flex-1" type="text" name="" value="18720989159" disabled>
                             </div>
-                            <p style="color:#ff3600;margin-top:.05rem;"></p>
+                            <p class="error_txt"></p>
                         </div>
                         <div class="form_item">
                             <div class="flex align_items_end error_color">
                                 <label for="">店铺名称</label>
                                 <input class="flex-1" type="text" name="" value="茶叶店" placeholder="请填写店铺名称">
                             </div>
-                            <p style="color:#ff3600;margin-top:.05rem;">你错了你错了</p>
+                            <p class="error_txt">你错了你错了</p>
                         </div>
                         <div class="form_item">
                             <div class="flex align_items_end">
                                 <label for="">联系人</label>
                                 <input class="flex-1" type="text" name="" value="陈喂喂" placeholder="请填写联系人姓名">
                             </div>
-                            <p style="color:#ff3600;margin-top:.05rem;"></p>
+                            <p class="error_txt"></p>
                         </div>
                         <div class="form_item">
                             <div class="flex align_items_end">
@@ -41,14 +41,14 @@
                                 <input class="flex-1" type="text" name="" value="福建/厦门/思明区" placeholder="请选择地区">
                                 <a href="javascript:void(0);"><i class="iconfont">&#xe619;</i></a>
                             </div>
-                            <p style="color:#ff3600;margin-top:.05rem;"></p>
+                            <p class="error_txt"></p>
                         </div>
                         <div class="form_item">
                             <div class="flex align_items_end">
                                 <label for="">店铺地址</label>
                                 <input class="flex-1" type="text" name="" value="江苏省苏州市姑苏区金阊新城虎殿路1999号中海御景湾25-3108" placeholder="请填写详细店铺地址">
                             </div>
-                            <p style="color:#ff3600;margin-top:.05rem;"></p>
+                            <p class="error_txt"></p>
                         </div>
                     </form>
             </div>

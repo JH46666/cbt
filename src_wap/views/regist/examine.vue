@@ -20,7 +20,7 @@
                             <p v-if="!edit" class="flex-1">18720989159</p>
                             <input v-else class="flex-1" type="text" name="" value="18720989159" disabled>
                         </div>
-                        <p style="color:#ff3600;margin-top:.05rem;"></p>
+                        <p  class="error_txt"></p>
                     </div>
                     <div class="form_item">
                         <div class="flex align_items_end error_color">
@@ -28,7 +28,7 @@
                             <p v-if="!edit" class="flex-1">茶叶店</p>
                             <input v-else class="flex-1" type="text" name="" value="茶叶店" placeholder="请填写店铺名称" disabled>
                         </div>
-                        <p style="color:#ff3600;margin-top:.05rem;">你错了你错了</p>
+                        <p  class="error_txt">你错了你错了</p>
                     </div>
                     <div class="form_item">
                         <div class="flex align_items_end">
@@ -36,7 +36,7 @@
                             <p v-if="!edit" class="flex-1">陈喂喂</p>
                             <input v-else class="flex-1" type="text" name="" value="陈喂喂" placeholder="请填写联系人姓名" disabled>
                         </div>
-                        <p style="color:#ff3600;margin-top:.05rem;"></p>
+                        <p  class="error_txt"></p>
                     </div>
                     <div class="form_item">
                         <div class="flex align_items_end">
@@ -45,7 +45,7 @@
                             <input v-else class="flex-1" type="text" name="" value="福建/厦门/思明区" placeholder="请选择地区" disabled>
                             <!-- <a href="javascript:void(0);"><i class="iconfont">&#xe619;</i></a> -->
                         </div>
-                        <p style="color:#ff3600;margin-top:.05rem;"></p>
+                        <p  class="error_txt"></p>
                     </div>
                     <div class="form_item">
                         <div class="flex align_items_end">
@@ -53,7 +53,7 @@
                             <p v-if="!edit" class="flex-1">江苏省苏州市姑苏区金阊新城虎殿路1999号中海御景湾25-3108</p>
                             <input v-else class="flex-1" type="text" name="" value="江苏省苏州市姑苏区金阊新城虎殿路1999号中海御景湾25-3108" disabled placeholder="请填写详细店铺地址">
                         </div>
-                        <p style="color:#ff3600;margin-top:.05rem;"></p>
+                        <p class="error_txt"></p>
                     </div>
                 </form>
                 <div class="examine_img"><img src="../../assets/images/examine.png" alt=""></div>
