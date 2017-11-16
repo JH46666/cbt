@@ -6,11 +6,63 @@
         .flex-1;
         .ipScroll;
         .paddingB(.98rem);
+        .goIndex{
+            width: 1.65rem;
+            height: .72rem;
+            .bg(rgb(51, 50, 50, 0.902));
+            opacity: 0.902;
+            border-radius: 0 .36rem .36rem 0;
+            .position(f);
+            left: 0;
+            top: 1.33rem;
+            z-index: 3;
+            .flex;
+            .flex-dir(row);
+            .justify-content;
+            .align-items;
+            .color(#fff);
+            .fontSize(.26rem);
+            cursor: pointer;
+            i{
+                .fontSize(.4rem);
+            }
+        }
+        .top{
+            width: .8rem;
+            height: .8rem;
+            .bg(rgb(28, 28, 28,.6));
+            opacity: 0.6;
+            .position(f);
+            .reduis(5px);
+            .algin(c);
+            .line(.8rem);
+            .color(#fff);
+            .fontSize(.44rem);
+            z-index: 3;
+            bottom: 1.42rem;
+            right: .2rem;
+            cursor: pointer;
+            display: none;
+            &.on{
+                display: block;
+            }
+        }
         .detail_img{
             width: 100%;
             height: 6.4rem;
             border-bottom: 1px solid #e5e5e5;
             .position(r);
+            .detail_special{
+                width: 100%;
+                height: .72rem;
+                .position(a);
+                bottom: -0.3rem;
+                left: 0;
+                z-index: 2;
+                background-image: url('../../assets/images/price.jpg');
+                background-repeat: no-repeat;
+                background-size: 100%;
+            }
             img{
                 width: 100%;
             }
@@ -22,7 +74,7 @@
                 opacity: 0.302;
                 position: absolute;
                 right: .2rem;
-                bottom: .3rem;
+                bottom: .6rem;
                 z-index: 1;
                 .color(#fff);
                 .fontSize(.28rem);
@@ -85,6 +137,25 @@
             .mint-navbar{
                 .paddingAll(0,1.1rem,0,1.1rem);
                 .bg(#fafafa);
+                border-bottom: 1px solid #e5e5e5;
+                .position(r);
+                .fixIndex{
+                    width: .4rem;
+                    height: .4rem;
+                    .algin(c);
+                    .line(.4rem);
+                    .color(#666);
+                    .fontSize(.4rem);
+                    .position(a);
+                    left: .2rem;
+                    top: .2rem;
+                    z-index: 3;
+                    display: none;
+                    cursor: pointer;
+                    &.on{
+                        display: block;
+                    }
+                }
                 &.on{
                     .position(f);
                     top: .88rem;
@@ -111,7 +182,7 @@
                 .bg(#fff);
                 &.on{
                     .position(f);
-                    top: 1.68rem;
+                    top: 1.66rem;
                     z-index: 3;
                     width: 100%;
                     box-shadow: 0 1px 3px rgba(0,0,0,.3);
@@ -151,14 +222,44 @@
                 .color(#333);
                 .fontSize(.28rem);
                 .algin(c);
-                border-top: 1px solid #e5e5e5;
                 border-bottom: 1px solid #e5e5e5;
                 &.on{
                     .position(f);
-                    top: 1.68rem;
+                    top: 1.66rem;
                     z-index: 3;
                     width: 100%;
                     box-shadow: 0 1px 3px rgba(0,0,0,.3);
+                }
+            }
+            .reguler_wrapper{
+                .bg(#fff);
+                .paddingAll(0,.2rem,0,.2rem);
+                .reguler_item{
+                    .paddingAll(.3rem,0,.3rem,0);
+                    border-bottom: 1px solid #e5e5e5;
+                    .bg(#fff);
+                    .color(#666);
+                    .fontSize(.26rem);
+                    .flex;
+                    .flex-dir(row);
+                    span{
+                        &:nth-child(1){
+                            width: .6rem;
+                            .flex;
+                            .align-items;
+                        }
+                        &:nth-child(2){
+                            .flex-1;
+                            .flex;
+                            .flex-dir;
+                            margin-left: .6rem;
+                            .line(1.5);
+                            img{
+                                width: 100%;
+                            }
+                        }
+                    }
+
                 }
             }
             .mint_cell_wrapper{

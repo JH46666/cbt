@@ -1,12 +1,22 @@
 <template>
     <div class="detail">
         <div class="detail_wrapper" @scroll="docScroll" ref="wrapper">
+            <div class="goIndex" v-if="!tabFixed">
+                <span>去首页</span>
+                <i class="iconfont">&#xe61b;</i>
+            </div>
+            <div class="top" :class="{on: tabFixed}" @click="topMethod">
+                <i class="iconfont">&#xe618;</i>
+            </div>
             <div class="detail_img">
                 <mt-swipe :auto="2000" :show-indicators="false" @change="handleChange">
                     <mt-swipe-item v-for="(item,index) in goodsDetail.swiperImg" :key="index">
                         <img :src="item" :key="index">
                     </mt-swipe-item>
                 </mt-swipe>
+                <div class="detail_special">
+
+                </div>
                 <div class="detail_img_index">
                     <span>{{ imgIndex }}</span>/{{ goodsDetail.swiperImg.length }}
                 </div>
@@ -26,6 +36,7 @@
             </div>
             <div class="detail_tab" ref="tab">
                 <mt-navbar v-model="tabSelected" :class="{on: tabFixed}">
+                    <i class="iconfont fixIndex" :class="{on: tabFixed}" v-if="tabFixed">&#xe61b;</i>
                     <mt-tab-item id="1">详情</mt-tab-item>
                     <mt-tab-item id="2">规格</mt-tab-item>
                     <mt-tab-item id="3">评论</mt-tab-item>
@@ -41,7 +52,33 @@
                         </div>
                     </mt-tab-container-item>
                     <mt-tab-container-item id="2">
-                        <mt-cell v-for="n in 4" :title="'测试 ' + n" />
+                        <div class="reguler_wrapper">
+                            <div class="reguler_item">
+                                <span>推荐理由</span>
+                                <span>戎羯逼我兮为室家，将我行兮向天涯。云山万重兮归路遐，疾风千里兮扬尘沙。人多暴猛兮如虺蛇，控弦被甲兮为骄奢。两拍张弦兮弦欲绝，志摧心折兮自悲嗟。</span>
+                            </div>
+                            <div class="reguler_item">
+                                <span>香气</span>
+                                <span>
+                                    <img src="../../assets/images/5.png" alt="">
+                                </span>
+                            </div>
+                            <div class="reguler_item">
+                                <span>滋味</span>
+                                <span>
+                                    <img src="../../assets/images/s5.png" alt="">
+                                </span>
+                            </div>
+                            <div class="reguler_item">
+                                <span>产地</span>
+                                <span>想要哪里的</span>
+                            </div>
+                            <div class="reguler_item">
+                                <span>工艺</span>
+                                <span>想要哪里的</span>
+                            </div>
+
+                        </div>
                     </mt-tab-container-item>
                     <mt-tab-container-item id="3">
                         <div class="comment_wrapper" ref="commentTotal" :class="{on: tabFixed}">
@@ -52,7 +89,7 @@
                             </div>
                         </div>
                         <div class="mint_cell_wrapper">
-                            <mt-cell v-for="(item,index) in commentArray">
+                            <mt-cell v-for="(item,index) in commentArray" :key="index">
                                 <div class="comment_head">
                                     <div class="comment_head_wrapper">
                                         <div class="comment_head_mumber">{{ regStar(item.memberNum) }}</div>
@@ -76,9 +113,13 @@
         </div>
         <mt-tabbar v-model="selected" class="cbt-footer detail_footer">
             <mt-tab-item id="客服">
-                <i class="icon-rexian" slot="icon"></i>
+                <i class="icon-kefu1" slot="icon"></i>
                 客服
             </mt-tab-item>
+            <!-- <mt-tab-item id="店铺">
+                <i class="icon-dianpu" slot="icon"></i>
+                店铺
+            </mt-tab-item> -->
             <mt-tab-item id="购物车">
                 <i class="icon-shopcar" slot="icon"></i>
                 购物车
@@ -110,7 +151,7 @@ export default {
                 maxGoodsNum: 100,
                 detailImgArray: ['../src_wap/assets/detail_1.png','../src_wap/assets/detail_2.png','../src_wap/assets/detail_3.png']
             },
-            tabSelected: '3',
+            tabSelected: '2',
             commentArray: [
                 {
                     memberNum: '17605062109',
@@ -157,7 +198,7 @@ export default {
                 return val;
             }
         },
-        setLine() {
+        setLine() {                 // 显示与隐藏（超出）
             for(let obj of this.$refs.comment){
                 if(obj.offsetHeight > 95){
                     obj.className = obj.className + ' on';
@@ -165,7 +206,7 @@ export default {
                 }
             }
         },
-        pullOrDown(index) {
+        pullOrDown(index) {        // 显示与隐藏（超出）
             if(this.$refs.comment[index].className.indexOf(' on') != -1){
                 this.$refs.comment[index].className = 'comment_footer';
             }else{
@@ -185,13 +226,13 @@ export default {
                 }
             }
         },
-        moreComment() {
+        moreComment() {             // 加载更多请求数据
             this.commentArray = this.commentArray.concat(this.commentArray);
             this.$nextTick(()=>{
                 this.setLine();
             })
         },
-        docScroll() {
+        docScroll() {               // 判断页面滚动
             let scrollTop = this.$refs.wrapper.scrollTop;
             let scrollHeight = this.$refs.wrapper.offsetHeight;
             if(scrollTop-scrollHeight > 0){
@@ -201,6 +242,9 @@ export default {
                 this.tabFixed = false;
                 return;
             }
+        },
+        topMethod() {               // 滚动到顶部
+            this.$refs.wrapper.scrollTop = 0;
         }
     },
     created() {
@@ -219,5 +263,4 @@ export default {
 
 <style lang="less">
 @import '~@/styles/less/detail.less';
-
 </style>
