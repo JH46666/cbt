@@ -29,19 +29,13 @@ export default new Router({
 					meta: {
 						hideFooter: true
 					}
-				}
-			]
-		},
-		{
-			path: '/search',
-			component: resolve => require(['@/views/layout/mainWrap.vue'],resolve),
-			children: [
+				},
 				{
-					path: '/',
-					name: '搜索',
+					path: '/search',
 					component: resolve => require(['@/views/search/index.vue'],resolve),
 					meta: {
-						transition: 'fadeDown'
+						transition: 'fadeDown',
+						hideFooter: true
 					}
 				}
 			]

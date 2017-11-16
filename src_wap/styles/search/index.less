@@ -1,0 +1,91 @@
+@import url('../base/tools.less');
+
+#search{
+    .search-bar-wrapper{
+        .h(.8rem);
+        .bg(#fff);
+        .paddingRow(.2rem);
+        .flex;
+        .paddingT(.14rem);
+        .cancel{
+            margin-left: .3rem;
+            .color(@mainCol);
+            .line(.52rem);
+            .flex_num(1);
+        }
+        &>div{
+            margin-left: .1rem;
+            .flex_num(9);
+        }
+    }
+    .hot-search{
+        padding-top: .42rem;
+        .h(1.24rem);
+        .bg(#f2f2f2);
+        .flex;
+        .left{
+            font-weight: bold;
+            .flex_num(1);
+            .paddingL(.46rem);
+            .fontSize(.28rem);
+            .line(.52rem);
+        }
+        .right{
+            .scroll-x(h);
+            .flex_num(8);
+            .line(.52rem);
+            .fontSize(0);
+            .tag-wrap{
+                white-space: nowrap;
+                .paddingR(.2rem);
+                .flex;
+                .scroll-x(a);
+            }
+            .tag{
+                display: inline-block;
+                border: 1px solid @borCol;
+                margin-right: .2rem;
+                .reduis(20px);
+                .paddingRow(.2rem);
+                .fontSize(.24rem);
+                .line(.5rem);
+                .color(@b-6);
+            }
+        }
+    }
+    .history-pannel{
+        .bg(#fff);
+        .flex-1;
+        .title{
+            border-top: 1px solid @borCol;
+            border-bottom: 1px solid @borCol;
+            .paddingL(.46rem);
+            .color(@b-3);
+            .fontSize(.28rem);
+            .line(.68rem);
+        }
+        .history-wrap{
+            margin-bottom: .96rem;
+        }
+        .history-item{
+            .paddingL(.46rem);
+            .color(@b-9);
+            .fontSize(.24rem);
+            .line(.68rem);
+            border-bottom: 1px solid @borCol;
+        }
+        .btn-wrap{
+            .algin(c);
+            button{
+                overflow: hidden;
+                border: 1px solid @b-6;
+                .h(.58rem);
+                .line(.56rem);
+                .fontSize(.24rem);
+                .bg(#fff);
+                .reduis(20px);
+                .paddingRow(.5rem);
+            }
+        }
+    }
+}
