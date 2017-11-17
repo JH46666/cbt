@@ -55,7 +55,7 @@
                     pwd: ""
                 },
                 visFlag: false,             //密码是否可见
-                verifyFlag: true,          //验证码弹窗是否可见
+                verifyFlag: false,          //验证码弹窗是否可见
             }
         },
         methods:{
