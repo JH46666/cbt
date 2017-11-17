@@ -154,8 +154,8 @@
                                 </div>
                                 <p class="comment_footer" ref="comment">
                                     {{ item.content }}
-                                    <i class="iconfont down" @click="pullOrDown(index)">&#xe619;</i>
-                                    <i class="iconfont pull" @click="pullOrDown(index)">&#xe618;</i>
+                                    <i class="iconfont down" @click="pullOrDown(index)" :key="index+'11'">&#xe619;</i>
+                                    <i class="iconfont pull" @click="pullOrDown(index)" :key="index+'12'">&#xe618;</i>
                                 </p>
                             </mt-cell>
                         </div>
@@ -166,7 +166,7 @@
                 </mt-tab-container>
             </div>
         </div>
-        <mt-tabbar v-model="selected" class="cbt-footer detail_footer" :isZiYing="isThird">
+        <mt-tabbar v-model="selected" class="cbt-footer detail_footer" :isZiYing="isThird" ref="footers">
             <mt-tab-item id="1" @click.native="openDialog" v-if="!isThird">
                 <i class="icon-kefu1" slot="icon"></i>
                 客服
@@ -241,7 +241,8 @@ export default {
             wxFlag: false,
             wxFixed: false,
             showOrHide: false,
-            isThird: true,
+            isThird: false,
+            headHeight: 44,
         }
     },
     methods: {
@@ -307,7 +308,7 @@ export default {
         docScroll() {               // 判断页面滚动
             let scrollTop = this.$refs.wrapper.scrollTop;
             let scrollHeight = this.$refs.wrapper.offsetHeight;
-            if(scrollTop-scrollHeight > 0){
+            if(scrollTop - scrollHeight > 0){
                 if(!this.wxFlag){
                     this.tabFixed = true;
                 }else{
@@ -371,7 +372,8 @@ export default {
            }
            this.timeDown()
        },500)
-       this.wxFlag = this.$tool.isWx();
+       this.wxFlag = this.$tool.isWx;
+       this.headHeight = document.querySelector('.cbt-header').offsetHeight;
   　}
 }
 </script>

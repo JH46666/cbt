@@ -1,6 +1,6 @@
 <template>
     <div id="container">
-        <cbt-header v-if="!$tool.isWx()"></cbt-header>
+        <cbt-header v-if="!$tool.isWx"></cbt-header>
 		<transition :name="model" mode="out-in">
             <router-view class="content" :class="{'no-footer':$route.meta.hideFooter}"></router-view>
 		</transition>

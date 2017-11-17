@@ -1,11 +1,13 @@
 @import '../base/tools.less';
 .detail{
+    .mint-tabbar{
+        .position(f);
+        z-index: 6;
+    }
     .bg(#f5f5f5);
-    .flex;
-    .flex-dir;
     .detail_wrapper{
-        .scroll-x(a);
-        .flex-1;
+        .scroll-y(a);
+        height: 100%;
         .ipScroll;
         .paddingB(.98rem);
         .goIndex{
@@ -198,6 +200,10 @@
         }
         .detail_tab{
             margin-top: .2rem;
+            // .paddingB(.98rem);
+            .mint-tab-container-item{
+                .scroll-y(a);
+            }
             .mint-navbar{
                 .paddingAll(0,1.1rem,0,1.1rem);
                 .bg(#fafafa);
@@ -647,6 +653,6 @@
         &.on{
             bottom: 0;
         }
-        z-index: 4;
+        z-index: 7;
     }
 }
