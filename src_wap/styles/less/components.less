@@ -4,6 +4,9 @@
 .cbt-search-bar{
     width: 4.85rem;
     .flex;
+    i{
+        .iconfont;
+    }
     .search-text{
         .flex_num(8);
         .paddingL(.2rem);
@@ -19,9 +22,16 @@
         .h(.52rem);
         .color(#fff);
         border-radius: 0 20px 20px 0;
-        i{
-            .iconfont;
-        }
+    }
+    .cancel{
+        .display(none);
+        .position(a);
+        .color(@b-9);
+        top: .08rem;
+        right: 28%;
+    }
+    .show{
+        .display(block);
     }
 }
 
@@ -60,5 +70,32 @@
         .algin(c);
         vertical-align: top;
         .fontSize(.24rem);
+    }
+}
+
+// 商品图片组件
+.cbt-goods-img{
+    .w(1.76rem);
+    .h(1.76rem);
+    .img-wrap{
+        .position(r);
+        .w(100%);
+        .h(100%);
+    }
+    img{
+        max-width: 100%;
+        max-height: 100%;
+    }
+    img[lazy=loading]{
+        max-width: 100%;
+        max-height: 100%;
+    }
+}
+
+// 商品组件
+.cbt-goods-item{
+    .flex;
+    .left-text-wrap{
+        .flex-1;
     }
 }

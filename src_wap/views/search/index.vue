@@ -4,7 +4,8 @@
             <search-bar v-model="text"></search-bar>
             <span class="cancel">取消</span>
         </section>
-        <section class="hot-search">
+        <!-- 开始搜索时 -->
+        <!-- <section class="hot-search">
             <div class="left">热搜</div>
             <div class="right">
                 <div class="tag-wrap">
@@ -37,6 +38,29 @@
             <div class="btn-wrap">
                 <button>清空历史搜索</button>
             </div>
+        </section> -->
+        <!-- 搜索列表 -->
+        <section class="sort-bar">
+            <label class="sort-item" :class="{active:sortClass === 'count'}">
+                销量
+                <input type="radio" value="count" v-model="sortClass">
+            </label>
+            <label class="sort-item" :class="{active:sortClass === 'new'}">
+                新品
+                <input  type="radio" value="new" v-model="sortClass">
+            </label>
+            <label class="sort-item" :class="{active:sortClass === 'price'}" @click.self="editPriceSort">
+                价格
+                <input  type="radio" value="price" v-model="sortClass">
+                <span class="sort-btn" :class="{top:sortClass === 'price' && priceSort,bottom:sortClass === 'price' && !priceSort}">
+                    <i class="icon-shouqi"></i>
+                    <i class="icon-zhankai"></i>
+                </span>
+            </label>
+        </section>
+        <!-- 商品列表 -->
+        <section class="goods-list">
+            <goods-item v-for="item in 20"></goods-item>
         </section>
     </div>
 </template>
@@ -45,10 +69,25 @@
     export default {
         data() {
             return {
-                text: ''
+                text: '',
+                sortClass: 'count',
+                priceSort: true,
             }
         },
         methods: {
+            // 价格排序发生改变
+            editPriceSort() {
+                // 上一次的选项
+                let to = this.sortClass;
+                this.$nextTick(() =>{
+                    let now = this.sortClass;
+                    if(to !== now) {
+                        this.priceSort = false;
+                    } else {
+                        this.priceSort = !this.priceSort;
+                    }
+                })
+            }
         }
     }
 </script>

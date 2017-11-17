@@ -88,4 +88,56 @@
             }
         }
     }
+    .sort-bar{
+        input[type=radio]{
+            opacity: 0;
+        }
+        .paddingRow(.3rem);
+        .bg(#f5f5f5);
+        .flex;
+        .sort-item{
+            .flex-1;
+            .algin(c);
+            .fontSize(.26rem);
+            .line(.72rem);
+        }
+        .active{
+            .color(@mainCol);
+        }
+        i{
+            .iconfont;
+            .position(r);
+        }
+        i:nth-of-type(1){
+            top: -.1rem;
+        }
+        i:nth-of-type(2){
+            top: -.65rem;
+        }
+        .sort-btn{
+            .color(@b-3);
+            .flex;
+            .flex-dir;
+            .position(a);
+            .w(.32rem);
+            .h(100%);
+            right: .4rem;
+            top: 0;
+            &.top{
+                i:nth-of-type(1){
+                    .color(@mainCol);
+                }
+            }
+            &.bottom{
+                i:nth-of-type(2){
+                    .color(@mainCol);
+                }
+            }
+        }
+    }
+    .goods-list{
+        .flex-1;
+        .bg(#fff);
+        .paddingRow(.3rem);
+    }
 }
