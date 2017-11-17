@@ -42,18 +42,18 @@ html,body,#app,#container{
 }
 
 #container{
-    .flex;
-    .flex-dir;
+    .h(100%);
     .fontSize(.24rem);
     .bg(@bg);
 }
 .content{
-    .flex-dir;
-    .flex-1;
-    .paddingB(.98rem);
-    .ipScroll;
-    .justify-content(start);
-    overflow-y: auto;
+    padding:.88rem 0 .98rem;
+    overflow: hidden;
+    .position(r);
+    height: 100%;
+    &.no_header{
+        padding:0 0 .98rem;
+    }
     &.no-footer{
         .paddingB(0);
     }
@@ -61,6 +61,8 @@ html,body,#app,#container{
 
 // 头部
 .cbt-header{
+    .position(f);
+    .w(100%);
     height: .88rem;
     .bg(#1c1b20);
     z-index: 100;
