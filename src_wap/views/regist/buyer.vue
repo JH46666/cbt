@@ -22,7 +22,7 @@
                     <label class="fl"></label>
                 </div>
                 <mt-button size="large" type="primary">立即注册</mt-button>
-                <p class="color_9">点击 立即注册 即表示您同意遵守醉品 <a href="javascript:void(0);" class="color_f08">用户协议</a> 和 <a href="javascript:void(0);" class="color_f08">隐私政策</a></p>
+                <p class="color_9">点击 立即注册 即表示您同意遵守茶帮通 <a href="javascript:void(0);" class="color_f08">用户协议</a> 和 <a href="javascript:void(0);" class="color_f08">隐私政策</a></p>
             </form>
         </div>
         <!-- 验证码弹窗 -->
@@ -55,7 +55,7 @@
                     pwd: ""
                 },
                 visFlag: false,             //密码是否可见
-                verifyFlag: true,          //验证码弹窗是否可见
+                verifyFlag: false,          //验证码弹窗是否可见
             }
         },
         methods:{
