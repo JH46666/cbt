@@ -45,6 +45,13 @@ export default new Router({
 						transition: 'fadeDown',
 						hideFooter: true
 					}
+				},
+				{
+					path: '/cart',
+					component: resolve => require(['@/views/cart/index.vue'],resolve),
+					// meta: {
+					// 	hideFooter: true
+					// }
 				}
 			]
 		},
@@ -90,7 +97,7 @@ export default new Router({
 			children: [
 				{
 					path: 'buyer',
-					name: '茶帮通注册',
+					name: '茶帮通注册1',
 					component: resolve => require(['@/views/regist/buyer.vue'],resolve),
 					meta: {
 						hideFooter: true
@@ -98,7 +105,7 @@ export default new Router({
 				},
 				{
 					path: 'seller',
-					name: '茶帮通注册',
+					name: '茶帮通注册2',
 					component: resolve => require(['@/views/regist/seller.vue'],resolve),
 					meta: {
 						hideFooter: true
@@ -106,7 +113,7 @@ export default new Router({
 				},
 				{
 					path: 'examine',
-					name: '茶帮通注册',
+					name: '茶帮通注册3',
 					component: resolve => require(['@/views/regist/examine.vue'],resolve),
 					meta: {
 						hideFooter: true
