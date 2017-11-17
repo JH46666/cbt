@@ -36,8 +36,8 @@
             </mt-tab-container>
             <mt-button size="large" type="primary">立即登录</mt-button>
             <div class="flex btns">
-                <a class="flex-1 color_3" href="javascript:void(0);">立即注册</a>
-                <a class="flex-1 color_3 algin_r" v-if="selected==='2'" href="javascript:void(0);">忘记密码</a>
+                <router-link class="flex-1 color_3" to="/regist/buyer">立即注册</router-link>
+                <router-link class="flex-1 color_3 algin_r" v-if="selected==='2'" to="forget">忘记密码</router-link>
             </div>
         </div>
         <!-- 违规弹窗 -->
