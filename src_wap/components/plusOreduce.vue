@@ -1,7 +1,7 @@
 <template>
     <div class="plusOreduce">
         <span class="reduce btn" @click="reduceMethod">-</span>
-        <input v-model.number="num" type="number" class="countNum" disabled>
+        <input v-model.number="num" type="tel" class="countNum">
         <span class="plus btn" @click="plusMethod">+</span>
     </div>
 </template>
@@ -12,7 +12,7 @@ export default {
     name: 'plusOreduce',
     data() {
         return {
-            num: 0
+            num: 1
         }
     },
     props: {
@@ -23,13 +23,12 @@ export default {
     },
     methods: {
         plusMethod() {
-            console.log(this.maxNum);
             this.num++;
             if(this.num > this.maxNum){
                 this.num = this.maxNum;
                 Toast({
                     message: '您需购买的数量超出商品的现有库存！',
-                    position: 'bottom',
+                    position: 'center',
                     duration: 2000
                 });
             }
@@ -37,12 +36,42 @@ export default {
         },
         reduceMethod() {
             this.num--;
-            if(this.num < 0){
-                this.num = 0;
+            if(this.num < 1){
+                this.num = 1;
             }
             this.$emit('countNum',this.num);
+        }
+    },
+    watch: {
+        num(val) {
+            if(val!=''){
+                let reg = /^[1-9]\d*$/;
+                if(!reg.test(val)){
+                    Toast({
+                        message: '请输入大于等于1的正整数',
+                        position: 'center',
+                        duration: 2000
+                    });
+                    this.num = 1;
+                }else{
+                    if(parseInt(val) > this.maxNum){
+                        Toast({
+                            message: '您需购买的数量超出商品的现有库存！',
+                            position: 'center',
+                            duration: 2000
+                        });
+                        this.num = this.maxNum;
+                    }
+                }
+            }else{
+                Toast({
+                    message: '请输入大于等于1的正整数',
+                    position: 'center',
+                    duration: 2000
+                });
+                this.num = 1;
+            }
         }
     }
 }
 </script>
-
