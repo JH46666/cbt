@@ -1,7 +1,10 @@
 <template>
     <div class="cbt-goods-img">
         <div class="img-wrap">
-            <img v-lazy="imgUrl">
+            <img v-lazy="imgUrl" class="goods-img">
+            <div class="tag-wrap">
+                <img src="../assets/images/特价.png" class="goods-tag">
+            </div>
         </div>
     </div>
 </template>
@@ -12,7 +15,7 @@
         props: {
             imgUrl: {
                 type: String,
-                default: 'http://b.hiphotos.baidu.com/image/pic/item/faf2b2119313b07ee3e251c205d7912396dd8c98.jpg'
+                default: '/'
             }
         }
     }

@@ -139,5 +139,47 @@
         .flex-1;
         .bg(#fff);
         .paddingRow(.3rem);
+        .no-more{
+            .color(@b-6);
+            .fontSize(.28rem);
+            .line(.98rem);
+            .algin(c);
+        }
+        .goods-loading{
+            .flex;
+            .color(@b-6);
+            .fontSize(.28rem);
+            .line(.98rem);
+            .algin(c);
+            justify-content: center;
+            &>:first-child{
+                .position(r);
+                top: .2rem;
+                margin-right: .4rem;
+            }
+        }
+    }
+    .no-search{
+        border-top: 1px solid @borCol;
+        .bg(#fff);
+        .h(~'calc(100% - .8rem)');
+        .paddingRow(.5rem);
+        .sorry-img img{
+            .display(block);
+            margin: .8rem auto;
+        }
+        .sorry{
+            margin-bottom: .4rem;
+            .fontSize(.32rem);
+            .line(1.5);
+            .gold{
+                .color(@mainCol);
+            }
+        }
+        .sorry-tip{
+            .fontSize(.28rem);
+            .line(1.5);
+            .color(@b-9);
+        }
     }
 }
