@@ -308,6 +308,7 @@ export default {
         docScroll() {               // 判断页面滚动
             let scrollTop = this.$refs.wrapper.scrollTop;
             let scrollHeight = this.$refs.wrapper.offsetHeight;
+            console.log(scrollTop - scrollHeight);
             if(scrollTop - scrollHeight > 0){
                 if(!this.wxFlag){
                     this.tabFixed = true;
