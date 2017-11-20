@@ -110,13 +110,14 @@
                         </div>
                     </div>
                 </div>
+                <a class="clear_expired" href="javascript:void(0);">清空失效商品</a>
             </div>
         </div>
         <may-like></may-like>
         <!-- 底部结算 -->
         <div class="cart_bottom flex">
-            <div class="select_all left_check flex" :class="{'flex-1':edit}">
-                <p class="flex align_items_c" @click="selectAll">
+            <div class="select_all left_check flex" :class="{'flex-1':edit,'checked':checkedAll}">
+                <p class="flex align_items_c"  @click="selectAll">
                     <input type="checkbox" name="" hidden>
                     <span class="check_cir"></span>
                 </p>
@@ -144,6 +145,7 @@
             return {
                 selectIds:[],   //选择的商品
                 edit: false,    //编辑
+                checkedAll: false, //结算栏的全选或全不选
                 groupCollect:[
                     {
                         isSelf: false,  //是否自营
@@ -351,7 +353,7 @@
                 list.checkedAll = !list.checkedAll;
             },
             selectAll(){
-                console.log(111);
+                this.checkedAll = !this.checkedAll;
             }
         }
     }
