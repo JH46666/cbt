@@ -120,6 +120,29 @@ export default new Router({
 					}
 				}
 			]
+		},
+		{
+			path: '/order',
+			name: '订单列表',
+			component: resolve => require(['@/views/layout/mainWrap.vue'],resolve),
+			children: [
+				{
+					path: 'buyerlist',
+					name: '订单列表1',
+					component: resolve => require(['@/views/order/buyerList.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+				{
+					path: 'sellerlist',
+					name: '订单列表2',
+					component: resolve => require(['@/views/order/sellerList.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				}
+			]
 		}
 	]
 })
