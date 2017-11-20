@@ -117,7 +117,7 @@
         <!-- 底部结算 -->
         <div class="cart_bottom flex">
             <div class="select_all left_check flex" :class="{'flex-1':edit,'checked':checkedAll}">
-                <p class="flex align_items_c"  @click="selectAll">
+                <p class="flex align_items_c" @click="selectAll">
                     <input type="checkbox" name="" hidden>
                     <span class="check_cir"></span>
                 </p>
