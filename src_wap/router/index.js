@@ -40,6 +40,7 @@ export default new Router({
 				},
 				{
 					path: '/search',
+					name: '搜索',
 					component: resolve => require(['@/views/search/index.vue'],resolve),
 					meta: {
 						transition: 'fadeDown',
@@ -68,6 +69,14 @@ export default new Router({
 					path: 'address',
 					name: '地址管理',
 					component: resolve => require(['@/views/center/address.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+				{
+					path: 'addaddress',
+					name: '新增地址',
+					component: resolve => require(['@/views/center/editAddress.vue'],resolve),
 					meta: {
 						hideFooter: true
 					}
@@ -115,6 +124,45 @@ export default new Router({
 					path: 'examine',
 					name: '茶帮通注册3',
 					component: resolve => require(['@/views/regist/examine.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				}
+			]
+		},
+		{
+			path: '/balance',
+			name: '结算中心',
+			component: resolve => require(['@/views/layout/mainWrap.vue'],resolve),
+			children: [
+				{
+					path: '/',
+					name: '结算',
+					component: resolve => require(['@/views/balance/index.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+				{
+					path: 'success',
+					name: '结算成功',
+					component: resolve => require(['@/views/balance/payView.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+				{
+					path: 'fail',
+					name: '结算失败',
+					component: resolve => require(['@/views/balance/payView.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+				{
+					path: 'delivery',
+					name: '货到付款结算',
+					component: resolve => require(['@/views/balance/payView.vue'],resolve),
 					meta: {
 						hideFooter: true
 					}

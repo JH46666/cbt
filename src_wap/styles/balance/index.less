@@ -1,0 +1,116 @@
+@import '~@/styles/base/tools.less';
+
+#balance{
+    .address{
+        background: #fff url('~@/assets/images/address_pingpu.jpg') repeat-x;
+        background-size: .32rem .12rem;
+        margin-bottom: .2rem;
+        .paddingT(.5rem);
+        .paddingRow(.35rem);
+        .h(1.66rem);
+        .flex;
+        .left{
+            .w(.556rem);
+        }
+        .center{
+            overflow: hidden;
+            .flex-1;
+            .user{
+                .fontSize(.3rem);
+                .color(@b-3);
+            }
+            p{
+                .fontSize(.28rem);
+                .line(1.5);
+                .oneLine;
+                .color(@b-6);
+            }
+        }
+        .right{
+            margin-left: .2rem;
+            .paddingT(.2rem);
+            .algin(r);
+            .color(@b-6);
+        }
+        i{
+            .iconfont;
+        }
+    }
+    .goods-pannel{
+        margin-bottom: .2rem;
+        .bg(#fff);
+        .title{
+            border-bottom: 1px solid @borCol;
+            .oneLine;
+            .fontSize(.3rem);
+            .line(.84rem);
+            .paddingRow(.35rem);
+            img{
+                .position(r);
+                top: .14rem;
+                max-width: 1.74rem;
+                margin-right: .1rem;
+            }
+            i{
+                .iconfont;
+                margin-right: .1rem;
+            }
+        }
+        .goods-item{
+            border-bottom: 1px solid @borCol;
+            .padding(.35rem);
+            .flex;
+            .right{
+                .flex-1;
+                .paddingL(.2rem);
+            }
+            .goods-title{
+                .moreLine;
+                margin-bottom: .5rem;
+            }
+            .goods-bd{
+                .flex;
+                .fontSize(.32rem);
+                .line(1.5);
+                span{
+                    .flex-1;
+                }
+                .price{
+                    .color(@mainCol);
+                }
+                .num{
+                    .algin(r);
+                }
+            }
+        }
+        .sum{
+            .fontSize(.3rem);
+            .line(.94rem);
+            .paddingRow(.35rem);
+            .algin(r);
+            .gold{
+                .color(@mainCol);
+            }
+        }
+        .pro_free_caption{
+            .fontSize(.3rem);
+            padding-top: .3rem;
+            padding-left: .35rem;
+            .full_free{
+                .fontSize(.24rem);
+                padding: .05rem .1rem;
+                border: 1px solid #f08200;
+                .color(#f08200);
+                margin-right: .1rem;
+            }
+        }
+    }
+    .save-order{
+        .w(100%);
+        .bg(#fff);
+        .line(1.04rem);
+        .position(a);
+        bottom: 0;
+        z-index: 100;
+    }
+}

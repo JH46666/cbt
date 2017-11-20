@@ -90,6 +90,7 @@ html,body,#app,#container{
 // 导航条
 .cbt-footer{
     height: .98rem;
+    border-top: 1px solid #e6e6e6;
     .mint-tab-item{
         .position(r);
         &.is-selected{
@@ -230,6 +231,23 @@ html,body,#app,#container{
     opacity: 1;
 }
 .fadeDown-leave-to{
+    transform: translateY(200%);
+    opacity: 0;
+}
+
+.fadeUp-enter{
+    transform: translateY(200%);
+    opacity: 0;
+}
+.fadeUp-enter-to{
+    transform: translateY(0%);
+}
+.fadeUp-enter-active, .fadeUp-leave-active {
+    transition:  .6s;
+    transform: translateY(0%);
+    opacity: 1;
+}
+.fadeUp-leave-to{
     transform: translateY(200%);
     opacity: 0;
 }
