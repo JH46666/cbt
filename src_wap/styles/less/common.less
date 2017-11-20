@@ -234,3 +234,20 @@ html,body,#app,#container{
     transform: translateY(200%);
     opacity: 0;
 }
+
+.fadeUp-enter{
+    transform: translateY(200%);
+    opacity: 0;
+}
+.fadeUp-enter-to{
+    transform: translateY(0%);
+}
+.fadeUp-enter-active, .fadeUp-leave-active {
+    transition:  .6s;
+    transform: translateY(0%);
+    opacity: 1;
+}
+.fadeUp-leave-to{
+    transform: translateY(200%);
+    opacity: 0;
+}
