@@ -1,0 +1,94 @@
+@import url('../base/tools.less');
+
+#editAddress{
+    .bg(#fff);
+    .address-wrap{
+        .flex;
+        .flex-dir;
+        .paddingRow(.3rem);
+        input{
+            .flex-1;
+            .h(1.1rem);
+            .fontSize(.26rem);
+            .line(1.09rem);
+            border-bottom: 1px solid @borCol;
+            .color(@b-9);
+        }
+        &.error>input{
+            border-color: @error; 
+        }
+        .success-text{
+            .color(green);
+        }
+    }
+    .default-address{
+        .paddingRow(.3rem);
+        .flex;
+        p{
+            .position(r);
+            .fontSize(.26rem);
+            .line(.32rem);
+            .color(@b-9);
+            top: .18rem;
+            margin-left: .2rem;
+        }
+    }
+    .save-wrap{
+        .position(a);
+        .w(100%);
+        .paddingRow(.3rem);
+        bottom: .6rem;
+        .mint-button--default{
+            .w(100%);
+            .h(1.1rem);
+            .color(#fff);
+            .bg(@mainCol);
+        }
+    }
+}
+.address-pannel{
+    .position(f);
+    .w(100%);
+    .h(100%);
+    .bg(rgba(0,0,0,.3));
+    z-index: 200;
+    top: 0;
+    left: 0;
+    .select-address{
+        .position(a);
+        .flex;
+        .flex-dir;
+        .w(100%);
+        .h(100%);
+        .bg(#fff);
+        top: 5rem;
+    }
+    .select-top{
+        .flex;
+        .h(1.04rem);
+        .color(@b-9);
+        border-bottom: 1px solid @borCol;
+    }
+    .left{
+        .flex_num(5);
+    }
+    .right{
+        .flex_num(5);
+        .algin(r);
+        .paddingR(.3rem);
+        .line(.5rem);
+        .paddingT(.24rem);
+    }
+    .mint-navbar .mint-tab-item.is-selected{
+        border-color: @mainCol;
+        color: @mainCol;
+    }
+    .select-bottom{
+        .flex-1;
+    }
+    .mint-tab-container,
+    .mint-tab-container-wrap,
+    .mint-tab-container-item{
+        .h(100%);
+    }
+}
