@@ -163,10 +163,10 @@
                     }
                     .tag_img{
                         .position(a);
-                        .w(.68rem);
-                        right: 20px;
                         top: 0;
-                        z-index: 10;
+                        left: 0;
+                        max-width: .8rem;
+                        max-height: .8rem;
                     }
                     .pro_img{
                         .w(2.6rem);
