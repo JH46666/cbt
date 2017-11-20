@@ -1,10 +1,11 @@
 @import '~@/styles/base/tools.less';
 
-#balance-fail{
+#pay-view{
     .hd{
         .h(3.04rem);
         .bg(#fff);
         margin-bottom: .24rem;
+        .delivery-text,
         .success-text,
         .fail-text{
             .fontSize(.42rem);
@@ -13,6 +14,7 @@
             margin-bottom: .45rem;
         }
         .success-btn-wrap,
+        .delivery-btn-wrap,
         .fail-btn-wrap{
             .algin(c);
             .mint-button{
@@ -26,6 +28,10 @@
                 margin: 0 .41rem;
                 border: 1px solid @borCol;
                 box-shadow: none;
+                &::after{
+                    .w(100%);
+                    .reduis(20px);
+                }
             }
             .mint-button+.mint-button{
                 border-color: @mainCol;
@@ -44,6 +50,7 @@
             top: .1rem;
             margin-right: .2rem;
         }
+        .delivery-text i,
         .success-text i{
             .color(#10bd38);
         }
