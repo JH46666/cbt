@@ -37,7 +37,7 @@
             
         }
         &.checked{
-            span{
+            .check_cir{
                 background: url('../../assets/images/checked_bg.png') no-repeat;
                 background-size: 100% 100%;
             }
@@ -211,6 +211,32 @@
             }
         }
     }
+    // 失效产品
+    .expired_product{
+        .pro_item{
+            padding-left: .87rem;
+            .bg(#e8e8e8);
+            .expired_txt{
+                .position(a);
+                bottom: 0;
+                .w(100%);
+                .h(.4rem);
+                .line(.4rem);
+                .algin(c);
+                .fontSize(.24rem);
+                .bg(#535a61);
+                .color(#fff);
+            }
+        }
+        .clear_expired{
+            display: block;
+            .h(.8rem);
+            .line(1rem);
+            .algin(c);
+            .color(#f08200);
+            .fontSize(.3rem);
+        }
+    }
     // 底部结算
     .cart_bottom{
         .position(f);
@@ -226,8 +252,8 @@
             .w(auto);
             p{
                 .h(1rem);
-                .line(1rem);
-                padding: 0 .1rem 0 .3rem;
+                .line(.8rem);
+                padding: .1rem .1rem .1rem .3rem;
             }
         } 
         .money_total{
@@ -250,9 +276,12 @@
         .go_pay{
             .w(2.5rem);
             .bg(#f08200);
-            .color(#fff);
             .line(1rem);
             cursor: pointer;
+            a{
+                .color(#fff);
+                display: block;
+            }
         }
     }
 }

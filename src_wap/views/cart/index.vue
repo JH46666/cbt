@@ -1,110 +1,141 @@
 <template>
     <div class="cart_wrapper">
-        <div class="edit_floor"><a href="javascript:void(0);">编辑</a></div>
+            <div class="edit_floor"><a @click="edit=!edit">{{edit==true?'完成':'编辑'}}</a></div>
         <div class="product_floor">
             <!-- 商品分组 -->
             <div class="group normal_product" v-for="list in groupCollect">
-                <!-- 所属店铺 -->
-                <div class="flex align_items_c shop_caption">
-                    <div class="left_check flex justify_content_c" :class="{'checked':list.checkedAll}" @click="selectGroupAll(list)">
-                        <p class="flex">
-                            <input type="checkbox" name="" :id="list.id" hidden>
-                            <!-- <label :for="list.id"></label> -->
-                            <span class="check_cir"></span>
-                        </p>
-                    </div>
-                    <template v-if="list.isSelf">
-                        <div class="self"><img src="../../assets/images/small_logo.png" alt=""></div>
-                        <p>自营</p>
-                    </template>
-                    <template v-else>
-                        <div class="other"><img src="../../assets/images/shop_icon.png" alt=""></div>
-                        <p>{{list.shopName}}</p>
-                    </template>
-                </div>
-                <!-- 商品 -->
-                <div class="pro_item" v-for="item in list.products" :class="{'no_border':item.tipsFlag}" :key="item.proId">
-                    <!-- 活动&赠品caption -->
-                    <div class="pro_free_caption" v-if="item.isFree">
-                        <span class="full_free">满赠</span>
-                        <span>满358元送金骏眉</span>
-                    </div>
-                    <div class="flex">
-                        <!-- 复选按钮 -->
-                        <div class="left_check flex justify_content_c" :class="{'checked':item.checkedFlag,'visi_h': item.isFree}" @click="selectOne(list,item)">
-                            <p class="flex align_items_c pro_label">
-                                <input type="checkbox" name="" :id="item.proId" v-model="selectIds" hidden>
-                                <!-- <label :for="item.proId"></label> -->
+                <div>
+                    <!-- 所属店铺 -->
+                    <div class="flex align_items_c shop_caption">
+                        <div class="left_check flex justify_content_c" :class="{'checked':list.checkedAll}" @click="selectGroupAll(list)">
+                            <p class="flex">
+                                <input type="checkbox" name="" :id="list.id" hidden>
+                                <!-- <label :for="list.id"></label> -->
                                 <span class="check_cir"></span>
                             </p>
                         </div>
+                        <template v-if="list.isSelf">
+                            <div class="self"><img src="../../assets/images/small_logo.png" alt=""></div>
+                            <p>自营</p>
+                        </template>
+                        <template v-else>
+                            <div class="other"><img src="../../assets/images/shop_icon.png" alt=""></div>
+                            <p>{{list.shopName}}</p>
+                        </template>
+                    </div>
+                    <!-- 商品 -->
+                    <div class="pro_item" v-for="item in list.products" :class="{'no_border':item.tipsFlag}" :key="item.proId">
+                        <!-- 活动&赠品caption -->
+                        <div class="pro_free_caption" v-if="item.isFree">
+                            <span class="full_free">满赠</span>
+                            <span>满358元送金骏眉</span>
+                        </div>
+                        <div class="flex">
+                            <!-- 复选按钮 -->
+                            <div class="left_check flex justify_content_c" :class="{'checked':item.checkedFlag,'visi_h': item.isFree}" @click="selectOne(list,item)">
+                                <p class="flex align_items_c pro_label">
+                                    <input type="checkbox" name="" :id="item.proId" v-model="selectIds" hidden>
+                                    <!-- <label :for="item.proId"></label> -->
+                                    <span class="check_cir"></span>
+                                </p>
+                            </div>
+                            <div class="right_info flex-1">
+                                <div class="pro_info flex">
+                                    <div class="pro_img">
+                                        <div class="tag_img" v-if="item.tagImg">
+                                            <img :src="item.tagImg" alt="">
+                                        </div>
+                                        <a :href="item.proHref"><img :src="item.proImg" alt=""></a>
+                                    </div>
+                                    <div class="flex-1 pro_detail">
+                                        <div class="flex flex_col detail_inner">
+                                            <a :href="item.proHref">
+                                                <h4>{{item.proName}}</h4>
+                                            </a>
+                                            <!-- 正常商品 -->
+                                            <div class="flex-1 flex align_items_end" v-if="!item.isFree">
+                                                <div class="pro_price"><span class="money">{{item.proPrice}}</span>元/{{item.proWeight}}</div>
+                                                <div class="pro_number clearfix">
+                                                    <span class="decrease" @click="numDecrease(item)"><i class="iconfont">&#xe851;</i></span>
+                                                    <input class="input-num" type="text" :value="item.proNum" @blur="numChange($event.target.value,item)">
+                                                    <span class="plus" @click="numPlus(item)"><i class="iconfont">&#xe638;</i></span>
+                                                </div>
+                                            </div>
+                                            <!-- 赠品 -->
+                                            <div class="flex-1 flex align_items_end" v-else>
+                                                <div class="pro_price"><span class="money">￥{{toFixed(item.proPrice)}}</span><span class="market_price">￥<del>{{toFixed(item.marketPice)}}</del></span></div>
+                                                <div class="pro_number clearfix">
+                                                    <p>× {{item.proNum}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pro-delete"><a href="##"><i class="iconfont">&#xe60d;</i></a></div>
+                        </div>
+                        <!-- 提示信息 -->
+                        <div class="tips_div" v-if="item.tipsFlag">
+                            <p>每单限购5件，您超出最高购买量啦~</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="group expired_product">
+                <!-- 失效商品 -->
+                <div class="pro_item" v-for="item in mayProducts">
+                    <div class="flex">
                         <div class="right_info flex-1">
                             <div class="pro_info flex">
                                 <div class="pro_img">
-                                    <div class="tag_img" v-if="item.tagImg">
-                                        <img :src="item.tagImg" alt="">
-                                    </div>
                                     <a :href="item.proHref"><img :src="item.proImg" alt=""></a>
+                                    <div class="expired_txt">
+                                        <p>失效</p>
+                                    </div>
                                 </div>
                                 <div class="flex-1 pro_detail">
                                     <div class="flex flex_col detail_inner">
                                         <a :href="item.proHref">
-                                            <h4>{{item.proName}}2224646ggjgjhtyfrddsefadwsadsadsaeadsfsgfsdfd</h4>
+                                            <h4>{{item.proName}}</h4>
                                         </a>
-                                        <!-- 正常商品 -->
-                                        <div class="flex-1 flex align_items_end" v-if="!item.isFree">
-                                            <div class="pro_price"><span class="money">{{item.proPrice}}</span>元/{{item.proWeight}}</div>
+                                        <div class="flex-1 flex align_items_end">
+                                            <div class="pro_price"><span class="money">￥{{toFixed(item.proPrice)}}</span></div>
                                             <div class="pro_number clearfix">
-                                                <span class="decrease" @click="numDecrease(item)"><i class="iconfont">&#xe851;</i></span>
-                                                <input class="input-num" type="text" :value="item.proNum" @blur="numChange($event.target.value,item)">
-                                                <span class="plus" @click="numPlus(item)"><i class="iconfont">&#xe638;</i></span>
-                                            </div>
-                                        </div>
-                                        <!-- 赠品 -->
-                                        <div class="flex-1 flex align_items_end" v-else>
-                                            <div class="pro_price"><span class="money">￥{{toFixed(item.proPrice)}}</span><span class="market_price">￥<del>{{toFixed(item.marketPice)}}</del></span></div>
-                                            <div class="pro_number clearfix">
-                                                <p>× {{item.proNum}}</p>
+                                                <p>× 1</p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="pro-delete"><a href="##"><i class="iconfont">&#xe60d;</i></a></div>
-                    </div>
-                    <!-- 提示信息 -->
-                    <div class="tips_div" v-if="item.tipsFlag">
-                        <p>每单限购5件，您超出最高购买量啦~</p>
                     </div>
                 </div>
-                
+                <a class="clear_expired" href="javascript:void(0);">清空失效商品</a>
             </div>
         </div>
         <may-like></may-like>
         <!-- 底部结算 -->
         <div class="cart_bottom flex">
-            <div class="select_all left_check flex justify_content_c">
+            <div class="select_all left_check flex" :class="{'flex-1':edit,'checked':checkedAll}">
                 <p class="flex align_items_c" @click="selectAll">
                     <input type="checkbox" name="" hidden>
                     <span class="check_cir"></span>
                 </p>
                 <p>已选(<span class="selectProductNum">100</span>)</p>
             </div>
-            <div class="flex-1 money_total">
+            <div class="flex-1 money_total" v-show="!edit">
                 <p class="color_f08">￥<span>238.00</span></p>
                 <p class="inte-subtotal-box" style="display: none;">
                     <span>
-                        -
-                        <span class="inte-subtotal">0</span>
+                        -<span class="inte-subtotal">0</span>
                     </span>
                     <img class="icon_jf" src="https://m.zuipin.cn/wap/images/ic_jiesuan_jifen.png" alt="">
                 </p>
             </div>
-            <div class="go_pay"><a href="javascript:void(0);" id="toCheckout">去结算</a></div>
-            <!-- 删除按钮 激活状态加 del_active -->
-            <!-- <div class="zuipin-section del_active"><a href="javascript:void(0);">删除</a></div> -->
-            <div class="del-all del_active" style="display: none;"><a href="javascript:void(0);">删除</a></div>
+            <div class="go_pay">
+                <a v-if="!edit" href="javascript:void(0);" id="toCheckout">去结算</a>
+                <a v-else href="javascript:void(0);">删除</a>
+            </div>
         </div>
     </div>
 </template>
@@ -113,6 +144,8 @@
         data(){
             return {
                 selectIds:[],   //选择的商品
+                edit: false,    //编辑
+                checkedAll: false, //结算栏的全选或全不选
                 groupCollect:[
                     {
                         isSelf: false,  //是否自营
@@ -320,7 +353,7 @@
                 list.checkedAll = !list.checkedAll;
             },
             selectAll(){
-                console.log(111);
+                this.checkedAll = !this.checkedAll;
             }
         }
     }
