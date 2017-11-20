@@ -91,7 +91,7 @@
                 <!-- tab-container -->
                 <mt-tab-container v-model="tabSelected" :swipeable="true">
                     <mt-tab-container-item id="1">
-                        <div class="detail_img_title" :class="{'on': tabFixed,'wxon': wxFixed}">图片详情</div>
+                        <div class="detail_img_title" :class="{'on': tabFixed,'wxon': wxFixed}" ref="imgHeight">图片详情</div>
                         <div class="mint_cell_wrapper mint_cell_img_wrapper">
                             <mt-cell v-for="(item,index) in goodsDetail.detailImgArray" :key="index">
                                 <img :src="item" />
@@ -308,15 +308,16 @@ export default {
         docScroll() {               // 判断页面滚动
             let scrollTop = this.$refs.wrapper.scrollTop;
             let scrollHeight = this.$refs.wrapper.offsetHeight;
-            console.log(scrollTop - scrollHeight);
-            if(scrollTop - scrollHeight > 0){
+            let tabTop = this.$refs.tab.offsetTop;
+            let allHideHeight = this.$refs.tab.children[0].offsetHeight+this.$refs.commentTotal.offsetHeight;
+            if(scrollTop - tabTop >= 0){
                 if(!this.wxFlag){
                     this.tabFixed = true;
                 }else{
                     this.wxFixed = true;
                 }
                 return;
-            }else{
+            }else if(scrollTop + allHideHeight - tabTop < 0){
                 this.tabFixed = false;
                 this.wxFixed = false;
                 return;
@@ -374,7 +375,6 @@ export default {
            this.timeDown()
        },500)
        this.wxFlag = this.$tool.isWx;
-       this.headHeight = document.querySelector('.cbt-header').offsetHeight;
   　}
 }
 </script>
