@@ -136,6 +136,14 @@ export default new Router({
 			component: resolve => require(['@/views/layout/mainWrap.vue'],resolve),
 			children: [
 				{
+					path: '/',
+					name: '结算',
+					component: resolve => require(['@/views/balance/index.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+				{
 					path: 'success',
 					name: '结算成功',
 					component: resolve => require(['@/views/balance/payView.vue'],resolve),
@@ -146,6 +154,14 @@ export default new Router({
 				{
 					path: 'fail',
 					name: '结算失败',
+					component: resolve => require(['@/views/balance/payView.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+				{
+					path: 'delivery',
+					name: '货到付款结算',
 					component: resolve => require(['@/views/balance/payView.vue'],resolve),
 					meta: {
 						hideFooter: true
