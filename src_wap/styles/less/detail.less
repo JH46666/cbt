@@ -1,11 +1,13 @@
 @import '../base/tools.less';
 .detail{
+    .mint-tabbar{
+        .position(f);
+        z-index: 6;
+    }
     .bg(#f5f5f5);
-    .flex;
-    .flex-dir;
     .detail_wrapper{
-        .scroll-x(a);
-        .flex-1;
+        .scroll-y(a);
+        height: 100%;
         .ipScroll;
         .paddingB(.98rem);
         .goIndex{
@@ -198,6 +200,10 @@
         }
         .detail_tab{
             margin-top: .2rem;
+            // .paddingB(.98rem);
+            .mint-tab-container-item{
+                .scroll-y(a);
+            }
             .mint-navbar{
                 .paddingAll(0,1.1rem,0,1.1rem);
                 .bg(#fafafa);
@@ -213,7 +219,7 @@
                     .position(a);
                     left: .2rem;
                     top: .2rem;
-                    z-index: 3;
+                    z-index: 7;
                     display: none;
                     cursor: pointer;
                     &.on{
@@ -223,13 +229,13 @@
                 &.on{
                     .position(f);
                     top: .88rem;
-                    z-index: 3;
+                    z-index: 7;
                     width: 100%;
                 }
                 &.wxon{
                     .position(f);
                     top: 0;
-                    z-index: 3;
+                    z-index: 7;
                     width: 100%;
                 }
                 .mint-tab-item{
@@ -257,14 +263,14 @@
                 &.on{
                     .position(f);
                     top: 1.66rem;
-                    z-index: 3;
+                    z-index: 7;
                     width: 100%;
                     box-shadow: 0 1px 3px rgba(0,0,0,.3);
                 }
                 &.wxon{
                     .position(f);
                     top: .78rem;
-                    z-index: 3;
+                    z-index: 7;
                     width: 100%;
                     box-shadow: 0 1px 3px rgba(0,0,0,.3);
                 }
@@ -647,6 +653,6 @@
         &.on{
             bottom: 0;
         }
-        z-index: 4;
+        z-index: 7;
     }
 }

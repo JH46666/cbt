@@ -40,27 +40,48 @@ html,body,#app,#container{
 .align_items_end{
     .align-items(flex-end);
 }
+.align_items_c{
+    .align-items(center);
+}
+.justify_content_c{
+    .justify-content(center);
+}
+.justify_content_e{
+    .justify-content(flex-end);
+}
+.flex_col{
+    .flex-dir(column);
+}
+.flex_row{
+    .flex-dir(row);
+}
 
 #container{
-    .flex;
-    .flex-dir;
+    .h(100%);
     .fontSize(.24rem);
     .bg(@bg);
 }
 .content{
-    .flex-dir;
-    .flex-1;
-    .paddingB(.98rem);
-    .ipScroll;
-    .justify-content(start);
-    overflow-y: auto;
+    padding:.88rem 0 .98rem;
+    overflow: hidden;
+    .position(r);
+    height: 100%;
+    &.no_header{
+        padding:0 0 .98rem;
+    }
     &.no-footer{
         .paddingB(0);
+    }
+    .content_inner{
+        height: 100%;
+        overflow-y: scroll;
     }
 }
 
 // 头部
 .cbt-header{
+    .position(f);
+    .w(100%);
     height: .88rem;
     .bg(#1c1b20);
     z-index: 100;
@@ -69,6 +90,7 @@ html,body,#app,#container{
 // 导航条
 .cbt-footer{
     height: .98rem;
+    border-top: 1px solid #e6e6e6;
     .mint-tab-item{
         .position(r);
         &.is-selected{

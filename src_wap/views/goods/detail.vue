@@ -91,7 +91,7 @@
                 <!-- tab-container -->
                 <mt-tab-container v-model="tabSelected" :swipeable="true">
                     <mt-tab-container-item id="1">
-                        <div class="detail_img_title" :class="{'on': tabFixed,'wxon': wxFixed}">图片详情</div>
+                        <div class="detail_img_title" :class="{'on': tabFixed,'wxon': wxFixed}" ref="imgHeight">图片详情</div>
                         <div class="mint_cell_wrapper mint_cell_img_wrapper">
                             <mt-cell v-for="(item,index) in goodsDetail.detailImgArray" :key="index">
                                 <img :src="item" />
@@ -108,7 +108,7 @@
                                 <div>香气</div>
                                 <div class="x_star">
                                     <span class="x_grey on">偏淡</span>
-                                    <span class="x_grey on"">一般</span>
+                                    <span class="x_grey on">一般</span>
                                     <span class="x_grey">香</span>
                                     <span class="x_grey">高香</span>
                                     <span class="x_grey">极香</span>
@@ -154,8 +154,8 @@
                                 </div>
                                 <p class="comment_footer" ref="comment">
                                     {{ item.content }}
-                                    <i class="iconfont down" @click="pullOrDown(index)">&#xe619;</i>
-                                    <i class="iconfont pull" @click="pullOrDown(index)">&#xe618;</i>
+                                    <i class="iconfont down" @click="pullOrDown(index)" :key="index+'11'">&#xe619;</i>
+                                    <i class="iconfont pull" @click="pullOrDown(index)" :key="index+'12'">&#xe618;</i>
                                 </p>
                             </mt-cell>
                         </div>
@@ -166,7 +166,7 @@
                 </mt-tab-container>
             </div>
         </div>
-        <mt-tabbar v-model="selected" class="cbt-footer detail_footer" :isZiYing="isThird">
+        <mt-tabbar v-model="selected" class="cbt-footer detail_footer" :isZiYing="isThird" ref="footers">
             <mt-tab-item id="1" @click.native="openDialog" v-if="!isThird">
                 <i class="icon-kefu1" slot="icon"></i>
                 客服
@@ -241,7 +241,8 @@ export default {
             wxFlag: false,
             wxFixed: false,
             showOrHide: false,
-            isThird: true,
+            isThird: false,
+            headHeight: 44,
         }
     },
     methods: {
@@ -307,14 +308,16 @@ export default {
         docScroll() {               // 判断页面滚动
             let scrollTop = this.$refs.wrapper.scrollTop;
             let scrollHeight = this.$refs.wrapper.offsetHeight;
-            if(scrollTop-scrollHeight > 0){
+            let tabTop = this.$refs.tab.offsetTop;
+            let allHideHeight = this.$refs.tab.children[0].offsetHeight+this.$refs.commentTotal.offsetHeight;
+            if(scrollTop - tabTop >= 0){
                 if(!this.wxFlag){
                     this.tabFixed = true;
                 }else{
                     this.wxFixed = true;
                 }
                 return;
-            }else{
+            }else if(scrollTop + allHideHeight - tabTop < 0){
                 this.tabFixed = false;
                 this.wxFixed = false;
                 return;
@@ -371,7 +374,7 @@ export default {
            }
            this.timeDown()
        },500)
-       this.wxFlag = this.$tool.isWx();
+       this.wxFlag = this.$tool.isWx;
   　}
 }
 </script>
