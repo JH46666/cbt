@@ -108,7 +108,7 @@
                                 <div>香气</div>
                                 <div class="x_star">
                                     <span class="x_grey on">偏淡</span>
-                                    <span class="x_grey on"">一般</span>
+                                    <span class="x_grey on">一般</span>
                                     <span class="x_grey">香</span>
                                     <span class="x_grey">高香</span>
                                     <span class="x_grey">极香</span>

@@ -23,7 +23,7 @@
                 </mt-tab-container-item>
                 <mt-tab-container-item id="2">
                     <div class="form_item">
-                        <input type="text" placeholder="手机号码" v-model="regInfo.phone" v-verify="regInfo.phone">
+                        <input type="text" placeholder="手机号码" v-model="regInfo.phone">
                         <label class="fl"></label>
                     </div>
                     <div class="form_item">
@@ -70,7 +70,7 @@
     export default {
         data(){
             return {
-                selected: '1',               //tab切换
+                selected: '2',               //tab切换
                 regInfo: {                   //表单
                     phone: "",              
                     mesCode:""
@@ -82,7 +82,6 @@
         },
         methods:{
             submit: function () {
-                console.log(this.$verify.check());
             }
         }
 
