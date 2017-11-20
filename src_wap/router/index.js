@@ -135,9 +135,25 @@ export default new Router({
 					}
 				},
 				{
+					path: 'buyerdetail',
+					name: '订单详情1',
+					component: resolve => require(['@/views/order/buyerDetail.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+				{
 					path: 'sellerlist',
 					name: '订单列表2',
 					component: resolve => require(['@/views/order/sellerList.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+				{
+					path: 'sellerdetail',
+					name: '订单详情2',
+					component: resolve => require(['@/views/order/sellerDetail.vue'],resolve),
 					meta: {
 						hideFooter: true
 					}
