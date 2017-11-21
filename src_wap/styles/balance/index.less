@@ -430,17 +430,19 @@
     // 红包样式
     .redpacket-item{
         border: 1px solid #fff;
+        border-left: none;
         margin-bottom: .24rem;
         .bg(#fff);
         .hd{
             padding: .08rem 0;
             overflow: hidden;
+            border-bottom: 1px dashed @borCol;
             .flex;
             .h(1.34rem);
             .position(r);
             .left{
                 border-right: 1px dashed @borCol;
-                .w(2.08rem);
+                .w(1.94rem);
                 .algin(c);
                 .type{
                     .color(@mainCol);
@@ -490,9 +492,30 @@
                 }
             }
         }
+        .bd{
+            .flex;
+            padding: .08rem .2rem;
+            .color(@b-9);
+            .tips{
+                .flex-1;
+                .fontSize(.24rem);
+                .line(1.5);
+                &.onlyone{
+                    .oneLine;
+                    .line(.54rem);
+                }
+            }
+            i{
+                .iconfont;
+                .fontSize(.36rem);
+                .line(.54rem);
+            }
+        }
         // 红包激活样式
         &.active{
-            border-color: @mainCol;
+            border: 1px solid @mainCol;
+            background: #fff url('~@/assets/images/Selected.png') no-repeat right 0;
+            background-size: .5rem .44rem;
             .round-wrap{
                 .display(none);
             }
@@ -533,5 +556,19 @@
         .paddingRow(.35rem);
         .flex-1;
         .scroll-y(a);
+    }
+    .no-redpacket{
+        img{
+            .display(block);
+            .w(1.54rem);
+            .h(1.8rem);
+            margin: 1.62rem auto .4rem;
+        }
+        p{
+            .fontSize(.28rem);
+            .line(1.5);
+            .color(@b-6);
+            .algin(c);
+        }
     }
 }

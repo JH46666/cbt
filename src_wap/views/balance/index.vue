@@ -57,7 +57,7 @@
                         <i class="icon-xiangyou"></i>
                     </div>
                 </div>
-                <div class="redpacket">
+                <div class="redpacket" @click="upRedpacket">
                     <div class="left">
                         红包
                     </div>
@@ -144,7 +144,7 @@
 
         <!-- 红包窗口 -->
         <transition name="fadeUp" mode="out-in">
-            <redpacket-pannel></redpacket-pannel>
+            <redpacket-pannel v-show="showRedpacket" @close="closeRedpacket"></redpacket-pannel>
         </transition>
     </div>
 </template>
@@ -159,7 +159,8 @@
         },
         data() {
             return {
-                showPayType: false,         //支付方式与快递弹窗
+                showPayType: false,         // 支付方式与快递弹窗
+                showRedpacket: false,       // 红包弹窗
             }
         },
         methods: {
@@ -170,6 +171,14 @@
             // 点击付款方式弹窗的确定
             confirmPayType() {
                 this.showPayType = false;
+            },
+            // 显示红包弹窗
+            upRedpacket() {
+                this.showRedpacket = true;
+            },
+            // 红包弹窗关闭时，不管确定还是取消
+            closeRedpacket(data) {
+                this.showRedpacket = false;
             }
         }
     }
