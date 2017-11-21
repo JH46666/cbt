@@ -1,12 +1,13 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-
-Vue.use(Vuex)
-
-export default new Vuex.Store({
+const app = {
     state: {
-        add : 1,
-        headHeight: 44,
+        headHeight: 44,       //头部高度
+    },
+    mutations: {
+        
+    },
+    actions: {
+        
     }
+}
 
-})
+export default app
