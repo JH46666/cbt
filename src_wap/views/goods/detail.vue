@@ -8,7 +8,7 @@
                 </div>
                 <div class="dialog_content">
                     <div class="item_1">
-                        客服热线：<span>400-996-3399<a href="tel:400-996-3399"></a></span>
+                        客服热线：<span><a href="tel://400-996-3399">400-996-3399</a></span>
                     </div>
                     <div class="item_2">
                         服务时间：<span>08:40 - 22:30（周一至周日</span>）
@@ -27,7 +27,7 @@
                     </div>
                     <div class="item_2">
                         <i class="iconfont">&#xe66f;</i>
-                        <span>11111111<a href="tel:111"></a></span>
+                        <span><a href="tel://17656565656">17656565656</a></span>
                     </div>
                 </div>
             </div>

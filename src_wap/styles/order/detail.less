@@ -1,5 +1,6 @@
 @import "../base/tools.less";
 .detail{
+    .ipScroll;
     .detail_type{
         .bg(#fff);
         padding: 0 .36rem;
@@ -117,11 +118,10 @@
         }
     }
     .order{
-        .bg(#fff);
         margin-top: .2rem;
         .order_shop{
+            .bg(#fff);
             padding: .23rem .36rem .29rem;
-            border-bottom: 1px solid #e5e5e5;
             .color(#333);
             .fontSize(.3rem);
             img{
@@ -131,18 +131,60 @@
                 .color(#666);
             }
         }
-        .order_wrapper{
+        .order_address{
+            height: .84rem;
+            overflow: hidden;
             .bg(#fafafa);
+            transition: all .3s;
+            &.on{
+                height: auto;
+            }
+            .order_address_1{
+                border-top: 1px solid #e5e5e5;
+                border-bottom: 1px dotted #e5e5e5;
+                height: .84rem;
+                padding: 0 .36rem;
+                .flex;
+                .flex-dir(row);
+                .align-items;
+                .justify-content(space-between);
+                .color(#999);
+                .fontSize(.3rem);
+                .line(1);
+                .order_address_icon{
+                    .flex;
+                    .flex-dir(row);
+                    .color(#333);
+                    span{
+                        .color(#f08200);
+                        padding-left: .2rem;
+                    }
+                }
+            }
+            .order_address_2{
+                padding: .38rem .36rem;
+                .line(1.5);
+                .color(#333);
+                .fontSize(.3rem);
+                .order_addrss_tel{
+                    margin-top: .15rem;
+                }
+                border-bottom: 1px solid #e5e5e5;
+            }
+        }
+        .order_wrapper{
             .fontSize(.3rem);
             .color(#333);
             .order_item{
                 margin-top: .2rem;
+                .bg(#fafafa);
                 &:first-child{
                     margin-top: 0;
                 }
                 .order_head{
                     padding: 0 .36rem;
                     height: .86rem;
+                    border-top: 1px solid #e5e5e5;
                     border-bottom: 1px dotted #e5e5e5;
                     .flex;
                     .flex-dir(row);
@@ -155,7 +197,140 @@
                         vertical-align: bottom;
                     }
                 }
+                .list_wrapper{
+                    .list_item{
+                        width: 100%;
+                        padding: .36rem;
+                        border-bottom: 1px solid #e5e5e5;
+                        .flex;
+                        .flex-dir(row);
+                        .list_img{
+                            width: 1.6rem;
+                            height: 1.6rem;
+                            overflow: hidden;
+                            .position(r);
+                            img{
+                                width: 100%;
+                            }
+                        }
+                        .list_content{
+                            .flex-1;
+                            .flex;
+                            .flex-dir;
+                            .justify-content(space-between);
+                            padding-left: .2rem;
+                            p{
+                                .moreLine;
+                                .color(#333);
+                                .fontSize(.3rem);
+                                .line(1.5);
+                            }
+                            .list_price_count{
+                                .flex;
+                                .flex-dir(row);
+                                .justify-content(space-between);
+                                .fontSize(.32rem);
+                                .line(1);
+                                .color(#333);
+                                span:first-child{
+                                    .color(#f08200);
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
+    .order_price{
+        padding: .5rem .36rem .34rem;
+        .bg(#fff);
+        .order_price_detail{
+            border-bottom: 1px dotted #e5e5e5;
+            width: 100%;
+            .price_detail_item{
+                .flex;
+                .flex-dir(row);
+                .justify-content(space-between);
+                .line(1);
+                .paddingB(.4rem);
+                .color(#666);
+                .fontSize(.3rem);
+                span:last-child{
+                    .color(#333);
+                }
+            }
+        }
+        .order_price_total{
+            padding-top: .36rem;
+            .price_total_item{
+                .fontSize(.3rem);
+                .line(1);
+                .color(#999);
+                .flex;
+                &:first-child{
+                    .flex-dir(row);
+                    .justify-content(space-between);
+                    padding-bottom: .24rem;
+                    span:last-child{
+                        .color(#666);
+                    }
+                }
+                &:last-child{
+                    .flex-dir(row-reverse);
+                    .color(#333);
+                    span{
+                        .color(#f08200);
+                    }
+                }
+            }
+        }
+    }
+    .order_date{
+        padding: .36rem;
+        .bg(#fff);
+        margin-top: .2rem;
+        border-bottom: 1px solid #e5e5e5;
+        .order_date_item{
+            .flex;
+            .flex-dir(row);
+            .justify-content(space-between);
+            .fontSize(.3rem);
+            .line(1);
+            .color(#666);
+            padding-bottom: .3rem;
+            &:last-child{
+                padding-bottom: 0;
+            }
+        }
+    }
+    .order_btn{
+        padding: .3rem .36rem;
+        .bg(#fafafa);
+        .flex;
+        .flex-dir(row-reverse);
+        .mint-button--default.is-plain{
+            border: 1px solid #999;
+            color: #333;
+            font-size: .28rem;
+            padding: .1rem .48rem;
+            border-radius: 20px;
+            height: auto;
+            margin-right: .4rem;
+            &:first-child{
+                margin-right: 0;
+            }
+            &.pay_now{
+                .color(#f08200);
+                border-color: #f08200;
+            }
+        }
+        .mint-button::after{
+            border-radius: 20px;
+            .bg(rgba(0, 0, 0, 0.2));
+        }
+    }
+}
+.mint-msgbox-confirm{
+    .color(#f08200);
 }
