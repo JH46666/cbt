@@ -166,6 +166,14 @@ export default new Router({
 					meta: {
 						hideFooter: true
 					}
+				},
+				{
+					path: 'cashier',
+					name: '收银台',
+					component: resolve => require(['@/views/balance/cashier.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
 				}
 			]
 		},
