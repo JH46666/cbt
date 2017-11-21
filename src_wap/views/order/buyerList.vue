@@ -43,11 +43,11 @@
                                 <div class="count">共{{ item.count }}件</div>
                             </div>
                             <div class="btn_wrapper">
-                                <mt-button plain v-if="item.orderStatus === '待审核' || item.orderStatus === '待评价' || item.orderStatus === '待发货'">再次购买</mt-button>
-                                <mt-button plain v-if="item.orderStatus === '待评价'">评价</mt-button>
-                                <mt-button plain v-if="item.orderStatus === '待付款'">取消订单</mt-button>
-                                <mt-button plain v-if="item.orderStatus === '待付款'" class="pay_now">立即支付</mt-button>
-                                <mt-button plain v-if="item.orderStatus === '已发货'">确认收货</mt-button>
+                                <mt-button plain v-if="item.orderStatus === '待审核' || item.orderStatus === '待评价' || item.orderStatus === '待发货'" @click.native="confrimMethod">再次购买</mt-button>
+                                <mt-button plain v-if="item.orderStatus === '待评价'" @click.native="confrimMethod">评价</mt-button>
+                                <mt-button plain v-if="item.orderStatus === '待付款'" @click.native="confrimMethod">取消订单</mt-button>
+                                <mt-button plain v-if="item.orderStatus === '待付款'" class="pay_now" @click.native="confrimMethod">立即支付</mt-button>
+                                <mt-button plain v-if="item.orderStatus === '已发货'" @click.native="confrimMethod">确认收货</mt-button>
                             </div>
                         </div>
                     </mt-cell>
@@ -198,6 +198,15 @@ export default {
             ],
             shopLogo: '../src_wap/assets/images/list_logo.png',
             wxFlag: false,
+        }
+    },
+    methods: {
+        confrimMethod() {
+            MessageBox.confirm('确定执行此操作?').then(action => {
+                console.log(11111);
+            },action => {
+                console.log(22222);
+            },);
         }
     },
     mounted () {
