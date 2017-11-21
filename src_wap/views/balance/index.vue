@@ -45,7 +45,7 @@
             </section>
 
             <section class="pay-pannel">
-                <div class="express">
+                <div class="express" @click="upPayType">
                     <div class="left">
                         <i class="icon-wuliu"></i> 支付配送
                     </div>
@@ -139,16 +139,38 @@
 
         <!-- 选择快递弹出 -->
         <transition name="fadeUp" mode="out-in">
-            <pay-type v-if="true"></pay-type>
+            <pay-type v-show="showPayType" @confirm="confirmPayType"></pay-type>
+        </transition>
+
+        <!-- 红包窗口 -->
+        <transition name="fadeUp" mode="out-in">
+            <redpacket-pannel></redpacket-pannel>
         </transition>
     </div>
 </template>
 
 <script>
     import payType from './payType.vue';
+    import redpacketPannel from './repacketPannel.vue'
     export default{
         components: {
-            payType
+            payType,
+            redpacketPannel
+        },
+        data() {
+            return {
+                showPayType: false,         //支付方式与快递弹窗
+            }
+        },
+        methods: {
+            // 弹出付款方式弹窗
+            upPayType() {
+                this.showPayType = true;
+            },
+            // 点击付款方式弹窗的确定
+            confirmPayType() {
+                this.showPayType = false;
+            }
         }
     }
 </script>
