@@ -212,7 +212,23 @@ export default new Router({
 					meta: {
 						hideFooter: true
 					}
-				}
+				},
+				{
+					path: 'buyerevaluate',
+					name: '订单评价1',
+					component: resolve => require(['@/views/order/buyerEvaluate.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+				{
+					path: 'sellerevaluate',
+					name: '订单评价2',
+					component: resolve => require(['@/views/order/sellerEvaluate.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
 			]
 		}
 	]
