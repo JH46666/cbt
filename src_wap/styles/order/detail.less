@@ -1,0 +1,161 @@
+@import "../base/tools.less";
+.detail{
+    .detail_type{
+        .bg(#fff);
+        padding: 0 .36rem;
+        height: 1.36rem;
+        .color(#666);
+        .fontSize(.28rem);
+        .line(1);
+        .flex;
+        .flex-dir(row);
+        .align-items;
+        .type{
+            width: 2rem;
+            .color(#13c23c);
+            .fontSize(.36rem);
+            div{
+                .flex;
+                .flex-dir(row);
+                .align-items;
+                img{
+                    width: .64rem;
+                    margin-right: .2rem;
+                }
+            }
+        }
+        .number{
+            .flex-1;
+            .algin(r);
+        }
+    }
+    .detail_address{
+        margin-top: .2rem;
+        .bg(#fff);
+        .fontSize(.28rem);
+        .color(#999);
+        .line(1);
+        width: 100%;
+        padding: 0 .36rem;
+        .address{
+            .flex;
+            .flex-dir;
+            padding: .4rem 0;
+            border-bottom: 1px solid #e5e5e5;
+            .line_1{
+                .color(#333);
+                .fontSize(.3rem);
+                height: .32rem;
+                .align-items;
+                .flex;
+                .flex-dir(row);
+                i{
+                    .color(#666);
+                    .fontSize(.32rem);
+                }
+                span:nth-child(2){
+                    margin-left: .13rem;
+                }
+                span:nth-child(3){
+                    margin-left: .32rem;
+                }
+            }
+            .line_2{
+                margin-top: .15rem;
+                padding-left: .39rem;
+                .line(1.5);
+            }
+        }
+        .invoice{
+            .flex;
+            .flex-dir;
+            padding: .4rem 0;
+            .line_1{
+                .color(#333);
+                .fontSize(.3rem);
+                height: .32rem;
+                .align-items;
+                .flex;
+                .flex-dir(row);
+                i{
+                    .color(#666);
+                    .fontSize(.32rem);
+                }
+                span:nth-child(2){
+                    margin-left: .13rem;
+                }
+            }
+            .line_2{
+                margin-top: .15rem;
+                padding-left: .39rem;
+                height: .42rem;
+                overflow: hidden;
+                transition: all .3s;
+                &.on{
+                    height: auto;
+                }
+                .flex;
+                .flex-dir(row);
+                .line_content{
+                    .flex-1;
+                    .line(1.5);
+                    .line_item{
+                        .flex;
+                        .flex-dir(row);
+                        .justify-content(space-between);
+                        span:last-child{
+                            width: 4rem;
+                        }
+                    }
+                }
+                .line_btn{
+                    width: .6rem;
+                    .algin(r);
+                    padding-top: .05rem;
+                }
+            }
+        }
+    }
+    .order{
+        .bg(#fff);
+        margin-top: .2rem;
+        .order_shop{
+            padding: .23rem .36rem .29rem;
+            border-bottom: 1px solid #e5e5e5;
+            .color(#333);
+            .fontSize(.3rem);
+            img{
+                width: 1.57rem;
+            }
+            i{
+                .color(#666);
+            }
+        }
+        .order_wrapper{
+            .bg(#fafafa);
+            .fontSize(.3rem);
+            .color(#333);
+            .order_item{
+                margin-top: .2rem;
+                &:first-child{
+                    margin-top: 0;
+                }
+                .order_head{
+                    padding: 0 .36rem;
+                    height: .86rem;
+                    border-bottom: 1px dotted #e5e5e5;
+                    .flex;
+                    .flex-dir(row);
+                    .justify-content(space-between);
+                    .align-items;
+                    .color(#666);
+                    .fontSize(.26rem);
+                    img{
+                        width: .32rem;
+                        vertical-align: bottom;
+                    }
+                }
+            }
+        }
+    }
+}
