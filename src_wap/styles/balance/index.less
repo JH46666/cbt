@@ -1,6 +1,13 @@
 @import '~@/styles/base/tools.less';
 
 #balance{
+    .flex;
+    .flex-dir;
+    .main-top{
+        .scroll-y(a);
+        .ipScroll;
+        .paddingB(1.04rem);
+    }
     .address{
         background: #fff url('~@/assets/images/address_pingpu.jpg') repeat-x;
         background-size: .32rem .12rem;
@@ -105,12 +112,197 @@
             }
         }
     }
+    .pay-pannel{
+        margin-bottom: .2rem;
+        overflow: hidden;
+        .position(r);
+        .bg(#fff);
+        .fontSize(.3rem);
+        .line(1.5);
+        &::before{
+            content: '';
+            display: block;
+            .position(a);
+            .w(10px);
+            .h(10px);
+            .reduis(50%);
+            .bg(@borCol);
+            top: 1.56rem;
+            left: -5px;
+            z-index: 2;
+        }
+        &::after{
+            content: '';
+            display: block;
+            .position(a);
+            .w(10px);
+            .h(10px);
+            .reduis(50%);
+            .bg(@borCol);
+            top: 1.56rem;
+            right: -5px;
+            z-index: 2;
+            
+        }
+        .express{
+            border-bottom: 1px dashed @borCol;
+            .color(@b-6);
+            .h(1.66rem);
+            .flex;
+            .paddingRow(.35rem);
+            // .paddingR(.26rem);
+            .left{
+                .flex-1;
+                .paddingT(.35rem);
+            }
+            .center{
+                .flex-1;
+                .algin(r);
+                .paddingT(.35rem);
+                .paddingR(.1rem);
+                .gold{
+                    .color(@mainCol);
+                }
+            }
+            .right{
+                .w(.4rem);
+                .line(1.66rem);
+                .algin(r);
+            }
+            i{
+                .iconfont;
+            }
+        }
+        .redpacket{
+            border-bottom: 1px solid @borCol;
+            .flex;
+            .line(.98rem);
+            .color(@b-6);
+            .paddingRow(.35rem);
+            // .paddingR(.26rem);
+            i{
+                .iconfont;
+            }
+            .left,.center{
+                .flex-1;
+            }
+            .center{
+                .algin(r);
+                .color(@mainCol);
+            }
+            .right{
+                .w(.4rem);
+                .algin(r);
+            }
+        }
+        .redpacket-list-wrap{
+            padding: .25rem .35rem;
+            .redpacket-list{
+                margin-bottom: .1rem;
+                .flex;
+                .left{
+                    .flex-1;
+                    .paddingL(.4rem);
+                    background: url('~@/assets/images/cu.png') no-repeat 0 .06rem;
+                    background-size: .3rem .3rem;
+                }
+                .right{
+                    .flex-1;
+                    .algin(r);
+                    .color(@mainCol);
+                }
+            }
+        }
+    }
+    .invoice-pannel{
+        margin-bottom: .2rem;
+        .bg(#fff);
+        .fontSize(.3rem);
+        .line(1.5);
+        i{
+            .iconfont;
+        }
+        .invoice{
+            border-bottom: 1px solid @borCol;
+            .paddingRow(.35rem);
+            .flex;
+            .line(.98rem);
+            .left,.center{
+                .flex-1;
+            }
+            .center{
+                .algin(r);
+            }
+            .right{
+                .w(.4rem);
+                .algin(r);
+            }
+        }
+    }
     .save-order{
         .w(100%);
         .bg(#fff);
         .line(1.04rem);
         .position(a);
+        .flex;
         bottom: 0;
         z-index: 100;
+        .price{
+            .flex-1;
+            .algin(r);
+            .paddingR(.3rem);
+        }
+        .mint-button{
+            .w(2.46rem);
+            .h(1.04rem);
+            .reduis(0);
+            .bg(@mainCol);
+            .fontSize(.3rem);
+            .color(#fff);
+            box-shadow: none;
+        }
+    }
+    // 备注
+    .remark{
+        .flex;
+        padding: .2rem .35rem;
+        .left{
+            margin-right: .6rem;
+        }
+        .right{
+            input{
+                .w(5.6rem);
+            }
+            .count{
+                .algin(r);
+                .color(@b-9);
+            }
+        }
+    }
+}
+
+// 支付方式弹窗
+.pay-type-pannel{
+    z-index: 200;
+    .position(f);
+    .w(100%);
+    .h(100%);
+    .bg(rgba(0, 0, 0, .5));
+    .pay-type-content{
+        bottom: 0;
+        .w(100%);
+        .h(82.39%);
+        .bg(#fff);
+        .position(a);
+        .fontSize(.3rem);
+        .line(1.5);
+        .title{
+            font-weight: normal;
+            .paddingRow(.35rem);
+            .line(1.2rem);
+        }
+        .check-item{
+            .paddingRow(.35rem);
+        }
     }
 }

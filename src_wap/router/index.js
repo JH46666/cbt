@@ -132,12 +132,11 @@ export default new Router({
 		},
 		{
 			path: '/balance',
-			name: '结算中心',
 			component: resolve => require(['@/views/layout/mainWrap.vue'],resolve),
 			children: [
 				{
 					path: '/',
-					name: '结算',
+					name: '结算中心',
 					component: resolve => require(['@/views/balance/index.vue'],resolve),
 					meta: {
 						hideFooter: true
