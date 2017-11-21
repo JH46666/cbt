@@ -236,18 +236,20 @@ html,body,#app,#container{
 }
 
 .fadeUp-enter{
-    transform: translateY(200%);
+    transform: translateY(100%);
     opacity: 0;
 }
 .fadeUp-enter-to{
     transform: translateY(0%);
+    opacity: 1;
+    transition: .3s;
 }
-.fadeUp-enter-active, .fadeUp-leave-active {
-    transition:  .6s;
+.fadeUp-leave{
     transform: translateY(0%);
     opacity: 1;
 }
 .fadeUp-leave-to{
-    transform: translateY(200%);
+    transform: translateY(100%);
+    transition: .3s;
     opacity: 0;
 }
