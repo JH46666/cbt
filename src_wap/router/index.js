@@ -101,15 +101,7 @@ export default new Router({
 					meta: {
 						hideFooter: true
 					}
-				},
-				{
-					path: 'seller',
-					name: '卖家中心',
-					component: resolve => require(['@/views/center/seller.vue'],resolve),
-					meta: {
-						hideFooter: true
-					}
-				},
+				}
 			]
 		},
 		{
@@ -238,6 +230,21 @@ export default new Router({
 					path: 'sellerevaluate',
 					name: '订单评价2',
 					component: resolve => require(['@/views/order/sellerEvaluate.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+			]
+		},
+		{
+			path: '/seller',
+			name: '卖家',
+			component: resolve => require(['@/views/layout/mainWrap.vue'],resolve),
+			children:[
+				{
+					path: '/',
+					name: '卖家中心',
+					component: resolve => require(['@/views/seller/seller.vue'],resolve),
 					meta: {
 						hideFooter: true
 					}
