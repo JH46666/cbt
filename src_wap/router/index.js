@@ -48,11 +48,16 @@ export default new Router({
 					}
 				},
 				{
+					path: '/category',
+					name: '分类',
+					component: resolve => require(['@/views/search/category.vue'],resolve),
+					
+				},
+				{
 					path: '/cart',
+					name: '购物车',
 					component: resolve => require(['@/views/cart/index.vue'],resolve),
-					// meta: {
-					// 	hideFooter: true
-					// }
+					
 				}
 			]
 		},
