@@ -249,6 +249,14 @@ export default new Router({
 						hideFooter: true
 					}
 				},
+				{
+					path: 'orderlist',
+					name: '卖家订单列表',
+					component: resolve => require(['@/views/seller/orderList.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
 			]
 		}
 	]
