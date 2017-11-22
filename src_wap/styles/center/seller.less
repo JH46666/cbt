@@ -167,4 +167,57 @@
             }
         }
     }
+    .tools-pannel{
+        margin-bottom: .48rem;
+        .bg(#fff);
+        .tools-row{
+            border-bottom: 1px solid @borCol;
+            .paddingRow(.35rem);
+            .flex;
+            &:nth-last-of-type(1){
+                border: none;
+            }
+        }
+        .item{
+            .w(25%);
+            .h(1.6rem);
+            .algin(c);
+            .paddingT(.3rem);
+            .paddingB(.3rem);
+            i {
+                .iconfont;
+                .color(@mainCol);
+                .fontSize(.4rem);
+                .line(1);
+                &.blue{
+                    .color(#49bbf2);
+                }
+            }
+            p{
+                margin-top: .08rem;
+                .color(@b-6);
+                .fontSize(.22rem);
+                .line(1.5);
+            }
+        }
+    }
+    .new-up{
+        .paddingB(.2rem);
+        .paddingRow(.3rem);
+        .mint-button{
+            border: 1px solid @mainCol;
+            .w(100%);
+            .bg(#fff);
+        }
+        .add{
+            margin-right: .2rem;
+            .display(inline-block);
+            .w(.48rem);
+            .h(.48rem);
+            .bg(@mainCol);
+            .color(#fff);
+            .line(.48rem);
+            .reduis(50%);
+        }
+    }
 }
