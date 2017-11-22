@@ -48,11 +48,16 @@ export default new Router({
 					}
 				},
 				{
+					path: '/category',
+					name: '分类',
+					component: resolve => require(['@/views/search/category.vue'],resolve),
+
+				},
+				{
 					path: '/cart',
+					name: '购物车',
 					component: resolve => require(['@/views/cart/index.vue'],resolve),
-					// meta: {
-					// 	hideFooter: true
-					// }
+
 				}
 			]
 		},
@@ -232,18 +237,25 @@ export default new Router({
 			]
 		},
 		{
-			path: '/activity',
-			name: '活动中心',
+			path: '/seller',
 			component: resolve => require(['@/views/layout/mainWrap.vue'],resolve),
-			children: [
+			children:[
 				{
-					path: 'list',
-					name: '活动列表',
-					component: resolve => require(['@/views/activity/list.vue'],resolve),
+					path: '/',
+					name: '卖家中心',
+					component: resolve => require(['@/views/seller/seller.vue'],resolve),
 					meta: {
 						hideFooter: true
 					}
 				},
+				{
+					path: 'activitylist',
+					name: '活动列表',
+					component: resolve => require(['@/views/seller/activitylist.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				}
 			]
 		}
 	]

@@ -7,7 +7,7 @@
             <mt-tab-item id="4">已结束</mt-tab-item>
         </mt-navbar>
         <mt-tab-container v-model="selected">
-            <mt-tab-container-item id="1">
+            <mt-tab-container-item id="1" class="on">
                 <mt-cell v-for="(item,index) in activeData" :key="index">
                     <div class="active_head">
                         <div class="head_left">
@@ -32,12 +32,20 @@
                         <i class="iconfont">&#xe60d;</i>
                     </div>
                 </mt-cell>
+                <div class="add_activily">
+                    <div class="plus_icon">+</div>
+                    添加活动
+                </div>
             </mt-tab-container-item>
             <mt-tab-container-item id="2">
                 <mt-cell v-for="n in 4" :title="'测试 ' + n" :key="n"></mt-cell>
             </mt-tab-container-item>
-            <mt-tab-container-item id="3">
+            <mt-tab-container-item id="3" class="on">
                 <mt-cell v-for="n in 6" :title="'选项 ' + n" :key="n"></mt-cell>
+                <div class="add_activily">
+                    <div class="plus_icon">+</div>
+                    添加活动
+                </div>
             </mt-tab-container-item>
             <mt-tab-container-item id="4">
                 <mt-cell v-for="n in 6" :title="'选项 ' + n" :key="n"></mt-cell>
@@ -68,6 +76,19 @@ export default {
                 {
                     name: '坐过路过不要错过，全场两块',
                     status: '已结束',
+                    proImg: [
+                        '../src_wap/assets/list_img.png',
+                        '../src_wap/assets/list_img.png',
+                        '../src_wap/assets/list_img.png',
+                        '../src_wap/assets/list_img.png',
+                        '../src_wap/assets/list_img.png',
+                    ],
+                    code: 1,
+                    date: '2017-11-10 10:00:00 至 2017-11-11 00:00:00'
+                },
+                {
+                    name: '坐过路过不要错过，全场两块',
+                    status: '未开始',
                     proImg: [
                         '../src_wap/assets/list_img.png',
                         '../src_wap/assets/list_img.png',
@@ -134,6 +155,36 @@ export default {
         }
     }
     .mint-tab-container{
+        .mint-tab-container-item{
+            &.on{
+                .paddingB(.98rem);
+            }
+            .add_activily{
+                .position(f);
+                left: 0;
+                right: 0;
+                bottom: 0;
+                z-index: 6;
+                // width: 100%;
+                height: .98rem;
+                .flex;
+                .flex-dir(row);
+                .justify-content;
+                .align-items;
+                .bg(@mainCol);
+                .plus_icon{
+                    width: .32rem;
+                    height: .32rem;
+                    .reduis(50%);
+                    .bg(#fff);
+                    .color(@mainCol);
+                    .fontSize(.28rem);
+                    .algin(c);
+                    .line(.32rem);
+                    margin-right: .16rem;
+                }
+            }
+        }
         .mint-cell{
             .bg(#fff);
             margin-top: .2rem;
