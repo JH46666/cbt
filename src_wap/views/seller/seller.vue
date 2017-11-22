@@ -71,7 +71,7 @@
                     <p>商品管理</p>
                 </router-link>
                 <router-link to="#" class="item">
-                    <span><i class="icon-daishouhuo"></i></span>
+                    <span><i class="icon-yunfeipeizhi"></i></span>
                     <p>运费配置</p>
                 </router-link>
                 <router-link to="#" class="item">
@@ -79,13 +79,13 @@
                     <p>限时特价</p>
                 </router-link>
                 <router-link to="#" class="item">
-                    <span><i class="icon-daishouhuo"></i></span>
+                    <span><i class="icon-shouru"></i></span>
                     <p>我的收入</p>
                 </router-link>
             </div>
             <div class="tools-row">
                 <router-link to="#" class="item">
-                    <span><i class="icon-daishouhuo blue"></i></span>
+                    <span><i class="icon-xiaoxi blue"></i></span>
                     <p>店铺信息</p>
                 </router-link>
             </div>
@@ -101,5 +101,5 @@
 
 
 <style lang="less" scoped>
-    @import url('~@/styles/center/seller.less');
+    @import url('~@/styles/seller/seller.less');
 </style>
