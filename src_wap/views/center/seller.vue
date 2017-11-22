@@ -66,9 +66,33 @@
         </section>
         <section class="tools-pannel">
             <div class="tools-row">
-                
+                <router-link to="#" class="item">
+                    <span><i class="icon-xiaoshouguanli blue"></i></span>
+                    <p>商品管理</p>
+                </router-link>
+                <router-link to="#" class="item">
+                    <span><i class="icon-daishouhuo"></i></span>
+                    <p>运费配置</p>
+                </router-link>
+                <router-link to="#" class="item">
+                    <span><i class="icon-tejiaguanli"></i></span>
+                    <p>限时特价</p>
+                </router-link>
+                <router-link to="#" class="item">
+                    <span><i class="icon-daishouhuo"></i></span>
+                    <p>我的收入</p>
+                </router-link>
+            </div>
+            <div class="tools-row">
+                <router-link to="#" class="item">
+                    <span><i class="icon-daishouhuo blue"></i></span>
+                    <p>店铺信息</p>
+                </router-link>
             </div>
         </section>
+        <div class="new-up">
+            <mt-button type="default"><span class="add"><i class="icon-xinzeng"></i></span>新品上架</mt-button>
+        </div>
     </div>
 </template>
 
