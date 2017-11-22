@@ -230,6 +230,21 @@ export default new Router({
 					}
 				},
 			]
+		},
+		{
+			path: '/activity',
+			name: '活动中心',
+			component: resolve => require(['@/views/layout/mainWrap.vue'],resolve),
+			children: [
+				{
+					path: 'list',
+					name: '活动列表',
+					component: resolve => require(['@/views/activity/list.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+			]
 		}
 	]
 })
