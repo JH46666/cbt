@@ -9,7 +9,11 @@ import axios from 'axios';
 import * as utils from 'utils';
 import VueHead from 'vue-head';
 import cbtComponents from './components';
+import {MessageBox,Toast} from 'mint-ui';
 
+// 全局方法
+Vue.prototype.$messageBox = MessageBox;
+Vue.prototype.$toast = Toast;
 
 
 // UI 框架
