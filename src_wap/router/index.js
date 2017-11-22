@@ -137,12 +137,11 @@ export default new Router({
 		},
 		{
 			path: '/balance',
-			name: '结算中心',
 			component: resolve => require(['@/views/layout/mainWrap.vue'],resolve),
 			children: [
 				{
 					path: '/',
-					name: '结算',
+					name: '结算中心',
 					component: resolve => require(['@/views/balance/index.vue'],resolve),
 					meta: {
 						hideFooter: true
@@ -218,7 +217,23 @@ export default new Router({
 					meta: {
 						hideFooter: true
 					}
-				}
+				},
+				{
+					path: 'buyerevaluate',
+					name: '订单评价1',
+					component: resolve => require(['@/views/order/buyerEvaluate.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+				{
+					path: 'sellerevaluate',
+					name: '订单评价2',
+					component: resolve => require(['@/views/order/sellerEvaluate.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
 			]
 		}
 	]
