@@ -1,5 +1,6 @@
 @import '~@/styles/base/tools.less';
 .cart_wrapper{
+    -webkit-overflow-scrolling : touch;
     font-size: .3rem;
     padding-bottom: 1rem;
     .h(100%);
@@ -16,6 +17,7 @@
         left: 0;
         max-width: .8rem;
         max-height: .8rem;
+        z-index: 10;
     }
     .edit_floor{
         .algin(r);
@@ -161,6 +163,7 @@
                             border-top: 1px solid #ccc;
                             border-bottom: 1px solid #ccc;
                             .algin(c);
+                            border-radius: 0;
                         }
                     }
                 }
