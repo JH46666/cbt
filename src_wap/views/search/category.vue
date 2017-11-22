@@ -39,13 +39,39 @@
                 </div>
                 <div class="flex-1 content-r">
                     <div class="content-inner ipScroll">
-                        
+                        <div class="condition-box">
+                            <ul class="flex">
+                                <li @click="popupVisible = true"><i class="iconfont">&#xe674;</i>筛选</li>
+                                <li><i class="iconfont">&#xe673;</i>排序</li>
+                            </ul>
+                        </div>
+                        <goods-item></goods-item>
+                        <goods-item></goods-item>
+                        <goods-item></goods-item>
+                        <goods-item></goods-item>
+                        <goods-item></goods-item>
+                        <goods-item></goods-item>
                         <goods-item></goods-item>
                         <goods-item></goods-item>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- 筛选弹窗 -->
+        <mt-popup v-model="popupVisible" position="bottom" class="popup-filter">
+            <div class="popup-content">
+                <div class="con-item" v-for="list in filterConditions">
+                    <h4>{{list.name}}</h4>
+                    <ul class="clearfix">
+                        <li :class="{on:index == list.filterIndex}" v-for="(item,index) in list.conditions" @click="selectFilter(list,index)">{{item}}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="pop-btns flex">
+                    <a class="flex-1" href="javscript:void(0)">重置</a>
+                    <a class="flex-1 confirm" href="javscript:void(0)">确定</a>
+                </div>
+        </mt-popup>
     </div>
 </template>
 <script>
@@ -54,6 +80,7 @@
         data(){
             return {
                 wxFlag: false,
+                popupVisible: false,  //弹窗是否显示
                 searchTxt: "",  //搜索内容
                 activeCatIndex: 0,   //激活的一级分类下标
                 activeSubIndex: 0,   //激活的二级分类下标
@@ -112,6 +139,23 @@
                         name: "其他乌龙茶",
                         id: 26
                     }
+                ],
+                filterConditions:[
+                    {
+                        name: "净含量在",
+                        filterIndex: 0,
+                        conditions:['全部','50-100g','101-250g','50-100g','100-300g','50g以下']
+                    },
+                    {
+                        name: "采摘季节",
+                        filterIndex: 0,
+                        conditions:['全部','雨后','春茶','随便','很随便','非常随便']
+                    },
+                    {
+                        name: "香度",
+                        filterIndex: 0,
+                        conditions:['全部','雨后','春茶','随便','很随便','非常随便']
+                    }
                 ]
             }
         },
@@ -142,8 +186,11 @@
             // 搜索一级分类
             searchSub(index){
                 this.activeSubIndex = index;
-            }
-            
+            },
+            // 筛选
+            selectFilter(list,index){
+                list.filterIndex = index;
+            },
         }
     }
 </script>
