@@ -1,0 +1,170 @@
+@import url('../base/tools.less');
+
+
+#seller{
+    .line(1.5);
+    i{
+        .iconfont;
+    }
+    // 头部
+    .head{
+        background: linear-gradient(to right, #15c21f, #7fd64d);
+        padding: .36rem;
+        .flex;
+        .position(r);
+        .h(2.4rem);
+        .icon-wrap{
+            .display(inline-block);
+            .w(.94rem);
+            .h(.94rem);
+            .bg(#e1fae6);
+            .algin(c);
+            .line(.94rem);
+            .reduis(50%);
+            .color(#15c21f);
+        }
+        .right{
+            .flex-1;
+            .paddingL(.16rem);
+            .color(#fff);
+        }
+        .user{
+            margin-bottom: .1rem;
+            .fontSize(.32rem);
+        }
+        .level-wrap{
+            margin-bottom: .26rem;
+            .display(inline-block);
+            .paddingRow(.16rem);
+            .h(.38rem);
+            .line(.38rem);
+            .bg(#fff);
+            .color(@mainCol);
+            .reduis(20px);
+            .clearfix;
+            .level-left{
+                float: left;
+                margin-right: .08rem;
+                .h(.38rem);
+                .fontSize(0);
+            }
+            .level-right{
+                float: left;
+                .h(.38rem);
+            }
+            .level{
+                .w(.2rem);
+                .h(.2rem);
+                .display(inline-block);
+                .position(r);
+                top: .1rem;
+                margin-right: .06rem;
+            }
+            .level-1{
+                background: url('~@/assets/images/s_rate_red.png') no-repeat;
+                background-size: 100% .16rem;
+            }
+            .level-2{
+                background: url('~@/assets/images/s_rate_blue.png') no-repeat;
+                background-size: 100% .16rem;
+            }
+            .level-3{
+                background: url('~@/assets/images/s_rate_cap.png') no-repeat;
+                background-size: 100% .16rem;
+            }
+            .level-4{
+                background: url('~@/assets/images/s_rate_crown.png') no-repeat;
+                background-size: 100% .16rem;
+            }
+        }
+        .sum-count{
+            .fontSize(.2rem);
+        }
+        .goback{
+            border-radius: 20px 0 0 20px;
+            top: 1rem;
+            right: 0;
+            .position(a);
+            .fontSize(.2rem);
+            .line(.56rem);
+            .bg(#fff);
+            .color(@mainCol);
+            .paddingRow(.2rem);
+        }
+    }
+    // 收入入口
+    .count-entry{
+        margin-bottom: .24rem;
+        .flex;
+        .paddingRow(.35rem);
+        .bg(#fff);
+        .count-item{
+            .flex-1;
+            .algin(c);
+            .h(1.35rem);
+            .paddingT(.2rem);
+            .paddingB(.2rem);
+            .num{
+                margin-bottom: .06rem;
+                .fontSize(.28rem);
+                .color(@mainCol);
+            }
+            .tips{
+                .fontSize(.22rem);
+                .color(@b-6);
+            }
+        }
+    }
+    // 订单入口
+    .order-wrap{
+        margin-bottom: .24rem;
+        .bg(#fff);
+        .title{
+            border-bottom: 1px solid @borCol;
+            .flex;
+            .paddingRow(.35rem);
+            .line(.92rem);
+            .fontSize(.24rem);
+            h3,.entry{
+                font-weight: normal;
+                .flex-1;
+            }
+            .entry{
+                .algin(r);
+                .color(@b-9);
+            }
+        }
+        .order-entry{
+            padding: .35rem 0;
+            .h(1.54rem);
+            .flex;
+            .item{
+                .flex-1;
+                .algin(c);
+                i {
+                    .iconfont;
+                    .color(@mainCol);
+                    .fontSize(.4rem);
+                    .line(1);
+                }
+                p{
+                    margin-top: .08rem;
+                    .color(@b-6);
+                    .fontSize(.22rem);
+                    .line(1.5);
+                }
+                .mint-badge{
+                    .position(a);
+                    .fontSize(.18rem);
+                    .line(.3rem);
+                    .bg(#fff);
+                    .color(#f44336);
+                    border: 1px solid #f44336;
+                    top: -.2rem;
+                    right: .45rem;                   
+                    padding: 0 .1rem;
+                }
+            }
+        }
+    }
+}

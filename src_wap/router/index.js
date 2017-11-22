@@ -101,7 +101,15 @@ export default new Router({
 					meta: {
 						hideFooter: true
 					}
-				}
+				},
+				{
+					path: 'seller',
+					name: '卖家中心',
+					component: resolve => require(['@/views/center/seller.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
 			]
 		},
 		{
