@@ -238,7 +238,6 @@ export default new Router({
 		},
 		{
 			path: '/seller',
-			name: '卖家',
 			component: resolve => require(['@/views/layout/mainWrap.vue'],resolve),
 			children:[
 				{
