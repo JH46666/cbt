@@ -15,7 +15,7 @@
                             </p>
                         </div>
                         <template v-if="list.isSelf">
-                            <div class="self"><img src="../../assets/images/small_logo.png" alt=""></div>
+                            <div class="self"><img src="../../assets/images/oteao.png" alt=""></div>
                             <p>自营</p>
                         </template>
                         <template v-else>
@@ -248,28 +248,28 @@
                     }
                 ],
                 mayProducts:[
-                {   
-                    proId: 11,
-                    tagImg: '../src_wap/assets/images/specail_tag.png',  //商品图片
-                    proImg: '../src_wap/assets/cart_img1.png',  //商品图片
-                    proName: "安溪西坪 清香型（消酸）铁观音303-507  2015秋茶",  //商品名称
-                    proDesc: "正岩核心产区 花香馥郁",
-                    proPrice: 300, //商品价格
-                    proWeight: "斤",
-                    proHref: "/login",
-                    isSpecial: true,    //是否为特价商品
-                },
-                {
-                    proId: 12,
-                    tagImg: null,
-                    proImg: '../src_wap/assets/cart_img1.png',  //商品图片
-                    proName: "安溪西坪 清香型（消酸）铁观音303-507  2015秋茶",  //商品名称
-                    proDesc: "正岩核心产区 花香馥郁",
-                    proPrice: 330, //商品价格
-                    proWeight: "斤",
-                    proHref: "/login",
-                    isSpecial: false,    //是否为特价商品
-                },
+                    {   
+                        proId: 11,
+                        tagImg: '../src_wap/assets/images/specail_tag.png',  //商品图片
+                        proImg: '../src_wap/assets/cart_img1.png',  //商品图片
+                        proName: "安溪西坪 清香型（消酸）铁观音303-507  2015秋茶",  //商品名称
+                        proDesc: "正岩核心产区 花香馥郁",
+                        proPrice: 300, //商品价格
+                        proWeight: "斤",
+                        proHref: "/login",
+                        isSpecial: true,    //是否为特价商品
+                    },
+                    {
+                        proId: 12,
+                        tagImg: null,
+                        proImg: '../src_wap/assets/cart_img1.png',  //商品图片
+                        proName: "安溪西坪 清香型（消酸）铁观音303-507  2015秋茶",  //商品名称
+                        proDesc: "正岩核心产区 花香馥郁",
+                        proPrice: 330, //商品价格
+                        proWeight: "斤",
+                        proHref: "/login",
+                        isSpecial: false,    //是否为特价商品
+                    },
                 ]
             }
         },
