@@ -194,7 +194,7 @@
                 let o_l = e.parentNode.offsetLeft;
                 this.activeCatIndex = index;
                 if(index>=3 && index<=this.firstCat.length-4){
-                    this.$refs.wrapper.scrollLeft = o_l-o_w;
+                    this.$refs.wrapper.scrollLeft = o_l-2*o_w;
                 }
             },
             // 搜索二级分类
