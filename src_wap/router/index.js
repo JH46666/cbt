@@ -263,6 +263,14 @@ export default new Router({
 					meta: {
 						hideFooter: true
 					}
+				},
+				{
+					path: 'freight',
+					name: '活动列表',
+					component: resolve => require(['@/views/seller/freight.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
 				}
 			]
 		}
