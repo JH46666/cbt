@@ -19,8 +19,8 @@
         </div>
         <!-- 一级 -->
         <div class="first-box" :class="{'wx-first': wxFlag}">
-            <ul class="first-cat flex">
-                <li class="cat-item" :class="{on: index==activeCatIndex}" v-for="(cat,index) in firstCat" @click="searchFirstCat(index)">
+            <ul class="first-cat flex" ref="wrapper">
+                <li class="cat-item" :class="{on: index==activeCatIndex}" v-for="(cat,index) in firstCat" @click="searchFirstCat(index,$event.target)">
                     <span>{{cat.name}}</span>
                 </li>
             </ul>
@@ -112,6 +112,14 @@
                     {
                         name: "花茶",
                         id: 7
+                    },
+                    {
+                        name: "茶具",
+                        id: 8
+                    },
+                    {
+                        name: "花茶",
+                        id: 9
                     }
                 ],
                 subCat:[
@@ -180,10 +188,16 @@
                 this.searchTxt = "";
             },
             // 搜索一级分类
-            searchFirstCat(index){
+            searchFirstCat(index,e){
+                let o_w = e.parentNode.offsetWidth;
+                console.log(o_w);
+                let o_l = e.parentNode.offsetLeft;
                 this.activeCatIndex = index;
+                if(index>=3 && index<=this.firstCat.length-4){
+                    this.$refs.wrapper.scrollLeft = o_l-2*o_w;
+                }
             },
-            // 搜索一级分类
+            // 搜索二级分类
             searchSub(index){
                 this.activeSubIndex = index;
             },
