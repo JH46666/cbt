@@ -105,7 +105,8 @@
             border-radius: 20px;
             line-height: 1.2;
             top: .05rem;
-            left: 1rem;
+            left: 50%;
+            margin-left: .05rem;
         }
     }
 }
