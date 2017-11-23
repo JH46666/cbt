@@ -287,6 +287,14 @@ export default new Router({
 					meta: {
 						hideFooter: true
 					}
+				},
+				{
+					path: 'newshelves',
+					name: '新品上架',
+					component: resolve => require(['@/views/seller/newshelves.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
 				}
 			]
 		}
