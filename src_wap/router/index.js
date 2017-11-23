@@ -274,7 +274,7 @@ export default new Router({
 				},
 				{
 					path: 'freight',
-					name: '活动列表',
+					name: '叫什么呢',
 					component: resolve => require(['@/views/seller/freight.vue'],resolve),
 					meta: {
 						hideFooter: true
