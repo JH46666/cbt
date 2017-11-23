@@ -57,7 +57,7 @@
                     <div class="city-inner clearfix">
                         <a class="city-item" href="javascript:void(0);" v-for="item in citiesNames" :class="{on:checkedNames1.indexOf(item.id)>=0}">
                             <label>
-                                <input type="checkbox" :id="item.id" :value="item.id" v-model="checkedNames1">
+                                <input type="checkbox" :id="item.id" :value="item.id" v-model="checkedNames1" hidden>
                                 <span>{{item.name}}</span>
                             </label>
                         </a>
@@ -71,7 +71,7 @@
                     <div class="city-inner clearfix">
                         <a class="city-item" href="javascript:void(0);" v-for="item in otherNames" :class="{on:checkedNames2.indexOf(item.id)>=0}">
                             <label>
-                                <input type="checkbox" :id="item.id" :value="item.id" v-model="checkedNames2">
+                                <input type="checkbox" :id="item.id" :value="item.id" v-model="checkedNames2" hidden>
                                 <span>{{item.name}}</span>
                             </label>
                         </a>
