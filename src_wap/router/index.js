@@ -251,7 +251,15 @@ export default new Router({
 				{
 					path: 'activitylist',
 					name: '活动列表',
-					component: resolve => require(['@/views/seller/activitylist.vue'],resolve),
+					component: resolve => require(['@/views/seller/activityList.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+				{
+					path: 'activity',
+					name: '添加活动',
+					component: resolve => require(['@/views/seller/activity.vue'],resolve),
 					meta: {
 						hideFooter: true
 					}
