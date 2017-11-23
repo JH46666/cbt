@@ -279,6 +279,14 @@ export default new Router({
 					meta: {
 						hideFooter: true
 					}
+				},
+				{
+					path: 'income',
+					name: '我的收入',
+					component: resolve => require(['@/views/seller/income.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
 				}
 			]
 		}
