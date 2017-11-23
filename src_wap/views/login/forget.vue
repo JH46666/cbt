@@ -11,7 +11,7 @@
                 <div class="form_item">
                     <div class="flex">
                         <input class="mes_code" type="text" placeholder="短信验证码" v-model="regInfo.mesCode">
-                        <a class="get_code" href="javascript:void(0);">获取短信验证码</a>
+                        <a class="get_code" href="javascript:void(0);" @click="verifyFlag = true">获取短信验证码</a>
                     </div>
                     <label class="fl"></label>
                 </div>
@@ -32,6 +32,23 @@
                 <a class="go_login" href="javscript:void(0);">立即去登录</a>
             </div>
         </div>
+        <!-- 验证码弹窗 -->
+        <div class="popup verify_popup" v-show="verifyFlag">
+            <div class="popup_inner verify_inner">
+                <a class="close_popup"  @click="verifyFlag = !verifyFlag"><i class="iconfont">&#xe79a;</i></a>
+                <p class="error_tips"><i class="iconfont">&#xe667;</i>输入的验证码有误</p>
+                <div class="flex img_box">
+                    <div class="img_code"><img src="../../assets/images/code_img.png" alt=""></div>
+                    <a class="refresh"><i class="iconfont">&#xe665;</i></a>
+                </div>
+                <div class="flex img_code_input">
+                    <input class="flex-1 num1 on" type="number" name="" value="" maxlength="1">
+                    <input class="flex-1 num2" type="number" name="" value="" maxlength="1">
+                    <input class="flex-1 num3" type="number" name="" value="" maxlength="1">
+                    <input class="flex-1 num4" type="number" name="" value="" maxlength="1">
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 <script>
@@ -46,6 +63,7 @@
                 },
                 visFlag: false,             //密码是否可见
                 successFlag: false,         //是否修改成功
+                verifyFlag: false,          //验证码弹窗是否可见
             }
         },
         methods:{
