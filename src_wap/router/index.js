@@ -282,12 +282,29 @@ export default new Router({
 				},
 				{
 					path: 'goodsmanage',
-					name: '运费配置',
+					name: '商品管理',
 					component: resolve => require(['@/views/seller/goodsManage.vue'],resolve),
 					meta: {
 						hideFooter: true
 					}
+				},
+				{
+					path: 'newshelves',
+					name: '新品上架',
+					component: resolve => require(['@/views/seller/newshelves.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+				{
+					path: 'income',
+					name: '我的收入',
+					component: resolve => require(['@/views/seller/income.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
 				}
+
 			]
 		}
 	]
