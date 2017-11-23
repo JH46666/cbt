@@ -249,6 +249,14 @@ export default new Router({
 					}
 				},
 				{
+					path: 'orderlist',
+					name: '卖家订单列表',
+					component: resolve => require(['@/views/seller/orderList.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+				{
 					path: 'activitylist',
 					name: '活动列表',
 					component: resolve => require(['@/views/seller/activityList.vue'],resolve),
@@ -260,6 +268,14 @@ export default new Router({
 					path: 'activity',
 					name: '添加活动',
 					component: resolve => require(['@/views/seller/activity.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+				{
+					path: 'freight',
+					name: '活动列表',
+					component: resolve => require(['@/views/seller/freight.vue'],resolve),
 					meta: {
 						hideFooter: true
 					}
