@@ -1,0 +1,98 @@
+@import url('../base/tools.less');
+.goods_manage_wrapper{
+    .search-wrapper{
+        padding: .16rem .34rem;
+        .bg(#fff);
+        .search-inner{
+            .position(r);
+            .w(5.7rem);
+            .search-txt{
+                .flex_num(5);
+                input{
+                    .w(100%);
+                    display: block;
+                    .h(100%);
+                    border: 1px solid #e6e6e6;
+                    border-right: 0;
+                    border-radius: 20px 0 0 20px;
+                    text-indent: .2rem;
+                }
+            }
+            .clear-txt{
+                .position(a);
+                right: .2rem;
+                top: .16rem;
+                .color(#999);
+            }
+            .search-btn{
+                .bg(#f08200);
+                .algin(c);
+                .line(.6rem);
+                border-radius: 0 20px 20px 0;
+                .color(#fff);
+            }
+        }
+        .cancel{
+            line-height: .6rem;
+            font-size: .32rem;
+            margin-left: .36rem;
+            .color(#f08200);
+        }
+    }
+    .tab-btn-wrapper{
+        a{
+            .color(#333);
+            .algin(c);
+            .line(.8rem);
+            .fontSize(.28rem);
+            &.on{
+                .color(#f08200);
+            }
+        }
+    }
+    .sort-wrapper{
+        .bg(#fff);
+        padding: .3rem 0;
+        .sort-item{
+            .fontSize(.28rem);
+            .algin(c);
+            .color(#999);
+            &.on{
+                .color(#f08200);
+                i{
+                    &.on{
+                        .color(#f08200);
+                    }
+                }
+            }
+            .sort-icons{
+                i{
+                    .position(a);
+                    .fontSize(.42rem);
+                    .color(#ccc8c4);
+                    
+                }
+                .sort-asce{
+                    top: -.08rem;
+                }
+                .sort-desc{
+                    top: .06rem ;
+                }
+            }
+        }
+    }
+    .tab-content-wrapper{
+        .checkir-cir{
+            .w(.4rem);
+            .h(.4rem);
+            margin-right: .14rem;
+            display: inline-block;
+            background: url('../../assets/images/check_bg.png') no-repeat;
+            background-size: 100% 100%;
+            &.checked{
+                background: url('../../assets/images/checked_bg.png') no-repeat;
+                background-size: 100% 100%;
+            }
+        }
+    }
+}

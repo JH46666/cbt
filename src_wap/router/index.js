@@ -39,7 +39,7 @@ export default new Router({
 					}
 				},
 				{
-					path: '/search',
+					path: 'search',
 					name: '搜索',
 					component: resolve => require(['@/views/search/index.vue'],resolve),
 					meta: {
@@ -48,13 +48,13 @@ export default new Router({
 					}
 				},
 				{
-					path: '/category',
+					path: 'category',
 					name: '分类',
 					component: resolve => require(['@/views/search/category.vue'],resolve),
 
 				},
 				{
-					path: '/cart',
+					path: 'cart',
 					name: '购物车',
 					component: resolve => require(['@/views/cart/index.vue'],resolve),
 
@@ -274,8 +274,16 @@ export default new Router({
 				},
 				{
 					path: 'freight',
-					name: '叫什么呢',
+					name: '运费配置',
 					component: resolve => require(['@/views/seller/freight.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+				{
+					path: 'goodsmanage',
+					name: '运费配置',
+					component: resolve => require(['@/views/seller/goodsManage.vue'],resolve),
 					meta: {
 						hideFooter: true
 					}
