@@ -267,3 +267,22 @@ html,body,#app,#container{
     transition: .3s;
     opacity: 0;
 }
+
+.down-slow-enter{
+    transform: translateY(-100%);
+    opacity: 0;
+}
+.down-slow-enter-to{
+    transform: translateY(0%);
+    opacity: 1;
+    transition: .2s;
+}
+.down-slow-leave{
+    transform: translateY(0%);
+    opacity: 1;
+}
+.down-slow-leave-to{
+    transform: translateY(-100%);
+    transition: .2s;
+    opacity: 0;
+}
