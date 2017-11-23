@@ -181,3 +181,74 @@
         }
     }
 }
+
+
+// 卖家修改价格模块
+.cbt-editprice{
+    top: 0;
+    left: 0;
+    z-index: 2017;
+    .fontSize(.3rem);
+    .line(1.5);
+    .position(f);
+    .w(100%);
+    .h(100%);
+    .bg(rgba(0,0,0,.3));
+    .editprice-wrap{
+        top: 50%;
+        left: 50%;
+        margin-left: -3.05rem;
+        margin-top: -2.52rem;
+        .position(a);
+        .w(6.1rem);
+        .h(5.04rem);
+        .bg(#fff);
+        .reduis(4px);
+        .paddingT(.2rem);
+        .title{
+            font-weight: normal;
+            margin-bottom: .4rem;
+            .algin(c);
+            .line(.6rem);
+        }
+        .input-wrap{
+            .paddingRow(.48rem);
+            .input-row{
+                border-bottom: 1px solid @borCol;
+                margin-bottom: .4rem;
+                .paddingT(.1rem);
+                .paddingB(.1rem);
+                .color(@b-6);
+                &.error{
+                    border-color: @error;
+                }
+            }
+            .input-head{
+                margin-right: .9rem;
+                .display(inline-block);
+                .w(1.2rem);
+            }
+            input{
+                .w(2.74rem);
+            }
+        }
+        .btnwrap{
+            bottom: 0;
+            border-top: 1px solid @borCol;
+            .position(a);
+            .w(100%);
+            .mint-button{
+                box-shadow: none;
+                .w(50%);
+                .h(.98rem);
+                .reduis(0);
+                .bg(#fff);
+                .color(@b-3);
+            }
+            .mint-button:nth-of-type(2){
+                .bg(@mainCol);
+                .color(#fff);
+            }
+        }
+    }
+}

@@ -77,6 +77,7 @@ html,body,#app,#container{
     padding:.88rem 0 .98rem;
     overflow: hidden;
     height: 100%;
+    .position(r);
     &.no_header{
         padding:0 0 .98rem;
     }
@@ -86,7 +87,6 @@ html,body,#app,#container{
     .content_inner{
         height: 100%;
         overflow-y: scroll;
-        .position(r);
     }
 }
 
@@ -265,5 +265,24 @@ html,body,#app,#container{
 .fadeUp-leave-to{
     transform: translateY(100%);
     transition: .3s;
+    opacity: 0;
+}
+
+.down-slow-enter{
+    transform: translateY(-100%);
+    opacity: 0;
+}
+.down-slow-enter-to{
+    transform: translateY(0%);
+    opacity: 1;
+    transition: .2s;
+}
+.down-slow-leave{
+    transform: translateY(0%);
+    opacity: 1;
+}
+.down-slow-leave-to{
+    transform: translateY(-100%);
+    transition: .2s;
     opacity: 0;
 }
