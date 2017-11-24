@@ -51,7 +51,7 @@
             <div class="pop-content">
                 <div class="city-box often-box">
                     <h4 class="city-caption flex align_items_c" :name="countOftenCity">
-                        <label class="checkir-cir" :class="{'checked':oftenAllFlag}" @click="handleAllOften"></label> 
+                        <label class="check-cir" :class="{'checked':oftenAllFlag}" @click="handleAllOften"></label> 
                         <span>常用不包邮省份</span>
                     </h4>
                     <div class="city-inner clearfix">
@@ -65,7 +65,7 @@
                 </div>
                 <div class="city-box other-box">
                     <h4 class="city-caption flex align_items_c" :name="countOtherCity">
-                        <label class="checkir-cir" :class="{'checked':otherAllFlag}" @click="handleAllOther"></label>
+                        <label class="check-cir" :class="{'checked':otherAllFlag}" @click="handleAllOther"></label>
                         <span>常用不包邮省份</span>
                     </h4>
                     <div class="city-inner clearfix">
@@ -81,7 +81,7 @@
             <div class="f-b">
                 <div class="flex">
                     <div class="flex-1 flex align_items_c">
-                        <label class="checkir-cir"></label>
+                        <label class="check-cir"></label>
                         <span class="color_6">已选<span class="color_f08">5</span>款</span>
                     </div>
                     <div class="selected-btn">

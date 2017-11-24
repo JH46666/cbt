@@ -190,7 +190,6 @@
             // 搜索一级分类
             searchFirstCat(index,e){
                 let o_w = e.parentNode.offsetWidth;
-                console.log(o_w);
                 let o_l = e.parentNode.offsetLeft;
                 this.activeCatIndex = index;
                 if(index>=3 && index<=this.firstCat.length-4){
