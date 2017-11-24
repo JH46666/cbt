@@ -1,0 +1,265 @@
+@import url('../base/tools.less');
+#order-detail{
+    .position(r);
+    .fontSize(.28rem);
+    .line(1.5);
+    .main-wrap{
+        .h(~'calc(100% - .98rem)');
+        .scroll-y(a);
+        .ipScroll;
+    }
+    .head{
+        margin-bottom: .2rem;
+        .flex;
+        .line(1.34rem);
+        .paddingRow(.35rem);
+        .bg(#fff);
+        .green{
+            .color(#13c23c);
+            .fontSize(.38rem);
+            margin-left: .2rem;
+        }
+        .icon-wrap{
+            .display(inline-block);
+            .w(.64rem);
+            .h(.64rem);
+            .bg(#ebf5ed);
+            .reduis(50%);
+            .algin(c);
+            .position(r);
+            top: .3rem;
+            i{
+                .line(.64rem);
+                .position(r);
+                top: -.3rem;
+            }
+        }
+        .left,.right{
+            .flex-1;
+        }
+        .right{
+            .fontSize(.26rem);
+            .color(@b-6);
+        }
+    }
+    .text-pannel{
+        margin-bottom: .2rem;
+        .bg(#fff);
+        .top{
+            margin-bottom: .1rem;
+            .flex;
+            .paddingRow(.35rem);
+            .paddingT(.2rem);
+            .left,.right{
+                .flex-1;
+                .fontSize(.3rem);
+            }
+            .left{
+                font-weight: normal;
+            }
+            .right{
+                .algin(r);
+                .color(@b-9);
+            }
+        }
+        .user,.detail{
+            .paddingRow(.35rem);
+            .color(@b-9);
+        }
+        .detail-wrap{
+            border-bottom: 1px solid @borCol;
+            .flex;
+            .paddingRow(.35rem);
+            .paddingB(.2rem);
+            .detail{
+                .flex-1;
+                padding: 0;
+            }
+            span{
+                .position(r);
+                top: .2rem;
+            }
+        }
+        .remark{
+            .paddingRow(.35rem);
+            .line(.94rem);
+            .oneLine;
+            .remark-txt{
+                .color(@b-9);
+            }
+        }
+        .limit-2{
+            .moreLine;
+        }
+        .limit-3{
+            .moreLine(3);
+        }
+    }
+    .goods-pannel{
+        margin-bottom: .2rem;
+        .title{
+            font-weight: normal;
+            border-bottom: 1px solid @borCol;
+            .paddingRow(.35rem);
+            .line(.78rem);
+            .bg(#fff);
+            .fontSize(.3rem);
+        }
+        .goods-item{
+            border-bottom: 1px solid @borCol;
+            .bg(#fafafa);
+            .padding(.35rem);
+            .flex;
+            .right{
+                .flex-1;
+                .paddingL(.2rem);
+            }
+            .goods-title{
+                .moreLine;
+                margin-bottom: .5rem;
+            }
+            .goods-bd{
+                .flex;
+                .fontSize(.32rem);
+                .line(1.5);
+                span{
+                    .flex-1;
+                }
+                .price{
+                    .color(@mainCol);
+                }
+                .num{
+                    .algin(r);
+                }
+            }
+        }
+    }
+    .price-pannel,.date-pannel{
+        margin-bottom: .2rem;
+        .bg(#fff);
+        .item{
+            padding: .2rem .35rem;
+            .flex;
+            .line(.4rem);
+        }
+        .left,.right{
+            .flex-1;
+        }
+        .left{
+            .color(@b-6);
+        }
+        .right{
+            .algin(r);
+            &.gold{
+                .color(@mainCol);
+            }
+        }
+    }
+    .date-pannel{
+        margin: 0;
+        .color(@b-6);
+    }
+    .btn-bar{
+        bottom: 0;
+        border-top: 1px solid @borCol;
+        .position(a);
+        .w(100%);
+        .h(.98rem);
+        .bg(#fafafa);
+        .paddingT(.2rem);
+        .paddingRow(.35rem);
+        .algin(r);
+        .btn{
+            padding: 0;
+            margin-left: .4rem;
+            border:1px solid @borCol;
+            box-shadow: none;
+            .bg(#fff);
+            .color(@b-3);
+            .reduis(20px);
+            .w(1.48rem);
+            .h(.56rem);
+            .fontSize(.26rem);
+            &.gold{
+                border-color: @mainCol;
+                .color(@mainCol);
+            }
+        }
+    }
+    .edit-remark{
+        top: 0;
+        left: 0;
+        .position(f);
+        .w(100%);
+        .h(100%);
+        .bg(rgba(0,0,0,.3));
+        z-index: 2003;
+        .remark-main{
+            top: 50%;
+            left: 50%;
+            margin-top: -2.5rem;
+            margin-left: -3rem;
+            overflow: hidden;
+            .position(a);
+            .w(6rem);
+            .h(5rem);
+            .bg(#fff);
+            .reduis(4px);
+            .paddingRow(.4rem);
+            .paddingT(.3rem);
+            .algin(c);
+        }
+        .textarea{
+            .w(100%);
+            .h(2.4rem);
+            resize: none;
+            margin-top: .2rem;
+            border-color: #e6e6e6;
+        }
+        .btn-wrap{
+            left: 0;
+            bottom: 0;
+            border-top:1px solid @borCol;
+            .position(a);
+            .w(100%);
+            .flex;
+            .mint-button{
+                box-shadow: none;
+                .flex-1;
+                .reduis(0);
+                .h(.96rem);
+                .bg(#fff);
+                .color(@b-3);
+                &:nth-of-type(2) {
+                    .color(#fff);
+                    .bg(@mainCol);
+                }
+            }
+        }
+    }
+    i{
+        .iconfont;
+    }
+    .mint-popup{
+        .w(100%);
+    }
+    // 关闭订单弹出层样式
+    .close-wrap{
+        .w(100%);
+        .algin(c);
+        .fontSize(.3rem);
+        .line(.98rem);
+        h3{
+            font-weight: normal;
+            .line(.8rem);
+            .bg(#f5f5f5);
+        }
+        .close-tip{
+            border-bottom: 1px solid @borCol;
+        }
+        .close-tip:nth-last-of-type(1){
+            border:none;
+            .color(@mainCol);
+        }
+    }
+}
