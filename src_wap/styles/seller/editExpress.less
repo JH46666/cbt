@@ -1,0 +1,61 @@
+@import url('../base/tools.less');
+
+#edit-express{
+    .fontSize(.3rem);
+    .line(1.5);
+    .title{
+        font-weight: normal;
+        border-bottom: 1px solid @borCol;
+        .line(.88rem);
+        .bg(#fff);
+        .paddingRow(.35rem);
+    }
+    .pick-pannel{
+        padding: .4rem .35rem;
+        margin-bottom: .2rem;
+        .bg(#fff);
+        .flex;
+        .pick-item{
+            border: 1px solid @borCol;
+            margin-right: .35rem;
+            .w(3.22rem);
+            .line(1rem);
+            .algin(c);
+            &:nth-of-type(2){
+                margin: 0;
+            }
+            &.active{
+                border-color: @mainCol;
+                background: url('~@/assets/images/gou.png') right bottom no-repeat;
+                background-size: .3rem .23rem;
+            }
+        }
+    }
+    .express-pannel{
+        margin-bottom: .65rem;
+        .bg(#fff);
+        .express-row{
+            border-bottom: 1px solid @borCol;
+            .display(block);
+            .paddingRow(.35rem);
+            .color(@b-6);
+            .line(.98rem);
+            .head{
+                margin-right: .5rem;
+            }
+        }
+
+    }
+    .btn-bar{
+        .paddingRow(.35rem);
+        .save{
+            .w(100%);
+            .color(#fff);
+            .bg(@mainCol);
+            .fontSize(.3rem);
+        }
+    }
+    .hide{
+        .display(none);
+    }
+}

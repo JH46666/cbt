@@ -257,6 +257,30 @@ export default new Router({
 					}
 				},
 				{
+					path: 'editexpress',
+					name: '修改配送方式',
+					component: resolve => require(['@/views/seller/editExpress.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+				{
+					path: 'sendgoods',
+					name: '发货',
+					component: resolve => require(['@/views/seller/sendGoods.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+				{
+					path: 'orderdetail',
+					name: '卖家订单详情',
+					component: resolve => require(['@/views/seller/orderDetail.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+				{
 					path: 'activitylist',
 					name: '活动列表',
 					component: resolve => require(['@/views/seller/activityList.vue'],resolve),
