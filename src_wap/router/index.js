@@ -101,6 +101,14 @@ export default new Router({
 					meta: {
 						hideFooter: true
 					}
+				},
+				{
+					path: 'redpacket',
+					name: '账户余额',
+					component: resolve => require(['@/views/center/redpacket.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
 				}
 			]
 		},
