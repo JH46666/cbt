@@ -91,7 +91,7 @@
             </div>
         </section>
         <div class="new-up">
-            <mt-button type="default"><span class="add"><i class="icon-xinzeng"></i></span>新品上架</mt-button>
+            <mt-button type="default"><span class="add"><i class="icon-xinzeng"></i></span>创建商品</mt-button>
         </div>
     </div>
 </template>
