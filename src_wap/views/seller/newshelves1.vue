@@ -16,25 +16,28 @@
             <div v-if="!isSure">请选择<i class="iconfont">&#xe744;</i></div>
             <div class="on" v-if="isSure">{{ typeName }}</div>
         </div>
-        <div class="shelves_second_type">
+        <div class="shelves_second_type" :class="{on: isSure ,'wxClass': !wxFlag}">
             <div class="shelves_second_type_wrapper">
                 <div class="shelves_second_type_head">
                     选择二级分类
+                    <span v-if="secondTypeName!=''">{{ secondTypeName }}</span>
                 </div>
                 <div class="shelves_second_type_content">
                     <div class="shelves_second_type_content_wrapper">
-                        aaaa<hr />
-                        aaaa<hr />
-                        aaaa<hr />
-                        aaaa<hr />
-                        aaaa<hr />
-                        aaaa<hr />aaaa<hr />aaaa<hr />aaaa<hr />aaaa<hr />aaaa<hr />aaaa<hr />aaaa<hr />aaaa<hr />aaaa<hr />
+                        <div class="shelves_second_type_content_item" :class="{on: index === secondClass}" v-for="(item,index) in secondList" :key="index" @click="selectSecondType(item,index)">
+                            <div class="item_img">
+                                <img :src="item.imgUrl" />
+                            </div>
+                            <div class="item_name">
+                                {{ item.name }}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="btn_wrapper">
-            <mt-button type="primary" :disabled="stepBol">下一步</mt-button>
+            <mt-button type="primary" :disabled="stepBol" @click.native="goStep2">下一步</mt-button>
         </div>
         <div class="dialog" :class="{on: typeDialog}">
             <div class="dialog_wrapper">
@@ -60,15 +63,44 @@
 export default {
     data() {
         return {
+            wxFlag: false,
             stepBol: true,
             listType: ['乌龙茶','花茶','乌龙茶','花茶','乌龙茶','花茶','乌龙茶','花茶','乌龙茶','花茶','乌龙茶','花茶'],
             selClass: null,
             typeDialog: false,
             typeName: '',
             isSure: false,
+            secondList: [
+                {name: '冰红茶',imgUrl: '../src_wap/assets/second_type.png'},
+                {name: '冰红茶',imgUrl: '../src_wap/assets/second_type.png'},
+                {name: '冰红茶',imgUrl: '../src_wap/assets/second_type.png'},
+                {name: '冰红茶',imgUrl: '../src_wap/assets/second_type.png'},
+                {name: '冰红茶',imgUrl: '../src_wap/assets/second_type.png'},
+                {name: '冰红茶',imgUrl: '../src_wap/assets/second_type.png'},
+                {name: '冰红茶',imgUrl: '../src_wap/assets/second_type.png'},
+                {name: '冰红茶',imgUrl: '../src_wap/assets/second_type.png'},
+                {name: '冰红茶',imgUrl: '../src_wap/assets/second_type.png'},
+                {name: '冰红茶',imgUrl: '../src_wap/assets/second_type.png'},
+                {name: '冰红茶',imgUrl: '../src_wap/assets/second_type.png'},
+                {name: '冰红茶',imgUrl: '../src_wap/assets/second_type.png'},
+                {name: '冰红茶',imgUrl: '../src_wap/assets/second_type.png'},
+                {name: '冰红茶',imgUrl: '../src_wap/assets/second_type.png'},
+                {name: '冰红茶',imgUrl: '../src_wap/assets/second_type.png'}
+            ],
+            secondClass: null,
+            secondTypeName: '',
         }
     },
     methods: {
+        goStep2() {
+            this.$router.push({
+                path: '/seller/newshelves-2',
+                query: {
+                    name: 'select',
+                    dataObj: this.typeName +'-'+ this.secondTypeName
+                }
+            });
+        },
         selectType() {
             this.typeDialog = true;
         },
@@ -81,14 +113,27 @@ export default {
             this.typeName = '';
         },
         sureMethod() {
-
             this.typeDialog = false;
             this.isSure = true;
+        },
+        selectSecondType(item,index) {
+            this.secondClass = index;
+            this.secondTypeName = item.name;
         }
-    }
+    },
+    watch: {
+        secondTypeName(val) {
+            if(val != ''){
+                this.stepBol = false;
+            }
+        }
+    },
+    mounted () {
+       this.wxFlag = this.$tool.isWx;
+  　}
 }
 </script>
 
 <style lang="less">
-@import '~@/styles/seller/newshelves.less';
+@import '~@/styles/seller/newshelves1.less';
 </style>

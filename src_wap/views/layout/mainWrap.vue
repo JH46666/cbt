@@ -1,6 +1,6 @@
 <template>
     <div id="container">
-        <cbt-header v-if="!$tool.isWx"></cbt-header>
+        <cbt-header v-if="!$tool.isWx && $route.name !== '首页'"></cbt-header>
         <div class="content" :class="{'no-footer':$route.meta.hideFooter,'no_header': wxFlag}">
             <transition :name="model" mode="out-in">
                 <router-view  class="content_inner"></router-view>
@@ -21,7 +21,11 @@
         data() {
             return {
                 model: 'move',
-                wxFlag: false,
+            }
+        },
+        computed: {
+            wxFlag() {
+                return this.$tool.isWx || this.$route.name === '首页'
             }
         },
         // 判断动画效果
@@ -40,10 +44,7 @@
                 this.model ='move';
             }
             next();
-        },
-        mounted () {
-           this.wxFlag = this.$tool.isWx;
-      　}
+        }
     }
 </script>
 

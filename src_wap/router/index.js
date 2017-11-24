@@ -101,6 +101,14 @@ export default new Router({
 					meta: {
 						hideFooter: true
 					}
+				},
+				{
+					path: 'redpacket',
+					name: '账户余额',
+					component: resolve => require(['@/views/center/redpacket.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
 				}
 			]
 		},
@@ -273,6 +281,14 @@ export default new Router({
 					}
 				},
 				{
+					path: 'orderdetail',
+					name: '卖家订单详情',
+					component: resolve => require(['@/views/seller/orderDetail.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+				{
 					path: 'activitylist',
 					name: '活动列表',
 					component: resolve => require(['@/views/seller/activityList.vue'],resolve),
@@ -305,9 +321,17 @@ export default new Router({
 					}
 				},
 				{
-					path: 'newshelves',
-					name: '新品上架',
-					component: resolve => require(['@/views/seller/newshelves.vue'],resolve),
+					path: 'newshelves-1',
+					name: '新品上架-1',
+					component: resolve => require(['@/views/seller/newshelves1.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+				{
+					path: 'newshelves-2',
+					name: '新品上架-2',
+					component: resolve => require(['@/views/seller/newshelves2.vue'],resolve),
 					meta: {
 						hideFooter: true
 					}

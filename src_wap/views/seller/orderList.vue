@@ -49,7 +49,6 @@
         <!-- 关闭订单部分 -->
         <mt-popup
             v-model="closeUp"
-            popup-transition="popup-fade"
             position="bottom">
             <div class="close-wrap">
                 <h3>选择关闭订单原因</h3>
@@ -91,10 +90,11 @@
                 this.closeUp = false;
             },
             show1() {
+                this.closeUp = true;
                 // console.log(this.$editPrice)
-                this.$editPrice().then((resolve) =>{
-                    console.log(resolve)
-                }).catch(() => {})
+                // this.$editPrice().then((resolve) =>{
+                //     console.log(resolve)
+                // }).catch(() => {})
             }
         }
     }
