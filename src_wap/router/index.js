@@ -319,7 +319,15 @@ export default new Router({
 					meta: {
 						hideFooter: true
 					}
-				}
+				},
+				{
+					path: 'newshelves3',
+					name: '新品上架3',
+					component: resolve => require(['@/views/seller/newshelves3.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
 
 			]
 		}
