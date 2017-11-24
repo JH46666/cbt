@@ -273,6 +273,14 @@ export default new Router({
 					}
 				},
 				{
+					path: 'orderdetail',
+					name: '卖家订单详情',
+					component: resolve => require(['@/views/seller/orderDetail.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+				{
 					path: 'activitylist',
 					name: '活动列表',
 					component: resolve => require(['@/views/seller/activityList.vue'],resolve),
