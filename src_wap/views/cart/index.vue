@@ -15,7 +15,7 @@
                             </p>
                         </div>
                         <template v-if="list.isSelf">
-                            <div class="self"><img src="../../assets/images/oteao.png" alt=""></div>
+                            <div class="self"><img src="../../assets/images/logo_2.png" alt=""></div>
                             <p>自营</p>
                         </template>
                         <template v-else>

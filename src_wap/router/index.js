@@ -104,7 +104,7 @@ export default new Router({
 				},
 				{
 					path: 'redpacket',
-					name: '账户余额',
+					name: '红包列表',
 					component: resolve => require(['@/views/center/redpacket.vue'],resolve),
 					meta: {
 						hideFooter: true

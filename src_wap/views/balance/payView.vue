@@ -26,6 +26,7 @@
                 <div class="delivery-text">
                     <i class="icon-zhifuchenggong"></i>货到付款订单提交成功
                 </div>
+                <p class="wait">还需支付<span class="gold">￥500.00</span></p>
                 <div class="delivery-btn-wrap">
                     <mt-button type="default">查看订单</mt-button>
                     <mt-button type="default">立即支付</mt-button>

@@ -1,6 +1,6 @@
 <template>
     <div id="balance">
-        <div class="main-top">
+        <div class="main-top" ref="main">
             <div class="address">
                 <div class="left"><i class="icon-dizhi"></i></div>
                 <div class="center">
@@ -131,10 +131,14 @@
                     商品总额: <span class="gold">1314.00 + 111积分</span>
                 </div>
             </section>
+
+            <section class="bd-address" @click="gotoTop">
+                收货地址：横穿横穿横穿横穿横穿横穿横穿横穿横穿横穿横穿横穿横穿横穿&nbsp;&nbsp;&nbsp;&nbsp;陈校团 18206062601
+            </section>
         </div>
         <section class="save-order">
-            <p class="price">应付：￥1813.00</p>
-            <mt-button type="default">提价订单</mt-button>
+            <p class="price">应付：<span class="gold">￥1813.00</span></p>
+            <mt-button type="default">提交订单</mt-button>
         </section>
 
         <!-- 选择快递弹出 -->
@@ -161,6 +165,7 @@
             return {
                 showPayType: false,         // 支付方式与快递弹窗
                 showRedpacket: false,       // 红包弹窗
+                timer: null,                // 返回顶部的定时器
             }
         },
         methods: {
@@ -179,6 +184,18 @@
             // 红包弹窗关闭时，不管确定还是取消
             closeRedpacket(data) {
                 this.showRedpacket = false;
+            },
+            // 点击底下地址返回顶部
+            gotoTop() {
+                let top = this.$refs.main.scrollTop;
+                this.timer = setInterval(() => {
+                    top -= 50;
+                    if(top <=0 ){
+                        top = 0;
+                        clearInterval(this.timer);
+                    }
+                    this.$refs.main.scrollTop = top
+                },16)
             }
         }
     }
