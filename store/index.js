@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import getters from './getters';
 // 模块
 import app from './modules/app';
+import seo from './modules/seo'
 
 
 Vue.use(Vuex)
@@ -10,6 +11,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     getters,
     modules: {
-        app
+        app,
+        seo
     }
 })
