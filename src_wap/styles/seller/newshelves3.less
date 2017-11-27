@@ -64,9 +64,6 @@
             .position(r);
             overflow: hidden;
             .one-img{
-                .position(a);
-                top: 0;
-                left: 0;
                 .w(100%);
             }
         }
@@ -90,14 +87,28 @@
             margin-top: -.56rem;
         }
     }
+    .delete-btn{
+        .position(a);
+        top: .17rem;
+        right: .17rem;
+        .color(#adadad);
+        i{
+            .fontSize(.4rem);
+        }
+    }
     .main-imgs{
+        .main-img-box{
+            .position(r);
+            margin-top: .3rem;
+        }
         .upload-box{
             .w(100%);
-            .h(2rem);
+            min-height: 2rem;
             margin: .3rem auto;
         }
     }
     .detail-imgs{
+        margin-top: .2rem;
         h4{
             margin: .3rem 0 .2rem;
         }
@@ -174,6 +185,47 @@
             &.on{
                 .color(#f08200);
                 .bg(#fafafa);
+            }
+        }
+    }
+    .suc_popup{
+        .popup_inner{
+            .w(6.1rem);
+            .h(2.86rem);
+            .position(a);
+            top: 50%;
+            left: 50%;
+            margin-left: -3.05rem;
+            margin-top: -1.43rem;
+            .bg(#fff);
+            .reduis(5px);
+            .suc-tip{
+                display: inline-block;
+                margin: .6rem auto;
+                min-width: 2rem;
+                .fontSize(.4rem);
+                .line(.56rem);
+                background: url('../../assets/images/rackup-gou.png') no-repeat;
+                background-size: .56rem .56rem;
+                padding-left: .8rem; 
+            }
+            .pop-btns{
+                .position(a);
+                .w(100%);
+                bottom: 0;
+                .line(.98rem);
+                .algin(c);
+                .fontSize(.36rem);
+                border-radius: 0 0 5px 5px;
+                border-top: 1px solid #e6e6e6;
+                a{
+                    .color(#333);
+                }
+                .go-on{
+                    .color(#fff);
+                    .bg(#f08200);
+                    border-radius: 0 0 5px 0;
+                }
             }
         }
     }
