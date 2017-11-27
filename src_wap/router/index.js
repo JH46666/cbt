@@ -291,7 +291,7 @@ export default new Router({
 				{
 					path: 'activitylist',
 					name: '活动列表',
-					component: resolve => require(['@/views/seller/activityList.vue'],resolve),
+					component: resolve => require(['@/views/seller/activitylist.vue'],resolve),
 					meta: {
 						hideFooter: true
 					}
@@ -348,6 +348,14 @@ export default new Router({
 					path: 'newshelves3',
 					name: '新品上架3',
 					component: resolve => require(['@/views/seller/newshelves3.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+				{
+					path: 'batch',
+					name: '批量处理',
+					component: resolve => require(['@/views/seller/batchProcess.vue'],resolve),
 					meta: {
 						hideFooter: true
 					}

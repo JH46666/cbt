@@ -1,6 +1,12 @@
 @import url('../base/tools.less');
 .goods_manage_wrapper{
     -webkit-overflow-scrolling: touch;
+    &.empty{
+        .bg(#fff);
+        .tab-btn-wrapper{
+            .bg(#f5f5f5);
+        }
+    }
     .check-cir{
         .w(.34rem);
         .h(.34rem);
@@ -141,8 +147,21 @@
                     .h(1.6rem);
                     margin-right: .2rem;
                     overflow: hidden;
+                    .position(r);
                     img{
                         max-width: 100%;
+                    }
+                    .sale-finish{
+                        .position(a);
+                        top: 0;
+                        left: 0;
+                        .w(100%);
+                        .h(100%);
+                        .bg(rgba(0,0,0,.5));
+                        .color(#fff);
+                        .line(1.6rem);
+                        .algin(c);
+                        .fontSize(.24rem);
                     }
                 }
                 .pro-txt{
@@ -175,6 +194,16 @@
                 }
             }
         }
+        .no-item{
+            .algin(c);
+            .color(#666);
+            .fontSize(.28rem);
+            img{
+                .w(1.36rem);
+                display: block;
+                margin: 1.4rem auto .4rem;
+            }
+        }
     }
     .fix-bottom{
         .position(f);
@@ -184,7 +213,6 @@
         .line(.98rem);
         .bg(#fff);
         .fontSize(.3rem);
-        padding-left: .36rem;
         border-top: 1px solid #e6e6e6;
         z-index: 10000;
         .delete-btn{
@@ -203,6 +231,7 @@
             .color(#fff);
         }
         .seller-center{
+            .w(1.6rem);
             .line(.36rem);
             .algin(c);
             .fontSize(.28rem);
@@ -212,7 +241,6 @@
             }
         }
         .noshelves-btn{
-            .w(2.96rem);
             .algin(c);
         }
         .batch-btn{
@@ -225,7 +253,11 @@
             .color(#fff);
         }
     }
-    .seller-bottom{
-        padding-left: 0;
+    .pd_36{
+        padding-left: .36rem;
     }
 }
+// .batch_wrapper .tab-content-wrapper .good-item{
+//     margin-top: 0;
+//     margin-bottom: .2rem;
+// }

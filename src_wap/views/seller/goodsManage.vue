@@ -1,7 +1,7 @@
 <template>
-    <div class="goods_manage_wrapper" @scroll="doScroll" ref="scroll_wrapper">
+    <div class="goods_manage_wrapper" :class="{'empty':isEmpty}" @scroll="doScroll" ref="scroll_wrapper">
         <!-- 搜索框 -->
-        <div class="search-wrapper flex">
+        <div class="search-wrapper flex" v-show="!isEmpty">
             <div class="flex search-inner">
                 <div class="search-txt">
                     <input type="text" name="" value="" v-model="searchTxt" placeholder="搜索商品">
@@ -23,7 +23,7 @@
             </div>
         </div>
         <!-- 排序条件 -->
-        <div class="sort-wrapper flex" :class="{'fixed-sort': fixedFlag,'wx-fixed':wxFixedFlag}">
+        <div class="sort-wrapper flex" :class="{'fixed-sort': fixedFlag,'wx-fixed':wxFixedFlag}" v-show="!isEmpty">
             <label class="flex-1 sort-item" :class="{on:sortCondition=='time'}">
                 创建时间
                 <input type="radio" name="" value="time" hidden v-model="sortCondition" @click="descFlag = !descFlag">
@@ -52,7 +52,7 @@
         <!-- 商品 -->
         <div class="tab-content-wrapper">
             <div v-show="tabId == 'yes'" class="rack-up">
-                <div class="good-item" v-for="item in products">
+                <div class="good-item" v-if="products1.length>0" v-for="item in products1">
                     <!-- 头部 caption -->
                     <div class="item-caption flex">
                         <div class="cap-l flex flex-1 align_items_c">
@@ -83,9 +83,15 @@
                         <a href="javascript:void(0);" class="flex-1 algin_c"><i class="iconfont">&#xe683;</i>下架</a>
                     </div>
                 </div>
+                <div v-if="products1.length==0">
+                    <div class="no-item">
+                        <img src="../../assets/images/wusousoushuju.jpg" alt="">
+                        <p>暂无已上架的商品~</p>
+                    </div>
+                </div>
             </div>
             <div v-show="tabId == 'no'" class="no-shelves">
-                <div class="good-item" v-for="item in products">
+                <div class="good-item" v-for="item in products2" v-if="products2.length>0">
                     <!-- 头部 caption -->
                     <div class="item-caption flex">
                         <div class="cap-l flex flex-1 align_items_c">
@@ -116,27 +122,42 @@
                         <a href="javascript:void(0);" class="flex-1 algin_c"><i class="iconfont">&#xe683;</i>上架</a>
                     </div>
                 </div>
+                <div v-if="products2.length==0">
+                    <div class="no-item">
+                        <img src="../../assets/images/wusousoushuju.jpg" alt="">
+                        <p>暂无未上架的商品~</p>
+                    </div>
+                </div>
             </div>
         </div>
         <!-- 底部fixed栏 -->
-        <div class="flex fix-bottom align_items_c seller-bottom" v-show="tabId == 'yes'">
-            <div class="flex-1 seller-center">
+        <div class="flex fix-bottom align_items_c" v-show="tabId == 'yes'">
+            <div class="seller-center">
                 <i class="iconfont">&#xe676;</i>
                 <p>卖家中心</p>
             </div>
-            <a class="noshelves-btn batch-btn" href="javascript:void(0);">批量处理</a>
-            <a class="noshelves-btn created-btn" href="javascript:void(0);">创建商品</a>  
+            <a v-show="!isEmpty" class="flex-1 noshelves-btn batch-btn" href="javascript:void(0);">批量处理</a>
+            <a class="flex-1 noshelves-btn created-btn" href="javascript:void(0);">创建商品</a>  
         </div>
         <!-- 底部fixed栏 -->
-        <div class="flex fix-bottom align_items_c" v-show="tabId == 'no'">
-            <div class="flex-1 flex align_items_c">
-                <label class="check-cir">
-                    <input type="checkbox" name=""  v-model="selectIdsNo" hidden>
-                </label>
-                <span>已选（<span>5</span>）</span>
+        <div class="fix-bottom" v-show="tabId == 'no'">
+            <div v-if="isEmpty" class="flex align_items_c">
+                <div class="seller-center">
+                    <i class="iconfont">&#xe676;</i>
+                    <p>卖家中心</p>
+                </div>
+                <a class="flex-1 noshelves-btn created-btn" href="javascript:void(0);">创建商品</a>
             </div>
-            <a class="delete-btn" href="javascript:void(0);">删除</a>  
-            <a class="rackup-btn" href="javascript:void(0);">上架</a>  
+            <div v-else class="flex align_items_c pd_36">
+                <div class="flex-1 flex align_items_c">
+                    <label class="check-cir">
+                        <input type="checkbox" name=""  v-model="selectIdsNo" hidden>
+                    </label>
+                    <span>已选（<span>5</span>）</span>
+                </div>
+                <a class="delete-btn" href="javascript:void(0);">删除</a>  
+                <a class="rackup-btn" href="javascript:void(0);">上架</a>  
+            </div>
         </div>
     </div>
 </template>
@@ -151,7 +172,7 @@
                 descFlag: false,          //是否是降序
                 tabId: 'yes',             //tab切换，yes表示已上架  no表示未上架
                 selectIdsNo: [],           //已选的未上架商品
-                products: [
+                products1: [
                     {
                         createdTime: '2017-11-11 19:00:08',        //创建时间
                         saleNum: 5000,                             //已售
@@ -185,6 +206,9 @@
                         proPrice: 5000,  
                         checkedFlag: false,                          
                     }
+                ],
+                products2: [
+                    
                 ]
             }
         },
@@ -194,6 +218,13 @@
                     return true;
                 }else{
                     return false;
+                }
+            },
+            isEmpty(){
+                if((this.tabId == 'yes' && this.products1.length>0)||(this.tabId == 'no' && this.products2.length>0)){
+                    return false;
+                }else{
+                    return true;
                 }
             }
         },
