@@ -175,7 +175,7 @@
             }
         },
         created(){
-
+            this.$store.commit('SET_TITLE','分类')
         },
         mounted(){
             this.wxFlag = this.$tool.isWx;
@@ -202,6 +202,13 @@
             selectFilter(list,index){
                 list.filterIndex = index;
             },
+        },
+        head: {
+            title() {
+                return {
+                    inner : '分类'
+                }
+            }
         }
     }
 </script>

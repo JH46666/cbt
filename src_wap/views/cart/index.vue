@@ -1,6 +1,6 @@
 <template>
     <div class="cart_wrapper">
-            <div class="edit_floor"><a @click="edit=!edit">{{edit==true?'完成':'编辑'}}</a></div>
+        <div class="edit_floor"><a @click="edit=!edit">{{edit==true?'完成':'编辑'}}</a></div>
         <div class="product_floor">
             <!-- 商品分组 -->
             <div class="group normal_product" v-for="list in groupCollect">
@@ -112,6 +112,13 @@
                 </div>
                 <a class="clear_expired" href="javascript:void(0);">清空失效商品</a>
             </div>
+        </div>
+        <div class="empty">
+            <div class="img-wrap">
+                <img src="../../assets/images/empty.jpg" alt="">
+            </div>
+            <p class="tips">购物车还没有商品哟~</p>
+            <router-link :to="{name: '首页'}" class="to-index">去首页逛逛</router-link>
         </div>
         <may-like></may-like>
         <!-- 底部结算 -->

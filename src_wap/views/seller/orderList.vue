@@ -7,7 +7,10 @@
             <mt-tab-item id="waitreceive">待收货(99+)</mt-tab-item>
         </mt-navbar>
         <!-- 订单面板 -->
-        <section class="order-list-wrap">
+        <section 
+            class="order-list-wrap"
+            v-infinite-scroll="loadMore"
+            :infinite-scroll-disabled="true">
             <div class="order-pannel">
                 <div class="head">
                     <h3 class="title">
@@ -41,7 +44,7 @@
                         <p class="right">共3件&nbsp;&nbsp;<span class="gold">￥2000.00</span></p>
                     </div>
                     <div class="btn-wrap">
-                        <mt-button size="small" @click="show1">发货</mt-button>
+                        <mt-button size="small">发货</mt-button>
                     </div>
                 </div>
             </div>
@@ -60,6 +63,7 @@
         </mt-popup>
     </div>
 </template>
+
 
 
 <script>
@@ -89,12 +93,8 @@
             pickClose() {
                 this.closeUp = false;
             },
-            show1() {
-                this.closeUp = true;
-                // console.log(this.$editPrice)
-                // this.$editPrice().then((resolve) =>{
-                //     console.log(resolve)
-                // }).catch(() => {})
+            loadMore() {
+
             }
         }
     }
