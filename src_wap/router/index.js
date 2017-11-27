@@ -352,6 +352,14 @@ export default new Router({
 						hideFooter: true
 					}
 				},
+				{
+					path: 'batch',
+					name: '批量处理',
+					component: resolve => require(['@/views/seller/batchProcess.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
 
 			]
 		}
