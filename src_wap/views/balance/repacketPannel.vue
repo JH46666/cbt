@@ -97,9 +97,14 @@
             },
             // 激活红包
             showActiveRed() {
-                this.$messageBox.prompt('激活优惠码').then(({ value, action }) => {
-                    console.log(value, action)
-                }).catch((val) => {
+                this.$messageBox({
+                    title: '激活红包',
+                    message: '激活优惠码',
+                    confirmButtonText: '立即激活',
+                    showCancelButton: true,
+                    showInput: true,
+                    inputPlaceholder: '请输入优惠码'
+                }).then((val) => {
                     console.log(val)
                 })
             },

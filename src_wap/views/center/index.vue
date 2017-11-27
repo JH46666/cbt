@@ -26,15 +26,15 @@
             </div>
         </section>
         <section class="count-entry">
-            <router-link to="#" tag="div" class="entry-item">
+            <router-link :to="{name: '账户余额'}" tag="div" class="entry-item">
                 <div class="num">100.00</div>
                 <p class="count-text">账户余额(元)</p>
             </router-link>
-            <router-link to="##" tag="div" class="entry-item">
+            <router-link :to="{name: '积分记录'}" tag="div" class="entry-item">
                 <div class="num">100</div>
                 <p class="count-text">我的积分</p>
             </router-link>
-            <router-link to="###" tag="div" class="entry-item">
+            <router-link :to="{name: '红包列表'}" tag="div" class="entry-item">
                     <div class="num">100</div>
                     <p class="count-text">红包个数</p>
             </router-link>
@@ -55,7 +55,7 @@
                 <router-link to="#" class="item">
                     <mt-badge size="small" type="error">30</mt-badge>
                     <span><i class="icon-daifahuo"></i></span>
-                    <p>代发货</p>
+                    <p>待发货</p>
                 </router-link>
                 <router-link to="#" class="item">
                     <mt-badge size="small" type="error">30</mt-badge>
@@ -76,15 +76,15 @@
         </section>
         <section class="tools">
             <router-link :to="{name: '地址管理'}" class="tools-entry">
-                <div class="left"><i class="icon-weibiaoti105"></i>地址管理</div>
+                <div class="left"><i class="icon-dizhi"></i>地址管理</div>
                 <div class="right"><i class="icon-icon07"></i></div>
             </router-link>
             <router-link :to="{name: '地址管理'}" class="tools-entry">
-                <div class="left"><i class="icon-weibiaoti104"></i>修改密码</div>
+                <div class="left"><i class="icon-xiugaimima"></i>修改密码</div>
                 <div class="right"><i class="icon-icon07"></i></div>
             </router-link>
             <router-link :to="{name: '地址管理'}" class="tools-entry">
-                <div class="left"><i class="icon-dianpuguanli"></i>申请为卖家</div>
+                <div class="left"><i class="icon-zhongxindianpu"></i>申请为卖家</div>
                 <div class="right"><i class="icon-icon07"></i></div>
             </router-link>
         </section>
