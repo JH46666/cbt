@@ -9,6 +9,14 @@ import seo from './modules/seo'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
+    state: {
+        device: '',
+    },
+    mutations: {
+        SET_DEVICE(state,val) {
+            state.device = val
+        }
+    },
     getters,
     modules: {
         app,
