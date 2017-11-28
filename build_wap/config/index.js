@@ -18,13 +18,12 @@ function getIPAdress(){
 } 
 module.exports = {
   dev: {
-
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: 'http://java.cbs.test.yipicha.com', // 接口的域名
+        target: 'http://java.cbs.test6.yipicha.com', // 接口的域名
         secure: false,
         changeOrigin: true,
         pathRewrite:{
