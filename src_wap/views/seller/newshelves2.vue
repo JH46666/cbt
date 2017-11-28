@@ -215,7 +215,7 @@ export default {
             this.msg = routerParams;
         },
         goStep3() {
-            this.$router.push('/seller/newshelves3')
+            this.$router.push('/seller/newshelves-3')
         },
         selectRightList(index) {
             this.selectClass = index;
