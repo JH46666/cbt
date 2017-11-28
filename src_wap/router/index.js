@@ -211,37 +211,13 @@ export default new Router({
 					}
 				},
 				{
-					path: 'sellerlist',
-					name: '订单列表2',
-					component: resolve => require(['@/views/order/sellerList.vue'],resolve),
-					meta: {
-						hideFooter: true
-					}
-				},
-				{
-					path: 'sellerdetail',
-					name: '订单详情2',
-					component: resolve => require(['@/views/order/sellerDetail.vue'],resolve),
-					meta: {
-						hideFooter: true
-					}
-				},
-				{
 					path: 'buyerevaluate',
 					name: '订单评价1',
 					component: resolve => require(['@/views/order/buyerEvaluate.vue'],resolve),
 					meta: {
 						hideFooter: true
 					}
-				},
-				{
-					path: 'sellerevaluate',
-					name: '订单评价2',
-					component: resolve => require(['@/views/order/sellerEvaluate.vue'],resolve),
-					meta: {
-						hideFooter: true
-					}
-				},
+				}
 			]
 		},
 		{
@@ -345,14 +321,29 @@ export default new Router({
 					}
 				},
 				{
-					path: 'newshelves3',
+					path: 'newshelves-3',
 					name: '新品上架3',
 					component: resolve => require(['@/views/seller/newshelves3.vue'],resolve),
 					meta: {
 						hideFooter: true
 					}
 				},
-
+				{
+					path: 'recruit',
+					name: '卖家招募',
+					component: resolve => require(['@/views/seller/selleRecruit.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+				{
+					path: 'regist',
+					name: '卖家注册',
+					component: resolve => require(['@/views/seller/regist.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
 			]
 		}
 	]

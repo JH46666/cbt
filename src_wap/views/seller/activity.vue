@@ -29,6 +29,24 @@
         <div class="activity_name">
             特价商品（{{ specialNum }}）件
         </div>
+        <div class="activity_pro">
+            <div class="activity_pro_item">
+                <div class="activity_pro_item_top">
+                    <div class="activity_pro_item_top_left">
+                        <img src="../../assets/list_img.png" />
+                    </div>
+                    <div class="activity_pro_item_top_right">
+                        <p>醉品朴茶 安溪铁观音2017秋茶 乌龙茶 清香型</p>
+                        <p>￥500</p>
+                    </div>
+                </div>
+                <div class="activity_pro_item_bottom">
+                    <div>折扣：<span>100</span></div>
+                    <div>折扣价：<span>100.00</span></div>
+                    <i class="iconfont">&#xe60d;</i>
+                </div>
+            </div>
+        </div>
         <div class="f5-2"></div>
         <div class="activity_name" @click="selectPro = true">
             <div class="plus_icon">+</div>

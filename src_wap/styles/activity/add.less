@@ -39,6 +39,76 @@
             margin-left: .2rem;
         }
     }
+    .activity_pro{
+        .activity_pro_item{
+            height: 2.96rem;
+            width: 100%;
+            .flex;
+            .flex-dir;
+            border-top: 1px solid #e5e5e5;
+            .activity_pro_item_top{
+                .flex-1;
+                padding: 0 .3rem;
+                .flex;
+                .flex-dir(row);
+                .align-items;
+                .activity_pro_item_top_left{
+                    width: 1.62rem;
+                    height: 1.62rem;
+                    overflow: hidden;
+                    border: 1px solid #e5e5e5;
+                    .position(r);
+                    img{
+                        width: 100%;
+                    }
+                }
+                .activity_pro_item_top_right{
+                    .flex-1;
+                    height: 1.6rem;
+                    padding-left: .2rem;
+                    p:first-child{
+                        .fontSize(.3rem);
+                        .line(1.5);
+                        .moreLine;
+                        .color(#333);
+                    }
+                    p:last-child{
+                        .color(@mainCol);
+                        .fontSize(.32rem);
+                        .line(1);
+                        margin-top: .4rem;
+                    }
+                }
+            }
+            .activity_pro_item_bottom{
+                width: 100%;
+                height: .8rem;
+                .bg(#fafafa);
+                .flex;
+                .flex-dir(row);
+                .fontSize(.28rem);
+                div{
+                    padding-left: .3rem;
+                    .color(#99928a);
+                    height: .8rem;
+                    .flex-1;
+                    span{
+                        .color(@mainCol);
+                    }
+                    border-right: 1px solid #e5e5e5;
+                    .line(.8rem);
+                }
+                i{
+                    width: 1.4rem;
+                    height: .8rem;
+                    .algin(c);
+                    .fontSize(.32rem);
+                    .color(#dbd1c5);
+                    .line(.8rem);
+                }
+            }
+        }
+    }
     .activityt_date{
         width: 100%;
         padding: 0 .3rem;
