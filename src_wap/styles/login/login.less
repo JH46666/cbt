@@ -50,10 +50,15 @@
                 .line(.98rem);
                 border: 1px solid #e5e5e5;
                 border-radius: 3px;
-                border: 1px solid #f08200;
                 .algin(c);
-                .color(#f08200);
                 font-size: .3rem;
+                .bg(#ddd);
+                .color(#fff);
+                &.on{
+                    border: 1px solid #f08200;
+                    .color(#f08200);
+                    .bg(#fff);
+                }
             }
         }
         input{
@@ -67,11 +72,18 @@
             .fontSize(.26rem);
         }
     }
+    .error{
+        margin-bottom: .2rem;
+    }
     .mint-button{
         height: .98rem;
         font-size: .3rem;
         color: #fff;
         .bg(#f08200);
+        &.is-disabled{
+            opacity: 1;
+            .bg(#ddd);
+        }
     }
     .btns{
         margin-top: .34rem;
