@@ -45,14 +45,12 @@
                                 <li><i class="iconfont">&#xe673;</i>排序</li>
                             </ul>
                         </div>
-                        <goods-item></goods-item>
-                        <goods-item></goods-item>
-                        <goods-item></goods-item>
-                        <goods-item></goods-item>
-                        <goods-item></goods-item>
-                        <goods-item></goods-item>
-                        <goods-item></goods-item>
-                        <goods-item></goods-item>
+                        <goods-item imgWidth="1.56rem"></goods-item>
+                        <goods-item imgWidth="1.56rem"></goods-item>
+                        <goods-item imgWidth="1.56rem"></goods-item>
+                        <goods-item imgWidth="1.56rem"></goods-item>
+                        <goods-item imgWidth="1.56rem"></goods-item>
+                        <goods-item imgWidth="1.56rem" imgUrl="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Moha_example.svg/200px-Moha_example.svg.png"></goods-item>
                     </div>
                 </div>
             </div>
@@ -177,7 +175,7 @@
             }
         },
         created(){
-
+            this.$store.commit('SET_TITLE','分类')
         },
         mounted(){
             this.wxFlag = this.$tool.isWx;
@@ -204,6 +202,13 @@
             selectFilter(list,index){
                 list.filterIndex = index;
             },
+        },
+        head: {
+            title() {
+                return {
+                    inner : '分类'
+                }
+            }
         }
     }
 </script>

@@ -1,6 +1,6 @@
 <template>
     <div class="detail">
-        <div class="dialog" :class="{'on': showOrHide}" @touchmove="closeDialog">
+        <div class="dialog" :class="{'on': showOrHide}" @touchend="closeDialog">
             <div class="dialog_wrapper_1"  v-if="!isThird">
                 <div class="dialog_title">
                     <i class="iconfont icon-kefu1"></i>
