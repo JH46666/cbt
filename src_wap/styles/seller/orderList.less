@@ -75,17 +75,37 @@
             .btn-wrap{
                 .algin(r);
                 .mint-button--small{
-                    border: 1px solid @mainCol;
-                    .color(@mainCol);
+                    margin-left: .2rem;
+                    border: 1px solid @b-6;
+                    padding: 0;
+                    .color(@b-6);
                     .bg(#fff);
                     .w(1.52rem);
                     .h(.48rem);
                     .reduis(20px);
                 }
+                .mint-button--small.gold{
+                    border: 1px solid @mainCol;
+                    .color(@mainCol);
+                }
             }
         }
     }
-
+    // 无限滚动
+    
+    .goods-loading{
+        .flex;
+        .color(@b-6);
+        .fontSize(.28rem);
+        .line(.98rem);
+        .algin(c);
+        justify-content: center;
+        &>:first-child{
+            .position(r);
+            top: .2rem;
+            margin-right: .4rem;
+        }
+    }
 
     // 关闭订单弹出层样式
     .close-wrap{

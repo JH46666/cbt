@@ -37,25 +37,25 @@
         <section class="order-wrap">
             <div class="title">
                 <h3>卖家订单中心</h3>
-                <router-link to="#" class="entry">
+                <router-link to="/seller/orderlist?type=null" class="entry">
                     全部订单 <i class="icon-icon07"></i>
                 </router-link>
             </div>
             <div class="order-entry">
-                <router-link to="#" class="item">
+                <router-link to="/seller/orderlist?type=waitPay" class="item">
                     <mt-badge size="small" type="error">30</mt-badge>
                     <span><i class="icon-daifukuan"></i></span>
                     <p>待付款</p>
                 </router-link>
-                <router-link to="#" class="item">
+                <router-link to="/seller/orderlist?type=waitSend" class="item">
                     <mt-badge size="small" type="error">30</mt-badge>
                     <span><i class="icon-daifahuo"></i></span>
-                    <p>代发货</p>
+                    <p>待发货</p>
                 </router-link>
-                <router-link to="#" class="item">
+                <router-link to="/seller/orderlist?type=waitRec" class="item">
                     <mt-badge size="small" type="error">30</mt-badge>
                     <span><i class="icon-daishouhuo"></i></span>
-                    <p>待收货</p>
+                    <p>已发货</p>
                 </router-link>
                 <router-link to="#" class="item">
                     <mt-badge size="small" type="error">30</mt-badge>

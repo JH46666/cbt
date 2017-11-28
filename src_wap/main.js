@@ -10,6 +10,7 @@ import * as utils from 'utils/index.js';
 import VueHead from 'vue-head';
 import cbtComponents from './components';
 import {MessageBox,Toast} from 'mint-ui';
+import filters from '../filters'
 
 // 全局方法
 Vue.prototype.$messageBox = MessageBox;
@@ -26,6 +27,11 @@ Vue.use(VueHead)
 
 // 茶帮通组件
 Vue.use(cbtComponents)
+
+
+// 全局过滤
+Vue.use(filters);
+
 
 import './styles/less/common.less'
 
@@ -45,5 +51,8 @@ new Vue({
   router,
   store,
   template: '<App/>',
-  components: { App }
+  components: { App },
+  created() {
+    this.$store.commit('SET_DEVICE','WAP')
+  }
 })
