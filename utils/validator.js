@@ -7,6 +7,13 @@ let verify = {
         }
         return true; 
     },
+    checkMsgCode(val){
+        let reg = /^\d{4}$/;
+        if(!reg.test(val)){
+            return false;
+        }
+        return true; 
+    }
 }
 
 export default verify;

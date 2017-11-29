@@ -1,217 +1,236 @@
 <template lang="html">
-    <div class="list">
-        <mt-navbar v-model="selected" :class="{ 'on': !wxFlag }">
-            <mt-tab-item id="1">全部</mt-tab-item>
-            <mt-tab-item id="2">待付款</mt-tab-item>
-            <mt-tab-item id="3">待发货</mt-tab-item>
-            <mt-tab-item id="4">待收货</mt-tab-item>
-            <mt-tab-item id="5">待评价</mt-tab-item>
+    <div class="list" ref="scrollDoc">
+        <mt-navbar :class="{ 'on': !wxFlag }">
+            <mt-tab-item v-for="(item,index) in tabList" :class="{'on': index === selectClass}" @click.native="selTab(index)" :key="index">{{ item }}</mt-tab-item>
         </mt-navbar>
-        <mt-tab-container v-model="selected">
-            <mt-tab-container-item id="1">
-                <div class="mt_cell_wrapper">
+         <!--  -->
+        <mt-tab-container>
+            <mt-tab-container-item>
+                <div class="mt_cell_wrapper" v-if="orderNum != 0" v-infinite-scroll="loadMore" infinite-scroll-disabled="noInfinity" infinite-scroll-distance="10">
                     <mt-cell v-for="(item,index) in orderList" :key="index">
                         <div class="order_head">
-                            <div class="order_logo" v-if="!item.shop">
+                            <div class="order_logo" v-if="item.sellerOrgId === 1">
                                 <img :src="shopLogo" />自营
                             </div>
-                            <div class="order_icon" v-if="item.shop">
+                            <div class="order_icon" v-if="item.sellerOrgId == null">
                                 <i class="iconfont">&#xe66d;</i>
-                                {{ item.name }}
+                                {{ item.shopName }}
                             </div>
                             <div class="order_status">
-                                {{ item.orderStatus }}
+                                {{ orderStatus[item.orderStatus] }}
                             </div>
                         </div>
                         <div class="order_content">
-                            <div class="order_item" v-for="(pro,count) in item.goodArray" :key="count">
+                            <div class="order_item" v-for="(pro,count) in item.products" :key="count">
                                 <div class="img_item">
-                                    <img :src="pro.goodImg" />
+                                    <img :src="pro.imageUrl" />
                                 </div>
                                 <div class="text_item">
-                                    <p class="text_wrap">{{ pro.goodText }}</p>
+                                    <p class="text_wrap">{{ pro.productName }}</p>
                                     <div class="count_price_wrap">
-                                        <span>￥{{ pro.goodPrice }}</span>
-                                        <span>x{{ pro.goodCount }}</span>
+                                        <span>￥{{ pro.productPrice }}</span>
+                                        <span>x{{ pro.productNum }}</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="order_foot">
                             <div class="price_wrapper">
-                                <div class="price">订单金额：<span>￥{{ item.price  }}</span></div>
-                                <div class="count">共{{ item.count }}件</div>
+                                <div class="price">订单金额：<span>￥{{ item.productPaySum  }}</span></div>
+                                <div class="count">共{{ item.products.length }}件</div>
                             </div>
                             <div class="btn_wrapper">
-                                <mt-button plain v-if="item.orderStatus === '待审核' || item.orderStatus === '待评价' || item.orderStatus === '待发货'" @click.native="confrimMethod">再次购买</mt-button>
-                                <mt-button plain v-if="item.orderStatus === '待评价'" @click.native="confrimMethod">评价</mt-button>
-                                <mt-button plain v-if="item.orderStatus === '待付款'" @click.native="confrimMethod">取消订单</mt-button>
-                                <mt-button plain v-if="item.orderStatus === '待付款'" class="pay_now" @click.native="confrimMethod">立即支付</mt-button>
-                                <mt-button plain v-if="item.orderStatus === '已发货'" @click.native="confrimMethod">确认收货</mt-button>
+                                <!-- <mt-button plain v-if="item.orderStatus === 'WAIT_CHECK' || item.orderStatus === 'PAY_WAIT_AUDIT' || item.orderStatus === 'PACKING' || item.orderStatus === 'DELIVERED' || item.orderStatus === 'CBT_BUYER' || item.orderStatus === 'COMMENT' || item.orderStatus === 'CLOSE'" @click.native="confrimMethod">再次购买</mt-button> -->
+                                <mt-button plain v-if="item.orderStatus === 'COMMENT'" class="pay_now" @click.native="commentMethod">待评价</mt-button>
+                                <mt-button plain v-if="item.orderStatus === 'WAIT_PAY' || item.orderStatus === 'WAIT_CHECK'" @click.native="cancelMethod(item)">取消订单</mt-button>
+                                <mt-button plain v-if="item.orderStatus === 'WAIT_PAY'" class="pay_now" @click.native="payMethod">立即支付</mt-button>
+                                <mt-button plain v-if="item.orderStatus === 'DELIVERED' || item.orderStatus === 'CBT_BUYER'" class="pay_now" @click.native="confrimMethod(item.orderNo)">确认收货</mt-button>
                             </div>
                         </div>
                     </mt-cell>
+                    <div class="goods-loading" v-if="!noInfinity">
+                        <mt-spinner type="fading-circle" color="#f08200"></mt-spinner>
+                        <span class="loading-text">正在努力加载中~</span>
+                    </div>
+                    <div class="no-more" v-if="noInfinity">没有更多了呦~</div>
                 </div>
-            </mt-tab-container-item>
-            <mt-tab-container-item id="2">
-                <!-- <div class="mt_cell_wrapper">
-
-                </div> -->
-                <div class="mt_empty_wrapper">
+                <div class="mt_empty_wrapper" v-if="orderNum === 0">
                     <div class="empty_img">
                         <img src="../../assets/images/empty_list.png" />
                     </div>
-                    <p class="empty_text">您还没有订单哟，快去买买买吧~</p>
-                    <mt-button plain>去购物</mt-button>
-                </div>
-            </mt-tab-container-item>
-            <mt-tab-container-item id="3">
-                <!-- <div class="mt_cell_wrapper">
-
-                </div> -->
-                <div class="mt_empty_wrapper">
-                    <div class="empty_img">
-                        <img src="../../assets/images/empty_list.png" />
-                    </div>
-                    <p class="empty_text">您还没有订单哟，快去买买买吧~</p>
-                    <mt-button plain>去购物</mt-button>
-                </div>
-            </mt-tab-container-item>
-            <mt-tab-container-item id="4">
-                <!-- <div class="mt_cell_wrapper">
-
-                </div> -->
-                <div class="mt_empty_wrapper">
-                    <div class="empty_img">
-                        <img src="../../assets/images/empty_list.png" />
-                    </div>
-                    <p class="empty_text">您还没有订单哟，快去买买买吧~</p>
-                    <mt-button plain>去购物</mt-button>
-                </div>
-            </mt-tab-container-item>
-            <mt-tab-container-item id="5">
-                <!-- <div class="mt_cell_wrapper">
-
-                </div> -->
-                <div class="mt_empty_wrapper">
-                    <div class="empty_img">
-                        <img src="../../assets/images/empty_list.png" />
-                    </div>
-                    <p class="empty_text">您还没有订单哟，快去买买买吧~</p>
-                    <mt-button plain>去购物</mt-button>
+                    <p class="empty_text" v-if="selectClass === 0">您还没有订单哟，快去买买买吧~</p>
+                    <p class="empty_text" v-if="selectClass != 0">您还没有相关的订单哟~</p>
+                    <mt-button plain @click="toIndex">去购物</mt-button>
                 </div>
             </mt-tab-container-item>
         </mt-tab-container>
+        <mt-popup v-model="closeUp" position="bottom">
+            <div class="close-wrap">
+                <p class="close-tip"  v-for="(item,index) in cancelList" :class="{on: index === cancelClass}" :key="index" @click="selectCancel(index)">{{ item }}<i class="iconfont">&#xe684;</i></p>
+            </div>
+        </mt-popup>
     </div>
 </template>
 
 <script>
+import { Toast,MessageBox } from 'mint-ui';
+import {mapGetters} from 'vuex';
 export default {
     data() {
         return {
-            selected: '1',
-            orderList: [
-                {
-                    shop: false,        // 是否第三方
-                    name: null,
-                    orderStatus: '待审核',
-                    goodArray: [
-                        {
-                            goodImg: '../src_wap/assets/list_img.png',
-                            goodText: '醉品朴茶 安溪铁观音2017秋茶 乌龙茶 清香型',
-                            goodPrice: 500,
-                            goodCount: 1
-                        },
-                        {
-                            goodImg: '../src_wap/assets/list_img.png',
-                            goodText: '醉品朴茶 安溪铁观音2017秋茶 乌龙茶 清香型',
-                            goodPrice: 1000,
-                            goodCount: 20
-                        }
-                    ],
-                    count: 21,
-                    price: 20500
-                },
-                {
-                    shop: true,        // 是否第三方
-                    name: '不知道什么店铺',
-                    orderStatus: '待付款',
-                    goodArray: [
-                        {
-                            goodImg: '../src_wap/assets/list_img.png',
-                            goodText: '醉品朴茶 安溪铁观音2017秋茶 乌龙茶 清香型',
-                            goodPrice: 500,
-                            goodCount: 1
-                        },
-                        {
-                            goodImg: '../src_wap/assets/list_img.png',
-                            goodText: '醉品朴茶 安溪铁观音2017秋茶 乌龙茶 清香型',
-                            goodPrice: 1000,
-                            goodCount: 20
-                        }
-                    ],
-                    count: 21,
-                    price: 20500
-                },
-                {
-                    shop: true,        // 是否第三方
-                    name: '不知道什么店铺',
-                    orderStatus: '待评价',
-                    goodArray: [
-                        {
-                            goodImg: '../src_wap/assets/list_img.png',
-                            goodText: '醉品朴茶 安溪铁观音2017秋茶 乌龙茶 清香型',
-                            goodPrice: 500,
-                            goodCount: 1
-                        },
-                        {
-                            goodImg: '../src_wap/assets/list_img.png',
-                            goodText: '醉品朴茶 安溪铁观音2017秋茶 乌龙茶 清香型',
-                            goodPrice: 1000,
-                            goodCount: 20
-                        }
-                    ],
-                    count: 21,
-                    price: 20500
-                },
-                {
-                    shop: true,        // 是否第三方
-                    name: '不知道什么店铺',
-                    orderStatus: '已发货',
-                    goodArray: [
-                        {
-                            goodImg: '../src_wap/assets/list_img.png',
-                            goodText: '醉品朴茶 安溪铁观音2017秋茶 乌龙茶 清香型',
-                            goodPrice: 500,
-                            goodCount: 1
-                        },
-                        {
-                            goodImg: '../src_wap/assets/list_img.png',
-                            goodText: '醉品朴茶 安溪铁观音2017秋茶 乌龙茶 清香型',
-                            goodPrice: 1000,
-                            goodCount: 20
-                        }
-                    ],
-                    count: 21,
-                    price: 20500
-                }
-            ],
+            orderList: [],
             shopLogo: '../src_wap/assets/images/list_logo.png',
             wxFlag: false,
+            currentNum: 1,
+            pageNume: 20,
+            device: 'WAP',
+            orderNum: 0,
+            noInfinity: false,
+            tabList: ['全部','待付款','待发货','待收货','待评价'],
+            selectClass: 0,
+            closeUp: false,
+            cancelList: ['我不想买了','拍错商品，重新下单','其他原因'],
+            cancelClass: null,
+            cancelPro: {},
         }
     },
     methods: {
-        confrimMethod() {
-            MessageBox.confirm('确定执行此操作?').then(action => {
-                console.log(11111);
+        selectCancel(index) {
+            this.cancelList = index;
+            setTimeout(() => {
+                let data = {
+                    payId: this.cancelPro.payId,
+                    cancelReason: this.cancelList[this.cancelList]
+                }
+                this.$api.post('/oteao/order/cancelOrder',data,res => {
+                    Toast({
+                        message: `订单【${this.cancelPro.orderNo}】已关闭`,
+                        iconClass: 'icon icon-success'
+                    });
+                    this.currentNum = 1;
+                    return this.getList(this.selectClass).then((res) =>{
+                        this.orderList = res.data.order;
+                        this.orderNum = res.data.orderNum;
+                    })
+                },res=>{
+                    return Toast({
+                        message: res.errorMsg,
+                        iconClass: 'icon icon-fail'
+                    });
+                })
+            },300)
+        },
+        commentMethod() {
+
+        },
+        cancelMethod(obj) {
+            this.closeUp = true;
+            this.cancelPro = obj;
+        },
+        payMethod() {
+
+        },
+        confrimMethod(orderNo) {
+            let data = {
+                orderNo: orderNo
+            }
+            MessageBox.confirm('确定确认收货?').then(action => {
+                this.$api.post('/oteao/order/confimReceipt',data,res => {
+                    Toast({
+                        message: `订单【${orderNo}】已确认收货`,
+                        iconClass: 'icon icon-success'
+                    });
+                    this.currentNum = 1;
+                    return this.getList(this.selectClass).then((res) =>{
+                        this.orderList = res.data.order;
+                        this.orderNum = res.data.orderNum;
+                    })
+                },res=>{
+                    return Toast({
+                        message: res.errorMsg,
+                        iconClass: 'icon icon-fail'
+                    });
+                })
             },action => {
-                console.log(22222);
+                console.log('cancel!');
             },);
+        },
+        toIndex() {
+            this.$router.push('/index')
+        },
+        loadMore() {
+            try {
+                if(this.orderList.length >= this.orderNum) return this.noInfinity = true;
+                this.currentNum++;
+                this.getList(this.selectClass).then((res) =>{
+                    let timeData = res.data.order;
+                    this.orderList = this.orderList.concat(timeData);
+                    this.noInfinity = false;
+                })
+            } catch (e) {
+
+            }
+        },
+        selTab(index) {
+            this.currentNum = 1;
+            this.selectClass = index;
+            this.$refs.scrollDoc.scrollTop = 0;
+            this.getList(this.selectClass).then((res) =>{
+                this.orderList = res.data.order;
+                this.orderNum = res.data.orderNum;
+            })
+            this.noInfinity = false;
+        },
+        getList(id) {
+            let status;
+            if(id === 0){
+                status = null;
+            }else if(id === 1){
+                status = 'waitPay';
+            }else if(id === 2){
+                status = 'waitSend';
+            }else if(id === 3){
+                status = 'waitRec';
+            }else if(id === 4){
+                status = 'waitComment';
+            }
+            let data = {
+               pageNumber: this.currentNum,
+               pageSize: this.pageNume,
+               device: this.device,
+               orderStatus: status
+            }
+            return new Promise((resolve,reject) => {
+                this.$api.post('/oteao/order/preOrderList',data,res => {
+                    resolve(res);
+                },res=>{
+                    return Toast({
+                        message: '数据请求失败',
+                        iconClass: 'icon icon-fail'
+                    });
+                })
+            })
+        }
+    },
+    head: {
+        title: {
+          inner: '订单列表'
         }
     },
     mounted () {
        this.wxFlag = this.$tool.isWx;
-  　}
+  　},
+    created() {
+        this.getList(this.selectClass).then((res) =>{
+            this.orderList = res.data.order;
+            this.orderNum = res.data.orderNum;
+        })
+    },
+    computed:{
+        ...mapGetters([
+            'orderStatus'
+        ]),
+    }
 }
 </script>
 

@@ -18,9 +18,13 @@
             .fontSize(.3rem);
             padding: .32rem 0;
             .color(#666);
-            &.is-selected{
+            &.on{
                 border-bottom: 0 none;
                 .color(#f08200);
+                margin-bottom: 0;
+            }
+            &.is-selected{
+                border-bottom: 0 none;
                 margin-bottom: 0;
             }
         }
@@ -68,6 +72,7 @@
                 .mint-cell-value{
                     .flex;
                     .flex-dir;
+                    width: 100%;
                     .order_head{
                         width: 100%;
                         border-bottom: 1px solid #e5e5e5;
@@ -191,6 +196,57 @@
             }
         }
     }
+    .goods-loading{
+        .flex;
+        width: 100%;
+        .flex-dir(row);
+        .justify-content;
+        .align-items;
+        padding: .2rem 0;
+        .loading-text{
+            padding-left: .2rem;
+            .color(#666);
+            .fontSize(.28rem);
+        }
+    }
+    .no-more{
+        width: 100%;
+        background-color: #f5f5f5;
+        color: #adadad;
+        height: .8rem;
+        line-height: .8rem;
+        text-align: center;
+        font-size: .28rem;
+    }
+    .close-wrap{
+        max-height: 6rem;
+        overflow: auto;
+        .w(100%);
+        .algin(c);
+        .fontSize(.3rem);
+        .line(.98rem);
+        .close-tip{
+            .position(r);
+            i{
+                display: none;
+                .position(a);
+                 right: .3rem;
+            }
+            border-bottom: 1px solid @borCol;
+            &.on{
+                .color(@mainCol);
+                border-color: @mainCol;
+                i{
+                    .color(@mainCol);
+                    display: inline-block;
+                }
+            }
+        }
+    }
+}
+.mint-popup{
+   .w(100%);
+   overflow: hidden;
 }
 .mint-msgbox-confirm{
     .color(#f08200);

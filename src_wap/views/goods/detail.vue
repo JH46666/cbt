@@ -75,6 +75,19 @@
                         <p class="detail_now_price">￥{{ goodsDetail.goodsPrice.toFixed(2) }}</p>
                         <p class="detail_suggest_price">建议零售价：￥{{ goodsDetail.suggestPrice.toFixed(2) }}</p>
                     </div>
+                    <div class="detail_active">
+                        <label>促销</label>
+                        <div class="detail_active_list">
+                            <div class="detail_active_item">
+                                <span>直降</span>
+                                <p>已优惠￥285.78</p>
+                            </div>
+                            <div class="detail_active_item">
+                                <span>直降</span>
+                                <p>已优惠￥285.78</p>
+                            </div>
+                        </div>
+                    </div>
                     <div class="detail_describe_count">
                         <label class="label_text">采购量</label>
                         <plusOreduce :maxNum="goodsDetail.maxGoodsNum" @countNum="goodsCounts"></plusOreduce>
@@ -350,7 +363,7 @@ export default {
                });
            }
            this.special.day = d;
-           this.special.hour = d;
+           this.special.hour = h;
            this.special.min = m;
            this.special.sec = s;
        },
