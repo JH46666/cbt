@@ -43,7 +43,7 @@
         <div class="popup illegal_popup" v-show="illegalFlag">
             <div class="popup_inner illegal_inner">
                 <p>您的账号因违规操作而被冻结！<br/>若有疑问请联系客服4006-066-068</p>
-                <a class="color_f08" href="javascript:void(0);">确定</a>
+                <a class="color_f08" href="javascript:void(0);" @click="illegalFlag = false">确定</a>
             </div>
         </div>
         <!-- 验证码弹窗 -->
@@ -138,7 +138,11 @@
                         res=>{
                             this.$router.push('/');
                         },res=>{
-                            Toast('账号或密码错误，请核实后重新输入');
+                            if(res.code === '4064'){
+                                this.illegalFlag = true;
+                            }else{
+                                Toast('账号或密码错误，请核实后重新输入');
+                            }
                         });
                     }else if(this.selected == '1'){
                         let data = {
