@@ -4,8 +4,8 @@
             <div class="address">
                 <div class="left"><i class="icon-dizhi"></i></div>
                 <div class="center">
-                    <p class="user">陈伟欸 &nbsp;&nbsp; 18006062601</p>
-                    <p>很长很长的地址很长很长的地址很长很长的地址很长很长的地址很长很长的地址很长很长的地址很长很长的地址很长很长的地址很长很长的地址很长很长的地址很长很长的地址很长很长的地址</p>
+                    <p class="user">{{ myData.receiptName }} &nbsp;&nbsp; {{ myData.receiptPhone }}</p>
+                    <p>{{ myData.detailAddress }}</p>
                 </div>
                 <!-- <div class="right"><i class="icon-icon07"></i></div> -->
             </div>
@@ -20,39 +20,29 @@
                     <input type="radio" value="member" class="hide" v-model="express">
                 </label>
             </section>
-            <section class="express-pannel">
+            <section class="express-pannel" v-if="express === 'express'">
                 <label class="express-row">
-                    <span class="head">快递公司</span><input type="text" placeholder="请选择快递公司">
+                    <span class="head">快递公司</span><input type="text" placeholder="请选择快递公司" v-model="myData.expressDeliveryName">
                 </label>
                 <label class="express-row">
-                    <span class="head">快递单号</span><input type="text" placeholder="请填写快递单号">
+                    <span class="head">快递单号</span><input type="text" placeholder="请填写快递单号" v-model="myData.expressNo">
                 </label>
             </section>
             <h3 class="title">需发货商品</h3>
-            <div class="goods-item">
-                <goods-img style="width:1.6rem;height:1.6rem;"></goods-img>
+            <div class="goods-item" v-for="(item,index) in list">
+                <goods-img style="width:1.6rem;height:1.6rem;" :imgUrl="item.imageUrl || '/'"></goods-img>
                 <div class="right">
-                    <p class="goods-title">醉品朴茶 安溪铁观音2017秋茶 乌龙茶 清香型醉品朴茶 安溪铁观音2017秋茶 乌龙茶 清香型醉品朴茶 安溪铁观音2017秋茶 乌龙茶 清香型</p>
+                    <p class="goods-title">{{ item.productName }}</p>
                     <p class="goods-bd">
-                        <span class="price">￥500</span>
-                        <span class="num">×1</span>
-                    </p>
-                </div>
-            </div>
-            <div class="goods-item">
-                <goods-img style="width:1.6rem;height:1.6rem;"></goods-img>
-                <div class="right">
-                    <p class="goods-title">醉品朴茶 安溪铁观音2017秋茶 乌龙茶 清香型醉品朴茶 安溪铁观音2017秋茶 乌龙茶 清香型醉品朴茶 安溪铁观音2017秋茶 乌龙茶 清香型</p>
-                    <p class="goods-bd">
-                        <span class="price">￥500</span>
-                        <span class="num">×1</span>
+                        <span class="price">￥{{ item.productPrice }}</span>
+                        <span class="num">×{{ item.productNum }}</span>
                     </p>
                 </div>
             </div>
         </div>
 
         <div class="btn-bar">
-            <mt-button type="default">确定发货</mt-button>
+            <mt-button type="default" @click="save" :disabled="!disabled">确定发货</mt-button>
         </div>
     </div>
 </template>
@@ -63,18 +53,40 @@
         data() {
             return {
                 express: 'express',
-                myData: {}
+                myData: {},
+                list: []
             }
         },
         computed: {
-            list() {
-                try {
-                    let selected = this.$route.query.selected;
-                    let index = this.$route.query.index;
-                    return this.$store.state.seller.orderList[selected].order[index];
-                } catch (error) {
-                    return []
+            disabled() {
+                return this.express === 'member' ? true : Boolean(this.myData.expressDeliveryName && this.myData.expressNo)
+            }
+        },
+        methods: {
+            // 保存信息
+            save() {
+                let data = {
+                    orderNo: this.myData.orderNo,
+                    orderId: this.myData.orderId,
+                    isDelivered: true
                 }
+
+                if(this.express === 'member') {
+                    data.expressDeliveryCode = 'get_self'
+                    data.expressDeliveryName = '客户自提'
+                } else {
+                    data.expressDeliveryCode = 'ship_sto'
+                    data.expressDeliveryName = this.myData.expressDeliveryName
+                    data.expressNo = this.myData.expressNo
+                }
+
+                this.$api.post('/oteao/order/updateExpressInfo',data,res => {
+                    let toast = this.$toast('己成功发货');
+                    setTimeout(() =>{
+                        toast.close()
+                        this.$router.go(-1);
+                    },500)
+                })
             }
         },
         created() {
@@ -91,16 +103,10 @@
                 } else {
                     this.express = 'express'
                 }
-
-            })
-            // 判断一开始时是否有信息，防止用户刷新信息丢失
-            let selected = this.$route.query.selected;
-            let index = this.$route.query.index;
-            if(this.$store.state.seller.orderList[selected].order.length === 0) {
-                this.$store.dispatch('getSellerOrder',{type: selected}).then(res => {
-                    this.$store.commit('SET_ORDERLIST',{type:selected,data: res.data})
+                this.$api.post('/oteao/order/orderProductList',{orderId: this.myData.orderId,device: 'WAP'},res => {
+                    this.list = res.data.mainOrder.products
                 })
-            }
+            })
         }
     }
 </script>

@@ -46,7 +46,7 @@
                     data.expressDeliveryCode = 'get_self'
                     data.expressDeliveryName = '客户自提'
                 } else {
-                    data.expressDeliveryCode = this.myData.expressDeliveryCode
+                    data.expressDeliveryCode = 'ship_sto'
                     data.expressDeliveryName = this.myData.expressDeliveryName
                     data.expressNo = this.myData.expressNo
                 }
