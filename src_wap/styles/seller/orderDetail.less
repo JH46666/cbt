@@ -16,7 +16,7 @@
         .bg(#fff);
         .green{
             .color(#13c23c);
-            .fontSize(.38rem);
+            .fontSize(.28rem);
             margin-left: .2rem;
         }
         .icon-wrap{
@@ -40,6 +40,7 @@
         .right{
             .fontSize(.26rem);
             .color(@b-6);
+            .algin(r);
         }
     }
     .text-pannel{
@@ -72,12 +73,17 @@
             .paddingRow(.35rem);
             .paddingB(.2rem);
             .detail{
-                .flex-1;
+                .flex_num(19);
                 padding: 0;
             }
             span{
                 .position(r);
-                top: .2rem;
+                .flex_num(1);
+                i{
+                    .position(a);
+                    right: 0;
+                    bottom: -.1rem;
+                }
             }
         }
         .remark{
@@ -215,6 +221,11 @@
             resize: none;
             margin-top: .2rem;
             border-color: #e6e6e6;
+        }
+        .tip{
+            .algin(l);
+            .color(@b-9);
+            margin-bottom: .2rem;
         }
         .btn-wrap{
             left: 0;
