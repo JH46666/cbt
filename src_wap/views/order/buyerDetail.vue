@@ -3,16 +3,18 @@
         <div class="detail_type">
             <div class="type">
                 <!-- 待发货 -->
-                <div v-if="orderStatus === '待发货'"><img src="../../assets/images/order_3.png" />待发货</div>
+                <div v-if="orderDetailData.orderStatus === 'PACKING'"><img src="../../assets/images/order_3.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                 <!-- 待收货 -->
-                <div v-if="orderStatus === '待收货'"><img src="../../assets/images/order_2.png" />待收货</div>
+                <div v-else-if="orderDetailData.orderStatus === 'DELIVERED'"><img src="../../assets/images/order_2.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                 <!-- 待付款 -->
-                <div v-if="orderStatus === '待付款'"><img src="../../assets/images/order_4.png" />待付款</div>
+                <div v-else-if="orderDetailData.orderStatus === 'WAIT_PAY'"><img src="../../assets/images/order_4.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                 <!-- 待评价 -->
-                <div v-if="orderStatus === '待评价'"><img src="../../assets/images/order_1.png" />待评价</div>
+                <div v-else-if="orderDetailData.orderStatus === 'COMMENT'"><img src="../../assets/images/order_1.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
+                <!-- 其他 -->
+                <div v-else><img src="../../assets/images/order_1.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
             </div>
             <div class="number">
-                订单编号：MO201711080019
+                订单编号：{{ orderDetailData.orderNo }}
             </div>
         </div>
         <div class="detail_address">
@@ -22,7 +24,7 @@
                     <span>陈薇薇薇</span>
                     <span>{{ regStar('18012652595') }}</span>
                 </div>
-                <div class="line_2">福建省 厦门市 思明区 会展南路4号109 4楼 醉品集团</div>
+                <div class="line_2">{{ orderDetailData.detailAddress }}</div>
             </div>
             <div class="invoice">
                 <div class="line_1">
@@ -218,21 +220,27 @@
         </div>
         <!-- 按钮 -->
         <div class="order_btn">
-            <mt-button plain v-if="orderStatus === '待审核' || orderStatus === '待评价' || orderStatus === '待发货'" @click.native="confrimMethod">再次购买</mt-button>
-            <mt-button plain v-if="orderStatus === '待评价'" @click.native="confrimMethod">评价</mt-button>
-            <mt-button plain v-if="orderStatus === '待付款'" @click.native="confrimMethod">取消订单</mt-button>
-            <mt-button plain v-if="orderStatus === '待付款'" class="pay_now" @click.native="confrimMethod">立即支付</mt-button>
-            <mt-button plain v-if="orderStatus === '已发货'" @click.native="confrimMethod">确认收货</mt-button>
+            <!-- <mt-button plain v-if="status === '待审核' || status === '待评价' || status === '待发货'" @click.native="confrimMethod">再次购买</mt-button> -->
+            <mt-button plain v-if="orderDetailData.orderStatus === 'COMMENT'" class="pay_now" @click.native="commentMethod">评价</mt-button>
+            <mt-button plain v-if="orderDetailData.orderStatus === 'WAIT_PAY' || orderDetailData.orderStatus === 'WAIT_CHECK'" @click.native="cancelMethod">取消订单</mt-button>
+            <mt-button plain v-if="orderDetailData.orderStatus === 'WAIT_PAY'" class="pay_now" @click.native="payMethod">立即支付</mt-button>
+            <mt-button plain v-if="orderDetailData.orderStatus === 'DELIVERED' || orderDetailData.orderStatus === 'CBT_BUYER'" class="pay_now" @click.native="confrimMethod">确认收货</mt-button>
         </div>
+        <mt-popup v-model="closeUp" position="bottom">
+            <div class="close-wrap">
+                <p class="close-tip"  v-for="(item,index) in cancelList" :class="{on: index == cancelClass}" :key="index" @click="selectCancel(index)">{{ item }}<i class="iconfont">&#xe684;</i></p>
+            </div>
+        </mt-popup>
     </div>
 </template>
 
 <script>
 import { MessageBox } from 'mint-ui';
+import {mapGetters} from 'vuex';
 export default {
     data() {
         return {
-            orderStatus: '待付款',
+            status: '待付款',
             pullOrDownFlag: false,
             pullOrDownShop: false,
             shopLogo: '../src_wap/assets/images/list_logo.png',
@@ -248,10 +256,55 @@ export default {
             ems: {
                 img: '../src_wap/assets/images/emskd.png',
                 name: 'EMS快递'
+            },
+            titleText: '订单详情',
+            orderDetailData: {},
+            closeUp: false,
+            cancelList: ['我不想买了','拍错商品，重新下单','其他原因'],
+            cancelClass: null,
+        }
+    },
+    head: {
+        title() {
+            return {
+                inner : this.titleText
             }
         }
     },
     methods: {
+        commentMethod() {
+
+        },
+        selectCancel(index) {
+            this.cancelClass = index;
+            this.closeUp = false;
+            // setTimeout(() => {
+            //     let data = {
+            //         payId: this.cancelPro.payId,
+            //         cancelReason: this.cancelList[this.cancelList]
+            //     }
+            //     this.$api.post('/oteao/order/cancelOrder',data,res => {
+            //         Toast({
+            //             message: `订单【${this.cancelPro.orderNo}】已关闭`,
+            //             iconClass: 'icon icon-success'
+            //         });
+            //         this.cancelClass = null;
+            //         return window.location.reload();
+            //     },res=>{
+            //         this.cancelClass = null;
+            //         return Toast({
+            //             message: res.errorMsg,
+            //             iconClass: 'icon icon-fail'
+            //         });
+            //     })
+            // },300)
+        },
+        cancelMethod() {
+            this.closeUp = true;
+        },
+        payMethod() {
+
+        },
         pullOrDown() {
             this.pullOrDownFlag = !this.pullOrDownFlag;
         },
@@ -259,11 +312,25 @@ export default {
             this.pullOrDownShop = !this.pullOrDownShop;
         },
         confrimMethod() {
-            MessageBox.confirm('确定执行此操作?').then(action => {
-                console.log(11111);
+            let data = {
+                orderNo: this.orderDetailData.mainOrder.mainrNo
+            }
+            MessageBox.confirm('确定确认收货?').then(action => {
+                this.$api.post('/oteao/order/confimReceipt',data,res => {
+                    Toast({
+                        message: `订单【${orderNo}】已确认收货`,
+                        iconClass: 'icon icon-success'
+                    });
+                    return window.location.reload();
+                },res=>{
+                    return Toast({
+                        message: res.errorMsg,
+                        iconClass: 'icon icon-fail'
+                    });
+                })
             },action => {
-                console.log(22222);
-            },);
+                console.log('cancel!');
+            });
         },
         regStar(val) {                 // 隐藏会员账号
             if(val.length <= 5){
@@ -280,6 +347,37 @@ export default {
                 return val;
             }
         },
+        getListDetail() {
+            let orderNo = this.$route.query.orderNo,
+                data = {
+                    orderNo: orderNo,
+                    delYes: 1
+                }
+            return new Promise((resolve,reject) => {
+                this.$api.post('/oteao/order/findOrderByNo',data,res => {
+                    resolve(res);
+                },res=>{
+                    return Toast({
+                        message: res.errorMsg,
+                        iconClass: 'icon icon-fail'
+                    });
+                })
+            })
+        }
+    },
+    created() {
+        this.titleText = '订单详情'
+        this.$emit('updateHead',this.titleText)
+    },
+    mounted() {
+        this.getListDetail().then((res) =>{
+            this.orderDetailData = res.data;
+        })
+    },
+    computed:{
+        ...mapGetters([
+            'orderStatus'
+        ]),
     }
 }
 </script>

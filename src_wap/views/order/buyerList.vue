@@ -1,13 +1,13 @@
 <template lang="html">
     <div class="list" ref="scrollDoc">
         <mt-navbar :class="{ 'on': !wxFlag }">
-            <mt-tab-item v-for="(item,index) in tabList" :class="{'on': index === selectClass}" @click.native="selTab(index)" :key="index">{{ item }}</mt-tab-item>
+            <mt-tab-item v-for="(item,index) in tabList" :class="{'on': index == selectClass}" @click.native="selTab(index,item)" :key="index">{{ item }}</mt-tab-item>
         </mt-navbar>
          <!--  -->
         <mt-tab-container>
             <mt-tab-container-item>
                 <div class="mt_cell_wrapper" v-if="orderNum != 0" v-infinite-scroll="loadMore" infinite-scroll-disabled="noInfinity" infinite-scroll-distance="10">
-                    <mt-cell v-for="(item,index) in orderList" :key="index">
+                    <mt-cell v-for="(item,index) in orderList" :key="index" @click.native="toListDetail(item.orderNo)">
                         <div class="order_head">
                             <div class="order_logo" v-if="item.sellerOrgId === 1">
                                 <img :src="shopLogo" />自营
@@ -41,20 +41,20 @@
                             </div>
                             <div class="btn_wrapper">
                                 <!-- <mt-button plain v-if="item.orderStatus === 'WAIT_CHECK' || item.orderStatus === 'PAY_WAIT_AUDIT' || item.orderStatus === 'PACKING' || item.orderStatus === 'DELIVERED' || item.orderStatus === 'CBT_BUYER' || item.orderStatus === 'COMMENT' || item.orderStatus === 'CLOSE'" @click.native="confrimMethod">再次购买</mt-button> -->
-                                <mt-button plain v-if="item.orderStatus === 'COMMENT'" class="pay_now" @click.native="commentMethod">待评价</mt-button>
+                                <mt-button plain v-if="item.orderStatus === 'COMMENT'" class="pay_now" @click.native="commentMethod(item)">评价</mt-button>
                                 <mt-button plain v-if="item.orderStatus === 'WAIT_PAY' || item.orderStatus === 'WAIT_CHECK'" @click.native="cancelMethod(item)">取消订单</mt-button>
                                 <mt-button plain v-if="item.orderStatus === 'WAIT_PAY'" class="pay_now" @click.native="payMethod">立即支付</mt-button>
                                 <mt-button plain v-if="item.orderStatus === 'DELIVERED' || item.orderStatus === 'CBT_BUYER'" class="pay_now" @click.native="confrimMethod(item.orderNo)">确认收货</mt-button>
                             </div>
                         </div>
                     </mt-cell>
-                    <div class="goods-loading" v-if="!noInfinity">
+                    <div class="goods-loading" v-if="!noInfinity && orderList.length < orderNum">
                         <mt-spinner type="fading-circle" color="#f08200"></mt-spinner>
                         <span class="loading-text">正在努力加载中~</span>
                     </div>
-                    <div class="no-more" v-if="noInfinity">没有更多了呦~</div>
+                    <div class="no-more" v-if="orderList.length == orderNum">没有更多了呦~</div>
                 </div>
-                <div class="mt_empty_wrapper" v-if="orderNum === 0">
+                <div class="mt_empty_wrapper" v-if="orderNum == 0">
                     <div class="empty_img">
                         <img src="../../assets/images/empty_list.png" />
                     </div>
@@ -66,7 +66,7 @@
         </mt-tab-container>
         <mt-popup v-model="closeUp" position="bottom">
             <div class="close-wrap">
-                <p class="close-tip"  v-for="(item,index) in cancelList" :class="{on: index === cancelClass}" :key="index" @click="selectCancel(index)">{{ item }}<i class="iconfont">&#xe684;</i></p>
+                <p class="close-tip"  v-for="(item,index) in cancelList" :class="{on: index == cancelClass}" :key="index" @click="selectCancel(index)">{{ item }}<i class="iconfont">&#xe684;</i></p>
             </div>
         </mt-popup>
     </div>
@@ -86,7 +86,13 @@ export default {
             device: 'WAP',
             orderNum: 0,
             noInfinity: false,
-            tabList: ['全部','待付款','待发货','待收货','待评价'],
+            tabList: {
+                0:'全部',
+                1:'待付款',
+                2:'待发货',
+                3:'待收货',
+                4:'待评价'
+            },
             selectClass: 0,
             closeUp: false,
             cancelList: ['我不想买了','拍错商品，重新下单','其他原因'],
@@ -95,8 +101,17 @@ export default {
         }
     },
     methods: {
+        toListDetail(orderNo) {
+            this.$router.push({
+                path: '/order/buyerdetail',
+                query: {
+                    orderNo: orderNo
+                }
+            });
+        },
         selectCancel(index) {
-            this.cancelList = index;
+            this.cancelClass = index;
+            this.closeUp = false;
             setTimeout(() => {
                 let data = {
                     payId: this.cancelPro.payId,
@@ -107,12 +122,10 @@ export default {
                         message: `订单【${this.cancelPro.orderNo}】已关闭`,
                         iconClass: 'icon icon-success'
                     });
-                    this.currentNum = 1;
-                    return this.getList(this.selectClass).then((res) =>{
-                        this.orderList = res.data.order;
-                        this.orderNum = res.data.orderNum;
-                    })
+                    this.cancelClass = null;
+                    return window.location.reload();
                 },res=>{
+                    this.cancelClass = null;
                     return Toast({
                         message: res.errorMsg,
                         iconClass: 'icon icon-fail'
@@ -120,8 +133,8 @@ export default {
                 })
             },300)
         },
-        commentMethod() {
-
+        commentMethod(obj) {
+            console.log(obj);
         },
         cancelMethod(obj) {
             this.closeUp = true;
@@ -140,11 +153,7 @@ export default {
                         message: `订单【${orderNo}】已确认收货`,
                         iconClass: 'icon icon-success'
                     });
-                    this.currentNum = 1;
-                    return this.getList(this.selectClass).then((res) =>{
-                        this.orderList = res.data.order;
-                        this.orderNum = res.data.orderNum;
-                    })
+                    return window.location.reload();
                 },res=>{
                     return Toast({
                         message: res.errorMsg,
@@ -153,7 +162,7 @@ export default {
                 })
             },action => {
                 console.log('cancel!');
-            },);
+            });
         },
         toIndex() {
             this.$router.push('/index')
@@ -162,7 +171,7 @@ export default {
             try {
                 if(this.orderList.length >= this.orderNum) return this.noInfinity = true;
                 this.currentNum++;
-                this.getList(this.selectClass).then((res) =>{
+                this.getList().then((res) =>{
                     let timeData = res.data.order;
                     this.orderList = this.orderList.concat(timeData);
                     this.noInfinity = false;
@@ -171,41 +180,53 @@ export default {
 
             }
         },
-        selTab(index) {
+        selTab(index,item) {
             this.currentNum = 1;
             this.selectClass = index;
+            if(index == 0){
+                this.$router.replace('/order/buyerlist')
+            }else if(index == 1){
+                this.$router.replace('/order/buyerlist?waitPay')
+            }else if(index == 2){
+                this.$router.replace('/order/buyerlist?waitSend')
+            }else if(index == 3){
+                this.$router.replace('/order/buyerlist?waitRec')
+            }else if(index == 4){
+                this.$router.replace('/order/buyerlist?waitComment')
+            }
             this.$refs.scrollDoc.scrollTop = 0;
-            this.getList(this.selectClass).then((res) =>{
+            this.getList().then((res) =>{
                 this.orderList = res.data.order;
                 this.orderNum = res.data.orderNum;
             })
             this.noInfinity = false;
         },
-        getList(id) {
-            let status;
-            if(id === 0){
-                status = null;
-            }else if(id === 1){
-                status = 'waitPay';
-            }else if(id === 2){
-                status = 'waitSend';
-            }else if(id === 3){
-                status = 'waitRec';
-            }else if(id === 4){
-                status = 'waitComment';
-            }
-            let data = {
-               pageNumber: this.currentNum,
-               pageSize: this.pageNume,
-               device: this.device,
-               orderStatus: status
+        getList() {
+            let url = location.href.split('?'),
+                status = url[url.length-1],
+                data = {
+                    pageNumber: this.currentNum,
+                    pageSize: this.pageNume,
+                    device: this.device,
+                    orderStatus: status
+                };
+            if(status === 'waitPay'){
+                this.selectClass = 1;
+            }else if(status === 'waitSend'){
+                this.selectClass = 2;
+            }else if(status === 'waitRec'){
+                this.selectClass = 3;
+            }else if(status === 'waitComment'){
+                this.selectClass = 4;
+            }else{
+                this.selectClass = 0;
             }
             return new Promise((resolve,reject) => {
                 this.$api.post('/oteao/order/preOrderList',data,res => {
                     resolve(res);
                 },res=>{
                     return Toast({
-                        message: '数据请求失败',
+                        message: res.errorMsg,
                         iconClass: 'icon icon-fail'
                     });
                 })
@@ -221,7 +242,7 @@ export default {
        this.wxFlag = this.$tool.isWx;
   　},
     created() {
-        this.getList(this.selectClass).then((res) =>{
+        this.getList().then((res) =>{
             this.orderList = res.data.order;
             this.orderNum = res.data.orderNum;
         })
