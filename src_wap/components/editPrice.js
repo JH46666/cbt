@@ -17,23 +17,25 @@ let initInstance = function(el) {
 }
 
 
-let showDialog = function() {
+let showDialog = function(obj = {}) {
     if(!instance) {
         initInstance()
     }
     if(instance.pannelShow === false) {
         initInstance(instance.$el)
     }
+    instance.expressPrice = obj.expressPrice || '';
+    instance.goodsPrice = obj.goodsPrice || '';
     instance.callBack = callBack;
     document.body.appendChild(instance.$el)
 }
 
-let EditPrice = function() {
+let EditPrice = function(obj = {}) {
     return new Promise(function(resolve,reject){
         status.resolve = resolve;
         status.reject = reject;
 
-        showDialog()
+        showDialog(obj)
     })
 }
 

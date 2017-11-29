@@ -62,7 +62,44 @@
     export default {
         data() {
             return {
-                express: 'express'
+                express: 'express',
+                myData: {}
+            }
+        },
+        computed: {
+            list() {
+                try {
+                    let selected = this.$route.query.selected;
+                    let index = this.$route.query.index;
+                    return this.$store.state.seller.orderList[selected].order[index];
+                } catch (error) {
+                    return []
+                }
+            }
+        },
+        created() {
+            let orderNo = this.$route.query.orderNo;
+            this.$api.post('/oteao/order/findOrderByNo',{
+                orderNo,
+                delYes: 0
+            },res =>{
+                this.myData = res.data || {};
+
+                // 根据本来信息部署
+                if(this.myData.expressDeliveryCode === 'get_self') {
+                    this.express = 'member'
+                } else {
+                    this.express = 'express'
+                }
+
+            })
+            // 判断一开始时是否有信息，防止用户刷新信息丢失
+            let selected = this.$route.query.selected;
+            let index = this.$route.query.index;
+            if(this.$store.state.seller.orderList[selected].order.length === 0) {
+                this.$store.dispatch('getSellerOrder',{type: selected}).then(res => {
+                    this.$store.commit('SET_ORDERLIST',{type:selected,data: res.data})
+                })
             }
         }
     }

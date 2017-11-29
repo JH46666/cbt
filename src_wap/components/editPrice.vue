@@ -64,7 +64,7 @@
                     this.goodsPriceVali = true
                     validated = false;
                 }
-                if(!Number(this.expressPrice)) {
+                if(!Number(this.expressPrice) && Number(this.expressPrice) !== 0) {
                     this.expressPriceVali = true
                     validated = false;
                 }
