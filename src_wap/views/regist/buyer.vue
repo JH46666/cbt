@@ -5,7 +5,7 @@
             <!-- 表单 -->
             <form action="" class="form_wrapper com_wrapper">
                 <div class="form_item">
-                    <input type="text" placeholder="手机号码" v-model="regInfo.phone" maxlength="11">
+                    <input type="tel" placeholder="手机号码" v-model="regInfo.phone" maxlength="11">
                 </div>
                 <div class="form_item">
                     <div class="flex">
@@ -87,7 +87,7 @@
             getMsgCode(val){
                 let data = {
                     mobilePhone: this.regInfo.phone,
-                    sendType: 'LOGINING',
+                    sendType: 'REGISTER',
                     reCaptcha: val,
                 }
                 this.$api.get('/oteao/login/doSendSms',data,res=>{
