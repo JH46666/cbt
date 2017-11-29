@@ -18,7 +18,6 @@ function getIPAdress(){
 } 
 module.exports = {
   dev: {
-
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
