@@ -1,4 +1,3 @@
-import Cookies from 'js-cookie';
 import router from '@/router';
 import Vue from 'vue'
 // 配置API接口地址
@@ -48,7 +47,6 @@ function todd(method,data){
 */
 
 function apiAxios (method, url, params, success, failure) {
-  let cookie = Cookies.get('islogin');
   if (params) {
     params = todd(method,params)
   }
@@ -65,10 +63,24 @@ function apiAxios (method, url, params, success, failure) {
         success(res.data)
       }
     } else {
+      if(res.data.code === 3001) {
+        let toast = Vue.$toast({
+            message: JSON.stringify(res.data.cnMessage),
+            position: 'bottom',
+            duration: 500
+          })
+        return setTimeout(() => {
+          router.push('/login')
+        },200)
+      }
       if (failure) {
         failure(res.data)
       } else {
-        window.alert('error: ' + JSON.stringify(res.data))
+        let toast = Vue.$toast({
+            message: JSON.stringify(res.data.cnMessage),
+            position: 'bottom',
+            duration: 500
+          })
       }
     }
   }).catch(function (err) {
@@ -77,9 +89,6 @@ function apiAxios (method, url, params, success, failure) {
       window.alert('api error, HTTP CODE: ' + res.status)
     }
   })
-  // let m = new Date();
-  // let n = new Date(m.getTime() + 30*60*1000);
-  // Cookies.set('islogin',true,{expires: n});
 }
 
 // 返回在vue模板中的调用接口
