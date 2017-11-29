@@ -98,6 +98,7 @@
                     flag = this.phoneFlag && this.getFlag;
                     return flag;
                 }else{
+                    this.phoneFlag = false;
                     return false;
                 }
             }
@@ -115,13 +116,13 @@
                     reCaptcha: val,
                 }
                 this.$api.get('/oteao/login/doSendSms',data,res=>{
-                    Toast('验证码己发至您的手机，5分钟内有效，请注意查收');
                     this.verifyFlag = false;
                     this.getFlag = false;
+                    Toast('验证码己发至您的手机，5分钟内有效，请注意查收');
                     this.getCount++;
                     this.countTime();
                 },res=>{
-                    this.errorTips = "您输入的短信验证码错误，请核对后重新输入";
+                    this.errorTips = "您输入的图片验证码错误，请核对后重新输入";
                 });
             },
             //提交登录信息
@@ -187,6 +188,8 @@
                         this.mescodeFlag = false;
                         Toast('您输入的验证码格式有误，请核实后重新输入');
                     }
+                }else{
+                    this.mescodeFlag = false;
                 }
             },
             //获取短信验证码

@@ -28,7 +28,7 @@
                 <h3 class="color_3">成功找回密码</h3>
                 <p class="color_9">客官，牢记登录密码下次登录不麻烦~</p>
                 <p class="tips"><span>5s</span>后将返回登录</p>
-                <a class="go_login" href="javscript:void(0);">立即去登录</a>
+                <a class="go_login" href="/login">立即去登录</a>
             </div>
         </div>
         <!-- 验证码弹窗 -->
@@ -84,6 +84,7 @@
                     flag = this.phoneFlag && this.getFlag;
                     return flag;
                 }else{
+                    this.phoneFlag = false;
                     return false;
                 }
             }
@@ -103,25 +104,26 @@
                 this.$api.get('/oteao/login/doSendSms',data,res=>{
                     this.verifyFlag = false;
                     this.getFlag = false;
+                    Toast('验证码己发至您的手机，5分钟内有效，请注意查收');
                     this.getCount++;
                     this.countTime();
                 },res=>{
-                    this.errorTips = "您输入的短信验证码错误，请核对后重新输入";
+                    this.errorTips = "您输入的图片验证码错误，请核对后重新输入";
                 });
             },
-            //提交登录信息
+            //提交信息
             submit(){
                 if(!this.disabledFlag){
                     let data = {
                         memberAccount: this.regInfo.phone,
-                        password: this.regInfo.password,
-                        sysId:1
+                        smsCode: this.regInfo.mesCode,
+                        password: this.regInfo.password
                     }
-                    this.$api.post('/oteao/login/doLoginByPwd',data,
+                    this.$api.post('/oteao/memberAccount/findPwd',data,
                     res=>{
-                        this.$router.push('/');
+                        this.successFlag = true;
                     },res=>{
-                        Toast('账号或密码错误，请核实后重新输入');
+                        Toast('您输入的短信验证码错误，请核实后重新输入');
                     });
                 }
             },
@@ -153,13 +155,14 @@
                         this.mescodeFlag = false;
                         Toast('您输入的验证码格式有误，请核实后重新输入');
                     }
+                }else{
+                    this.mescodeFlag = false;
                 }
             },
             //获取短信验证码
             showPopup(){
                 if(this.getFlag && this.phoneFlag){
                     this.$api.get('/oteao/memberAccount/searchIsExist',{memberAccount:this.regInfo.phone},res=>{
-                        console.log(res);
                         this.verifyFlag = true;
                     },res=>{
                         Toast('您输入的手机号未注册，请重新输入');
