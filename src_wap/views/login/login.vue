@@ -9,20 +9,20 @@
             <!-- tab-container -->
             <mt-tab-container v-model="selected">
                 <!-- 短信登录 -->
-                <mt-tab-container-item id="1">
+                <mt-tab-container-item id="1" class="com_wrapper">
                     <div class="form_item">
                         <input type="text" placeholder="手机号码" v-model="regInfo.phone" maxlength="11" @blur="checkPhone($event.target.value)">
                     </div>
                     <div class="form_item">
                         <div class="flex">
                             <input class="mes_code" type="tel" placeholder="短信验证码" v-model.number="regInfo.mesCode" maxlength="4" @input="checkMsg($event.target.value)">
-                            <a v-if="(getCount==0 || getFlag)" class="get_code" :class="{'on':activeFlag}" @click="getMsg">获取短信验证码</a>
+                            <a v-if="(getCount==0 || getFlag)" class="get_code" :class="{'on':activeFlag}" @click="showPopup">{{getCount==0?'获取短信验证码':'重新获取验证码'}}</a>
                             <a v-else class="get_code">{{timeCount}}s后重新发送</a>
                         </div>
                     </div>
                 </mt-tab-container-item>
                 <!-- 密码登录 -->
-                <mt-tab-container-item id="2">
+                <mt-tab-container-item id="2" class="com_wrapper">
                     <div class="form_item">
                         <input type="text" placeholder="手机号码" v-model="regInfo.phone" maxlength="11" @blur="checkPhone($event.target.value)">
                     </div>
@@ -43,23 +43,11 @@
         <div class="popup illegal_popup" v-show="illegalFlag">
             <div class="popup_inner illegal_inner">
                 <p>您的账号因违规操作而被冻结！<br/>若有疑问请联系客服4006-066-068</p>
-                <a class="color_f08" href="javascript:void(0);">确定</a>
+                <a class="color_f08" href="javascript:void(0);" @click="illegalFlag = false">确定</a>
             </div>
         </div>
         <!-- 验证码弹窗 -->
-        <div class="popup verify_popup" v-show="verifyFlag">
-            <div class="popup_inner verify_inner">
-                <a class="close_popup"  @click="verifyFlag = !verifyFlag"><i class="iconfont">&#xe79a;</i></a>
-                <p class="error_tips" v-show="errorTips != ''"><i class="iconfont">&#xe667;</i>{{errorTips}}</p>
-                <div class="flex img_box">
-                    <div class="img_code" ref="imgcode"></div>
-                    <a class="refresh" @click="getCode"><i class="iconfont">&#xe665;</i></a>
-                </div>
-                <div class="flex img_code_input" ref="forms">
-                    <input class="flex-1" :class="{on: i==curIndex}" v-for="(c,i) in codes" type="text" :name="i" v-model="c.code" maxlength="1" @click="setIndex(i)" @input="setFocus(i,$event.target.value)">
-                </div>
-            </div>
-        </div>
+        <msg-popup v-if="verifyFlag" @closePopup="closePopup" @getMsgCode="getMsgCode" :errorTxt="errorTips"></msg-popup>
     </div>
 </template>
 <script>
@@ -77,19 +65,11 @@
                 visFlag: false,                     //密码是否可见
                 illegalFlag: false,                 //是否违规操作
                 verifyFlag: false,                  //验证码弹窗是否可见
-                // disabledFlag: true,              //立即登录是否亮起
                 phoneFlag: false,                   //手机验证是否通过            
                 passwordFlag: false,                //密码验证是否通过
                 mescodeFlag: false,                 //短信验证是否
                 getFlag: false,                     //获取短信验证码按钮是否可点击
                 getCount: 0,                        //获取短信的次数          
-                codes:[
-                    {code: ''},                   //验证码
-                    {code: ''},                   //验证码
-                    {code: ''},                   //验证码
-                    {code: ''},                   //验证码
-                ],      
-                curIndex: 0,                      //当前验证码输入框的下标
                 errorTips: '',                    //错误提示
                 timeCount: 60,                    //倒计时
             }
@@ -118,48 +98,66 @@
                     flag = this.phoneFlag && this.getFlag;
                     return flag;
                 }else{
+                    this.phoneFlag = false;
                     return false;
                 }
             }
         },
         methods:{
-            //获取图片验证码
-            getCode(){
-                let str = `<img src="api/recaptcha/getReCaptha?v=${Math.random()*100}" alt="">`;
-                this.$refs.imgcode.innerHTML = str;
-                this.$refs.forms.childNodes[this.curIndex].focus();
+            //关闭弹窗
+            closePopup(){
+                this.verifyFlag = false;
             },
-            //设置curIndex
-            setIndex(i){
-                this.curIndex = i;
-            },
-            //聚焦
-            setFocus(i,val){
-                if(val != ''){
-                    this.$nextTick(()=>{
-                        this.curIndex = i+1;
-                        if(this.curIndex == 4){
-                            this.$refs.forms.childNodes[this.curIndex-1].focus();
-                        }else{
-                            this.$refs.forms.childNodes[this.curIndex].focus();
-                        }
-                    });
+            //提交图片验证码获取短信验证码
+            getMsgCode(val){
+                let data = {
+                    mobilePhone: this.regInfo.phone,
+                    sendType: 'LOGINING',
+                    reCaptcha: val,
                 }
+                this.$api.get('/oteao/login/doSendSms',data,res=>{
+                    this.verifyFlag = false;
+                    this.getFlag = false;
+                    Toast('验证码己发至您的手机，5分钟内有效，请注意查收');
+                    this.getCount++;
+                    this.countTime();
+                },res=>{
+                    this.errorTips = "您输入的图片验证码错误，请核对后重新输入";
+                });
             },
             //提交登录信息
             submit(){
                 if(!this.disabledFlag){
-                    let data = {
-                        memberAccount: this.regInfo.phone,
-                        password: this.regInfo.password,
-                        sysId:1
+                    if(this.selected == '2'){
+                        let data = {
+                            memberAccount: this.regInfo.phone,
+                            password: this.regInfo.password,
+                            device: 'WAP',
+                            sysId:1
+                        }
+                        this.$api.post('/oteao/login/doLoginByPwd',data,
+                        res=>{
+                            this.$router.push('/');
+                        },res=>{
+                            if(res.code === '4064'){
+                                this.illegalFlag = true;
+                            }else{
+                                Toast('账号或密码错误，请核实后重新输入');
+                            }
+                        });
+                    }else if(this.selected == '1'){
+                        let data = {
+                            memberAccount: this.regInfo.phone,
+                            smsCode: this.regInfo.mesCode,
+                            device: 'WAP'
+                        }
+                        this.$api.post('/oteao/login/doLoginBySms',data,
+                        res=>{
+                            this.$router.push('/');
+                        },res=>{
+                            Toast('您输入的验证码错误，请核实后重新输入');
+                        });
                     }
-                    this.$api.post('/oteao/login/doLoginByPwd',data,
-                    res=>{
-                        this.$router.push('/');
-                    },res=>{
-                        Toast('账号或密码错误，请核实后重新输入');
-                    });
                 }
             },
             //手机号验证
@@ -190,10 +188,12 @@
                         this.mescodeFlag = false;
                         Toast('您输入的验证码格式有误，请核实后重新输入');
                     }
+                }else{
+                    this.mescodeFlag = false;
                 }
             },
             //获取短信验证码
-            getMsg(){
+            showPopup(){
                 if(this.getFlag && this.phoneFlag){
                     this.verifyFlag = true;
                 }
@@ -212,43 +212,6 @@
             }
         },
         watch:{
-            verifyFlag(val){
-                if(val){
-                    this.$nextTick(()=>{
-                        this.getCode();
-                    });
-                }else{
-                    this.$refs.imgcode.innerHTML = '';
-                    this.codes = [{code:''},{code:''},{code:''},{code:''}];
-                    this.curIndex = 0;
-                }
-            },
-            curIndex(val){
-                if(val===4){
-                    let strCode = '';
-                    for(let item of this.codes){
-                        console.log(item);
-                        strCode += item.code;
-                    }
-                    let data = {
-                        mobilePhone: this.regInfo.phone,
-                        sendType: 'LOGINING',
-                        reCaptcha: strCode,
-                    }
-                    //获取短信验证码
-                    this.$api.get('/oteao/login/doSendSms',data,res=>{
-                        this.verifyFlag = false;
-                        this.getFlag = false;
-                        this.getCount++;
-                        this.countTime();
-                    },res=>{
-                        this.errorTips = "您输入的短信验证码错误，请核对后重新输入";
-                        this.curIndex = 0;
-                        this.codes = [{code:''},{code:''},{code:''},{code:''}];
-                        this.getCode();
-                    });
-                }
-            },
             selected(val){
                 this.regInfo.phone = '';
                 this.regInfo.mesCode = '';

@@ -23,6 +23,7 @@ export default new Vuex.Store({
     modules: {
         app,
         seo,
-        order
+        order,
+        seller
     }
 })

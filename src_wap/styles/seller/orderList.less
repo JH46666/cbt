@@ -99,12 +99,21 @@
         .fontSize(.28rem);
         .line(.98rem);
         .algin(c);
+        .bg(#fff);
         justify-content: center;
         &>:first-child{
             .position(r);
             top: .2rem;
             margin-right: .4rem;
         }
+    }
+    // 没有更多
+    .no-more{
+        .bg(#fff);
+        .algin(c);
+        .color(@b-6);
+        .fontSize(.28rem);
+        .line(.98rem);
     }
 
     // 关闭订单弹出层样式
@@ -130,6 +139,7 @@
     // 重置样式
     .mint-navbar{
         .h(.94rem);
+        border-bottom: 1px solid @borCol;
     }
     .mint-navbar .mint-tab-item.is-selected{
         border: none;
@@ -142,4 +152,4 @@
     .mint-popup{
         .w(100%);
     }
-}
+} 

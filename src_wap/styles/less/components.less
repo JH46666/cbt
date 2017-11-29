@@ -256,3 +256,82 @@
         }
     }
 }
+
+//图片验证码弹窗
+.verify_popup{
+    .popup_inner{
+        .h(3.9rem);
+        .w(6.2rem);
+        .bg(#fff);
+        .position(a);
+        top: 1.8rem;
+        left: 50%;
+        margin-left: -3.1rem;
+        padding: .6rem .6rem;
+        img{
+            .w(100%);
+        }
+        .close_popup{
+            .position(a);
+            .color(#fff);
+            top: -.7rem;
+            right: 0;
+            i{
+                .fontSize(.36rem);
+            }
+        }
+        .error_tips{
+            .color(#ff3600);
+            .line(.6rem);
+            .h(.6rem);
+            .position(a);
+            top: 0;
+            i{
+                margin-right: .1rem;
+                .position(r);
+                top: .02rem;
+                font-size: .32rem;
+            }
+        }
+        .img_box{
+            border: 1px solid #e6e6e6;
+            .img_code{
+                .flex_num(3);
+                height: 1.4rem;
+                img{
+                    .h(100%);
+                }
+            }
+            .refresh{
+                .flex_num(1);
+                border-left: 1px solid #e6e6e6;
+                background-color: #f5f5f5;
+                line-height: 1.3rem;
+                text-align: center;
+                color: #c2c2c2;
+                -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+                i{
+                    .fontSize(.5rem);
+                }
+            }
+        }
+        .img_code_input{
+            input{
+                width: 1rem;
+                height: 1rem;
+                float: left;
+                border: 1px solid #e6e6e6;
+                margin-top: .3rem;
+                font-size: .4rem;
+                .algin(c);
+                &.on{
+                    border-color: #f08200;
+                }
+                &+input{
+                    margin-left: .3rem;
+                }
+            }
+        }
+    }
+}
