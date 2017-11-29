@@ -137,7 +137,7 @@ html,body,#app,#container{
         }
     }
 }
-// 验证码弹窗
+// popup弹窗
 .popup{
     .position(f);
     .w(100%);
@@ -146,84 +146,63 @@ html,body,#app,#container{
     left: 0;
     .bg(rgba(0,0,0,.6));
 }
-.verify_popup{
-    .popup_inner{
-        .h(3.9rem);
-        .w(6.2rem);
-        .bg(#fff);
-        .position(a);
-        top: 1.8rem;
-        left: 50%;
-        margin-left: -3.1rem;
-        padding: .6rem .6rem;
-        img{
-            .w(100%);
+
+//登录&注册&忘记密码表单
+.com_wrapper{
+    .form_item{
+        margin-bottom: .3rem;
+        position: relative;
+        label{
+            color:#ff3600;
         }
-        .close_popup{
-            .position(a);
-            .color(#fff);
-            top: -.7rem;
+        .vis_flag{
+            position: absolute;
+            line-height: .48rem;
             right: 0;
-            i{
-                .fontSize(.36rem);
-            }
-        }
-        .error_tips{
-            .color(#ff3600);
-            .line(.6rem);
-            .h(.6rem);
-            .position(a);
+            padding: .25rem .4rem;
             top: 0;
-            i{
-                margin-right: .1rem;
-                .position(r);
-                top: .02rem;
-                font-size: .32rem;
-            }
         }
-        .img_box{
-            border: 1px solid #e6e6e6;
-            .img_code{
-                .flex_num(3);
-                height: 1.4rem;
-                img{
-                    .h(100%);
-                }
-            }
-            .refresh{
-                .flex_num(1);
-                border-left: 1px solid #e6e6e6;
-                background-color: #f5f5f5;
-                line-height: 1.3rem;
-                text-align: center;
-                color: #c2c2c2;
-                -webkit-box-sizing: border-box;
-                box-sizing: border-box;
-                i{
-                    .fontSize(.5rem);
-                }
-            }
+        .mes_code{
+            .flex_num(6);
+            margin-right: .3rem;
         }
-        .img_code_input{
-            input{
-                width: 1rem;
-                height: 1rem;
-                float: left;
-                border: 1px solid #e6e6e6;
-                margin-top: .3rem;
-                font-size: .4rem;
-                .algin(c);
-                &.on{
-                    border-color: #f08200;
-                }
-                &+input{
-                    margin-left: .3rem;
-                }
+        .get_code{
+            .flex_num(4);
+            .line(.98rem);
+            border: 1px solid #e5e5e5;
+            border-radius: 3px;
+            .algin(c);
+            font-size: .3rem;
+            .bg(#ddd);
+            .color(#fff);
+            &.on{
+                border: 1px solid #f08200;
+                .color(#f08200);
+                .bg(#fff);
             }
         }
     }
+    input{
+        padding: .25rem 0;
+        text-indent: .3rem;
+        .w(100%);
+        outline: none;
+        border: 1px solid #e5e5e5;
+        .reduis(3px);
+        .line(.48rem);
+        .fontSize(.26rem);
+    }
+    .mint-button{
+        height: .98rem;
+        font-size: .3rem;
+        color: #fff;
+        .bg(#f08200);
+        &.is-disabled{
+            opacity: 1;
+            .bg(#ddd);
+        }
+    }
 }
-
 // 动画效果
 .move-enter-active, .move-leave-active {
     transition:  .4s;
