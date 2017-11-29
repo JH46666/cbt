@@ -181,6 +181,43 @@
                         .fontSize(.26rem);
                     }
                 }
+                .detail_active{
+                    padding: .3rem 0;
+                    border-bottom: 1px solid #e5e5e5;
+                    .flex;
+                    .flex-dir(row);
+                    .fontSize(.26rem);
+                    .color(#666);
+                    label{
+                        width: .78rem;
+                    }
+                    .detail_active_list{
+                        margin-left: .4rem;
+                        .detail_active_item{
+                            .flex;
+                            .flex-dir(row);
+                            height: .32rem;
+                            .align-items;
+                            margin-bottom: .2rem;
+                            &:last-child{
+                                margin-bottom: 0;
+                            }
+                            span{
+                                width: .56rem;
+                                height: .32rem;
+                                .bg(@mainCol);
+                                .color(#fff);
+                                .fontSize(.18rem);
+                                .algin(c);
+                                .line(.32rem);
+                                .reduis(2px);
+                            }
+                            p{
+                                padding-left: .2rem;
+                            }
+                        }
+                    }
+                }
                 .detail_describe_count{
                     height: 1.08rem;
                     .fontSize(0);

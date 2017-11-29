@@ -1,3 +1,6 @@
+import math from 'mathjs' ;
+ 
+ 
  //判断是否是微信
 let isWx = (function () {
     let ua = navigator.userAgent.toLowerCase();
@@ -6,3 +9,5 @@ let isWx = (function () {
 
 
 export {isWx}
+
+export {math} 
