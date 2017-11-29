@@ -6,10 +6,11 @@ import router from './router'
 import store from 'store';
 import $api from 'api';
 import axios from 'axios';
-import * as utils from 'utils';
+import * as utils from 'utils/index.js';
 import VueHead from 'vue-head';
 import cbtComponents from './components';
 import {MessageBox,Toast} from 'mint-ui';
+import filters from '../filters'
 
 // 全局方法
 Vue.prototype.$messageBox = MessageBox;
@@ -26,6 +27,11 @@ Vue.use(VueHead)
 
 // 茶帮通组件
 Vue.use(cbtComponents)
+
+
+// 全局过滤
+Vue.use(filters);
+
 
 import './styles/less/common.less'
 

@@ -5,6 +5,7 @@ import getters from './getters';
 import app from './modules/app';
 import seo from './modules/seo'
 import order from './modules/order'
+import seller from './modules/seller'
 
 
 Vue.use(Vuex)
