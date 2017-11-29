@@ -4,6 +4,7 @@ import getters from './getters';
 // 模块
 import app from './modules/app';
 import seo from './modules/seo'
+import order from './modules/order'
 import seller from './modules/seller'
 
 
@@ -22,6 +23,6 @@ export default new Vuex.Store({
     modules: {
         app,
         seo,
-        seller
+        order
     }
 })
