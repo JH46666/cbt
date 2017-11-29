@@ -1,6 +1,7 @@
 @import url('../base/tools.less');
 
 #editAddress{
+    .position(r);
     .bg(#fff);
     .address-wrap{
         .flex;
@@ -22,6 +23,7 @@
         }
     }
     .default-address{
+        margin-top: .2rem;
         .paddingRow(.3rem);
         .flex;
         p{
@@ -59,9 +61,9 @@
         .flex;
         .flex-dir;
         .w(100%);
-        .h(100%);
+        .h(8rem);
         .bg(#fff);
-        top: 5rem;
+        bottom: 0;
     }
     .select-top{
         .flex;
@@ -84,11 +86,17 @@
         color: @mainCol;
     }
     .select-bottom{
-        .flex-1;
+        .h(~'calc(100% - 1.04rem)');
     }
-    .mint-tab-container,
-    .mint-tab-container-wrap,
-    .mint-tab-container-item{
+    .select-wrap{
         .h(100%);
+        overflow: scroll;
+    }
+    .select-cell{
+        .line(.88rem);
+        .paddingRow(.35rem);
+        &.active{
+            .color(@mainCol);
+        }
     }
 }
