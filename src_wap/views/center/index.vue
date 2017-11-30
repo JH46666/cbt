@@ -42,44 +42,44 @@
         <section class="order">
             <div class="title">
                 <h3>我的订单</h3>
-                <router-link to="#" class="all-order">
+                <router-link :to="{name: '订单列表',query: {orderStatus:'null'}}" class="all-order">
                     全部订单 <i class="icon-icon07"></i>
                 </router-link>
             </div>
             <div class="order-entry">
-                <router-link to="#" class="item">
+                <router-link :to="{name: '订单列表',query: {orderStatus:'waitPay'}}" class="item">
                     <mt-badge size="small" type="error">30</mt-badge>
-                    <span><i class="icon-daifukuan"></i></span>
+                    <span><i class="icon-gerenzhongxin_daifukuan"></i></span>
                     <p>待付款</p>
                 </router-link>
-                <router-link to="#" class="item">
+                <router-link :to="{name: '订单列表',query: {orderStatus:'waitSend'}}" class="item">
                     <mt-badge size="small" type="error">30</mt-badge>
-                    <span><i class="icon-daifahuo"></i></span>
+                    <span><i class="icon-gerenzhongxin_daifahuo"></i></span>
                     <p>待发货</p>
                 </router-link>
-                <router-link to="#" class="item">
+                <router-link :to="{name: '订单列表',query: {orderStatus:'waitRec'}}" class="item">
                     <mt-badge size="small" type="error">30</mt-badge>
-                    <span><i class="icon-daishouhuo"></i></span>
+                    <span><i class="icon-gerenzhongxin_yifahuo"></i></span>
                     <p>待收货</p>
                 </router-link>
-                <router-link to="#" class="item">
+                <router-link :to="{name: '订单列表',query: {orderStatus:'waitComment'}}" class="item">
                     <mt-badge size="small" type="error">30</mt-badge>
                     <span><i class="icon-shangpinpingjia"></i></span>
                     <p>待评价</p>
                 </router-link>
-                <router-link to="#" class="item">
+                <!-- <router-link to="#" class="item">
                     <mt-badge size="small" type="error">30</mt-badge>
                     <span><i class="icon-tuikuandingdan"></i></span>
                     <p>退款</p>
-                </router-link>
+                </router-link> -->
             </div>
         </section>
         <section class="tools">
             <router-link :to="{name: '地址管理'}" class="tools-entry">
-                <div class="left"><i class="icon-dizhi"></i>地址管理</div>
+                <div class="left"><i class="icon-maijiadizhiguanli"></i>地址管理</div>
                 <div class="right"><i class="icon-icon07"></i></div>
             </router-link>
-            <router-link :to="{name: '地址管理'}" class="tools-entry">
+            <router-link :to="{name: '忘记密码'}" class="tools-entry">
                 <div class="left"><i class="icon-xiugaimima"></i>修改密码</div>
                 <div class="right"><i class="icon-icon07"></i></div>
             </router-link>
@@ -97,7 +97,11 @@
 
 <script>
     export default {
-
+        created() {
+            this.$api.get('/oteao/memberAccount/findByOneMember',{},res => {
+                console.log(res)
+            })
+        }
     }
 </script>
 
