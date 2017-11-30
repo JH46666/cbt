@@ -7,6 +7,7 @@ import seo from './modules/seo'
 import order from './modules/order'
 import seller from './modules/seller'
 import address from './modules/address'
+import cart from './modules/cart'
 
 
 Vue.use(Vuex)
@@ -26,6 +27,7 @@ export default new Vuex.Store({
         seo,
         order,
         seller,
-        address
+        address,
+        cart
     }
 })
