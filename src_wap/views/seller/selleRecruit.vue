@@ -1,11 +1,11 @@
 <template lang="html">
     <div class="recruit">
         <div class="recruit_head">
-            <p>欢迎注册茶帮通平台卖家</p>
+            <p>欢迎入驻茶帮通</p>
         </div>
         <div class="recruit_section">
             <div class="recruit_box">
-                <p><span>百万</span>收入带回家</p>
+                <p><span>百万</span>收入不是梦</p>
                 <img src="../../assets/images/seller_zm.png" />
                 <p>茶帮通，产地茶全渠道运营服务平台让茶叶买卖更轻松</p>
             </div>

@@ -87,7 +87,7 @@
             getMsgCode(val){
                 let data = {
                     mobilePhone: this.regInfo.phone,
-                    sendType: 'REGISTER',
+                    sendType: 'REGISTER_OTEAO',
                     reCaptcha: val,
                 }
                 this.$api.get('/oteao/login/doSendSms',data,res=>{
@@ -110,7 +110,8 @@
                         device: 'WAP'
                     }
                     this.$api.post('/oteao/login/doRegister',data,res=>{
-                        this.$router.push('seller');
+                        console.log(res);
+                        // this.$router.push('seller');
                     },res=>{
                         Toast('您输入的短信验证码错误，请核实后重新输入');
                     });

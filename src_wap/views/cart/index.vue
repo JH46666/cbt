@@ -147,6 +147,7 @@
     </div>
 </template>
 <script>
+    import {mapGetters} from 'vuex';
     export default {
         data(){
             return {
@@ -280,8 +281,15 @@
                 ]
             }
         },
+        computed:{
+            ...mapGetters([
+                'oteatCart'
+            ]),
+        },
         created(){
+            this.$store.dispatch('queryCart').then(res=>{
 
+            })
         },
         methods:{
             //保留两位小数
