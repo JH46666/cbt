@@ -1,7 +1,7 @@
 
 const getters = {
     orderStatus: state => state.order.status,
-    cartList: state => state.cart.cartList,
+    cartData: state => state.cart.cartData,
 }
 
 export default getters
