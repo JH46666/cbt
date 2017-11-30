@@ -79,7 +79,7 @@
                 <div class="left"><i class="icon-dizhi"></i>地址管理</div>
                 <div class="right"><i class="icon-icon07"></i></div>
             </router-link>
-            <router-link :to="{name: '地址管理'}" class="tools-entry">
+            <router-link :to="{name: '忘记密码'}" class="tools-entry">
                 <div class="left"><i class="icon-xiugaimima"></i>修改密码</div>
                 <div class="right"><i class="icon-icon07"></i></div>
             </router-link>

@@ -20,7 +20,7 @@
                     您在茶帮通已收入 ￥5000.00 元
                 </p>
             </div>
-            <div class="goback" @click="$router.go(-1)">
+            <div class="goback" @click="$router.push({name: '个人中心'})">
                 返回买家中心
             </div>
         </section>
@@ -44,24 +44,24 @@
             <div class="order-entry">
                 <router-link to="/seller/orderlist?type=waitPay" class="item">
                     <mt-badge size="small" type="error">30</mt-badge>
-                    <span><i class="icon-daifukuan"></i></span>
+                    <span><i class="icon-gerenzhongxin_daifukuan"></i></span>
                     <p>待付款</p>
                 </router-link>
                 <router-link to="/seller/orderlist?type=waitSend" class="item">
                     <mt-badge size="small" type="error">30</mt-badge>
-                    <span><i class="icon-daifahuo"></i></span>
+                    <span><i class="icon-gerenzhongxin_daifahuo"></i></span>
                     <p>待发货</p>
                 </router-link>
                 <router-link to="/seller/orderlist?type=waitRec" class="item">
                     <mt-badge size="small" type="error">30</mt-badge>
-                    <span><i class="icon-daishouhuo"></i></span>
+                    <span><i class="icon-gerenzhongxin_yifahuo"></i></span>
                     <p>已发货</p>
                 </router-link>
-                <router-link to="#" class="item">
+                <!-- <router-link to="#" class="item">
                     <mt-badge size="small" type="error">30</mt-badge>
-                    <span><i class="icon-shangpinpingjia"></i></span>
+                    <span><i class="icon-gerenzhongxin_daipingjia"></i></span>
                     <p>待评价</p>
-                </router-link>
+                </router-link> -->
             </div>
         </section>
         <section class="tools-pannel">
@@ -79,19 +79,19 @@
                     <p>限时特价</p>
                 </router-link>
                 <router-link to="#" class="item">
-                    <span><i class="icon-shouru"></i></span>
+                    <span><i class="icon-shouru small"></i></span>
                     <p>我的收入</p>
                 </router-link>
             </div>
             <div class="tools-row">
                 <router-link to="#" class="item">
-                    <span><i class="icon-xiaoxi blue"></i></span>
+                    <span><i class="icon-xiaoxi blue small"></i></span>
                     <p>店铺信息</p>
                 </router-link>
             </div>
         </section>
         <div class="new-up">
-            <mt-button type="default"><span class="add"><i class="icon-xinzeng"></i></span>创建商品</mt-button>
+            <mt-button type="default" @click="$router.push({name: '新品上架-1'})"><span class="add"><i class="icon-xinzeng"></i></span>创建商品</mt-button>
         </div>
     </div>
 </template>
