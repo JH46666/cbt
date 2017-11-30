@@ -1,12 +1,11 @@
 import $api from '../../api';
 const cart = {
     state:{
-        cartList:[],
+        cartData:[],
     },
     mutations:{
         SET_CART_LIST(state,data){
-            console.log(data);
-            state.cartList = data;
+            state.cartData = data;
         }
     },
     actions:{
