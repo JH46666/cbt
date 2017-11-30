@@ -199,7 +199,7 @@ export default new Router({
 		},
 		{
 			path: '/order',
-			name: '订单列表',
+			name: '买家订单',
 			component: resolve => require(['@/views/layout/mainWrap.vue'],resolve),
 			children: [
 				{

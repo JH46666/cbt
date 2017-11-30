@@ -22,11 +22,13 @@
                 <div class="line_1">
                     <i class="iconfont">&#xe670;</i>
                     <span>{{ orderDetailData.receiptName }}</span>
-                    <span>{{ regStar(orderDetailData.receiptPhone) }}</span>
+                    <template v-if="orderDetailData.receiptPhone">
+                        <span>{{ regStar(orderDetailData.receiptPhone) }}</span>
+                    </template>
                 </div>
-                <div class="line_2">{{ orderDetailData.detailAddress }}</div>
+                <div class="line_2">{{ orderDetailData.detailAddress }} {{ orderDetailData.streetAddress }}</div>
             </div>
-            <div class="invoice">
+            <!-- <div class="invoice">
                 <div class="line_1">
                     <i class="iconfont">&#xe623;</i>
                     <span>增值税发票</span>
@@ -46,7 +48,7 @@
                         <i class="iconfont" @click="pullOrDown" :class="{ 'icon-single-down': !pullOrDownFlag,'icon-shang': pullOrDownFlag }"></i>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
         <div class="order">
             <!-- 店铺名称 是否自营 -->
@@ -77,80 +79,73 @@
             </div>
             <!-- 订单列表 -->
             <div class="order_wrapper">
-                <div class="order_item">
-                    <div class="order_head" v-if="!isThird">
-                        <div class="order_num">
-                            6556460
-                        </div>
-                        <div class="order_express">
-                            <img :src="sf.img" /> {{ sf.name }}
-                            <span>1111111111</span>
-                        </div>
-                    </div>
-                    <div class="list_wrapper">
-                        <div class="list_item">
-                            <div class="list_img">
-                                <img src="../../assets/list_img.png" alt="">
+                <template v-if="orderListDetail.subOrder!=null">
+                    <div class="order_item" v-for="(item,index) in orderListDetail.subOrder">
+                        <div class="order_head">
+                            <div class="order_num">
+                                6556460
                             </div>
-                            <div class="list_content">
-                                <p>醉品朴茶 安溪铁观音2017秋茶 乌龙茶 清香型</p>
-                                <div class="list_price_count">
-                                    <span>￥500</span>
-                                    <span>x23</span>
+                            <div class="order_express">
+                                <img :src="express.sf.img" /> {{ express.sf.name }}
+                                <span>1111111111</span>
+                            </div>
+                        </div>
+                        <div class="list_wrapper">
+                            <div class="list_item">
+                                <div class="list_img">
+                                    <img src="../../assets/list_img.png" alt="">
+                                </div>
+                                <div class="list_content">
+                                    <p>醉品朴茶 安溪铁观音2017秋茶 乌龙茶 清香型</p>
+                                    <div class="list_price_count">
+                                        <span>￥500</span>
+                                        <span>x23</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="list_item">
-                            <div class="list_img">
-                                <img src="../../assets/list_img.png" alt="">
-                            </div>
-                            <div class="list_content">
-                                <p>醉品朴茶 安溪铁观音2017秋茶 乌龙茶 清香型</p>
-                                <div class="list_price_count">
-                                    <span>￥500</span>
-                                    <span>x23</span>
+                            <div class="list_item">
+                                <div class="list_img">
+                                    <img src="../../assets/list_img.png" alt="">
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="order_item">
-                    <div class="order_head">
-                        <div class="order_num">
-                            6556460
-                        </div>
-                        <div class="order_express">
-                            <img :src="sf.img" /> {{ sf.name }}
-                            <span>1111111111</span>
-                        </div>
-                    </div>
-                    <div class="list_wrapper">
-                        <div class="list_item">
-                            <div class="list_img">
-                                <img src="../../assets/list_img.png" alt="">
-                            </div>
-                            <div class="list_content">
-                                <p>醉品朴茶 安溪铁观音2017秋茶 乌龙茶 清香型</p>
-                                <div class="list_price_count">
-                                    <span>￥500</span>
-                                    <span>x23</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="list_item">
-                            <div class="list_img">
-                                <img src="../../assets/list_img.png" alt="">
-                            </div>
-                            <div class="list_content">
-                                <p>醉品朴茶 安溪铁观音2017秋茶 乌龙茶 清香型</p>
-                                <div class="list_price_count">
-                                    <span>￥500</span>
-                                    <span>x23</span>
+                                <div class="list_content">
+                                    <p>醉品朴茶 安溪铁观音2017秋茶 乌龙茶 清香型</p>
+                                    <div class="list_price_count">
+                                        <span>￥500</span>
+                                        <span>x23</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </template>
+                <template v-if="orderListDetail.subOrder == null">
+                    <div class="order_item">
+                        <div class="order_head">
+                            <div class="order_num">
+                                {{ orderListDetail.mainOrder.mainrNo }}
+                            </div>
+                            <div class="order_express">
+                                <!-- orderListDetail.mainOrder.expressName 快递名称  orderListDetail.mainOrder.expressCode 快递类型  -->
+                                <img :src="express.sf.img" /> {{ express.sf.name}}
+                                <span>{{ orderListDetail.mainOrder.expressNo }}</span>
+                            </div>
+                        </div>
+                        <div class="list_wrapper">
+                            <div class="list_item" v-for="(item,index) in orderListDetail.mainOrder.products" @click="$router.push({name: '商品详情',query: {proSku: item.proSku}})">
+                                <div class="list_img">
+                                    <img :src="item.imageUrl" />
+                                </div>
+                                <div class="list_content">
+                                    <p>{{ item.productName }}</p>
+                                    <div class="list_price_count">
+                                        <span>￥{{ item.productPrice | toFix2 }}</span>
+                                        <span>x{{ item.productNum | toFix2 }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </template>
             </div>
         </div>
         <!-- 价格总 -->
@@ -158,64 +153,61 @@
             <div class="order_price_detail">
                 <div class="price_detail_item">
                     <span>商品总价</span>
-                    <span>￥756.00</span>
+                    <span>￥{{ orderDetailData.productPaySum | toFix2 }}</span>
                 </div>
-                <div class="price_detail_item">
+                <div class="price_detail_item" v-if="orderDetailData.redPacketName">
                     <span>红包抵扣</span>
-                    <span>-￥756.00</span>
-                </div>
-                <div class="price_detail_item">
-                    <span>浙江温州江南皮革厂大甩卖</span>
-                    <span>-￥10.00</span>
+                    <span>-￥{{ orderDetailData.redPacketSum | toFix2 }}</span>
                 </div>
                 <div class="price_detail_item">
                     <span>积分抵扣</span>
-                    <span>-1000积分</span>
+                    <span v-if="orderDetailData.useJfSum === 0">0积分</span>
+                    <span v-if="orderDetailData.useJfSum != 0">-{{ orderDetailData.useJfSum }}积分</span>
                 </div>
                 <div class="price_detail_item">
                     <span>运费</span>
-                    <span>0.00</span>
+                    <span>{{ orderDetailData.freightSum | toFix2 }}</span>
                 </div>
                 <div class="price_detail_item">
                     <span>订单总价</span>
-                    <span>￥756.00</span>
+                    <span>￥{{ orderDetailData.orderAllSum | toFix2 }}</span>
                 </div>
             </div>
             <div class="order_price_total">
                 <div class="price_total_item">
-                    <span>返积分：686分</span>
-                    <span>余额支付：￥56.00</span>
+                    <span>返积分：{{  orderDetailData.giveJfSum }}分</span>
+                    <span>余额支付：￥{{ orderDetailData.useCashSum | toFix2 }}</span>
                 </div>
                 <div class="price_total_item">
-                    <span>￥653.00</span>实际付款：
+                    <span>{{  orderDetailData.orderSum | toFix2 }}</span>实际付款：
                 </div>
             </div>
         </div>
         <!-- 下单时间 -->
         <div class="order_date">
-            <div class="order_date_item">
+            <div class="order_date_item" v-if="orderDetailData.createTime">
                 <span>下单时间</span>
-                <span>2017-03-08 15:57:15</span>
+                <span>{{ orderDetailData.createTime }}</span>
             </div>
-            <div class="order_date_item">
+            <div class="order_date_item" v-if="orderDetailData.payTime">
                 <span>付款时间</span>
-                <span>2017-03-08 15:57:15</span>
+                <span>{{ orderDetailData.payTime }}</span>
             </div>
-            <div class="order_date_item">
+            <div class="order_date_item" v-if="orderDetailData.sendTime">
                 <span>发货时间</span>
-                <span>2017-03-08 15:57:15</span>
+                <span>{{ orderDetailData.sendTime }}</span>
             </div>
-            <div class="order_date_item">
+            <div class="order_date_item" v-if="orderDetailData.recTime">
                 <span>收货时间</span>
-                <span>2017-03-08 15:57:15</span>
+                <span>{{ orderDetailData.recTime }}</span>
             </div>
-            <div class="order_date_item">
+            <div class="order_date_item" v-if="orderDetailData.commentTime">
                 <span>评价时间</span>
-                <span>2017-03-08 15:57:15</span>
+                <span>{{ orderDetailData.commentTime }}</span>
             </div>
-            <div class="order_date_item">
+            <div class="order_date_item" v-if="orderDetailData.orderCloseTime || orderDetailData.cancelTime">
                 <span>取消时间</span>
-                <span>2017-03-08 15:57:15</span>
+                <span>{{ orderDetailData.orderCloseTime }}{{ orderDetailData.cancelTime }}</span>
             </div>
         </div>
         <!-- 按钮 -->
@@ -240,28 +232,35 @@ import {mapGetters} from 'vuex';
 export default {
     data() {
         return {
-            status: '待付款',
             pullOrDownFlag: false,
             pullOrDownShop: false,
             shopLogo: '../src_wap/assets/images/list_logo.png',
             isThird: true,
-            sf: {
-                img: '../src_wap/assets/images/sfkd.png',
-                name: '顺丰快递'
-            },
-            st: {
-                img: '../src_wap/assets/images/stkd.png',
-                name: '申通快递'
-            },
-            ems: {
-                img: '../src_wap/assets/images/emskd.png',
-                name: 'EMS快递'
+            express: {
+                sf: {
+                    img: '../src_wap/assets/images/sfkd.png',
+                    name: '顺丰快递'
+                },
+                st: {
+                    img: '../src_wap/assets/images/stkd.png',
+                    name: '申通快递'
+                },
+                ems: {
+                    img: '../src_wap/assets/images/emskd.png',
+                    name: 'EMS快递'
+                }
             },
             titleText: '订单详情',
             orderDetailData: {},
             closeUp: false,
             cancelList: ['我不想买了','拍错商品，重新下单','其他原因'],
             cancelClass: null,
+            orderListDetail: {
+                mainOrder: {},
+                freeRuleMap: {},
+                subOrder: null,
+                freeProducts: []
+            },
         }
     },
     head: {
@@ -272,32 +271,48 @@ export default {
         }
     },
     methods: {
+        getOrderList(orderId) {
+            let data = {
+                    orderId: orderId,
+                    device: 'WAP'
+                }
+            return new Promise((resolve,reject) => {
+                this.$api.post('/oteao/order/orderProductList',data,res => {
+                    resolve(res);
+                },res=>{
+                    return Toast({
+                        message: res.errorMsg,
+                        iconClass: 'icon icon-fail'
+                    });
+                })
+            })
+        },
         commentMethod() {
 
         },
         selectCancel(index) {
             this.cancelClass = index;
             this.closeUp = false;
-            // setTimeout(() => {
-            //     let data = {
-            //         payId: this.cancelPro.payId,
-            //         cancelReason: this.cancelList[this.cancelList]
-            //     }
-            //     this.$api.post('/oteao/order/cancelOrder',data,res => {
-            //         Toast({
-            //             message: `订单【${this.cancelPro.orderNo}】已关闭`,
-            //             iconClass: 'icon icon-success'
-            //         });
-            //         this.cancelClass = null;
-            //         return window.location.reload();
-            //     },res=>{
-            //         this.cancelClass = null;
-            //         return Toast({
-            //             message: res.errorMsg,
-            //             iconClass: 'icon icon-fail'
-            //         });
-            //     })
-            // },300)
+            setTimeout(() => {
+                let data = {
+                    payId: this.orderDetailData.payId,
+                    cancelReason: this.cancelList[this.cancelList]
+                }
+                this.$api.post('/oteao/order/cancelOrder',data,res => {
+                    Toast({
+                        message: `订单【${this.orderDetailData.orderNo}】已关闭`,
+                        iconClass: 'icon icon-success'
+                    });
+                    this.cancelClass = null;
+                    return window.location.reload();
+                },res=>{
+                    this.cancelClass = null;
+                    return Toast({
+                        message: res.errorMsg,
+                        iconClass: 'icon icon-fail'
+                    });
+                })
+            },300)
         },
         cancelMethod() {
             this.closeUp = true;
@@ -313,7 +328,7 @@ export default {
         },
         confrimMethod() {
             let data = {
-                orderNo: this.orderDetailData.mainOrder.mainrNo
+                orderNo: this.orderDetailData.orderNo
             }
             MessageBox.confirm('确定确认收货?').then(action => {
                 this.$api.post('/oteao/order/confimReceipt',data,res => {
@@ -333,19 +348,21 @@ export default {
             });
         },
         regStar(val) {                 // 隐藏会员账号
-            if(val.length <= 5){
-                let len = val.length;
-                val = val.substr(0,len-1) + '*';
-                return val;
+            if(val == ''){
+                val = '';
             }else{
-                let len = val.length;
-                let star = '';
-                for(let i=0; i<len-5; i++){
-                    star+='*';
+                let valLen = val.length;
+                if(valLen <= 5 && valLen > 0){
+                    val = val.substr(0,valLen-1) + '*';
+                }else{
+                    let star = '';
+                    for(let i=0; i<valLen-5; i++){
+                        star+='*';
+                    }
+                    val = val.substr(0,3) + star + val.substr(valLen-2,valLen+1);
                 }
-                val = val.substr(0,3) + star + val.substr(len-2,len+1);
-                return val;
             }
+            return val;
         },
         getListDetail() {
             let orderNo = this.$route.query.orderNo,
@@ -366,12 +383,17 @@ export default {
     },
     created() {
         this.titleText = '订单详情'
-        this.$emit('updateHead',this.titleText)
-    },
-    mounted() {
+        this.$emit('updateHead',this.titleText);
         this.getListDetail().then((res) =>{
             this.orderDetailData = res.data;
+            // this.proAllSum = this.$tool.math.eval(`${this.orderDetailData..orderSum} - ${this.orderDetailData..freightSum}`);
+            this.getOrderList(this.orderDetailData.orderId).then((res) =>{
+                this.orderListDetail = res.data;
+            });
         })
+    },
+    mounted() {
+
     },
     computed:{
         ...mapGetters([
