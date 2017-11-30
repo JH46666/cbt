@@ -1,7 +1,7 @@
 <template>
     <div id="editAddress" :style="style" ref="editAddress">
         <label class="address-wrap">
-            <input type="text" placeholder="姓名" v-model="data.name">
+            <input type="text" placeholder="姓名" v-model="data.name" maxlength="20">
         </label>
         <label class="address-wrap">
             <input type="text" placeholder="手机号码" v-model="data.phone" maxlength="11">

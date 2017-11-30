@@ -1,9 +1,9 @@
 <template>
     <div id="redpacket">
         <mt-navbar v-model="selected">
-            <mt-tab-item id="notUsed">未使用(99+)</mt-tab-item>
-            <mt-tab-item id="used">已使用(99+)</mt-tab-item>
-            <mt-tab-item id="disable">已失效(99+)</mt-tab-item>
+            <mt-tab-item id="UNUSED">未使用(99+)</mt-tab-item>
+            <mt-tab-item id="USED">已使用(99+)</mt-tab-item>
+            <mt-tab-item id="EXPIRED">已失效(99+)</mt-tab-item>
         </mt-navbar>
         <section class="redpacket-main">
             <div class="redpacket-item disabled">
@@ -50,9 +50,23 @@
     export default {
         data() {
             return {
-                selected: 'notUsed',
                 one: true,
             }
+        },
+        computed: {
+            selected: {
+                get() {
+                    if(this.$route.query.type) {
+                        return this.$route.query.type
+                    } else {
+                        this.$router.replace({name: '红包列表',query: {type: 'UNUSED'}})
+                        return 'null';
+                    }
+                },
+                set(val) {
+                    this.$router.replace({name: '红包列表',query: {type: val}})
+                }
+            },
         },
         methods: {
             showMore() {
