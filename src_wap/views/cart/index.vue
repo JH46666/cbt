@@ -148,6 +148,7 @@
 </template>
 <script>
     import {mapGetters} from 'vuex';
+    import {MessageBox} from 'mint-ui'
     export default {
         data(){
             return {
@@ -283,13 +284,11 @@
         },
         computed:{
             ...mapGetters([
-                'oteatCart'
+                'cartList'
             ]),
         },
         created(){
-            this.$store.dispatch('queryCart').then(res=>{
-
-            })
+            this.groupCollect = this.cartList.oteaoCart;
         },
         methods:{
             //保留两位小数
@@ -370,6 +369,35 @@
             selectAll(){
                 this.checkedAll = !this.checkedAll;
             }
+        },
+        beforeRouteEnter (to, from, next) {
+            next(vm => {
+                vm.$store.dispatch('queryCart',{}).then(res=>{
+                    vm.$store.commit('SET_CART_LIST',res.data);
+                },res=>{
+                    if(res.errorMsg == '您的账号审核中，请耐心等待~'){
+                        MessageBox({
+                            title:'提示', 
+                            message:`${res.errorMsg}<br>若有疑问，请联系客服<br>4006-066-068`,
+                            confirmButtonText: '我知道了'
+                        });
+                        vm.$router.push(from.fullPath);
+                    }else if(res.errorMsg == '会员才能进入购物车哟~'){
+                        MessageBox({
+                            title:'提示', 
+                            message:`您的账号审核未通过，只有正式会员才能进入购物车哟~`,
+                            confirmButtonText: '完善资料',
+                            showCancelButton: true
+                        },action=>{
+                            if(action == 'confirm'){
+                                vm.$router.push('/regist/seller');
+                                return;
+                            }
+                        });
+                        vm.$router.push(from.fullPath);
+                    }
+                })
+            })
         }
     }
 </script>

@@ -139,7 +139,7 @@
                         res=>{
                             this.$router.push('/');
                         },res=>{
-                            if(res.code === '4064'){
+                            if(res.code === 4064){
                                 this.illegalFlag = true;
                             }else{
                                 Toast('账号或密码错误，请核实后重新输入');
