@@ -87,6 +87,14 @@ export default new Router({
 					}
 				},
 				{
+					path: 'editaddress',
+					name: '编辑地址',
+					component: resolve => require(['@/views/center/editAddress.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+				{
 					path: 'integral',
 					name: '积分记录',
 					component: resolve => require(['@/views/center/integral.vue'],resolve),
@@ -260,6 +268,14 @@ export default new Router({
 					path: 'orderdetail',
 					name: '卖家订单详情',
 					component: resolve => require(['@/views/seller/orderDetail.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+				{
+					path: 'editaddress',
+					name: '卖家修改地址',
+					component: resolve => require(['@/views/center/editAddress.vue'],resolve),
 					meta: {
 						hideFooter: true
 					}

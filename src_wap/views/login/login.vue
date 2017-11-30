@@ -11,7 +11,7 @@
                 <!-- 短信登录 -->
                 <mt-tab-container-item id="1" class="com_wrapper">
                     <div class="form_item">
-                        <input type="text" placeholder="手机号码" v-model="regInfo.phone" maxlength="11" @blur="checkPhone($event.target.value)">
+                        <input type="tel" placeholder="手机号码" v-model="regInfo.phone" maxlength="11" @blur="checkPhone($event.target.value)">
                     </div>
                     <div class="form_item">
                         <div class="flex">
@@ -24,7 +24,7 @@
                 <!-- 密码登录 -->
                 <mt-tab-container-item id="2" class="com_wrapper">
                     <div class="form_item">
-                        <input type="text" placeholder="手机号码" v-model="regInfo.phone" maxlength="11" @blur="checkPhone($event.target.value)">
+                        <input type="tel" placeholder="手机号码" v-model="regInfo.phone" maxlength="11" @blur="checkPhone($event.target.value)">
                     </div>
                     <div class="form_item">
                         <input v-if="visFlag" type="text" placeholder="登录密码" v-model="regInfo.password" maxlength="16" @input="checkPassWord($event.target.value)">

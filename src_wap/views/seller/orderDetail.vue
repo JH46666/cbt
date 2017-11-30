@@ -13,7 +13,7 @@
             <section class="text-pannel">
                 <div class="top">
                     <h4 class="left">收货人信息</h4>
-                    <div class="right"><i class="icon-dingdanliebiaobianji"></i></div>
+                    <div class="right" @click="$router.push({name: '卖家修改地址',query:{orderNo:myData.orderNo}})"><i class="icon-dingdanliebiaobianji"></i></div>
                 </div>
                 <p class="user">
                     {{ myData.receiptName }}&nbsp;&nbsp;&nbsp;&nbsp;{{ myData.receiptPhone }}
@@ -207,7 +207,7 @@
         },
         created() {
             let orderNo = this.$route.query.orderNo;
-            this.$api.post('/oteao/order/findOrderByNo',{
+            this.$api.post('/oteao/order/findSellerOrderByNo',{
                 orderNo,
                 delYes: 0
             },res =>{
