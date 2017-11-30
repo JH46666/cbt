@@ -91,6 +91,11 @@
                                 .fontSize(.36rem);
                             }
                         }
+                        del:nth-child(4){
+                            .fontSize(.22rem);
+                            margin-left: .1rem;
+                            opacity: .7;
+                        }
                     }
                     .detail_special_date{
                         .fontSize(.24rem);
@@ -159,7 +164,7 @@
             .detail_describe_wrapper{
                 .paddingAll(0,.2rem,0,.2rem);
                 .detail_describe_text{
-                    height: 2.68rem;
+                    padding-bottom: .32rem;
                     border-bottom: 1px solid #e5e5e5;
                     .detail_text{
                         .fontSize(.32rem);
@@ -167,7 +172,7 @@
                         .color(#333);
                         .line(1.5);
                         margin: .4rem 0 .32rem;
-                        height: .88rem;
+                        max-height: .88rem;
                     }
                     .detail_now_price{
                         .color(#f08200);
@@ -209,7 +214,6 @@
                                 .color(#fff);
                                 .fontSize(.18rem);
                                 .algin(c);
-                                .line(.32rem);
                                 .reduis(2px);
                             }
                             p{
@@ -615,6 +619,7 @@
                     span{
                         .color(#f08200);
                         margin-left: .2rem;
+
                     }
                 }
                 .item_2{
@@ -677,6 +682,9 @@
                     span{
                         .color(#f08200);
                         margin-left: .2rem;
+                        a{
+                            .color(@mainCol);
+                        }
                     }
                 }
             }

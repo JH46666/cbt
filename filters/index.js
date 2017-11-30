@@ -1,6 +1,6 @@
 const filter = {
     install(Vue,option) {
-        
+
         // 保留两位小数
         Vue.filter('toFix2',val => {
             val = String(val).trim();

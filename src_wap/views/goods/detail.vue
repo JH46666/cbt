@@ -46,12 +46,14 @@
                         <img :src="item.imgUrl" :key="index">
                     </mt-swipe-item>
                 </mt-swipe>
-                <div class="detail_special" v-if="detailData.productExtInfo.isSales">
+                <!--  v-if="detailData.productExtInfo.isSales" -->
+                <div class="detail_special">
                     <div class="detail_special_wrapper">
                         <div class="detail_special_price">
                             <span>特价</span>
                             <span>￥</span>
-                            <span>{{ detailData.productExtInfo.salesPrice.toFixed(2) }}</span>
+                            <span>{{ detailData.productExtInfo.salesPrice | toFix2 }}</span>
+                            <del>{{ detailData.productExtInfo.salesPrice | toFix2 }}</del>
                         </div>
                         <div class="detail_special_date">
                             <span class="date_num date_none">{{ special.day }}</span>
@@ -72,8 +74,10 @@
                 <div class="detail_describe_wrapper">
                     <div class="detail_describe_text">
                         <p class="detail_text">{{ detailData.productInfo.proName }}</p>
-                        <p class="detail_now_price" v-if="!detailData.productExtInfo.isSales">￥{{ detailData.productPrice[0].price.toFixed(2) }}</p>
-                        <p class="detail_suggest_price">建议零售价：￥{{ detailData.productPrice[0].price.toFixed(2) }}</p>
+                        <template v-if="detailData.productPrice.length != 0">
+                            <p class="detail_now_price" v-if="!detailData.productExtInfo.isSales">￥{{ detailData.productPrice[0].price | toFix2 }}</p>
+                            <p class="detail_suggest_price">建议零售价：￥{{ detailData.productPrice[0].price | toFix2 }}</p>
+                        </template>
                     </div>
                     <div class="detail_active">
                         <label>促销</label>
@@ -286,9 +290,9 @@ export default {
     methods: {
         getDetail() {
             let data = {
-                sysId: 2,
+                sysId: 1,
                 device: 'WAP',
-                productSku: 'ZONGY0666-250'
+                productSku: '8688366'
             }
             return new Promise((resolve,reject) => {
                 this.$api.get('/oteaoProduct/getProExtInfo',data,res => {

@@ -1,6 +1,7 @@
 @import "../base/tools.less";
 .detail{
     .ipScroll;
+    padding-bottom: 1.32rem;
     .detail_type{
         .bg(#fff);
         padding: 0 .36rem;
@@ -169,6 +170,9 @@
                 .fontSize(.3rem);
                 .order_addrss_tel{
                     margin-top: .15rem;
+                    a{
+                        .color(@mainCol);
+                    }
                 }
                 border-bottom: 1px solid #e5e5e5;
             }
@@ -307,6 +311,11 @@
     }
     .order_btn{
         padding: .3rem .36rem;
+        .position(f);
+        width: 100%;
+        bottom: 0;
+        z-index: 10;
+        left: 0;
         .bg(#fafafa);
         .flex;
         .flex-dir(row-reverse);
@@ -363,4 +372,7 @@
 }
 .mint-msgbox-confirm{
     .color(#f08200);
+}
+.mint-msgbox{
+    width: 56%;
 }
