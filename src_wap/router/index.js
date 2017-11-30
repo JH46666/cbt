@@ -204,7 +204,7 @@ export default new Router({
 			children: [
 				{
 					path: 'buyerlist',
-					name: '订单列表1',
+					name: '订单列表',
 					component: resolve => require(['@/views/order/buyerList.vue'],resolve),
 					meta: {
 						hideFooter: true
@@ -212,7 +212,7 @@ export default new Router({
 				},
 				{
 					path: 'buyerdetail',
-					name: '订单详情1',
+					name: '订单详情',
 					component: resolve => require(['@/views/order/buyerDetail.vue'],resolve),
 					meta: {
 						hideFooter: true
@@ -220,7 +220,7 @@ export default new Router({
 				},
 				{
 					path: 'buyerevaluate',
-					name: '订单评价1',
+					name: '订单评价',
 					component: resolve => require(['@/views/order/buyerEvaluate.vue'],resolve),
 					meta: {
 						hideFooter: true

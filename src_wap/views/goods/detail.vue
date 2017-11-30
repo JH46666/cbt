@@ -293,7 +293,6 @@ export default {
             return new Promise((resolve,reject) => {
                 this.$api.get('/oteaoProduct/getProExtInfo',data,res => {
                     resolve(res);
-                    // Indicator.close();
                 },res=>{
                     return Toast({
                         message: res.errorMsg,

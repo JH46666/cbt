@@ -350,8 +350,7 @@ export default {
         getListDetail() {
             let orderNo = this.$route.query.orderNo,
                 data = {
-                    orderNo: orderNo,
-                    delYes: 1
+                    orderNo: orderNo
                 }
             return new Promise((resolve,reject) => {
                 this.$api.post('/oteao/order/findOrderByNo',data,res => {

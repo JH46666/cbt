@@ -7,7 +7,7 @@
         <mt-tab-container>
             <mt-tab-container-item>
                 <div class="mt_cell_wrapper" v-if="orderNum != 0" v-infinite-scroll="loadMore" infinite-scroll-disabled="noInfinity" infinite-scroll-distance="10">
-                    <mt-cell v-for="(item,index) in orderList" :key="index" @click.native="toListDetail(item.orderNo)">
+                    <mt-cell v-for="(item,index) in orderList" :key="index">
                         <div class="order_head">
                             <div class="order_logo" v-if="item.sellerOrgId === 1">
                                 <img :src="shopLogo" />自营
@@ -20,7 +20,7 @@
                                 {{ orderStatus[item.orderStatus] }}
                             </div>
                         </div>
-                        <div class="order_content">
+                        <div class="order_content" @click="toListDetail(item.orderNo)">
                             <div class="order_item" v-for="(pro,count) in item.products" :key="count">
                                 <div class="img_item">
                                     <img :src="pro.imageUrl" />
@@ -184,15 +184,40 @@ export default {
             this.currentNum = 1;
             this.selectClass = index;
             if(index == 0){
-                this.$router.replace('/order/buyerlist')
+                this.$router.replace({
+                    name: '订单列表',
+                    query: {
+                        orderStatus: 'null'
+                    }
+                })
             }else if(index == 1){
-                this.$router.replace('/order/buyerlist?waitPay')
+                this.$router.replace({
+                    name: '订单列表',
+                    query: {
+                        orderStatus: 'waitPay'
+                    }
+                })
             }else if(index == 2){
-                this.$router.replace('/order/buyerlist?waitSend')
+                this.$router.replace({
+                    name: '订单列表',
+                    query: {
+                        orderStatus: 'waitSend'
+                    }
+                })
             }else if(index == 3){
-                this.$router.replace('/order/buyerlist?waitRec')
+                this.$router.replace({
+                    name: '订单列表',
+                    query: {
+                        orderStatus: 'waitRec'
+                    }
+                })
             }else if(index == 4){
-                this.$router.replace('/order/buyerlist?waitComment')
+                this.$router.replace({
+                    name: '订单列表',
+                    query: {
+                        orderStatus: 'waitComment'
+                    }
+                })
             }
             this.$refs.scrollDoc.scrollTop = 0;
             this.getList().then((res) =>{
@@ -202,8 +227,7 @@ export default {
             this.noInfinity = false;
         },
         getList() {
-            let url = location.href.split('?'),
-                status = url[url.length-1],
+                let status = this.$route.query.orderStatus,
                 data = {
                     pageNumber: this.currentNum,
                     pageSize: this.pageNume,
