@@ -20,7 +20,7 @@
                 </p>
                 <div class="detail-wrap">
                     <p class="detail" :class="{'limit-2':!showMoreAddress}">
-                        {{ myData.detailAddress }}
+                        {{ myData.detailAddress + myData.streetAddress }}
                     </p>
                     <span @click="showMoreAddress = !showMoreAddress" v-if="myData.detailAddress ? myData.detailAddress.length >44 : false"><i :class="{'icon-single-down':!showMoreAddress,'icon-shang':showMoreAddress}"></i></span>
                 </div>
@@ -83,8 +83,8 @@
                     <div class="right">{{ myData.recTime }}</div>
                 </div>
                 <div class="item">
-                    <div class="left">评价</div>
-                    <div class="right">2017-11-11 19:00:00</div>
+                    <div class="left" v-if="myData.commentTime">评价</div>
+                    <div class="right">{{ myData.commentTime }}</div>
                 </div>
                 <div class="item" v-if="myData.cancelTime">
                     <div class="left">取消时间</div>

@@ -1,5 +1,6 @@
 import router from '@/router';
 import Vue from 'vue'
+import { type } from 'os';
 // 配置API接口地址
 var root = '/api'
 // 引用axios
@@ -47,7 +48,9 @@ function todd(method,data){
 */
 
 function apiAxios (method, url, params, success, failure) {
-  if (params) {
+  if(method === 'POST' && typeof params === 'string') {
+    params = JSON.parse(params)
+  } else {
     params = todd(method,params)
   }
   axios({
