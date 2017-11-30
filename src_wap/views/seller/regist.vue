@@ -5,10 +5,6 @@
         </div>
         <div class="regist_section">
             <div class="regist_item">
-                <label for="1">单位名称</label>
-                <textarea id="1" v-model="companyName" row="2"  placeholder="请填写单位名称"></textarea>
-            </div>
-            <div class="regist_item">
                 <label for="2">店铺名称</label>
                 <input id="2" v-model="shopName" type="text" maxlength="10" placeholder="请填写店铺名称" />
                 <div class="text_tips"><span>{{ shopName.length }}</span>/10</div>
@@ -48,7 +44,6 @@
 export default {
     data() {
         return {
-            companyName: '',
             shopName: '',
             joinType: 1,
             typeList: ['茶商','合作社','茶企','批发商'],
