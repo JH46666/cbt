@@ -135,11 +135,13 @@
             }
         }
         .order-entry{
-            padding: .35rem 0;
+            padding: .35rem;
             .h(1.54rem);
             .flex;
             .item{
-                .flex-1;
+                // .flex-1;
+                .position(r);
+                .w(25%);
                 .algin(c);
                 i {
                     .iconfont;
@@ -161,7 +163,7 @@
                     .color(#f44336);
                     border: 1px solid #f44336;
                     top: -.2rem;
-                    right: .45rem;                   
+                    right: .25rem;                   
                     padding: 0 .1rem;
                 }
             }
@@ -186,11 +188,15 @@
             .paddingB(.3rem);
             i {
                 .iconfont;
-                .color(@mainCol);
+                .color(#f2b449);
                 .fontSize(.4rem);
                 .line(1);
                 &.blue{
                     .color(#49bbf2);
+                }
+                &.small{
+                    .fontSize(.34rem);
+                    .line(.4rem);
                 }
             }
             p{
