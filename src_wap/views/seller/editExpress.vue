@@ -67,7 +67,7 @@
         },
         created() {
             let orderNo = this.$route.query.orderNo;
-            this.$api.post('/oteao/order/findOrderByNo',{
+            this.$api.post('/oteao/order/findSellerOrderByNo',{
                 orderNo,
                 delYes: 0
             },res =>{
