@@ -1,21 +1,23 @@
 import $api from '../../api';
 const cart = {
     state:{
-        oteaoCart:[],
+        cartData:[],
     },
     mutations:{
         SET_CART_LIST(state,data){
-            state.oteaoCart = data;
+            state.cartData = data;
         }
     },
     actions:{
-        queryCart({context,rootState},{device,buyNow}){
+        queryCart({context,rootState},{buynow}){
             return new Promise((resolve,reject)=>{
                 $api.get('/oteao/shoppingCart/query',{
-                    device: rootState,
-                    buyNow: buyNow || ''
+                    device: rootState.device,
+                    buyNow: buynow || ''
                 },res=>{
                     resolve(res);
+                },res=>{
+                    reject(res);
                 });
             })
         }

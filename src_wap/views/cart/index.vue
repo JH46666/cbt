@@ -3,39 +3,27 @@
         <div class="edit_floor"><a @click="edit=!edit">{{edit==true?'完成':'编辑'}}</a></div>
         <div class="product_floor">
             <!-- 商品分组 -->
-            <div class="group normal_product" v-for="list in groupCollect">
+            <div class="group normal_product" v-for="list in cartData.oteaoCart">
                 <div>
                     <!-- 所属店铺 -->
                     <div class="flex align_items_c shop_caption">
                         <div class="left_check flex justify_content_c" :class="{'checked':list.checkedAll}" @click="selectGroupAll(list)">
                             <p class="flex">
-                                <input type="checkbox" name="" :id="list.id" hidden>
-                                <!-- <label :for="list.id"></label> -->
+                                <input type="checkbox" name="" :id="list.orgId" hidden>
                                 <span class="check_cir"></span>
                             </p>
                         </div>
-                        <template v-if="list.isSelf">
-                            <div class="self"><img src="../../assets/images/logo_2.png" alt=""></div>
-                            <p>自营</p>
-                        </template>
-                        <template v-else>
-                            <div class="other"><img src="../../assets/images/shop_icon.png" alt=""></div>
-                            <p>{{list.shopName}}</p>
-                        </template>
+                        <div v-if="list.orgId" class="other"><img src="../../assets/images/shop_icon.png" alt=""></div>
+                        <div v-else class="self"><img src="../../assets/images/logo_2.png" alt=""></div>
+                        <p>{{list.shopName}}</p>
                     </div>
-                    <!-- 商品 -->
-                    <div class="pro_item" v-for="item in list.products" :class="{'no_border':item.tipsFlag}" :key="item.proId">
-                        <!-- 活动&赠品caption -->
-                        <div class="pro_free_caption" v-if="item.isFree">
-                            <span class="full_free">满赠</span>
-                            <span>满358元送金骏眉</span>
-                        </div>
+                    <!-- 正常商品 -->
+                    <div class="pro_item" v-for="item in list.cartList"  :class="{'no_border':item.tipsFlag}" :key="item.proId">
                         <div class="flex">
                             <!-- 复选按钮 -->
-                            <div class="left_check flex justify_content_c" :class="{'checked':item.checkedFlag,'visi_h': item.isFree}" @click="selectOne(list,item)">
+                            <div class="left_check flex justify_content_c" :class="{'checked':item.checkedFlag}" @click="selectOne(list,item)">
                                 <p class="flex align_items_c pro_label">
                                     <input type="checkbox" name="" :id="item.proId" v-model="selectIds" hidden>
-                                    <!-- <label :for="item.proId"></label> -->
                                     <span class="check_cir"></span>
                                 </p>
                             </div>
@@ -45,27 +33,19 @@
                                         <div class="tag_img" v-if="item.tagImg">
                                             <img :src="item.tagImg" alt="">
                                         </div>
-                                        <a :href="item.proHref"><img :src="item.proImg" alt=""></a>
+                                        <a :href="item.proSku"><img :src="item.imageUrl" alt=""></a>
                                     </div>
                                     <div class="flex-1 pro_detail">
                                         <div class="flex flex_col detail_inner">
-                                            <a :href="item.proHref">
+                                            <a :href="item.proSku">
                                                 <h4>{{item.proName}}</h4>
                                             </a>
-                                            <!-- 正常商品 -->
-                                            <div class="flex-1 flex align_items_end" v-if="!item.isFree">
-                                                <div class="pro_price"><span class="money">{{item.proPrice}}</span>元/{{item.proWeight}}</div>
+                                            <div class="flex-1 flex align_items_end">
+                                                <div class="pro_price"><span class="money">{{item.priorityPrice}}</span>元/{{item.proWeight}}</div>
                                                 <div class="pro_number clearfix">
                                                     <span class="decrease" @click="numDecrease(item)"><i class="iconfont">&#xe851;</i></span>
-                                                    <input class="input-num" type="text" :value="item.proNum" @blur="numChange($event.target.value,item)">
+                                                    <input class="input-num" type="text" :value="item.buyNum" @blur="numChange($event.target.value,item)">
                                                     <span class="plus" @click="numPlus(item)"><i class="iconfont">&#xe638;</i></span>
-                                                </div>
-                                            </div>
-                                            <!-- 赠品 -->
-                                            <div class="flex-1 flex align_items_end" v-else>
-                                                <div class="pro_price"><span class="money">￥{{toFixed(item.proPrice)}}</span><span class="market_price">￥<del>{{toFixed(item.marketPice)}}</del></span></div>
-                                                <div class="pro_number clearfix">
-                                                    <p>× {{item.proNum}}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -79,11 +59,53 @@
                             <p>每单限购5件，您超出最高购买量啦~</p>
                         </div>
                     </div>
+                    <!-- 活动&赠品 -->
+                    <div class="pro_item" v-if="list.cartList.giftList && list.cartList.giftList.length>0" v-for="item in list.cartList" :key="item.proId">
+                        <!-- 活动&赠品caption -->
+                        <div class="pro_free_caption">
+                            <span class="full_free">满赠</span>
+                            <span>满358元送金骏眉</span>
+                        </div>
+                        <div class="flex">
+                            <!-- 复选按钮 -->
+                            <div class="left_check flex justify_content_c visi_h" @click="selectOne(list,item)">
+                                <p class="flex align_items_c pro_label">
+                                    <input type="checkbox" name="" :id="item.proId" v-model="selectIds" hidden>
+                                    <span class="check_cir"></span>
+                                </p>
+                            </div>
+                            <div class="right_info flex-1">
+                                <div class="pro_info flex">
+                                    <div class="pro_img">
+                                        <div class="tag_img" v-if="item.tagImg">
+                                            <img :src="item.tagImg" alt="">
+                                        </div>
+                                        <a :href="item.proSku"><img :src="item.imageUrl" alt=""></a>
+                                    </div>
+                                    <div class="flex-1 pro_detail">
+                                        <div class="flex flex_col detail_inner">
+                                            <a :href="item.proSku">
+                                                <h4>{{item.proName}}</h4>
+                                            </a>
+                                            <!-- 赠品 -->
+                                            <div class="flex-1 flex align_items_end">
+                                                <div class="pro_price"><span class="money">￥{{toFixed(item.priorityPrice)}}</span><span class="market_price">￥<del>{{toFixed(item.marketPice)}}</del></span></div>
+                                                <div class="pro_number clearfix">
+                                                    <p>× {{item.proNum}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pro-delete"><a href="##"><i class="iconfont">&#xe60d;</i></a></div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="group expired_product">
                 <!-- 失效商品 -->
-                <div class="pro_item" v-for="item in mayProducts">
+                <div class="pro_item" v-for="item in cartData.disableList">
                     <div class="flex">
                         <div class="right_info flex-1">
                             <div class="pro_info flex">
@@ -99,7 +121,7 @@
                                             <h4>{{item.proName}}</h4>
                                         </a>
                                         <div class="flex-1 flex align_items_end">
-                                            <div class="pro_price"><span class="money">￥{{toFixed(item.proPrice)}}</span></div>
+                                            <div class="pro_price"><span class="money">￥{{toFixed(item.priorityPrice)}}</span></div>
                                             <div class="pro_number clearfix">
                                                 <p>× 1</p>
                                             </div>
@@ -113,13 +135,13 @@
                 <a class="clear_expired" href="javascript:void(0);">清空失效商品</a>
             </div>
         </div>
-        <div class="empty">
+        <!-- <div class="empty">
             <div class="img-wrap">
                 <img src="../../assets/images/empty.jpg" alt="">
             </div>
             <p class="tips">购物车还没有商品哟~</p>
             <router-link :to="{name: '首页'}" class="to-index">去首页逛逛</router-link>
-        </div>
+        </div> -->
         <may-like></may-like>
         <!-- 底部结算 -->
         <div class="cart_bottom flex">
@@ -148,12 +170,14 @@
 </template>
 <script>
     import {mapGetters} from 'vuex';
+    import {MessageBox} from 'mint-ui'
     export default {
         data(){
             return {
                 selectIds:[],   //选择的商品
                 edit: false,    //编辑
                 checkedAll: false, //结算栏的全选或全不选
+                baseData:[],
                 groupCollect:[
                     {
                         isSelf: false,  //是否自营
@@ -177,40 +201,7 @@
                                 checkedFlag: false,  //是否被选中
                                 isFree: false,       //是否是赠品
                                 isSpecial: true,    //是否为特价商品
-                            },
-                            {
-                                proId: 12,
-                                tagImg: null,
-                                proImg: '../src_wap/assets/cart_img1.png',  //商品图片
-                                proName: "安溪西坪 清香型（消酸）铁观音303-507  2015秋茶",  //商品名称
-                                proPrice: 330, //商品价格
-                                proWeight: "斤",
-                                proNum: 3,  //商品数量
-                                maxNum: 9999,   //购买最大数量
-                                proHref: "/login",
-                                tips: '',
-                                tipsFlag: false,
-                                checkedFlag: false,  //是否被选中
-                                isFree: false,       //是否是赠品
-                                isSpecial: false,    //是否为特价商品
-                            },
-                            {
-                                proId: 12,
-                                tagImg: null,
-                                proImg: '../src_wap/assets/cart_img1.png',  //商品图片
-                                proName: "安溪西坪 清香型（消酸）铁观音303-507  2015秋茶",  //商品名称
-                                proPrice: 0, //商品价格
-                                proWeight: "斤",
-                                proNum: 1,  //商品数量
-                                maxNum: 9999,   //购买最大数量
-                                proHref: "/login",
-                                tips: '',
-                                tipsFlag: false,
-                                checkedFlag: false,  //是否被选中
-                                isFree: true,       //是否是赠品
-                                isSpecial: false,    //是否为特价商品
-                                marketPice: 59,   //市场价
-                            },
+                            }
                         ]
                         
                     },
@@ -235,22 +226,7 @@
                                 tipsFlag: false,
                                 checkedFlag: false,  //是否被选中
                                 isFree: false,       //是否是赠品
-                            },
-                            {
-                                proId: 22,
-                                tagImg: null,
-                                proImg: '../src_wap/assets/cart_img1.png',  //商品图片
-                                proName: "安溪西坪 清香型（消酸）铁观音303-507  2015秋茶",  //商品名称
-                                proPrice: 300, //商品价格
-                                proWeight: "克",
-                                proNum: 3,  //商品数量
-                                maxNum: 5,   //购买最大数量
-                                proHref: "/login",
-                                tips: '每单限购5件，您超出最高购买量啦~',
-                                tipsFlag: true,
-                                checkedFlag: false,  //是否被选中
-                                isFree: false,       //是否是赠品
-                            },
+                            }
                         ]
                         
                     }
@@ -283,13 +259,23 @@
         },
         computed:{
             ...mapGetters([
-                'oteatCart'
-            ]),
+                'cartData'
+            ])
         },
         created(){
-            this.$store.dispatch('queryCart').then(res=>{
-
-            })
+            this.$store.dispatch('queryCart',{}).then(res=>{
+                this.baseData = res.data;
+                for(let list of this.baseData.oteaoCart){
+                    this.$set(list,'count',0);
+                    this.$set(list,'checkedAll',false);
+                    for(let item of list.cartList){
+                        this.$set(item,'checkedFlag',false);
+                        this.$set(item,'tipsFlag',false);
+                        this.$set(item,'tips','');
+                    }
+                }
+                this.$store.commit('SET_CART_LIST',this.baseData);
+            },res=>{})
         },
         methods:{
             //保留两位小数
@@ -302,12 +288,20 @@
             },
             // 减
             numDecrease(item){
-                console.log(0.1+0.2);
-                 if(item.proNum > 1){
-                    item.proNum--;
-                 }else{
-                    item.proNum = 1;
-                 }
+                if(item.buyNum > 1){
+                    let data = {
+                        id: item.id,
+                        proId: item.proId,
+                        buyNum: item.buyNum-1,
+                        device: 'WAP'
+                    }
+                    this.$api.post('/oteao/shoppingCart/updateBuyNum',data,res=>{
+                        item.buyNum--;
+                    },res=>{
+                        item.tipsFlag = true;
+                        item.tips = res.errorMsg;
+                    })
+                }
             },
             //input输入数量
             numChange(val,item){
@@ -318,26 +312,30 @@
                     val = 1;
                 }
                 this.$nextTick(()=>{
-                    item.proNum = val;
+                    item.buyNum = val;
                 });
                  
             },
             // 加
             numPlus(item){
-                 if(item.proNum == item.maxNum){
-                    item.proNum = item.maxNum;
+                let data = {
+                    id: item.id,
+                    proId: item.proId,
+                    buyNum: item.buyNum+1,
+                    device: 'WAP'
+                }
+                this.$api.post('/oteao/shoppingCart/updateBuyNum',data,res=>{
+                    item.buyNum++;
+                },res=>{
                     item.tipsFlag = true;
-                 }else{
-                    item.proNum++;
-                 }
+                    item.tips = res.errorMsg;
+                })
             },
             //单个选择或取消选择
             selectOne(list,item){
                 let sum = 0;
-                for(let pro of list.products){
-                    if(!pro.isFree){
-                        sum++;
-                    }
+                for(let pro of list.cartList){
+                    sum++;
                 }
                 if(item.checkedFlag){
                     let index = this.selectIds.indexOf(item.proId);
@@ -357,11 +355,11 @@
             //分组全选或全不选
             selectGroupAll(list){
                 if(list.checkedAll){
-                    for(let item of list.products){
+                    for(let item of list.cartList){
                         item.checkedFlag = false;
                     }
                 }else{
-                    for(let item of list.products){
+                    for(let item of list.cartList){
                         item.checkedFlag = true;
                     }
                 }
@@ -370,6 +368,35 @@
             selectAll(){
                 this.checkedAll = !this.checkedAll;
             }
+        },
+        beforeRouteEnter (to, from, next) {
+            next(vm => {
+                vm.$store.dispatch('queryCart',{}).then(res=>{
+                    
+                },res=>{
+                    if(res.errorMsg == '您的账号审核中，请耐心等待~'){
+                        MessageBox({
+                            title:'提示', 
+                            message:`${res.errorMsg}<br>若有疑问，请联系客服<br>4006-066-068`,
+                            confirmButtonText: '我知道了'
+                        });
+                        vm.$router.push(from.fullPath);
+                    }else if(res.errorMsg == '会员才能进入购物车哟~'){
+                        MessageBox({
+                            title:'提示', 
+                            message:`您的账号审核未通过，只有正式会员才能进入购物车哟~`,
+                            confirmButtonText: '完善资料',
+                            showCancelButton: true
+                        },action=>{
+                            if(action == 'confirm'){
+                                vm.$router.push('/regist/seller');
+                                return;
+                            }
+                        });
+                        vm.$router.push(from.fullPath);
+                    }
+                })
+            })
         }
     }
 </script>

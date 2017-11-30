@@ -68,7 +68,7 @@ function apiAxios (method, url, params, success, failure) {
     } else {
       if(res.data.code === 3001) {
         let toast = Vue.$toast({
-            message: JSON.stringify(res.data.cnMessage),
+            message: JSON.stringify(res.data.message),
             position: 'bottom',
             duration: 500
           })

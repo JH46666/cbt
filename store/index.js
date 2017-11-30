@@ -8,6 +8,7 @@ import order from './modules/order'
 import seller from './modules/seller'
 import address from './modules/address'
 import cart from './modules/cart'
+import member from './modules/member'
 
 
 Vue.use(Vuex)
@@ -28,6 +29,7 @@ export default new Vuex.Store({
         order,
         seller,
         address,
-        cart
+        cart,
+        member
     }
 })

@@ -20,7 +20,7 @@
                     您在茶帮通已收入 ￥5000.00 元
                 </p>
             </div>
-            <div class="goback" @click="$router.go(-1)">
+            <div class="goback" @click="$router.push({name: '个人中心'})">
                 返回买家中心
             </div>
         </section>
@@ -30,38 +30,43 @@
                 <p class="tips">当月收入</p>
             </router-link>
             <router-link to="#" tag="div" class="count-item">
-                <p class="num">0</p>
+                <p class="num">{{ count.monthNum }}</p>
                 <p class="tips">当月订单数</p>
             </router-link>
         </section>
         <section class="order-wrap">
             <div class="title">
                 <h3>卖家订单中心</h3>
-                <router-link to="/seller/orderlist?type=null" class="entry">
+                <!-- <router-link to="/seller/orderlist?type=null" class="entry">
                     全部订单 <i class="icon-icon07"></i>
-                </router-link>
+                </router-link> -->
             </div>
             <div class="order-entry">
                 <router-link to="/seller/orderlist?type=waitPay" class="item">
-                    <mt-badge size="small" type="error">30</mt-badge>
-                    <span><i class="icon-daifukuan"></i></span>
+                    <mt-badge size="small" type="error" :class="{one:count.waitPay < 10}" v-if="count.waitPay > 0">{{ count.waitPay | ninenineAdd }}</mt-badge>
+                    <span><i class="icon-gerenzhongxin_daifukuan"></i></span>
                     <p>待付款</p>
                 </router-link>
                 <router-link to="/seller/orderlist?type=waitSend" class="item">
-                    <mt-badge size="small" type="error">30</mt-badge>
-                    <span><i class="icon-daifahuo"></i></span>
+                    <mt-badge size="small" type="error" :class="{one:count.waitSend < 10}" v-if="count.waitSend > 0">{{ count.waitSend | ninenineAdd }}</mt-badge>
+                    <span><i class="icon-gerenzhongxin_daifahuo"></i></span>
                     <p>待发货</p>
                 </router-link>
                 <router-link to="/seller/orderlist?type=waitRec" class="item">
-                    <mt-badge size="small" type="error">30</mt-badge>
-                    <span><i class="icon-daishouhuo"></i></span>
+                    <mt-badge size="small" type="error" :class="{one:count.send < 10}" v-if="count.send > 0">{{ count.send | ninenineAdd }}</mt-badge>
+                    <span><i class="icon-gerenzhongxin_yifahuo"></i></span>
                     <p>已发货</p>
                 </router-link>
-                <router-link to="#" class="item">
-                    <mt-badge size="small" type="error">30</mt-badge>
-                    <span><i class="icon-shangpinpingjia"></i></span>
-                    <p>待评价</p>
+                <router-link to="/seller/orderlist?type=null" class="item">
+                    <mt-badge size="small" type="error" :class="{one:allCount < 10}" v-if="allCount > 0">{{ allCount | ninenineAdd }}</mt-badge>
+                    <span><i class="icon-zhengchangdingdan"></i></span>
+                    <p>全部</p>
                 </router-link>
+                <!-- <router-link to="#" class="item">
+                    <mt-badge size="small" type="error">30</mt-badge>
+                    <span><i class="icon-gerenzhongxin_daipingjia"></i></span>
+                    <p>待评价</p>
+                </router-link> -->
             </div>
         </section>
         <section class="tools-pannel">
@@ -79,24 +84,73 @@
                     <p>限时特价</p>
                 </router-link>
                 <router-link to="#" class="item">
-                    <span><i class="icon-shouru"></i></span>
+                    <span><i class="icon-shouru small"></i></span>
                     <p>我的收入</p>
                 </router-link>
             </div>
             <div class="tools-row">
                 <router-link to="#" class="item">
-                    <span><i class="icon-xiaoxi blue"></i></span>
+                    <span><i class="icon-xiaoxi blue small"></i></span>
                     <p>店铺信息</p>
                 </router-link>
             </div>
         </section>
         <div class="new-up">
-            <mt-button type="default"><span class="add"><i class="icon-xinzeng"></i></span>创建商品</mt-button>
+            <mt-button type="default" @click="$router.push({name: '新品上架-1'})"><span class="add"><i class="icon-xinzeng"></i></span>新品上架</mt-button>
         </div>
     </div>
 </template>
 
 
+<script>
+    import { mapState } from 'vuex'
+    export default {
+        data() {
+            return {
+                count: {}
+            }
+        },
+        computed: {
+            allCount() {
+                let sum = 0;
+                for (let attr in this.count) {
+                    sum += this.count[attr]
+                }
+                return sum;
+            },
+            ...mapState({
+                member: state => state.member.member,
+                memberAccount: state => state.member.memberAccount,
+                orgDTO: state => state.member.orgDTO,
+                shop: state => state.member.shop,
+                thirdAccount: state => state.member.thirdAccount,
+                sign: state => state.member.sign,
+                redpacket: state => state.member.redpacket
+            })
+        },
+        created() {
+            this.$api.post('/oteao/order/countOrderNumBySeller',{},res => {
+                this.count = res.data;
+            })
+        },
+        beforeRouteEnter (to, from, next) {
+            next(vm => {
+                if(vm.$store.state.member.member.id) {
+                    if(!vm.$store.state.member.shop) {
+                        vm.$router.go(-1);
+                    }
+                } else {
+                    vm.$store.dispatch('getMemberData').then(res =>{
+                        if(!res.shop) {
+                            // 未通过返回
+                            vm.$router.go(-1);
+                        }
+                    })
+                }
+            })
+        }
+    }
+</script>
 
 
 
