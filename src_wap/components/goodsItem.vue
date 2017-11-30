@@ -91,7 +91,7 @@
             },
             aromaStar: {
                 type: Number,
-                default: 0
+                default: 2
             },
             tasteStar : {
                 type: Number,

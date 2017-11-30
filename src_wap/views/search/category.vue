@@ -20,8 +20,8 @@
         <!-- 一级 -->
         <div class="first-box" :class="{'wx-first': wxFlag}">
             <ul class="first-cat flex" ref="wrapper">
-                <li class="cat-item" :class="{on: index==activeCatIndex}" v-for="(cat,index) in firstCat" @click="searchFirstCat(index,$event.target)">
-                    <span>{{cat.name}}</span>
+                <li class="cat-item" :class="{on: index==activeCatIndex}" v-for="(cat,index) in firstCat" @click="searchFirstCat(index,cat.id,$event.target)">
+                    <span>{{cat.catName}}</span>
                 </li>
             </ul>
             <div class="half-bg"></div>
@@ -32,8 +32,8 @@
             <div class="sub-box flex">
                 <div class="sub-left ipScroll">
                     <ul>
-                        <li v-for="(subItem,index) in subCat" class="sub-item flex align_items_c" :class="{'on':index==activeSubIndex}" @click="searchSub(index)">
-                            <span>{{subItem.name}}</span>
+                        <li v-for="(subItem,index) in subCat" class="sub-item flex align_items_c" :class="{'on':index==activeSubIndex}" @click="searchSub(index,subItem.id)">
+                            <span>{{subItem.catName}}</span>
                         </li>
                     </ul>
                 </div>
@@ -82,70 +82,12 @@
                 searchTxt: "",  //搜索内容
                 activeCatIndex: 0,   //激活的一级分类下标
                 activeSubIndex: 0,   //激活的二级分类下标
-                firstCat:[
-                    {
-                        name: '红茶',
-                        id: 1
-                    },
-                    {
-                        name: "黑茶",
-                        id: 2
-                    },
-                    {
-                        name: "绿茶",
-                        id: 3
-                    },
-                    {
-                        name: "乌龙茶",
-                        id: 4
-                    },
-                    {
-                        name: "白茶",
-                        id: 5
-                    },
-                    {
-                        name: "茶具",
-                        id: 6
-                    },
-                    {
-                        name: "花茶",
-                        id: 7
-                    },
-                    {
-                        name: "茶具",
-                        id: 8
-                    },
-                    {
-                        name: "花茶",
-                        id: 9
-                    }
-                ],
-                subCat:[
-                    {
-                        name: '安溪铁观音',
-                        id: 21
-                    },
-                    {
-                        name: "武夷岩茶",
-                        id: 22
-                    },
-                    {
-                        name: "台湾高山茶",
-                        id: 23
-                    },
-                    {
-                        name: "广东单枞",
-                        id: 24
-                    },
-                    {
-                        name: "漳平水仙",
-                        id: 25
-                    },
-                    {
-                        name: "其他乌龙茶",
-                        id: 26
-                    }
-                ],
+                activeCatId: 0,      //激活的一级分类id
+                activeSubId: 0,      //激活的二级分类id
+                catTree:[],          //分类树
+                firstCat:[],         //一级分类
+                allSubCat:[],
+                subCat:[],
                 filterConditions:[
                     {
                         name: "净含量在",
@@ -175,7 +117,20 @@
             }
         },
         created(){
-            this.$store.commit('SET_TITLE','分类')
+            this.$store.commit('SET_TITLE','分类');
+            this.$api.get('/proCat/queryCatTree',{sysId: 2},res=>{
+                console.log(res);
+                this.catTree = res.data[0].children;
+                this.subCat = this.catTree[0].children;
+                for(let item of this.catTree){
+                    this.firstCat.push({
+                        'id': item.id,
+                        'catName': item.catName
+                    });
+                }
+            },res=>{
+                console.log(res);
+            });
         },
         mounted(){
             this.wxFlag = this.$tool.isWx;
@@ -186,17 +141,25 @@
                 this.searchTxt = "";
             },
             // 搜索一级分类
-            searchFirstCat(index,e){
+            searchFirstCat(index,id,e){
                 let o_w = e.parentNode.offsetWidth;
                 let o_l = e.parentNode.offsetLeft;
                 this.activeCatIndex = index;
+                this.activeCatId = id;
                 if(index>=3 && index<=this.firstCat.length-4){
                     this.$refs.wrapper.scrollLeft = o_l-2*o_w;
                 }
+                for(let item of this.catTree){
+                    if(id == item.id){
+                        this.subCat = item.children;
+                        break;
+                    }
+                }
             },
             // 搜索二级分类
-            searchSub(index){
+            searchSub(index,id){
                 this.activeSubIndex = index;
+                this.activeSubId = id;
             },
             // 筛选
             selectFilter(list,index){
