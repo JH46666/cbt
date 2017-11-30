@@ -21,8 +21,8 @@
             <div class="address">
                 <div class="line_1">
                     <i class="iconfont">&#xe670;</i>
-                    <span>陈薇薇薇</span>
-                    <span>{{ regStar('18012652595') }}</span>
+                    <span>{{ orderDetailData.receiptName }}</span>
+                    <span>{{ regStar(orderDetailData.receiptPhone) }}</span>
                 </div>
                 <div class="line_2">{{ orderDetailData.detailAddress }}</div>
             </div>

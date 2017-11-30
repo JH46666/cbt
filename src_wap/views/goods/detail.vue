@@ -1,7 +1,7 @@
 <template>
     <div class="detail">
         <div class="dialog" :class="{'on': showOrHide}" @touchend="closeDialog">
-            <div class="dialog_wrapper_1"  v-if="!isThird">
+            <div class="dialog_wrapper_1"  v-if="detailData.productInfo.orgId == null">
                 <div class="dialog_title">
                     <i class="iconfont icon-kefu1"></i>
                     <span>茶帮通客服</span>
@@ -15,7 +15,7 @@
                     </div>
                 </div>
             </div>
-            <div class="dialog_wrapper_2" v-if="isThird">
+            <div class="dialog_wrapper_2" v-if="detailData.productInfo.orgId == 1">
                 <div class="dialog_title">
                     <i class="iconfont icon-dianpu"></i>
                     <span>2425364646</span>
@@ -42,16 +42,16 @@
             </div>
             <div class="detail_img">
                 <mt-swipe :auto="2000" :show-indicators="false" @change="handleChange">
-                    <mt-swipe-item v-for="(item,index) in goodsDetail.swiperImg" :key="index">
-                        <img :src="item" :key="index">
+                    <mt-swipe-item v-for="(item,index) in detailData.productImgList" :key="index">
+                        <img :src="item.imgUrl" :key="index">
                     </mt-swipe-item>
                 </mt-swipe>
-                <div class="detail_special">
+                <div class="detail_special" v-if="detailData.productExtInfo.isSales">
                     <div class="detail_special_wrapper">
                         <div class="detail_special_price">
                             <span>特价</span>
                             <span>￥</span>
-                            <span>362.00</span>
+                            <span>{{ detailData.productExtInfo.salesPrice.toFixed(2) }}</span>
                         </div>
                         <div class="detail_special_date">
                             <span class="date_num date_none">{{ special.day }}</span>
@@ -65,15 +65,15 @@
                     </div>
                 </div>
                 <div class="detail_img_index">
-                    <span>{{ imgIndex }}</span>/{{ goodsDetail.swiperImg.length }}
+                    <span>{{ imgIndex }}</span>/{{ detailData.productImgList.length }}
                 </div>
             </div>
             <div class="detail_describe">
                 <div class="detail_describe_wrapper">
                     <div class="detail_describe_text">
-                        <p class="detail_text">{{ goodsDetail.goodsText }}</p>
-                        <p class="detail_now_price">￥{{ goodsDetail.goodsPrice.toFixed(2) }}</p>
-                        <p class="detail_suggest_price">建议零售价：￥{{ goodsDetail.suggestPrice.toFixed(2) }}</p>
+                        <p class="detail_text">{{ detailData.productInfo.proName }}</p>
+                        <p class="detail_now_price" v-if="!detailData.productExtInfo.isSales">￥{{ detailData.productPrice[0].price.toFixed(2) }}</p>
+                        <p class="detail_suggest_price">建议零售价：￥{{ detailData.productPrice[0].price.toFixed(2) }}</p>
                     </div>
                     <div class="detail_active">
                         <label>促销</label>
@@ -115,7 +115,7 @@
                         <div class="reguler_wrapper">
                             <div class="reguler_item">
                                 <div>推荐理由</div>
-                                <div>戎羯逼我兮为室家，将我行兮向天涯。云山万重兮归路遐，疾风千里兮扬尘沙。人多暴猛兮如虺蛇，控弦被甲兮为骄奢。两拍张弦兮弦欲绝，志摧心折兮自悲嗟。</div>
+                                <div>{{ detailData.productExtInfo.reason }}</div>
                             </div>
                             <div class="reguler_item">
                                 <div>香气</div>
@@ -202,7 +202,7 @@
 
 <script>
 import plusOreduce from '@/components/plusOreduce.vue'
-import { Toast } from 'mint-ui'
+import { Toast,Indicator } from 'mint-ui'
 export default {
     components: {
         plusOreduce
@@ -256,9 +256,52 @@ export default {
             showOrHide: false,
             isThird: false,
             headHeight: 44,
+            detailData: {
+                integralPrice:null,
+                productExtInfo: {},
+                productImgList:[],
+                productInfo:{},
+                productPrice:[]
+            }
         }
     },
+    // computed:{
+    //     isSales() {
+    //         try {
+    //             return !!this.detailData.productExtInfo.isSales
+    //         } catch (e) {
+    //                 return false
+    //         }
+    //     }
+    // },
+    created() {
+        // Indicator.open({
+        //     text: '加载中...',
+        //     spinnerType: 'fading-circle'
+        // });
+        this.getDetail().then((res) =>{
+            this.detailData = res.data;
+        })
+    },
     methods: {
+        getDetail() {
+            let data = {
+                sysId: 2,
+                device: 'WAP',
+                productSku: 'ZONGY0666-250'
+            }
+            return new Promise((resolve,reject) => {
+                this.$api.get('/oteaoProduct/getProExtInfo',data,res => {
+                    resolve(res);
+                    // Indicator.close();
+                },res=>{
+                    return Toast({
+                        message: res.errorMsg,
+                        iconClass: 'icon icon-fail'
+                    });
+                })
+            })
+        },
         closeDialog() {
             this.selected = null;
             this.showOrHide = false;
@@ -370,9 +413,6 @@ export default {
        openDialog() {
            this.showOrHide = true;
        }
-    },
-    created() {
-
     },
     watch: {
         commentArray() {
