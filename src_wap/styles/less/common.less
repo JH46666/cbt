@@ -316,3 +316,30 @@ html,body,#app,#container{
 .mint-msgbox{
     .w(75%);
 }
+
+
+
+// 无限滚动
+
+.goods-loading{
+    .flex;
+    .color(@b-6);
+    .fontSize(.28rem);
+    .line(.98rem);
+    .algin(c);
+    .bg(#fff);
+    justify-content: center;
+    &>:first-child{
+        .position(r);
+        top: .2rem;
+        margin-right: .4rem;
+    }
+}
+// 没有更多
+.no-more{
+    .bg(#fff);
+    .algin(c);
+    .color(@b-6);
+    .fontSize(.28rem);
+    .line(.98rem);
+}

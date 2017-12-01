@@ -5,6 +5,7 @@ import goodsImg from './goodsImg.vue';
 import mayLike from './mayLike.vue';
 import editPrice from './editPrice';
 import msgPopup from './msgPopup';
+import redActive from './redMessage.js'
 
 export default {
     install(Vue,option) {
@@ -15,5 +16,6 @@ export default {
         Vue.component(mayLike.name,mayLike);
         Vue.component(msgPopup.name,msgPopup);
         Vue.prototype.$editPrice = editPrice;
+        Vue.prototype.$redActive = redActive;
     }
 }

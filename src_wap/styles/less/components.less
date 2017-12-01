@@ -203,6 +203,7 @@
         left: 50%;
         margin-left: -3.05rem;
         margin-top: -2.52rem;
+        overflow: hidden;
         .position(a);
         .w(6.1rem);
         .h(5.04rem);
@@ -252,6 +253,21 @@
             .mint-button:nth-of-type(2){
                 .bg(@mainCol);
                 .color(#fff);
+            }
+        }
+    }
+
+    // 激活红包
+    &.active-red {
+        .editprice-wrap{
+            .h(3.4rem);
+            input{
+                border: 1px solid @borCol;
+                .w(100%);
+                .h(.56rem);
+            }
+            .input-row{
+                border: none;
             }
         }
     }

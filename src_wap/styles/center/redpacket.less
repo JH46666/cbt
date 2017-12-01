@@ -9,6 +9,9 @@
         .h(~'calc(100% - .82rem)');
         .scroll-y(a);
         .ipScroll;
+        &.no-foot{
+            padding-bottom: 0;
+        }
     }
     // 红包样式
     .redpacket-item{
@@ -39,7 +42,7 @@
                 }
             }
             .right{
-                .flex-1;
+                .w(~'calc(100% - 1.94rem)');
                 .paddingL(.24rem);
                 .sell-type{
                     border: 1px solid @mainCol;
@@ -52,6 +55,12 @@
                 }
                 .title{
                     margin-bottom: .2rem;
+                    .t{
+                        vertical-align: middle;
+                        .display(inline-block);
+                        .w(~'calc(100% - 1.16rem)');
+                        .oneLine;
+                    }
                 }
                 .date{
                     .fontSize(.24rem);
@@ -150,6 +159,9 @@
     }
     .mint-tab-item-label{
         .fontSize(.28rem);
+    }
+    .goods-loading,.no-more{
+        .bg(#f5f5f5);
     }
 }
 

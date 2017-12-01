@@ -98,7 +98,7 @@
             // 激活红包
             showActiveRed() {
                 this.$messageBox({
-                    title: '激活红包',
+                    title: '',
                     message: '激活优惠码',
                     confirmButtonText: '立即激活',
                     showCancelButton: true,
