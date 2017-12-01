@@ -300,12 +300,15 @@
         }
         .go_pay{
             .w(2.5rem);
-            .bg(#f08200);
+            .bg(rgb(240, 130, 0));
             .line(1rem);
             cursor: pointer;
             a{
                 .color(#fff);
                 display: block;
+            }
+            &.disabled{
+                .bg(#ddd);
             }
         }
     }
