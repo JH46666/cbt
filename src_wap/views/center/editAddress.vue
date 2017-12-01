@@ -62,7 +62,7 @@
             style() {
                 let h = document.body.scrollHeight;
                 return {
-                    height: `calc(${h}px - .88rem)`
+                    height: this.$tool.isWx ? `calc(${h}px)` : `calc(${h}px - .88rem)`
                 } 
             }
         },
