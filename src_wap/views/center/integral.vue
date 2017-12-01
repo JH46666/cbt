@@ -16,7 +16,7 @@
                 <div class="item" v-for="(item,i) in list">
                     <div class="left">{{ item.remark }}</div>
                     <div class="right">
-                        <div class="count">{{ item.afterPoint > item.beforePoint ? '+' : '' }} {{ item.alterPoint }}</div>
+                        <div class="count">{{ item.afterPoint > item.beforePoint ? '+' : '' }}{{ item.alterPoint }}</div>
                         <div class="date">{{ item.updateTime }}</div>
                     </div>
                 </div>

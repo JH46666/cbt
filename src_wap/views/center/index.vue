@@ -135,6 +135,8 @@
                 },res => {
                     this.$toast(`签到成功,${this.sign.nextSign}积分己放于您的账户~`)
                     this.$store.dispatch('viewSign');
+                    // 从新拉取会员信息
+                    this.$store.dispatch('getMemberData')
                 })
             }
         },
