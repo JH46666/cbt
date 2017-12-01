@@ -147,7 +147,11 @@
             next(vm => {
                 vm.$store.dispatch('getMemberData').then(res =>{
                     let status = res.orgDTO.status;
-                    if(status === 2) return;
+                    if(status === 2) {
+                        vm.$store.dispatch('viewSign')
+                        vm.$store.dispatch('getRedTotal')
+                        return;
+                    };
                     if(status === 1) {
                         vm.$messageBox({
                             title:'提示', 

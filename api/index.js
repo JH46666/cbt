@@ -80,7 +80,7 @@ function apiAxios (method, url, params, success, failure) {
         failure(res.data)
       } else {
         let toast = Vue.$toast({
-            message: JSON.stringify(res.data.cnMessage),
+            message: JSON.stringify(res.data.message),
             position: 'bottom',
             duration: 500
           })
