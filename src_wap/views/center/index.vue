@@ -135,6 +135,8 @@
                 },res => {
                     this.$toast(`签到成功,${this.sign.nextSign}积分己放于您的账户~`)
                     this.$store.dispatch('viewSign');
+                    // 从新拉取会员信息
+                    this.$store.dispatch('getMemberData')
                 })
             }
         },
@@ -147,7 +149,11 @@
             next(vm => {
                 vm.$store.dispatch('getMemberData').then(res =>{
                     let status = res.orgDTO.status;
-                    if(status === 2) return;
+                    if(status === 2) {
+                        vm.$store.dispatch('viewSign')
+                        vm.$store.dispatch('getRedTotal')
+                        return;
+                    };
                     if(status === 1) {
                         vm.$messageBox({
                             title:'提示', 
