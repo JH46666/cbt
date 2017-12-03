@@ -1,22 +1,20 @@
 <template>
     <div id="search">
         <section class="search-bar-wrapper">
-            <search-bar v-model="text"></search-bar>
-            <span class="cancel">取消</span>
+            <!-- 搜索通过更改地址栏，检测地址栏变动来进行处理 -->
+            <search-bar v-model="text" @searchClick="search"></search-bar>
+            <span class="cancel" @click="$router.go(-1)">取消</span>
         </section>
         <!-- 开始搜索时 -->
-        <!-- <section class="hot-search">
+        <section class="hot-search" v-if="noSearch">
             <div class="left">热搜</div>
             <div class="right">
                 <div class="tag-wrap">
-                    <router-link to="#" class="tag" tag="div">安溪铁观音</router-link>
-                    <router-link to="#" class="tag" tag="div">安溪铁观音</router-link>
-                    <router-link to="#" class="tag" tag="div">安溪铁观音</router-link>
-                    <router-link to="#" class="tag" tag="div">安溪铁观音</router-link>
+                    <router-link :to="todo.path" :key="i" class="tag" tag="div" v-for="(todo,i) in hotList" replace>{{ todo.name }}</router-link>
                 </div>
             </div>
         </section>
-        <section class="history-pannel">
+        <section class="history-pannel" v-if="noSearch">
             <div class="title"><h3>历史搜索</h3></div>
             <ul class="history-wrap">
                 <div class="history-item">
@@ -38,47 +36,47 @@
             <div class="btn-wrap">
                 <button>清空历史搜索</button>
             </div>
-        </section> -->
+        </section>
         <!-- 搜索列表 -->
-        <!-- <section class="sort-bar">
-            <label class="sort-item" :class="{active:sortClass === 'count'}">
+        <section class="sort-bar" v-if="!noSearch && list.length">
+            <label class="sort-item" :class="{active:sortClass === '4'}">
                 销量
-                <input type="radio" value="count" v-model="sortClass">
+                <input type="radio" value="4" v-model="sortClass">
             </label>
-            <label class="sort-item" :class="{active:sortClass === 'new'}">
+            <label class="sort-item" :class="{active:sortClass === '2'}">
                 新品
-                <input  type="radio" value="new" v-model="sortClass">
+                <input  type="radio" value="2" v-model="sortClass">
             </label>
-            <label class="sort-item" :class="{active:sortClass === 'price'}" @click.self="editPriceSort">
+            <label class="sort-item" :class="{active:sortClass === '3'}" @click.self="editPriceSort">
                 价格
-                <input  type="radio" value="price" v-model="sortClass">
-                <span class="sort-btn" :class="{top:sortClass === 'price' && priceSort,bottom:sortClass === 'price' && !priceSort}">
+                <input  type="radio" value="3" v-model="sortClass">
+                <span class="sort-btn" :class="{top:sortClass === '3' && priceSort,bottom:sortClass === '3' && !priceSort}">
                     <i class="icon-shouqi"></i>
                     <i class="icon-zhankai"></i>
                 </span>
             </label>
-        </section> -->
+        </section>
         <!-- 商品列表 -->
-        <!-- <section class="goods-list">
+        <section class="goods-list" v-if="!noSearch && list.length">
             <div 
                 v-infinite-scroll="loadMore"
-                infinite-scroll-disabled="noInfinity"
+                infinite-scroll-disabled="true"
                 infinite-scroll-distance="10"
             >
-                <goods-item v-for="item in list" :key="item"></goods-item>
+                <goods-item v-for="(item,index) in list" :key="index"></goods-item>
             </div>
-            <div class="goods-loading" v-if="!noInfinity">
+            <div class="goods-loading" v-if="list.length < total">
                 <mt-spinner type="fading-circle" color="#f08200"></mt-spinner>
                 <span class="loading-text">正在努力加载中</span>
             </div>
-            <div class="no-more" v-if="noInfinity">没有更多了呦</div>
-        </section> -->
-        <section class="no-search">
+            <div class="no-more" v-if="list.length === total">没有更多了呦</div>
+        </section>
+        <section class="no-search" v-if="!noSearch && list.length === 0">
             <div class="sorry-img">
                 <img src="../../assets/images/55.png" alt="">
             </div>
             <div class="sorry">
-                抱歉，没有搜索到与<span class="gold">“不可秒速”</span>有关的商品
+                抱歉，没有搜索到与<span class="gold">“{{ $route.query.q }}”</span>有关的商品
             </div>
             <p class="sorry-tip">
                 请检查您的输入是否有误
@@ -94,14 +92,97 @@
     export default {
         data() {
             return {
-                text: '',
-                sortClass: 'count',
-                priceSort: true,
-                list: 5,
-                noInfinity: false
+                text: '',               // 搜索关键字
+                sortClass: '4',         // 排序方式
+                priceSort: false,       // 价格排序，降序
+                hotList: [              // 热搜
+                    {
+                        name: '安溪铁观音',
+                        path: {
+                            name: '搜索',
+                            query: {
+                                q: '安溪铁观音',
+                                c: '4',
+                                sort: 'desc'
+                            }
+                        }
+                    },
+                    {
+                        name: '金骏眉',
+                        path: {
+                            name: '搜索',
+                            query: {
+                                q: '金骏眉',
+                                c: '4',
+                                sort: 'desc'
+                            }
+                        }
+                    },
+                    {
+                        name: '正山小种',
+                        path: {
+                            name: '搜索',
+                            query: {
+                                q: '正山小种',
+                                c: '4',
+                                sort: 'desc'
+                            }
+                        }
+                    },
+                    {
+                        name: '云南滇红',
+                        path: {
+                            name: '搜索',
+                            query: {
+                                q: '云南滇红',
+                                c: '4',
+                                sort: 'desc'
+                            }
+                        }
+                    },
+                    {
+                        name: '龙井',
+                        path: {
+                            name: '搜索',
+                            query: {
+                                q: '龙井',
+                                c: '4',
+                                sort: 'desc'
+                            }
+                        }
+                    },
+                ],   
+                noSearch: true,         // 未搜索  
+                list: [],               // 搜索结果
+                total: 0,               // 总条目
+                pageNum: 1,             // 页码
+            }
+        },
+        watch: {
+            '$route'(val) {
+                this.reset();
+                try {
+                    this.handle().then(res => {
+                        let data = this.list.concat(res.data);
+                        this.list = data;
+                        this.total = res.total_record;
+                    })
+                } catch (error) {
+                    return false;
+                }
+            },
+            sortClass(val) {
+                this.reset();
+                this.$router.replace({name: '搜索',query: {q: this.text,c: val,sort: 'desc'}})
             }
         },
         methods: {
+            // 重置
+            reset() {
+                this.pageNum = 1;
+                this.list = [];
+                this.total = 0;
+            },
             // 价格排序发生改变
             editPriceSort() {
                 // 上一次的选项
@@ -112,16 +193,76 @@
                         this.priceSort = false;
                     } else {
                         this.priceSort = !this.priceSort;
+                        this.reset();
+                        this.$router.replace({name: '搜索',query: {q: this.text,c: '3',sort: this.priceSort ? 'asc' : 'desc'}})
                     }
                 })
             },
             // 无限滚动
             loadMore() {
-                if(this.list >= 100) return this.noInfinity = true;
-                setTimeout(() => {
-                    this.list += 5;
-                    this.noInfinity = false;
-                },300)
+                if(this.list.length < this.total) {
+                    this.pageNum++;
+                    this.handle(this.pageNum).then(res => {
+                        let data = this.list.concat(res.data);
+                        this.list = data;
+                        this.total = res.total_record;
+                        if(this.list.length === this.total) {
+                            this.pageNum--;
+                        }
+                    })
+                }
+            },
+            // 搜索
+            search() {
+                if(this.text === '') return;
+                this.$router.replace({name: '搜索',query: {q: this.text,c: '4',sort: 'desc'}})
+            },
+            // 搜索处理函数
+            handle(page = 1) {
+                let query = this.$route.query;
+                // 检查地址栏是否带参，没有的话返回
+                if(Object.keys(query).length === 0) return this.noSearch = true;
+                try {
+                    // 开始搜索
+                    this.noSearch = false;
+
+                    // 设置参数
+                    this.text = query.q;
+                    this.sortClass = query.c;
+
+                    let data = {
+                        "device": "WAP",
+                        "isExchangeIntegral": 0,
+                        "orderBy": query.sort,
+                        "proType": "PRO",
+                        "seachKey": query.q,
+                        "sort": query.c,
+                        "sysId": 2
+                    }
+                    
+                    return new Promise((resolve,reject) => {
+                        this.$api.post(`/oteaoProduct/seachProduct?page.pageNumber=${page}&page.pageSize=20`,JSON.stringify(data),res => {
+                            resolve(res)
+                        })
+                    })
+
+
+                } catch (error) {
+                    // 地址栏如果参数错误，从定向当前页
+                    this.$router.replace({name: '搜索'})
+                }
+            },
+        },
+        created() {
+            // 根据地址栏获取条件
+            try {
+                this.handle().then(res => {
+                    let data = this.list.concat(res.data);
+                    this.list = data;
+                    this.total = res.total_record;
+                })
+            } catch (error) {
+                return false;
             }
         }
     }
