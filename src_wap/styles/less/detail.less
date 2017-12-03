@@ -574,131 +574,150 @@
             }
         }
     }
-    .dialog{
-        .dialog_wrapper_1{
+}
+.mint-popup{
+    .w(100%);
+    overflow: hidden;
+    .dialog_wrapper_1{
+        width: 100%;
+        .flex;
+        .flex-dir;
+        .bg(#fff);
+        cursor: pointer;
+        .dialog_title{
+            height: .88rem;
             width: 100%;
+            border-bottom: 1px solid #e5e5e5;
+            .flex;
+            .flex-dir(row);
+            .justify-content;
+            .align-items;
+            span{
+                .oneLine;
+                margin-left: .2rem;
+            }
+            .fontSize(.3rem);
+            i{
+                .fontSize(.36rem);
+                .color(#666);
+            }
+        }
+        .dialog_content{
+            .paddingAll(.46rem,0,.46rem,.5rem);
+            width: 100%;
+            .flex-1;
             .flex;
             .flex-dir;
-            .bg(#fff);
-            .position(a);
-            bottom: 0;
-            left: 0;
-            z-index: 5;
-            cursor: pointer;
-            .dialog_title{
-                height: .88rem;
-                width: 100%;
-                border-bottom: 1px solid #e5e5e5;
+            .justify-content(space-between);
+            .fontSize(.3rem);
+            .color(#666);
+            .item_1{
                 .flex;
                 .flex-dir(row);
-                .justify-content;
-                .align-items;
+                padding-bottom: .3rem;
                 span{
-                    .oneLine;
+
                     margin-left: .2rem;
-                }
-                .fontSize(.3rem);
-                i{
-                    .fontSize(.36rem);
-                    .color(#666);
+                    a{
+                        .color(#f08200);
+                    }
                 }
             }
-            .dialog_content{
-                .paddingAll(.46rem,0,.46rem,.5rem);
-                width: 100%;
-                .flex-1;
+            .item_2{
                 .flex;
-                .flex-dir;
-                .justify-content(space-between);
-                .fontSize(.3rem);
-                .color(#666);
-                .item_1{
-                    .flex;
-                    .flex-dir(row);
-                    padding-top: .3rem;
-                    span{
-                        .color(#f08200);
-                        margin-left: .2rem;
-
-                    }
-                }
-                .item_2{
-                    .flex;
-                    .flex-dir(row);
-                    span{
-                        margin-left: .2rem;
-                    }
+                .flex-dir(row);
+                span{
+                    margin-left: .2rem;
                 }
             }
         }
-        .dialog_wrapper_2{
+    }
+    .dialog_wrapper_2{
+        width: 100%;
+        .flex;
+        .flex-dir;
+        .bg(#fff);
+        cursor: pointer;
+        .dialog_title{
+            height: .88rem;
             width: 100%;
+            border-bottom: 1px solid #e5e5e5;
+            .flex;
+            .flex-dir(row);
+            .justify-content;
+            .align-items;
+            span{
+                .oneLine;
+                margin-left: .2rem;
+            }
+            .fontSize(.3rem);
+            i{
+                .fontSize(.36rem);
+                .color(#666);
+            }
+        }
+        .dialog_content{
+            .paddingAll(.46rem,.5rem,.46rem,.5rem);
+            width: 100%;
+            .flex-1;
             .flex;
             .flex-dir;
-            .bg(#fff);
-            .position(a);
-            bottom: 0;
-            left: 0;
-            z-index: 5;
-            cursor: pointer;
-            .dialog_title{
-                height: .88rem;
-                width: 100%;
-                border-bottom: 1px solid #e5e5e5;
+            .justify-content(space-between);
+            .fontSize(.3rem);
+            .color(#666);
+            .item_1{
                 .flex;
                 .flex-dir(row);
-                .justify-content;
-                .align-items;
-                span{
-                    .oneLine;
-                    margin-left: .2rem;
-                }
-                .fontSize(.3rem);
-                i{
-                    .fontSize(.36rem);
-                    .color(#666);
-                }
-            }
-            .dialog_content{
-                .paddingAll(.46rem,0,.46rem,.5rem);
-                width: 100%;
-                .flex-1;
-                .flex;
-                .flex-dir;
-                .justify-content(space-between);
-                .fontSize(.3rem);
-                .color(#666);
-                .item_1{
-                    .flex;
-                    .flex-dir(row);
-                    span{
-                        margin-left: .2rem;
-                        .line(1.5);
+                padding-bottom: .4rem;
+                >span{
+                    .line(1.5);
+                    &:first-child{
+                        width: .66rem;
                     }
-                }
-                .item_2{
-                    padding-top: .3rem;
-                    .flex-dir(row);
-                    span{
-                        .color(#f08200);
-                        margin-left: .2rem;
-                        a{
+                    &:last-child{
+                        margin-left: .9rem;
+                        .flex-1;
+                        .flex;
+                        .flex-dir(row);
+                        .align-items;
+                        span{
+                            padding: .05rem .1rem;
+                            border: 1px solid @mainCol;
+                            .reduis(4px);
                             .color(@mainCol);
+                            margin-left: 0;
+                        }
+                        i{
+                            width: .2rem;
+                            height: .2rem;
+                            background-repeat: no-repeat;
+                            background-size: 100%;
+                            &+ i{
+                                margin-left: .1rem;
+                            }
+                            &.blur{
+                                background-image: url('../../assets/images/s_rate_blue.png');
+                            }
+                            &.cap{
+                                background-image: url('../../assets/images/s_rate_cap.png');
+                            }
+                            &.crown{
+                                background-image: url('../../assets/images/s_rate_crown.png');
+                            }
+                            &.red{
+                                background-image: url('../../assets/images/s_rate_red.png');
+                            }
                         }
                     }
                 }
+                a{
+                    .color(@mainCol);
+                    &:last-child{
+                        margin-left: .8rem;
+                        .flex-1;
+                    }
+                }
             }
         }
-        width: 100%;
-        height: 100%;
-        .bg(rgba(0,0,0,.5));
-        .position(f);
-        left: 0px;
-        transition: all .3s;
-        bottom: -100%;
-        &.on{
-            bottom: 0;
-        }
-        z-index: 7;
     }
 }

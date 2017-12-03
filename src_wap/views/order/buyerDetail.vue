@@ -52,13 +52,13 @@
         </div>
         <div class="order">
             <!-- 店铺名称 是否自营 -->
-            <div class="order_shop" v-if="!isThird">
+            <div class="order_shop" v-if="orderDetailData.sellerOrgId == null">
                 <img :src="shopLogo" /> 自营
             </div>
-            <div class="order_shop" v-if="isThird">
-                <i class="iconfont">&#xe66d;</i> 不可描述的店铺
+            <div class="order_shop" v-if="orderDetailData.sellerOrgId == 1">
+                <i class="iconfont">&#xe66d;</i> {{ orderDetailData.shopName }}
             </div>
-            <div class="order_address" v-if="isThird" :class="{ 'on': pullOrDownShop }">
+            <div class="order_address" v-if="orderDetailData.expressDeliveryCode === 'ship_sto'" :class="{ 'on': pullOrDownShop }">
                 <div class="order_address_1">
                     <div class="order_address_num">
                         556226452
@@ -83,7 +83,7 @@
                     <div class="order_item" v-for="(item,index) in orderListDetail.subOrder">
                         <div class="order_head">
                             <div class="order_num">
-                                6556460
+                                111111111
                             </div>
                             <div class="order_express">
                                 <img :src="express.sf.img" /> {{ express.sf.name }}

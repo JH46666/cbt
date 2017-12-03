@@ -1,6 +1,6 @@
 <template>
     <div class="detail">
-        <div class="dialog" :class="{'on': showOrHide}" @touchend="closeDialog">
+        <mt-popup v-model="showOrHide" position="bottom">
             <div class="dialog_wrapper_1"  v-if="detailData.productInfo.orgId == null">
                 <div class="dialog_title">
                     <i class="iconfont icon-kefu1"></i>
@@ -18,20 +18,32 @@
             <div class="dialog_wrapper_2" v-if="detailData.productInfo.orgId == 1">
                 <div class="dialog_title">
                     <i class="iconfont icon-dianpu"></i>
-                    <span>2425364646</span>
+                    <span>什么店铺名称呢</span>
                 </div>
                 <div class="dialog_content">
                     <div class="item_1">
-                        <i class="iconfont">&#xe670;</i>
-                        <span>234242422</span>
+                        <span>类型</span>
+                        <span>
+                            <span>合作社</span>
+                        </span>
                     </div>
-                    <div class="item_2">
-                        <i class="iconfont">&#xe66f;</i>
-                        <span><a href="tel://17656565656">17656565656</a></span>
+                    <div class="item_1">
+                        <span>信誉</span>
+                        <span>
+                            <i class="star blur" v-for="n in 5" :key="n"></i>
+                        </span>
+                    </div>
+                    <div class="item_1">
+                        <span>地址</span>
+                        <span>福建省厦门思明区会展南路7号109醉品集团福建省厦门思明区会展南路7号109醉品集团</span>
+                    </div>
+                    <div class="item_1">
+                        <span>电话</span>
+                        <a href="tel://17656565656">17656565656</a>
                     </div>
                 </div>
             </div>
-        </div>
+        </mt-popup>
         <div class="detail_wrapper" @scroll="docScroll" ref="wrapper">
             <div class="goIndex" v-if="!(tabFixed || wxFixed)">
                 <span>去首页</span>
@@ -266,23 +278,11 @@ export default {
                 productImgList:[],
                 productInfo:{},
                 productPrice:[]
-            }
+            },
+            time: '',
         }
     },
-    // computed:{
-    //     isSales() {
-    //         try {
-    //             return !!this.detailData.productExtInfo.isSales
-    //         } catch (e) {
-    //                 return false
-    //         }
-    //     }
-    // },
     created() {
-        // Indicator.open({
-        //     text: '加载中...',
-        //     spinnerType: 'fading-circle'
-        // });
         this.getDetail().then((res) =>{
             this.detailData = res.data;
         })
@@ -304,10 +304,6 @@ export default {
                     });
                 })
             })
-        },
-        closeDialog() {
-            this.selected = null;
-            this.showOrHide = false;
         },
         handleChange(index) {           // 图片索引
             this.imgIndex = index+1;
@@ -400,18 +396,24 @@ export default {
            let h = this.formate(parseInt(leftTime/(60*60)%24))
            let m = this.formate(parseInt(leftTime/60%60))
            let s = this.formate(parseInt(leftTime%60))
+
            if(leftTime <= 0){
-               this.flag = true
-               Toast({
+               this.flag = true;
+               this.special.day = 0;
+               this.special.hour = '00';
+               this.special.min = '00';
+               this.special.sec = '00';
+               return Toast({
                    message: '倒计时已经结束！',
                    position: 'center',
-                   duration: 2000
+                   duration: 1000
                });
+           }else{
+               this.special.day = d;
+               this.special.hour = h;
+               this.special.min = m;
+               this.special.sec = s;
            }
-           this.special.day = d;
-           this.special.hour = h;
-           this.special.min = m;
-           this.special.sec = s;
        },
        openDialog() {
            this.showOrHide = true;
@@ -420,15 +422,27 @@ export default {
     watch: {
         commentArray() {
             this.setLine();
+        },
+        flag(val) {
+            if(val){
+                clearInterval(this.time)
+                console.log(111111);
+            }
+        },
+        showOrHide(val) {
+            if(!val){
+                this.selected = null;
+            }
         }
     },
     mounted () {
         this.setLine();             // 判断超出隐藏或者显示
-        let time = setInterval(()=>{            // 倒计时
+        this.time = setInterval(()=>{            // 倒计时
            if(this.flag == true){
-               clearInterval(time)
+               clearInterval(this.time)
+           }else{
+               this.timeDown();
            }
-           this.timeDown()
        },500)
        this.wxFlag = this.$tool.isWx;
   　}
