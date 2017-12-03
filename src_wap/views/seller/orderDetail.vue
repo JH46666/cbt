@@ -147,7 +147,15 @@
                 closeUp: false,                 // 关闭订单
                 myData: {},                     // 订单详情
                 list: [],                       // 商品列表
-                orderPrice: ''
+            }
+        },
+        computed: {
+            orderPrice() {
+                try {
+                    return this.$tool.math.eval(`${this.myData.orderSum} - ${this.myData.freightSum}`)
+                } catch (error) {
+                    return 0
+                }
             }
         },
         methods: {
@@ -197,28 +205,31 @@
                         freightSum: prices.expressPrice
                     },res => {
                         this.$toast('成功修改价格！');
-                        this.myData.freightSum = prices.expressPrice;
-                        this.myData.orderAllSum = math.eval(`${prices.goodsPrice} + ${prices.expressPrice}`).toFixed(2);
+                        this.getData();
                     },res => {
                         this.$toast(res.message)
                     })
                 }).catch(res =>{})
             },
+            getData() {
+                let orderNo = this.$route.query.orderNo;
+                this.$api.post('/oteao/order/findSellerOrderByNo',{
+                    orderNo,
+                    delYes: 0
+                },res =>{
+                    this.myData = res.data || {};
+                    this.remark = this.myData.customerRemark || '';
+                    // this.orderPrice = this.$tool.math.eval(`${this.myData.orderSum} - ${this.myData.freightSum}`);
+
+                    this.$api.post('/oteao/order/orderProductList',{orderId: this.myData.orderId,device: 'WAP'},res => {
+                        this.list = res.data.mainOrder.products
+                    })
+                })
+
+            }
         },
         created() {
-            let orderNo = this.$route.query.orderNo;
-            this.$api.post('/oteao/order/findSellerOrderByNo',{
-                orderNo,
-                delYes: 0
-            },res =>{
-                this.myData = res.data || {};
-                this.remark = this.myData.customerRemark || '';
-                this.orderPrice = this.$tool.math.eval(`${this.myData.orderSum} - ${this.myData.freightSum}`);
-
-                this.$api.post('/oteao/order/orderProductList',{orderId: this.myData.orderId,device: 'WAP'},res => {
-                    this.list = res.data.mainOrder.products
-                })
-            })
+            this.getData();
         }
     }
 </script>
