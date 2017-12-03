@@ -136,7 +136,7 @@
         </div>
         <div class="flex btns">
             <mt-button type="primary" @click="$router.go(-1)">上一步</mt-button>
-            <mt-button type="primary" :disabled="disabledBol" @click="onlySave">保存</mt-button>
+            <mt-button type="primary" :disabled="disabledBol" @click="doUpload">保存</mt-button>
         </div>
         <div class="save-rackup">
             <mt-button type="primary" :disabled="disabledBol">保存并上架</mt-button>
@@ -155,17 +155,21 @@
         </div>
     </div>
 </template>
-<script src="http://gosspublic.alicdn.com/aliyun-oss-sdk-4.4.4.min.js"></script>
+
 <script>
 import {mapGetters} from 'vuex';
 import { Toast } from 'mint-ui';
     export default{
         data(){
             return {
-                sucFlag: true,         //是否成功上架
+                sucFlag: false,         //是否成功上架
                 mainIndex: 1,
                 thirdIndex: 1,
                 ossImg: [],
+                region: 'oss-cn-hangzhou',
+                bucket: 'imgcbt',
+                urlList: [],
+                url: '',
             }
         },
         computed:{
@@ -179,11 +183,18 @@ import { Toast } from 'mint-ui';
             ...mapGetters([
                 'resize'
             ]),
-            disabledBol() {
-                if(this.resize.mainImg.length>0 && this.resize.imgs.detailImg1!= '' && this.resize.imgs.detailImg2!= '' && this.resize.imgs.detailImg3!= '' && this.resize.textMs1 != ''&& this.resize.textMs2 != ''&& this.resize.textMs3 != ''){
-                    return false;
-                }else{
-                    return true;
+            // disabledBol() {
+            //     if(this.resize.mainImg.length>0 && this.resize.imgs.detailImg1!= '' && this.resize.imgs.detailImg2!= '' && this.resize.imgs.detailImg3!= '' && this.resize.textMs1 != ''&& this.resize.textMs2 != ''&& this.resize.textMs3 != ''){
+            //         return false;
+            //     }else{
+            //         return true;
+            //     }
+            // }
+        },
+        watch: {
+            url(val) {
+                if(val){
+                    this.urls.push(val);
                 }
             }
         },
@@ -193,38 +204,18 @@ import { Toast } from 'mint-ui';
             console.log(ossData);
         },
         methods:{
-
-            onlySave() {
-                this.postImg('img').then((res) => {
-                    var ossObj = res.data;
-                    for(let i=0;i<this.resize.allImg.length;i++){
-                        let datas = this.ossMethod(ossObj,this.resize.allImg[i]);
-                        this.postOss(datas,ossObj.host);
-                    }
-                })
+            random_string(len) {
+            　   　len = len || 32;
+            　　  var chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';
+            　　  var maxPos = chars.length;
+            　　  var pwd = '';
+            　　  for (let i = 0; i < len; i++) {
+            　   　pwd += chars.charAt(Math.floor(Math.random() * maxPos));
+                }
+                return pwd;
             },
-            ossMethod(obj,filename) {
-                var ossData = new FormData();
-                ossData.append('OSSAccessKeyId',obj.accessid);
-                ossData.append('policy', obj.policy);
-                ossData.append('Signature', obj.signature);
-                ossData.append('key', obj.dir);
-                ossData.append('file', filename);
-                return ossData;
-            },
-            postOss(data,url) {
-                // return new Promise((resolve,reject) => {
-                    this.$api.post(url,data,res => {
-                        console.log(res)
-                    },res=>{
-                        console.log(res)
-                    })
-                // })
-            },
-            postImg(path) {
-                let data = {
-                        path: path
-                    }
+            getToken() {
+                let data ={};
                 return new Promise((resolve,reject) => {
                     this.$api.post('/oteao/file/getSignature',data,res => {
                         resolve(res);
@@ -234,6 +225,38 @@ import { Toast } from 'mint-ui';
                             iconClass: 'icon icon-fail'
                         });
                     })
+                })
+            },
+            doUpload () {
+                this.getToken().then((res) => {
+                    let client = new OSS.Wrapper({
+                        region: this.region,
+                        accessKeyId: res.data.accessKeyId,
+                        accessKeySecret: res.data.accessKeySecret,
+                        stsToken: res.data.securityToken,
+                        bucket: this.bucket
+                    })
+                    console.log(this.resize.allImg);
+                    console.log(client);
+                    for(let i=0; i<this.resize.allImg.length; i++){
+                        let random_name = this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.allImg[i].name.split('.').pop()
+                        client.multipartUpload(random_name, this.resize.allImg[i]).then((results) => {
+                            const url = 'http://img0.oteao.com/'+ results.name;
+                            this.url = url;
+                            console.log(url);
+                        }).catch((err) => {
+                            console.log(err)
+                        })
+                    }
+                })
+            },
+            onlySave() {
+                this.postImg('img').then((res) => {
+                    var ossObj = res.data;
+                    for(let i=0;i<this.resize.allImg.length;i++){
+                        let datas = this.ossMethod(ossObj,this.resize.allImg[i]);
+                        this.postOss(datas,ossObj.host);
+                    }
                 })
             },
             handleChangeThird(index) {
@@ -250,11 +273,12 @@ import { Toast } from 'mint-ui';
             },
             //预览图片
             onPreview(str,e,ismain){
+                console.log(e.target.files);
                 if(e.target.files[0].size > 8*1024*1024) return Toast({
                     message: '图片不能超出8M哦~',
                     iconClass: 'icon icon-info'
                 });
-                this.resize.allImg.push(e.target.files[0].name)
+                this.resize.allImg.push(e.target.files[0])
                 let reader = new FileReader();
                 reader.readAsDataURL(e.target.files[0]);
                 if(ismain){

@@ -2,63 +2,27 @@
     <div class="evaluate">
         <div class="evaluate_head" :class="{ 'on': !wxFlag }">
             <div class="count">
-                共<span>4</span>件商品，<span>请至少对一件商品进行评价~</span>
+                共<span>{{ imgUrlList.length }}</span>件商品，<span>请至少对一件商品进行评价~</span>
             </div>
             <div class="submit">
-                <mt-button type="primary">提交</mt-button>
+                <mt-button type="primary" @click="postEvel" :disabled="postDisAble">提交</mt-button>
             </div>
         </div>
         <div class="evaluate_content">
-            <div class="evaluate_item">
+            <div class="evaluate_item" v-for="(item,index) in imgUrlList" :key="index">
                 <div class="evaluate_item_wrapper">
                     <div class="star_head">
                         <div class="star_head_img">
-                            <img src="../../assets/ev.png" />
+                            <img :src="item.imgUrl" />
                         </div>
                         <div class="star_head_icon">
-                            <span class="star" v-for="index in 5" :class="{on: index <= hasNum1}" @click="hasStar1(index)" :key="index"></span>
+                            <span class="star" v-for="index in 5" :class="{on: index <= item.stars}" @click="hasStar(index,item)" :key="index"></span>
                         </div>
                     </div>
                     <div class="text_content">
-                        <textarea name="name" rows="5" maxlength="200" placeholder="分享你的感受，就有机会获得积分哦~" v-model="text1"></textarea>
+                        <textarea name="name" rows="5" maxlength="200" placeholder="分享你的感受，就有机会获得积分哦~" v-model="item.content"></textarea>
                         <div class="text_num">
-                            <span>{{ text1.length }}</span>/200
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="evaluate_item">
-                <div class="evaluate_item_wrapper">
-                    <div class="star_head">
-                        <div class="star_head_img">
-                            <img src="../../assets/ev.png" />
-                        </div>
-                        <div class="star_head_icon">
-                            <span class="star" v-for="index in 5" :class="{on: index <= hasNum2}" @click="hasStar2(index)" :key="index"></span>
-                        </div>
-                    </div>
-                    <div class="text_content">
-                        <textarea name="name" rows="5" maxlength="200" placeholder="分享你的感受，就有机会获得积分哦~" v-model="text2"></textarea>
-                        <div class="text_num">
-                            <span>{{ text2.length }}</span>/200
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="evaluate_item">
-                <div class="evaluate_item_wrapper">
-                    <div class="star_head">
-                        <div class="star_head_img">
-                            <img src="../../assets/ev.png" />
-                        </div>
-                        <div class="star_head_icon">
-                            <span class="star" v-for="index in 5" :class="{on: index <= hasNum3}" @click="hasStar3(index)" :key="index"></span>
-                        </div>
-                    </div>
-                    <div class="text_content">
-                        <textarea name="name" rows="5" maxlength="200" placeholder="分享你的感受，就有机会获得积分哦~" v-model="text3"></textarea>
-                        <div class="text_num">
-                            <span>{{ text3.length }}</span>/200
+                            <span>{{ item.content.length }}</span>/200
                         </div>
                     </div>
                 </div>
@@ -79,6 +43,9 @@ export default {
             text1: '',
             text2: '',
             text3: '',
+            imgList: [],
+            orderId: '',
+            imgUrlList: [],
         }
     },
     head: {
@@ -86,16 +53,88 @@ export default {
           inner: '订单评论'
         }
     },
-    methods: {
-        hasStar1(index) {
-            this.hasNum1 = index;
-        },
-        hasStar2(index) {
-            this.hasNum2 = index;
-        },
-        hasStar3(index) {
-            this.hasNum3 = index;
+    computed: {
+        postDisAble() {
+            for(let obj of this.imgUrlList){
+                if(obj.content != '' && obj.stars != 0){
+                    return false;
+                }
+            }
+            return true;
         }
+    },
+    methods: {
+        postEvel() {
+            let data = {
+                "evaluationInfos": [],
+                "overallEvaluation": {
+                    "orderId": this.orderId
+                }
+            }
+            for(let obj of this.imgUrlList){
+                if(obj.content != '' && obj.stars != 0){
+                    data.evaluationInfos.push({
+                        "content": obj.content,
+                        "proExtId": obj.extendId,
+                        "proSku": obj.sku,
+                        "score": obj.stars
+                    })
+                }
+            }
+            return new Promise((resolve,reject) => {
+                this.$api.post('/oteao/evaluation/saveEvaluation',data,res => {
+                    return Toast({
+                        message: res.message,
+                        iconClass: 'icon icon-success'
+                    });
+                },res=>{
+                    return Toast({
+                        message: res.errorMsg,
+                        iconClass: 'icon icon-fail'
+                    });
+                })
+            })
+        },
+        hasStar(index,obj) {
+            obj.stars = index;
+        },
+        getOrderProList(orderId) {
+            let data = {
+                    orderId: orderId,
+                    device: 'WAP'
+                }
+            return new Promise((resolve,reject) => {
+                this.$api.post('/oteao/order/orderProductList',data,res => {
+                    resolve(res);
+                },res=>{
+                    return Toast({
+                        message: res.errorMsg,
+                        iconClass: 'icon icon-fail'
+                    });
+                })
+            })
+        },
+    },
+    created() {
+        this.orderId = this.$route.query.orderId;
+        this.getOrderProList(this.orderId).then((res) => {
+            if(res.data.mainOrder!=null){
+                let imgList = res.data.mainOrder.products;
+                let postList = [];
+                for(let obj of imgList){
+                    postList.push({
+                        imgUrl: obj.imageUrl,
+                        content: '',
+                        stars: 0,
+                        sku: obj.proSku,
+                        extendId: 0
+                    })
+                }
+                this.imgUrlList = postList;
+            }else{
+                this.imgList = res.data.subOrder.products;
+            }
+        })
     },
     mounted () {
        this.wxFlag = this.$tool.isWx;
@@ -108,12 +147,16 @@ export default {
             showCancelButton: true
         })
         MessageBox.confirm('确认放弃评价?').then(action => {
-            console.log(11111);
+            this.$router.push({
+                name: '订单详情',
+                query: {
+                    orderId: this.orderId
+                }
+            })
+            location.reload();
         },action => {
-            console.log(22222);
+            console.log(cancel);
         },);
-
-
     },
 }
 </script>
