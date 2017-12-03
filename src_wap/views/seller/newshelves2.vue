@@ -1,330 +1,301 @@
-<template lang="html">
-    <div class="newshelves">
-        <div class="shelves_step" :class="{on: !wxFlag}">
-            <div class="step on">
-                <span>1</span>选择品类
+<template>
+    <div class="newshelves3_wrapper">
+        <div class="floor main-imgs">
+            <h3>商品图片</h3>
+            <p class="color_9"><span class="color_f33">1-5张，</span>建议800*800像素，单张图片小于8M的清晰商品照片</p>
+            <div class="main-img-box" :class="{on: resize.mainImg.length>0}">
+                <mt-swipe :show-indicators="false" :auto="0" @change="handleChange">
+                    <mt-swipe-item  v-for="(item,index) in resize.mainImg" :key="index">
+                        <img :src="item.imgSrc" />
+                        <div v-show="item.imgSrc">
+                            <a class="delete-btn" href="javascript: void(0);" @click="deleteImg(index,true)"><i class="iconfont">&#xe651;</i></a>
+                            <div class="small-camera">
+                                <label>
+                                    <img src="../../assets/images/camera.png" />
+                                    <input type="file" accept="image/*" hidden @change="onPreview(index,$event,true)">
+                                </label>
+                            </div>
+                        </div>
+                    </mt-swipe-item>
+                </mt-swipe>
+                <div class="len_num">
+                    <span>{{ mainIndex }}</span>/{{ resize.mainImg.length }}
+                </div>
             </div>
-            <div class="step on">
-                <span>2</span>填写信息
-            </div>
-            <div class="step">
-                <span>3</span>上传图片
+            <div class="upload-box" v-if="resize.mainImg.length<5">
+                <label class="camera-bg">
+                    <input type="file" accept="image/*" hidden @change="onPreview('main_img',$event,true)">
+                </label>
             </div>
         </div>
-        <div class="good_type_box">
-            <div class="good_type_wrapper">
-                <div class="good_type">
-                    商品分类：<span>{{ msg }}</span>
-                </div>
-                <div class="good_type_list">
-                    <div class="good_type_list_wrapper">
-                        <div class="item">
-                            <label class="item-left" for="1">
-                                商品名称：
-                            </label>
-                            <div class="item-right">
-                                <textarea id="1" rows="2" maxlength="30" placeholder="必填项，请输入展示商品名称" v-model="form.goodsName"></textarea>
-                                <div class="text_count">
-                                    <span>{{ form.goodsName.length }}</span>/30
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <label class="item-left" for="2">
-                                商品卖点：
-                            </label>
-                            <div class="item-right">
-                                <textarea id="2" rows="2" maxlength="30" placeholder="非必填项，最多可写30个字" v-model="form.goodsSell"></textarea>
-                                <div class="text_count">
-                                    <span>{{ form.goodsSell.length }}</span>/30
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <label class="item-left" for="3">
-                                单位：
-                            </label>
-                            <div class="item-right" @click="clickSel('danwei')">
-                                <input type="text" id="3" readonly placeholder="必填项，请选择商品单位" v-model="form.goodsDw" />
-                            </div>
-                            <i class="iconfont"  @click="clickSel('danwei')">&#xe744;</i>
-                        </div>
-                        <div class="item">
-                            <label class="item-left" for="4">
-                                品牌：
-                            </label>
-                            <div class="item-right" @click="clickSel('pinpai')">
-                                <input type="text" id="4" readonly placeholder="必填项，请选择商品品牌" v-model="form.goodsBrand" />
-                            </div>
-                            <i class="iconfont" @click="clickSel('pinpai')">&#xe744;</i>
-                        </div>
-                        <div class="item">
-                            <label class="item-left" for="5">
-                                香气：
-                            </label>
-                            <div class="item-right" @click="clickSel('xiangqi')">
-                                <input type="text" id="5" readonly placeholder="非必填项，请选择商品香气" v-model="form.goodsXq" />
-                            </div>
-                            <i class="iconfont" @click="clickSel('xiangqi')">&#xe744;</i>
-                        </div>
-                        <div class="item">
-                            <label class="item-left" for="6">
-                                滋味：
-                            </label>
-                            <div class="item-right" @click="clickSel('ziwei')">
-                                <input type="text" id="6" readonly placeholder="非必填项，请选择商品滋味" v-model="form.goodsZw" />
-                            </div>
-                            <i class="iconfont" @click="clickSel('ziwei')">&#xe744;</i>
-                        </div>
-                        <div class="item">
-                            <label class="item-left" for="7">
-                                净重：
-                            </label>
-                            <div class="item-right">
-                                <input type="age" id="7" placeholder="必填项，请输入商品净重展示使用（g）" v-model="form.goodsJz" />
-                            </div>
-                        </div>
-                        <div class="item">
-                            <label class="item-left" for="8">
-                                毛重：
-                            </label>
-                            <div class="item-right">
-                                <input type="age" id="8" placeholder="必填项，运费计算使用（g）" v-model="form.goodsMz" />
-                            </div>
-                        </div>
-                        <div class="item">
-                            <label class="item-left" for="9">
-                                库存：
-                            </label>
-                            <div class="item-right">
-                                <input type="age" id="9" placeholder="必填项，请填写商品库存" v-model="form.goodsKc" />
-                            </div>
-                        </div>
-                        <div class="item">
-                            <label class="item-left" for="10">
-                                售价：
-                            </label>
-                            <div class="item-right">
-                                <input type="age" id="10" placeholder="必填项，请填写商品售价价格" v-model="form.goodsSx" />
+        <div class="floor detail-imgs">
+            <h3>商品详情展示图片</h3>
+            <p class="color_9"><span class="color_f33">1-3项必须上传，</span>建议尺寸保持一致,单张图片小于8M</p>
+            <div class="upload-step">
+                <h4><span class="serial-num">1</span>高清实拍，清晰展示商品外形细节</h4>
+                <div class="flex example-box">
+                    <div class="flex-1 upload-box">
+                        <label class="camera-bg" v-show="resize.imgs.detailImg1==''">
+                            <input type="file" accept="image/*" hidden @change="onPreview('detailImg1',$event)">
+                        </label>
+                        <div class="one-img"><img :src="resize.imgs.detailImg1" /></div>
+                        <div v-show="resize.imgs.detailImg1!=''">
+                            <a class="delete-btn" href="javascript: void(0);" @click="deleteImg('detailImg1')"><i class="iconfont">&#xe651;</i></a>
+                            <div class="small-camera">
+                                <label>
+                                    <img src="../../assets/images/camera.png" />
+                                    <input type="file" accept="image/*" hidden @change="onPreview('detailImg1',$event)">
+                                </label>
                             </div>
                         </div>
                     </div>
+                    <div class="flex-1">
+                        <img src="../../assets/upload-eg1.jpg" />
+                    </div>
                 </div>
-                <div class="good_type_list">
-                    <div class="good_type_list_wrapper">
-                        <div class="item">
-                            <label class="item-left" for="11">
-                                商品属性：
-                            </label>
-                            <div class="item-right">
-                                <input type="text" id="11" placeholder="非必填" v-model="form.goodsDw" />
-                            </div>
-                        </div>
-                        <div class="item">
-                            <label class="item-left" for="12">
-                                采摘季节：
-                            </label>
-                            <div class="item-right">
-                                <input type="text" id="12" placeholder="非必填，例如雨前/春茶之前" v-model="form.goodsJj" />
-                            </div>
-                        </div>
-                        <div class="item">
-                            <label class="item-left" for="13">
-                                产地：
-                            </label>
-                            <div class="item-right">
-                                <input type="text" id="13" placeholder="非必填，例如福鼎太姥山" v-model="form.goodsCd" />
-                            </div>
-                        </div>
-                        <div class="item">
-                            <label class="item-left" for="14">
-                                规格：
-                            </label>
-                            <div class="item-right">
-                                <input type="text" id="14" placeholder="非必填，请填写商品规格" v-model="form.goodsGg" />
-                            </div>
-                        </div>
-                        <div class="item" @click="closeUp = true">
-                            <label class="item-left" for="15">
-                                存储方法：
-                            </label>
-                            <div class="item-right">
-                                <input type="text" id="15" placeholder="非必填，例如避光密封等" v-model="form.goodsCc" />
+                <textarea name="" id="" cols="30" rows="10" placeholder="请输入外形描述" v-model="resize.textMs1"></textarea>
+            </div>
+            <div class="upload-step">
+                <h4><span class="serial-num">2</span>拒绝盗图，清晰展示商品内在细节,如茶汤</h4>
+                <div class="flex example-box">
+                    <div class="flex-1 upload-box">
+                        <label class="camera-bg" v-show="resize.imgs.detailImg2==''">
+                            <input type="file" accept="image/*" hidden @change="onPreview('detailImg2',$event)">
+                        </label>
+                        <div class="one-img"><img :src="resize.imgs.detailImg2" alt=""></div>
+                        <div v-show="resize.imgs.detailImg2!=''">
+                            <a class="delete-btn" href="javascript: void(0);" @click="deleteImg('detailImg2')"><i class="iconfont">&#xe651;</i></a>
+                            <div class="small-camera">
+                                <label>
+                                    <img src="../../assets/images/camera.png" />
+                                    <input type="file" accept="image/*" hidden @change="onPreview('detailImg2',$event)">
+                                </label>
                             </div>
                         </div>
                     </div>
+                    <div class="flex-1">
+                        <img src="../../assets/upload-eg2.jpg" />
+                    </div>
                 </div>
+                <textarea name="" id="" cols="30" rows="10" placeholder="请输入内在细节描述1，如茶汤" v-model="resize.textMs2"></textarea>
+            </div>
+            <div class="upload-step">
+                <h4><span class="serial-num">3</span>拒绝盗图，清晰展示商品内在细节,如叶底</h4>
+                <div class="flex example-box">
+                    <div class="flex-1 upload-box">
+                        <label class="camera-bg" v-show="resize.imgs.detailImg3==''">
+                            <input type="file" accept="image/*" hidden @change="onPreview('detailImg3',$event)">
+                        </label>
+                        <div class="one-img"><img :src="resize.imgs.detailImg3" /></div>
+                        <div v-show="resize.imgs.detailImg3!=''">
+                            <a class="delete-btn" href="javascript: void(0);" @click="deleteImg('detailImg3')"><i class="iconfont">&#xe651;</i></a>
+                            <div class="small-camera">
+                                <label>
+                                    <img src="../../assets/images/camera.png" />
+                                    <input type="file" accept="image/*" hidden @change="onPreview('detailImg3',$event)">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <img src="../../assets/upload-eg3.jpg" />
+                    </div>
+                </div>
+                <textarea name="" id="" cols="30" rows="10" placeholder="请输入内在细节描述2，如叶底" v-model="resize.textMs3"></textarea>
+            </div>
+            <div class="upload-step up-step4">
+                <h4><span class="serial-num">4</span>其他商品细节，最多可再上传<span class="color_f33">3</span>张</h4>
+                <div class="step4-img-box" :class="{on: resize.imgsStep4.length > 0}">
+                    <mt-swipe :show-indicators="false" :auto="0" @change="handleChangeThird">
+                        <mt-swipe-item  v-for="(item,index) in resize.imgsStep4" :key="index">
+                            <img :src="item.imgSrc" />
+                            <div v-show="item.imgSrc">
+                                <a class="delete-btn" href="javascript: void(0);" @click="deleteImg(index)"><i class="iconfont">&#xe651;</i></a>
+                                <div class="small-camera">
+                                    <label>
+                                        <img src="../../assets/images/camera.png" />
+                                        <input type="file" accept="image/*" hidden @change="onPreview(index,$event)">
+                                    </label>
+                                </div>
+                            </div>
+                        </mt-swipe-item>
+                    </mt-swipe>
+                    <div class="len_num">
+                        <span>{{ thirdIndex }}</span>/{{ resize.imgsStep4.length }}
+                    </div>
+                </div>
+                <div class="flex example-box" v-if="resize.imgsStep4.length<3">
+                    <div class="flex-1 upload-box">
+                        <label class="camera-bg">
+                            <input type="file" accept="image/*" hidden @change="onPreview(resize.imgsStep4.length,$event)">
+                        </label>
+                    </div>
+                </div>
+                <textarea name="" id="" cols="30" rows="10" placeholder="请输入内在细节描述2，如叶底" v-model="resize.textMs4"></textarea>
             </div>
         </div>
-        <div class="btn_wrapper">
+        <div class="flex btns">
             <mt-button type="primary" @click="$router.go(-1)">上一步</mt-button>
-            <mt-button type="primary" :disabled="disabledBol" @click="goStep3">下一步</mt-button>
+            <mt-button type="primary" :disabled="disabledBol" @click="onlySave">保存</mt-button>
         </div>
-        <mt-popup v-model="closeUp" position="bottom">
-            <div class="close-wrap">
-                <p class="close-tip"  v-for="(item,index) in selList" :class="{on: index === selectClass}" :key="index" @click="selectRightList(index)">{{ item }}<i class="iconfont">&#xe684;</i></p>
-                <p class="close-tip" @click="cancelList">取消选择</p>
+        <div class="save-rackup">
+            <mt-button type="primary" :disabled="disabledBol">保存并上架</mt-button>
+        </div>
+        <!-- 成功上架弹窗 -->
+        <div class="popup suc_popup" v-show="sucFlag">
+            <div class="popup_inner suc_inner">
+                <div class="algin_c">
+                    <p class="suc-tip">成功上架</p>
+                </div>
+                <div class="flex pop-btns">
+                    <a class="flex-1 see" href="javascript:void(0);" @click="sucFlag = false">查看商品</a>
+                    <a class="flex-1 go-on" href="javascript:void(0);" @click="goCreated">继续创建</a>
+                </div>
             </div>
-        </mt-popup>
+        </div>
     </div>
 </template>
-
+<script src="http://gosspublic.alicdn.com/aliyun-oss-sdk-4.4.4.min.js"></script>
 <script>
-export default {
-    data() {
-        return {
-            msg: '',
-            wxFlag: false,
-            closeUp: false,
-            disabledBol: true,
-            form: {
-                goodsName: '',
-                goodsSell: '',
-                goodsDw: '',
-                goodsBrand: '其他品牌',
-                goodsXq: '',
-                goodsZw: '',
-                goodsJz: '',
-                goodsMz: '',
-                goodsKc: '',
-                goodsSj: '',
-                goodsSx: '',
-                goodsJj: '',
-                goodsCd: '',
-                goodsGg: '',
-                goodsCc: '',
+import {mapGetters} from 'vuex';
+import { Toast } from 'mint-ui';
+    export default{
+        data(){
+            return {
+                sucFlag: true,         //是否成功上架
+                mainIndex: 1,
+                thirdIndex: 1,
+                ossImg: [],
+            }
+        },
+        computed:{
+            imgsStep4Len(){
+                if(this.resize.imgsStep4.length>0){
+                    return true;
+                }else{
+                    return false;
+                }
             },
-            selIndex: {
-                dw: null,
-                pp: null,
-                xq: null,
-                zw: null
-            },
-            brandList: ['龙井','乌龙','冰红茶','大红袍','龙井','乌龙','冰红茶','大红袍','龙井','乌龙','冰红茶','大红袍','龙井','乌龙','冰红茶','大红袍','龙井','乌龙','冰红茶','大红袍','龙井','乌龙','冰红茶','大红袍','龙井','乌龙','冰红茶','大红袍'],
-            xiangWei: ['偏淡','一般','香','高香','极香'],
-            ziWei: ['偏淡','一般','浓','很浓','极浓'],
-            danWei: ['美元','日元','人民币'],
-            selectClass: null,
-            selList: [],
-            dialogBol: false,
-        }
-    },
-    methods: {
-        getParams () {
-            let routerParams = this.$route.query.dataObj;
-            this.msg = routerParams;
-        },
-        goStep3() {
-            this.$router.push('/seller/newshelves-3')
-        },
-        selectRightList(index) {
-            this.selectClass = index;
-            if(this.selList[this.selList.length-1] === this.brandList[this.brandList.length-1]){          // 品牌选择
-                this.form.goodsBrand = this.selList[index];
-                this.selIndex.pp = index;
-                this.closeUp = false;
-                return;
-            }
-            if(this.selList[this.selList.length-1] === this.xiangWei[this.xiangWei.length-1]){           // 香味选择
-                this.form.goodsXq = this.selList[index];
-                this.selIndex.xq = index;
-                this.closeUp = false;
-                return;
-            }
-            if(this.selList[this.selList.length-1] === this.ziWei[this.ziWei.length-1]){              // 滋味选择
-                this.form.goodsZw = this.selList[index];
-                this.selIndex.zw = index;
-                this.closeUp = false;
-                return;
-            }
-            if(this.selList[this.selList.length-1] === this.danWei[this.danWei.length-1]){             // 单位选择
-                this.form.goodsDw = this.selList[index];
-                this.selIndex.dw = index;
-                this.closeUp = false;
-                return;
+            ...mapGetters([
+                'resize'
+            ]),
+            disabledBol() {
+                if(this.resize.mainImg.length>0 && this.resize.imgs.detailImg1!= '' && this.resize.imgs.detailImg2!= '' && this.resize.imgs.detailImg3!= '' && this.resize.textMs1 != ''&& this.resize.textMs2 != ''&& this.resize.textMs3 != ''){
+                    return false;
+                }else{
+                    return true;
+                }
             }
         },
-        cancelList() {
-            if(this.selList[this.selList.length-1] === this.brandList[this.brandList.length-1]){          // 品牌选择
-                this.form.goodsBrand = '';
-                this.selIndex.pp = null;
-                this.closeUp = false;
-                return;
-            }
-            if(this.selList[this.selList.length-1] === this.xiangWei[this.xiangWei.length-1]){           // 香味选择
-                this.form.goodsXq = '';
-                this.selIndex.xq = null;
-                this.closeUp = false;
-                return;
-            }
-            if(this.selList[this.selList.length-1] === this.ziWei[this.ziWei.length-1]){              // 滋味选择
-                this.form.goodsZw = '';
-                this.selIndex.zw = null;
-                this.closeUp = false;
-                return;
-            }
-            if(this.selList[this.selList.length-1] === this.danWei[this.danWei.length-1]){             // 单位选择
-                this.form.goodsDw = '';
-                this.selIndex.dw = null;
-                this.closeUp = false;
-                return;
-            }
+        created() {
+            var ossData = new FormData();
+            ossData.append('OSSAccessKeyId','obj.accessid');
+            console.log(ossData);
         },
-        clickSel(val) {
-            this.closeUp = true;
-            if(val === 'danwei'){
-                this.selList = this.danWei;
-                this.selectClass = null;
-                if(this.selIndex.dw!=null){
-                    this.selectClass = this.selIndex.dw;
-                }
-                return;
-            }
-            if(val === 'pinpai'){
-                this.selList = this.brandList;
-                this.selectClass = null;
-                if(this.selIndex.pp!=null){
-                    this.selectClass = this.selIndex.pp;
-                }
-                return;
-            }
-            if(val === 'xiangqi'){
-                this.selList = this.xiangWei;
-                this.selectClass = null;
-                if(this.selIndex.xq!=null){
-                    this.selectClass = this.selIndex.xq;
-                }
-                return;
-            }
-            if(val === 'ziwei'){
-                this.selList = this.ziWei;
-                this.selectClass = null;
-                if(this.selIndex.zw!=null){
-                    this.selectClass = this.selIndex.zw;
-                }
-                return;
-            }
-        }
-    },
-    watch: {
-        '$route': 'getParams',
-        'form': {
-            deep: true,
-            handler(val) {
-                if(val.goodsName!= '' && val.goodsDw!= '' && val.goodsBrand!= '' && val.goodsJz!= '' && val.goodsMz!= '' && val.goodsKc!= '' && val.goodsSx!= ''){
-                    console.log(val);
-                    this.disabledBol = false;
-                }
-            }
-        }
-    },
-    mounted() {
-        this.getParams();
-        this.wxFlag = this.$tool.isWx;
-    }
-}
-</script>
+        methods:{
 
+            onlySave() {
+                this.postImg('img').then((res) => {
+                    var ossObj = res.data;
+                    for(let i=0;i<this.resize.allImg.length;i++){
+                        let datas = this.ossMethod(ossObj,this.resize.allImg[i]);
+                        this.postOss(datas,ossObj.host);
+                    }
+                })
+            },
+            ossMethod(obj,filename) {
+                var ossData = new FormData();
+                ossData.append('OSSAccessKeyId',obj.accessid);
+                ossData.append('policy', obj.policy);
+                ossData.append('Signature', obj.signature);
+                ossData.append('key', obj.dir + '/' +);
+                ossData.append('file', );
+                return ossData;
+            },
+            postOss(data,url) {
+                // return new Promise((resolve,reject) => {
+                    this.$api.post(url,data,res => {
+                        console.log(res)
+                    },res=>{
+                        console.log(res)
+                    })
+                // })
+            },
+            postImg(path) {
+                let data = {
+                        path: path
+                    }
+                return new Promise((resolve,reject) => {
+                    this.$api.post('/oteao/file/getSignature',data,res => {
+                        resolve(res);
+                    },res=>{
+                        return Toast({
+                            message: res.errorMsg,
+                            iconClass: 'icon icon-fail'
+                        });
+                    })
+                })
+            },
+            handleChangeThird(index) {
+                this.thirdIndex = index+1;
+            },
+            handleChange(index) {
+                this.mainIndex = index+1;
+            },
+            //继续创建
+            goCreated(){
+                this.$router.push({
+                    name: '新品上架-1'
+                });
+            },
+            //预览图片
+            onPreview(str,e,ismain){
+                if(e.target.files[0].size > 8*1024*1024) return Toast({
+                    message: '图片不能超出8M哦~',
+                    iconClass: 'icon icon-info'
+                });
+                this.resize.allImg.push(e.target.files[0].name)
+                let reader = new FileReader();
+                reader.readAsDataURL(e.target.files[0]);
+                if(ismain){
+                    reader.onload = (e)=>{
+                        if(this.resize.mainImg.length>str){
+                            this.resize.mainImg[str].imgSrc = e.target.result;
+                        }else{
+                            this.resize.mainImg.push({'imgSrc':e.target.result});
+                        }
+                    }
+                }else{
+                    if(typeof str === 'string'){
+                        reader.onload = (e)=>{
+                            this.resize.imgs[str] = e.target.result;
+                        }
+                    }else if(typeof str === 'number'){
+                        reader.onload = (e)=>{
+                            if(this.resize.imgsStep4.length>str){
+                                this.resize.imgsStep4[str].imgSrc = e.target.result;
+                            }else{
+                                this.resize.imgsStep4.push({'imgSrc':e.target.result});
+                            }
+                        }
+                    }
+                }
+            },
+            //删除图片
+            deleteImg(arg,ismain){
+                if(ismain){
+                    this.resize.mainImg.splice(arg,1);
+                }else{
+                    if(typeof arg === 'string'){
+                        this.resize.imgs[arg] = '';
+                    }else if(typeof arg === 'number'){
+                        this.resize.imgsStep4.splice(arg,1);
+                    }
+                }
+            }
+        }
+    }
+</script>
 <style lang="less">
-@import '~@/styles/seller/newshelves2.less';
+    @import '~@/styles/seller/newshelves2.less';
 </style>

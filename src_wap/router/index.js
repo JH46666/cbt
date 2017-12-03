@@ -337,14 +337,6 @@ export default new Router({
 					}
 				},
 				{
-					path: 'newshelves-3',
-					name: '新品上架3',
-					component: resolve => require(['@/views/seller/newshelves3.vue'],resolve),
-					meta: {
-						hideFooter: true
-					}
-				},
-				{
 					path: 'recruit',
 					name: '卖家招募',
 					component: resolve => require(['@/views/seller/selleRecruit.vue'],resolve),

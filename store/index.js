@@ -9,6 +9,7 @@ import seller from './modules/seller'
 import address from './modules/address'
 import cart from './modules/cart'
 import member from './modules/member'
+import create from './modules/create'
 
 
 Vue.use(Vuex)
@@ -30,6 +31,7 @@ export default new Vuex.Store({
         seller,
         address,
         cart,
-        member
+        member,
+        create
     }
 })
