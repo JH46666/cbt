@@ -134,7 +134,12 @@ export default {
             },300)
         },
         commentMethod(obj) {
-            console.log(obj);
+            this.$router.push({
+                name: '订单评价',
+                query: {
+                    orderId: obj.orderId
+                }
+            })
         },
         cancelMethod(obj) {
             this.closeUp = true;
