@@ -46,7 +46,7 @@
                 return this.$emit('searchClick')
             },
             cancel() {
-                this.value = '';
+                this.$emit('input','');
                 this.$emit('cancelValue');
             }
         }

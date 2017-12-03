@@ -8,7 +8,7 @@
             </div>
             <div class="right">
                 <p class="user">
-                    不可秒速的店铺
+                    {{ shop.shopName }}
                 </p>
                 <div class="level-wrap">
                     <div class="level-left">
@@ -71,25 +71,25 @@
         </section>
         <section class="tools-pannel">
             <div class="tools-row">
-                <router-link to="#" class="item">
+                <router-link :to="{name: '商品管理'}" class="item">
                     <span><i class="icon-xiaoshouguanli blue"></i></span>
                     <p>商品管理</p>
                 </router-link>
-                <router-link to="#" class="item">
+                <router-link :to="{name: '运费配置'}" class="item">
                     <span><i class="icon-yunfeipeizhi"></i></span>
                     <p>运费配置</p>
                 </router-link>
-                <router-link to="#" class="item">
+                <router-link :to="{name: '商品管理'}" class="item">
                     <span><i class="icon-tejiaguanli"></i></span>
                     <p>限时特价</p>
                 </router-link>
-                <router-link to="#" class="item">
+                <router-link :to="{name: '我的收入'}" class="item">
                     <span><i class="icon-shouru small"></i></span>
                     <p>我的收入</p>
                 </router-link>
             </div>
             <div class="tools-row">
-                <router-link to="#" class="item">
+                <router-link :to="{name: '商品管理'}" class="item">
                     <span><i class="icon-xiaoxi blue small"></i></span>
                     <p>店铺信息</p>
                 </router-link>
