@@ -24,13 +24,13 @@
                 </div>
                 <div class="experience-wrap">
                     <div class="experience-bar">
-                        <div class="experience" style="width:50%;"></div>
+                        <div class="experience" :style="{width:memberAccount.growthValue / level.cumulativeConsume * 100 + '%'}"></div>
                     </div>
-                    {{ memberAccount.growthValue }} &nbsp;/&nbsp; 30,000
+                    {{ memberAccount.growthValue }} &nbsp;/&nbsp; {{ level.cumulativeConsume }}
                 </div>
             </div>
             <div class="bd">
-                <p class="bd-text">累积消费￥24000，还差￥6000晋升3级经销商字多就走起来走起来字多就走起来走起来字多就走起来走起来就走起来走起来字多就走起来走起来字多就走起来走起来就走起来走起来字多就走起来走起来字多就走起来走起来就走起来走起来字多就走起来走起来字多就走起来走起来就走起来走起来字多就走起来走起来字多就走起来走起来就走起来走起来字多就走起来走起来字多就走起来走起来就走起来走起来字多就走起来走起来字多就走起来走起来</p>
+                <p class="bd-text">累积消费￥{{ memberAccount.growthValue }}，还差￥{{ level.cumulativeConsume - memberAccount.growthValue }}晋升{{ level.memberLevelName  }}</p>
             </div>
         </section>
         <section class="count-entry">
@@ -112,7 +112,8 @@
     export default {
         data() {
             return {
-                count: {}
+                count: {},
+                level: {}
             }
         },
         computed: {
@@ -135,6 +136,8 @@
                 },res => {
                     this.$toast(`签到成功,${this.sign.nextSign}积分己放于您的账户~`)
                     this.$store.dispatch('viewSign');
+                    // 从新拉取会员信息
+                    this.$store.dispatch('getMemberData')
                 })
             }
         },
@@ -150,6 +153,12 @@
                     if(status === 2) {
                         vm.$store.dispatch('viewSign')
                         vm.$store.dispatch('getRedTotal')
+                        vm.$api.get('/member/memberLevel/findNextLevelByMemberIdAndSysId',{
+                            memberId: vm.$store.state.member.member.id,
+                            sysId:1
+                        },res =>{
+                            vm.level = res.data;
+                        })
                         return;
                     };
                     if(status === 1) {

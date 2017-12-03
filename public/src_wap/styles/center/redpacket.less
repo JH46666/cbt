@@ -1,0 +1,173 @@
+@import url('../base/tools.less');
+
+#redpacket{
+    .position(r);
+    .fontSize(.3rem);
+    .line(1.5);
+    .redpacket-main{
+        padding: .24rem .35rem .97rem;
+        .h(~'calc(100% - .82rem)');
+        .scroll-y(a);
+        .ipScroll;
+        &.no-foot{
+            padding-bottom: 0;
+        }
+    }
+    // 红包样式
+    .redpacket-item{
+        border: 1px solid #fff;
+        border-left: none;
+        margin-bottom: .24rem;
+        .bg(#fff);
+        .hd{
+            padding: .08rem 0;
+            overflow: hidden;
+            border-bottom: 1px dashed @borCol;
+            .flex;
+            .h(1.34rem);
+            .position(r);
+            .left{
+                border-right: 1px dashed @borCol;
+                .w(1.94rem);
+                .algin(c);
+                .type{
+                    .color(@mainCol);
+                }
+                .num{
+                    .fontSize(.5rem);
+                    .color(@mainCol);
+                }
+                .limit-text{
+                    .fontSize(.24rem);
+                }
+            }
+            .right{
+                .w(~'calc(100% - 1.94rem)');
+                .paddingL(.24rem);
+                .sell-type{
+                    border: 1px solid @mainCol;
+                    margin-right: .14rem;
+                    .fontSize(.24rem);
+                    .line(.36rem);
+                    .paddingRow(.1rem);
+                    .color(@mainCol);
+                    .reduis(2px);
+                }
+                .title{
+                    margin-bottom: .2rem;
+                    .t{
+                        vertical-align: middle;
+                        .display(inline-block);
+                        .w(~'calc(100% - 1.16rem)');
+                        .oneLine;
+                    }
+                }
+                .date{
+                    .fontSize(.24rem);
+                    .color(@b-9);
+                }
+            }
+            .round-wrap{
+                top: .06rem;
+                left: -.08rem;
+                .w(.16rem);
+                .fontSize(0);
+                .position(a);
+                .round{
+                    border: 1px solid #f5f5f5;
+                    margin-bottom: .1rem;
+                    .display(inline-block);
+                    .w(.16rem);
+                    .h(.16rem);
+                    .bg(#f5f5f5);
+                    .reduis(50%);
+                }
+            }
+        }
+        .bd{
+            .flex;
+            padding: .08rem .2rem;
+            .color(@b-9);
+            .tips{
+                .flex-1;
+                .fontSize(.24rem);
+                .line(1.5);
+                &.onlyone{
+                    .oneLine;
+                    .line(.54rem);
+                }
+            }
+            i{
+                .iconfont;
+                .fontSize(.36rem);
+                .line(.54rem);
+            }
+        }
+        // 红包激活样式
+        &.disabled{
+            color: @b-9 !important;
+            .type,.num,.sell-type{
+                color: @b-9 !important;
+                border-color:  @b-9 !important;
+            }
+        }
+    }
+    // 没有红包
+    .no-redpacket{
+        img{
+            .display(block);
+            .w(1.54rem);
+            .h(1.8rem);
+            margin: 1.62rem auto .4rem;
+        }
+        p{
+            .fontSize(.28rem);
+            .line(1.5);
+            .color(@b-6);
+            .algin(c);
+        }
+    }
+    .redpacket-bd{
+        bottom: 0;
+        left: 0;
+        z-index: 1009;
+        .position(a);
+        .w(100%);
+        .h(.97rem);
+        .mint-button{
+            .w(100%);
+            .h(.97rem);
+            .reduis(0);
+            .bg(#fff);
+            .color(@mainCol);
+        }
+    }
+
+
+    // 重置样式
+    .mint-navbar{
+        border: 1px solid @borCol;
+        .h(.82rem);
+    }
+    .mint-navbar .mint-tab-item{
+        padding: .26rem 0;
+    }
+    .mint-navbar .mint-tab-item.is-selected{
+        border: none;
+        .color(@mainCol);
+        .fontSize(.28rem);
+    }
+    .mint-tab-item-label{
+        .fontSize(.28rem);
+    }
+    .goods-loading,.no-more{
+        .bg(#f5f5f5);
+    }
+}
+
+
+
+
+
+
+

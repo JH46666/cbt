@@ -3,50 +3,6 @@
     img{
         .w(100%);
     }
-    .shelves_step{
-        width: 100%;
-        height: .88rem;
-        .position(r);
-        background-image: url('../../assets/images/step_bg.png');
-        background-repeat: no-repeat;
-        background-size: 100%;
-        padding: 0 .3rem;
-        .flex;
-        .flex-dir(row);
-        .align-items;
-        .step{
-            .flex-1;
-            .flex;
-            .flex-dir(row);
-            .align-items;
-            .line(1);
-            .fontSize(.26rem);
-            .color(@mainCol);
-            &.on{
-                .color(@mainCol);
-                span{
-                    .bg(@mainCol);
-                }
-            }
-            &:nth-child(2){
-                .justify-content;
-            }
-            &:nth-child(3){
-                .justify-content(flex-end);
-            }
-            span{
-                width: .4rem;
-                height: .4rem;
-                .reduis(50%);
-                .bg(@mainCol);
-                .color(#fff);
-                .line(.4rem);
-                .fontSize(.3rem);
-                .algin(c);
-                margin-right: .1rem;
-            }
-        }
-    }
     .floor{
         padding: .4rem .3rem 0;
         .bg(#fff);
@@ -98,8 +54,31 @@
     }
     .main-imgs{
         .main-img-box{
+            display: none;
+            &.on{
+                display: block;
+            }
+            border: 1px solid #e5e5e5;
             .position(r);
             margin-top: .3rem;
+            height: 4.2rem;
+            img{
+                width: 100%;
+                height: 100%;
+            }
+            .len_num{
+                .position(a);
+                bottom: .3rem;
+                left: .3rem;
+                z-index: 10;
+                height: .46rem;
+                padding: 0 .1rem;
+                .bg(#4c4c4c);
+                .color(#fff);
+                .fontSize(.24rem);
+                .line(.46rem);
+                border-radius: .23rem;
+            }
         }
         .upload-box{
             .w(100%);
@@ -140,6 +119,29 @@
         .up-step4{
             .step4-img-box{
                 .position(r);
+                height: 4.2rem;
+                border: 1px solid #e5e5e5;
+                display: none;
+                &.on{
+                    display: block;
+                }
+                img{
+                    width: 100%;
+                    height: 100%;
+                }
+                .len_num{
+                    .position(a);
+                    bottom: .3rem;
+                    left: .3rem;
+                    z-index: 10;
+                    height: .46rem;
+                    padding: 0 .1rem;
+                    .bg(#4c4c4c);
+                    .color(#fff);
+                    .fontSize(.24rem);
+                    .line(.46rem);
+                    border-radius: .23rem;
+                }
             }
             .upload-box{
                 .w(100%);
@@ -152,39 +154,38 @@
         padding: .6rem .3rem .3rem;
         .bg(#fff);
         .algin(c);
-        a{
-            .line(.98rem);
-            .reduis(3px);
+        .justify-content(space-between);
+        .mint-button{
+            width: 46%;
+            height: .98rem;
             .fontSize(.3rem);
-        }
-        .go-step2{
-            .color(#f08200);
-            .bg(#fafafa);
-            margin-right: .3rem;
-        }
-        .save{
-            .bg(#e6e6e6);
-            .color(#adadad);
-        }
-        .on{
-            .color(#f08200);
-            .bg(#fafafa);
+            &:first-child{
+                .bg(#fafafa);
+                .color(#f08200);
+            }
+            &:last-child{
+                .color(#fff);
+                .bg(#f08200);
+            }
+            &.is-disabled {
+                .bg(#e6e6e6);
+                .color(#adadad);
+            }
         }
     }
     .save-rackup{
         padding: 0 .3rem .48rem;
         .algin(c);
         .bg(#fff);
-        a{
-            display: block;
-            .line(.98rem);
-            .reduis(3px);
+        .mint-button{
+            width: 100%;
+            height: .98rem;
             .fontSize(.3rem);
-            .bg(#e6e6e6);
-            .color(#adadad);
-            &.on{
-                .color(#f08200);
-                .bg(#fafafa);
+            .color(#fff);
+            .bg(#f08200);
+            &.is-disabled {
+                .bg(#e6e6e6);
+                .color(#adadad);
             }
         }
     }
@@ -207,7 +208,7 @@
                 .line(.56rem);
                 background: url('../../assets/images/rackup-gou.png') no-repeat;
                 background-size: .56rem .56rem;
-                padding-left: .8rem; 
+                padding-left: .8rem;
             }
             .pop-btns{
                 .position(a);
@@ -229,5 +230,4 @@
             }
         }
     }
-
 }

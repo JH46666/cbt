@@ -1,0 +1,353 @@
+@import url('../base/tools.less');
+
+// 搜索块组件
+.cbt-search-bar{
+    width: 4.85rem;
+    .flex;
+    i{
+        .iconfont;
+    }
+    .search-text{
+        .flex_num(8);
+        .paddingL(.2rem);
+        .h(.62rem);
+        .line(.62rem);
+        border: 1px solid @borCol;
+        border-right: 0;
+        border-radius: 20px 0 0 20px;
+    }
+    .mint-button{
+        .flex_num(2);
+        .bg(@mainCol);
+        .h(.62rem);
+        .color(#fff);
+        border-radius: 0 20px 20px 0;
+    }
+    .cancel{
+        .display(none);
+        .position(a);
+        .color(@b-9);
+        top: .08rem;
+        right: 28%;
+    }
+    .show{
+        .display(block);
+    }
+}
+
+// 商品加减组件
+.plusOreduce{
+    display: inline-block;
+    .fontSize(0);
+    span{
+        display: inline-block;
+        width: .5rem;
+        height: .5rem;
+        border: 1px solid #e5e5e5;
+        .bg(#fff);
+        .color(#333);
+        .line(.5rem);
+        .algin(c);
+        cursor: pointer;
+        .fontSize(.3rem);
+        vertical-align: top;
+        &.plus{
+            border-radius: 0 3px 3px 0;
+        }
+        &.reduce{
+            border-radius: 3px 0 0 3px;
+        }
+    }
+    input{
+        display: inline-block;
+        width: .8rem;
+        height: .5rem;
+        border-top: 1px solid #e5e5e5;
+        border-bottom: 1px solid #e5e5e5;
+        .bg(#fff);
+        .color(#333);
+        .line(.5rem);
+        .algin(c);
+        vertical-align: top;
+        .fontSize(.24rem);
+    }
+}
+
+// 商品图片组件
+.cbt-goods-img{
+    .w(1.76rem);
+    .h(1.76rem);
+    .img-wrap{
+        border: 1px solid @borCol;
+        .position(r);
+        .w(100%);
+        .h(100%);
+    }
+    .tag-wrap{
+        .position(a);
+        .w(45%);
+        .h(45%);
+        top: 0;
+        left: 0;
+        z-index: 2;
+    }
+    .goods-tag,
+    .goods-img{
+        max-width: 100%;
+        max-height: 100%;
+    }
+    img[lazy=loading]{
+        max-width: 100%;
+        max-height: 100%;
+    }
+    img[lazy=error]{
+        .w(100%);
+        .h(100%);
+        background: #f5f5f5 url('~@/assets/images/error.jpg') no-repeat;
+        background-size: 100% 100%;
+    }
+}
+
+// 商品组件
+.cbt-goods-item{
+    border-bottom: 1px solid @borCol;
+    .flex;
+    .paddingT(.3rem);
+    .paddingB(.3rem);
+    .left-text-wrap{
+        .flex-1;
+        .paddingR(.2rem);
+        .goods-title{
+            word-break: break-all;
+            margin-bottom: .2rem;
+            .fontSize(.26rem);
+            .line(1.5);
+            .moreLine;
+        }
+        .goods-attr{
+            .color(#b5b5b5);
+            .fontSize(.24rem);
+            .line(1.5);
+            .flex;
+        }
+        .attr-left{
+            margin-right: .2rem;
+        }
+        .attr-rigth{
+            .fontSize(0);
+        }
+        .attr-xiang,
+        .attr-tea{
+            background: url('~@/assets/images/hc.png') no-repeat;
+            background-size: 100% 100%;
+            margin-right: .08rem;
+            .display(inline-block);
+            .w(.24rem);
+            .h(.24rem);
+        }
+        .attr-tea.active{
+            background: url('~@/assets/images/lc.png') no-repeat;
+            background-size: 100% 100%;
+        }
+        .attr-xiang{
+            background: url('~@/assets/images/hh.png') no-repeat;
+            background-size: 100% 100%;
+            .w(.2rem);
+            margin-left: .02rem;
+            margin-right: .1rem;
+        }
+        .attr-xiang.active{
+            background: url('~@/assets/images/sh.png') no-repeat;
+            background-size: 100% 100%;
+        }
+        .goods-bd{
+            margin-top: .2rem;
+            .flex;
+        }
+        .goods-price{
+            margin-right: .2rem;
+            .color(@mainCol);
+            .fontSize(.28rem);
+            .line(.3rem);
+        }
+        .goods-type{
+            border: 1px solid #0ec416;
+            .paddingL(.04rem);
+            .paddingR(.04rem);
+            .reduis(4px);
+            .color(#0ec416);
+            .fontSize(.2rem);
+            .line(.28rem);
+            &.self{
+                border-color: @mainCol;
+                .color(@mainCol);
+            }
+        }
+    }
+}
+
+
+// 卖家修改价格模块
+.cbt-editprice{
+    top: 0;
+    left: 0;
+    z-index: 2017;
+    .fontSize(.3rem);
+    .line(1.5);
+    .position(f);
+    .w(100%);
+    .h(100%);
+    .bg(rgba(0,0,0,.3));
+    .editprice-wrap{
+        top: 50%;
+        left: 50%;
+        margin-left: -3.05rem;
+        margin-top: -2.52rem;
+        overflow: hidden;
+        .position(a);
+        .w(6.1rem);
+        .h(5.04rem);
+        .bg(#fff);
+        .reduis(4px);
+        .paddingT(.2rem);
+        .title{
+            font-weight: normal;
+            margin-bottom: .4rem;
+            .algin(c);
+            .line(.6rem);
+        }
+        .input-wrap{
+            .paddingRow(.48rem);
+            .input-row{
+                border-bottom: 1px solid @borCol;
+                margin-bottom: .4rem;
+                .paddingT(.1rem);
+                .paddingB(.1rem);
+                .color(@b-6);
+                &.error{
+                    border-color: @error;
+                }
+            }
+            .input-head{
+                margin-right: .9rem;
+                .display(inline-block);
+                .w(1.2rem);
+            }
+            input{
+                .w(2.74rem);
+            }
+        }
+        .btnwrap{
+            bottom: 0;
+            border-top: 1px solid @borCol;
+            .position(a);
+            .w(100%);
+            .mint-button{
+                box-shadow: none;
+                .w(50%);
+                .h(.98rem);
+                .reduis(0);
+                .bg(#fff);
+                .color(@b-3);
+            }
+            .mint-button:nth-of-type(2){
+                .bg(@mainCol);
+                .color(#fff);
+            }
+        }
+    }
+
+    // 激活红包
+    &.active-red {
+        .editprice-wrap{
+            .h(3.4rem);
+            input{
+                border: 1px solid @borCol;
+                .w(100%);
+                .h(.56rem);
+            }
+            .input-row{
+                border: none;
+            }
+        }
+    }
+}
+
+//图片验证码弹窗
+.verify_popup{
+    .popup_inner{
+        .h(3.9rem);
+        .w(6.2rem);
+        .bg(#fff);
+        .position(a);
+        top: 1.8rem;
+        left: 50%;
+        margin-left: -3.1rem;
+        padding: .6rem .6rem;
+        img{
+            .w(100%);
+        }
+        .close_popup{
+            .position(a);
+            .color(#fff);
+            top: -.7rem;
+            right: 0;
+            i{
+                .fontSize(.36rem);
+            }
+        }
+        .error_tips{
+            .color(#ff3600);
+            .line(.6rem);
+            .h(.6rem);
+            .position(a);
+            top: 0;
+            i{
+                margin-right: .1rem;
+                .position(r);
+                top: .02rem;
+                font-size: .32rem;
+            }
+        }
+        .img_box{
+            border: 1px solid #e6e6e6;
+            .img_code{
+                .flex_num(3);
+                height: 1.4rem;
+                img{
+                    .h(100%);
+                }
+            }
+            .refresh{
+                .flex_num(1);
+                border-left: 1px solid #e6e6e6;
+                background-color: #f5f5f5;
+                line-height: 1.3rem;
+                text-align: center;
+                color: #c2c2c2;
+                -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+                i{
+                    .fontSize(.5rem);
+                }
+            }
+        }
+        .img_code_input{
+            input{
+                width: 1rem;
+                height: 1rem;
+                float: left;
+                border: 1px solid #e6e6e6;
+                margin-top: .3rem;
+                font-size: .4rem;
+                .algin(c);
+                &.on{
+                    border-color: #f08200;
+                }
+                &+input{
+                    margin-left: .3rem;
+                }
+            }
+        }
+    }
+}
