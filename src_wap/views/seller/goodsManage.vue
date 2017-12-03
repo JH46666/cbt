@@ -18,31 +18,31 @@
         <!-- tab按钮 -->
         <div class="tab-btn-wrapper" ref="tabs">
             <div class="flex">
-                <a class="flex-1" :class="{on: tabId == 'yes'}" @click="tabId = 'yes'" href="javascript:void(0);">已上架（90）</a>
+                <a class="flex-1" :class="{on: tabId == 'yes'}" @click="tabId = 'yes'" href="javascript:void(0);">出售中（90）</a>
                 <a class="flex-1" :class="{on: tabId == 'no'}" @click="tabId = 'no'" href="javascript:void(0);">未上架（5）</a>
             </div>
         </div>
         <!-- 排序条件 -->
         <div class="sort-wrapper flex" :class="{'fixed-sort': fixedFlag,'wx-fixed':wxFixedFlag}" v-show="!isEmpty">
-            <label class="flex-1 sort-item" :class="{on:sortCondition=='time'}">
+            <label class="flex-1 sort-item" :class="{on:sortCondition=='2'}">
                 创建时间
-                <input type="radio" name="" value="time" hidden v-model="sortCondition" @click="descFlag = !descFlag">
+                <input type="radio" name="" value="2" hidden v-model="sortCondition" @click="descFlag = !descFlag">
                 <span class="sort-icons">
                     <i class="iconfont sort-asce" :class="{on: !descFlag}">&#xe610;</i>
                     <i class="iconfont sort-desc" :class="{on: descFlag}">&#xe950;</i>
                 </span>
             </label>
-            <label class="flex-1 sort-item" :class="{on:sortCondition=='saleNum'}">
+            <label class="flex-1 sort-item" :class="{on:sortCondition=='4'}">
                 销量
-                <input type="radio" name="" value="saleNum" hidden v-model="sortCondition" @click="descFlag = !descFlag">
+                <input type="radio" name="" value="4" hidden v-model="sortCondition" @click="descFlag = !descFlag">
                 <span class="sort-icons">
                     <i class="iconfont sort-asce" :class="{on: !descFlag}">&#xe610;</i>
                     <i class="iconfont sort-desc" :class="{on: descFlag}">&#xe950;</i>
                 </span>
             </label>
-            <label class="flex-1 sort-item" :class="{on:sortCondition=='stock'}">
+            <label class="flex-1 sort-item" :class="{on:sortCondition=='1'}">
                 库存
-                <input type="radio" name="" value="stock" hidden v-model="sortCondition" @click="descFlag = !descFlag">
+                <input type="radio" name="" value="1" hidden v-model="sortCondition" @click="descFlag = !descFlag">
                 <span class="sort-icons">
                     <i class="iconfont sort-asce" :class="{on: !descFlag}">&#xe610;</i>
                     <i class="iconfont sort-desc" :class="{on: descFlag}">&#xe950;</i>
@@ -81,6 +81,7 @@
                         <a href="javascript:void(0);" class="flex-1 algin_c"><i class="iconfont">&#xe681;</i>预览</a>
                         <a href="javascript:void(0);" class="flex-1 algin_c"><i class="iconfont">&#xe682;</i>编辑</a>
                         <a href="javascript:void(0);" class="flex-1 algin_c"><i class="iconfont">&#xe683;</i>下架</a>
+                        <a href="javascript:void(0);" class="flex-1 algin_c"><i class="iconfont">&#xe60d;</i>删除</a>
                     </div>
                 </div>
                 <div v-if="products1.length==0">
@@ -168,7 +169,7 @@
                 searchTxt: "",            //搜索内容
                 fixedFlag: false,         //tab是否固定
                 wxFixedFlag: false,         //tab是否固定 wx环境
-                sortCondition: 'time',    //排序条件
+                sortCondition: '2',    //排序条件
                 descFlag: false,          //是否是降序
                 tabId: 'yes',             //tab切换，yes表示已上架  no表示未上架
                 selectIdsNo: [],           //已选的未上架商品
@@ -207,10 +208,25 @@
                         checkedFlag: false,                          
                     }
                 ],
-                products2: [
-                    
-                ]
+                products2: [],
+                pageNumber: 1,
+                pageSize: 20,
+                totalSize: 0,
             }
+        },
+        created(){
+            let data = {
+                device: "WAP",
+                orderBy: 'desc',
+                proSku: '',
+                seachKey: '',
+                sort: 1,
+                state: '',
+                sysId: 1
+            }
+            this.$api.post(`/oteaoProduct/seachFrontOrgProduct?page.pageNumber=${this.pageNumber}&page.pageSize=${this.pageSize}`,JSON.stringify(data),res=>{
+                console.log(res);
+            }); 
         },
         computed:{
             clearFlag(){
