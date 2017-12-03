@@ -1,0 +1,131 @@
+@import url('../base/tools.less');
+
+#order-list{
+    .fontSize(.3rem);
+    .line(1.5);
+    // 订单部分
+    .order-list-wrap{
+        .paddingT(.24rem);
+        .h(~'calc(100% - .94rem)');
+        .scroll-y(a);
+        .ipScroll;
+    }
+    .order-pannel{
+        margin-bottom: .24rem;
+        .bg(#fff);
+        .head{
+            border-bottom: 1px solid @borCol;
+            .paddingRow(.35rem);
+            .flex;
+            .fontSize(.28rem);
+            .line(.86rem);
+            .title{
+                font-weight: normal;
+                .flex_num(8);
+            }
+            .type{
+                .color(#13c23c);
+            }
+        }
+        .goods-item{
+            border-bottom: 1px solid @borCol;
+            .padding(.35rem);
+            .flex;
+            .right{
+                .flex-1;
+                .paddingL(.2rem);
+            }
+            .goods-title{
+                .moreLine;
+                .color(@b-3);
+                margin-bottom: .5rem;
+            }
+            .goods-bd{
+                .flex;
+                .fontSize(.32rem);
+                .line(1.5);
+                span{
+                    .flex-1;
+                }
+                .price{
+                    .color(@mainCol);
+                }
+                .num{
+                    .algin(r);
+                }
+            }
+        }
+        .foot{
+            .paddingRow(.35rem);
+            .paddingT(.24rem);
+            .paddingB(.35rem);
+            .text{
+                margin-bottom: .1rem;
+                .flex;
+                p{
+                    .flex-1;
+                }
+                p:nth-last-of-type(1){
+                    .algin(r);
+                }
+                .gold{
+                    .color(@mainCol);
+                }
+            }
+            .btn-wrap{
+                .algin(r);
+                .mint-button--small{
+                    margin-left: .2rem;
+                    border: 1px solid @b-6;
+                    padding: 0;
+                    .color(@b-6);
+                    .bg(#fff);
+                    .w(1.52rem);
+                    .h(.48rem);
+                    .reduis(20px);
+                }
+                .mint-button--small.gold{
+                    border: 1px solid @mainCol;
+                    .color(@mainCol);
+                }
+            }
+        }
+    }
+
+    // 关闭订单弹出层样式
+    .close-wrap{
+        .w(100%);
+        .algin(c);
+        .fontSize(.3rem);
+        .line(.98rem);
+        h3{
+            font-weight: normal;
+            .line(.8rem);
+            .bg(#f5f5f5);
+        }
+        .close-tip{
+            border-bottom: 1px solid @borCol;
+        }
+        .close-tip:nth-last-of-type(1){
+            border:none;
+            .color(@mainCol);
+        }
+    }
+
+    // 重置样式
+    .mint-navbar{
+        .h(.94rem);
+        border-bottom: 1px solid @borCol;
+    }
+    .mint-navbar .mint-tab-item.is-selected{
+        border: none;
+        .color(@mainCol);
+        .fontSize(.28rem);
+    }
+    .mint-tab-item-label{
+        .fontSize(.28rem);
+    }
+    .mint-popup{
+        .w(100%);
+    }
+} 

@@ -208,8 +208,8 @@ import { Toast } from 'mint-ui';
                 ossData.append('OSSAccessKeyId',obj.accessid);
                 ossData.append('policy', obj.policy);
                 ossData.append('Signature', obj.signature);
-                ossData.append('key', obj.dir + '/' +);
-                ossData.append('file', );
+                ossData.append('key', obj.dir);
+                ossData.append('file', filename);
                 return ossData;
             },
             postOss(data,url) {
