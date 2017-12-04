@@ -8,10 +8,12 @@
                 <div v-else-if="orderDetailData.orderStatus === 'DELIVERED'"><img src="../../assets/images/order_2.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                 <!-- 待付款 -->
                 <div v-else-if="orderDetailData.orderStatus === 'WAIT_PAY'"><img src="../../assets/images/order_4.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
-                <!-- 待评价 -->
-                <div v-else-if="orderDetailData.orderStatus === 'COMMENT'"><img src="../../assets/images/order_1.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
+                <!-- 已评价 -->
+                <div v-else-if="orderDetailData.orderStatus === 'FINISH' && orderDetailData.isComment === false"><img src="../../assets/images/order_1.png" />{{ orderStatus[orderDetailData.orderStatus] }}，待评价</div>
+                <!-- 已评价 -->
+                <div v-else-if="orderDetailData.orderStatus === 'FINISH' && orderDetailData.isComment === true"><img src="../../assets/images/order_5.png" />{{ orderStatus[orderDetailData.orderStatus] }}，已评价</div>
                 <!-- 其他 -->
-                <div v-else><img src="../../assets/images/order_1.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
+                <div v-else><img src="../../assets/images/order_6.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
             </div>
             <div class="number">
                 订单编号：{{ orderDetailData.orderNo }}
@@ -58,7 +60,7 @@
             <div class="order_shop" v-if="orderDetailData.sellerOrgId == 1">
                 <i class="iconfont">&#xe66d;</i> {{ orderDetailData.shopName }}
             </div>
-            <div class="order_address" v-if="orderDetailData.expressDeliveryCode === 'ship_sto'" :class="{ 'on': pullOrDownShop }">
+            <div class="order_address" v-if="orderDetailData.expressDeliveryCode != 'ship_sto'" :class="{ 'on': pullOrDownShop }">
                 <div class="order_address_1">
                     <div class="order_address_num">
                         556226452
@@ -213,7 +215,7 @@
         <!-- 按钮 -->
         <div class="order_btn">
             <!-- <mt-button plain v-if="status === '待审核' || status === '待评价' || status === '待发货'" @click.native="confrimMethod">再次购买</mt-button> -->
-            <mt-button plain v-if="orderDetailData.orderStatus === 'COMMENT'" class="pay_now" @click.native="commentMethod">评价</mt-button>
+            <mt-button plain v-if="orderDetailData.orderStatus === 'FINISH' && orderDetailData.isComment === false" class="pay_now" @click.native="commentMethod(orderDetailData.orderId)">评价</mt-button>
             <mt-button plain v-if="orderDetailData.orderStatus === 'WAIT_PAY' || orderDetailData.orderStatus === 'WAIT_CHECK'" @click.native="cancelMethod">取消订单</mt-button>
             <mt-button plain v-if="orderDetailData.orderStatus === 'WAIT_PAY'" class="pay_now" @click.native="payMethod">立即支付</mt-button>
             <mt-button plain v-if="orderDetailData.orderStatus === 'DELIVERED' || orderDetailData.orderStatus === 'CBT_BUYER'" class="pay_now" @click.native="confrimMethod">确认收货</mt-button>
@@ -287,8 +289,13 @@ export default {
                 })
             })
         },
-        commentMethod() {
-
+        commentMethod(orderId) {
+            this.$router.push({
+                name: '订单评价',
+                query: {
+                    orderId: orderId
+                }
+            })
         },
         selectCancel(index) {
             this.cancelClass = index;

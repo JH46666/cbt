@@ -11,6 +11,9 @@
     "build:wap": "node  build_wap/build/build.js"
   },
   "dependencies": {
+    "ali-oss": "^4.10.0",
+    "co": "^4.6.0",
+    "fs": "0.0.1-security",
     "axios": "^0.17.1",
     "element-ui": "^2.0.4",
     "js-cookie": "^2.2.0",

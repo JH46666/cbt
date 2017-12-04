@@ -1,5 +1,12 @@
 <template>
-    <div class="cart_wrapper">
+    <div class="empty" v-if="cartData===[]">
+        <div class="img-wrap">
+            <img src="../../assets/images/empty.jpg" alt="">
+        </div>
+        <p class="tips">购物车还没有商品哟~</p>
+        <router-link :to="{name: '首页',path:'/'}" class="to-index">去首页逛逛</router-link>
+    </div>
+    <div class="cart_wrapper" v-else>
         <div class="edit_floor"><a @click="edit=!edit">{{edit==true?'完成':'编辑'}}</a></div>
         <div class="product_floor">
             <!-- 商品分组 -->
@@ -132,13 +139,7 @@
                 <a class="clear_expired" href="javascript:void(0);">清空失效商品</a>
             </div>
         </div>
-        <!-- <div class="empty">
-            <div class="img-wrap">
-                <img src="../../assets/images/empty.jpg" alt="">
-            </div>
-            <p class="tips">购物车还没有商品哟~</p>
-            <router-link :to="{name: '首页'}" class="to-index">去首页逛逛</router-link>
-        </div> -->
+        <!-- 猜你喜欢 -->
         <may-like></may-like>
         <!-- 底部结算 -->
         <div class="cart_bottom flex">
