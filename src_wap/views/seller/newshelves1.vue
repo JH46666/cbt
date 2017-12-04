@@ -170,7 +170,7 @@
                 </div>
                 <div class="dialog_type_content">
                     <div class="type_1">
-                        <div class="type_item" v-for="(item,index) in oneTypeList" :key="index" :class="{on: item.id === resize.oneClass}" @click="selectOneType(item.id,index)" v-if="index <= 8">{{ item.name }}</div>
+                        <div class="type_item" v-for="(item,index) in oneTypeList" :key="index" :class="{on: item.id === resize.oneClass}" @click="selectOneType(item.id,index)">{{ item.name }}</div>
                     </div>
                     <div class="type_2">
                         <div class="type_2_wrapper">
@@ -212,6 +212,7 @@ export default {
             this.resize.form.goodTypes = this.oneTypeList[this.resize.oneIndex].name+'-'+this.twoTypeList[this.resize.twoIndex].name;
         },
         selectOneType(id,index) {
+            this.twoTypeList = [];
             this.resize.oneClass = id;
             this.resize.oneIndex = index;
             this.getTypeList(id).then((res) => {
@@ -248,6 +249,21 @@ export default {
                 }
             return new Promise((resolve,reject) => {
                 this.$api.get('/oteaoProCat/queryCatChilds',data,res => {
+                    resolve(res);
+                },res=>{
+                    return Toast({
+                        message: res.errorMsg,
+                        iconClass: 'icon icon-fail'
+                    });
+                })
+            })
+        },
+        getOneTypeList() {
+            let data = {
+                    sysId: 1
+                }
+            return new Promise((resolve,reject) => {
+                this.$api.get('/oteaoProCat/getBaseTea',data,res => {
                     resolve(res);
                 },res=>{
                     return Toast({
@@ -421,7 +437,7 @@ export default {
         this.wxFlag = this.$tool.isWx;
     },
     created() {
-        this.getTypeList(3).then((res) => {
+        this.getOneTypeList().then((res) => {
             let parentList = res.data;
             for(let obj of parentList){
                 this.oneTypeList.push({
