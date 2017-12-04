@@ -203,6 +203,7 @@ import { Toast } from 'mint-ui';
             if(process.env.NODE_ENV != 'development'){
                 this.path = 'online_img/';
             }
+            alert(process.env.NODE_ENV);
         },
         methods:{
             random_string(len) {
