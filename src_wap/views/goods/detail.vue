@@ -123,7 +123,11 @@
                         <div class="detail_img_title" :class="{'on': tabFixed,'wxon': wxFixed}" ref="imgHeight">图片详情</div>
                         <div class="mint_cell_wrapper mint_cell_img_wrapper">
                             <mt-cell v-for="(item,index) in goodsDetail.detailImgArray" :key="index">
-                                <img :src="item" />
+                                <div class="mint_cell_img_title">茶韵展示</div>
+                                <div class="mint_cell_img">
+                                    <img :src="item.imgUrl" />
+                                </div>
+                                <p class="mint_cell_img_content">{{ item.content }}</p>
                             </mt-cell>
                         </div>
                     </mt-tab-container-item>
@@ -234,7 +238,20 @@ export default {
                 goodsPrice: 362,
                 suggestPrice: 800,
                 maxGoodsNum: 100,
-                detailImgArray: ['../src_wap/assets/detail_1.png','../src_wap/assets/detail_2.png','../src_wap/assets/detail_3.png']
+                detailImgArray: [
+                    {
+                        imgUrl: '../src_wap/assets/detail_1.png',
+                        content: '戎羯逼我兮为室家，将我行兮向天涯。云山万重兮归路遐，疾风千里兮扬尘沙。人多暴猛兮如虺蛇，控弦被甲兮为骄奢。两拍张弦兮弦欲绝，志摧心折兮自悲嗟。'
+                    },
+                    {
+                        imgUrl: '../src_wap/assets/detail_2.png',
+                        content: '戎羯逼我兮为室家，将我行兮向天涯。云山万重兮归路遐，疾风千里兮扬尘沙。人多暴猛兮如虺蛇，控弦被甲兮为骄奢。两拍张弦兮弦欲绝，志摧心折兮自悲嗟。'
+                    },
+                    {
+                        imgUrl: '../src_wap/assets/detail_3.png',
+                        content: '戎羯逼我兮为室家，将我行兮向天涯。云山万重兮归路遐，疾风千里兮扬尘沙。人多暴猛兮如虺蛇，控弦被甲兮为骄奢。两拍张弦兮弦欲绝，志摧心折兮自悲嗟。'
+                    },
+                ]
             },
             tabSelected: '2',
             commentArray: [

@@ -6,7 +6,7 @@ const create = {
                 goodsName: '',
                 goodsSell: '',
                 goodsDw: '',
-                goodsBrand: '其他品牌',
+                goodsBrand: '',
                 goodsXq: '',
                 goodsZw: '',
                 goodsJz: '',
@@ -92,7 +92,11 @@ const create = {
             textMs2: '',
             textMs3: '',
             textMs4: '',
-            allImg: [],
+            mainImgFile: [],
+            oneImgFile: [],
+            secondImgFile: [],
+            thirdImgFile: [],
+            fourImgFile: [],
         }
     },
     mutations: {
