@@ -101,7 +101,7 @@
             </router-link>
         </section>
         <section class="quit">
-            <mt-button type="default">退出登录</mt-button>
+            <mt-button type="default" @click="quit">退出登录</mt-button>
         </section>
     </div>
 </template>
@@ -139,6 +139,16 @@
                     // 从新拉取会员信息
                     this.$store.dispatch('getMemberData')
                 })
+            },
+            // 推出登陆
+            quit() {
+                try {
+                    this.$api.get('/oteao/login/logout',{},res => {
+                        this.$router.push('/')
+                    })
+                } catch (error) {
+
+                }
             }
         },
         created() {

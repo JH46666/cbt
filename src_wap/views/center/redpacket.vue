@@ -89,10 +89,10 @@
                 }
             },
             nomore() {
-                return !!this.list.length === this.total[this.selected + 'NUM']
+                return Boolean(this.list.length === this.total[this.selected + 'NUM'])
             },
             loading() {
-                return !!this.list.length < this.total[this.selected + 'NUM']
+                return Boolean(this.list.length < this.total[this.selected + 'NUM'])
             },
             ...mapState({
                 list(state) {
