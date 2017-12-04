@@ -13,11 +13,6 @@ const create = {
                 goodsMz: '',
                 goodsKc: '',
                 goodsSj: '',
-                goodsSx: '',
-                goodsJj: '',
-                goodsCd: '',
-                goodsGg: '',
-                goodsCc: '',
                 goodsPtsj: '',
                 goodsGoodType: '',
             },
@@ -97,6 +92,7 @@ const create = {
             secondImgFile: [],
             thirdImgFile: [],
             fourImgFile: [],
+            proValList: [],
         }
     },
     mutations: {

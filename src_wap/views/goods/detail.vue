@@ -58,8 +58,8 @@
                         <img :src="item.imgUrl" :key="index">
                     </mt-swipe-item>
                 </mt-swipe>
-                <!--  v-if="detailData.productExtInfo.isSales" -->
-                <div class="detail_special">
+                <!--   -->
+                <div class="detail_special" v-if="detailData.productExtInfo.isSales">
                     <div class="detail_special_wrapper">
                         <div class="detail_special_price">
                             <span>特价</span>
@@ -88,10 +88,10 @@
                         <p class="detail_text">{{ detailData.productInfo.proName }}</p>
                         <template v-if="detailData.productPrice.length != 0">
                             <p class="detail_now_price" v-if="!detailData.productExtInfo.isSales">￥{{ detailData.productPrice[0].price | toFix2 }}</p>
-                            <p class="detail_suggest_price">建议零售价：￥{{ detailData.productPrice[0].price | toFix2 }}</p>
+                            <p class="detail_suggest_price">建议零售价：￥{{ detailData.productPrice[1].price | toFix2 }}</p>
                         </template>
                     </div>
-                    <div class="detail_active">
+                    <!-- <div class="detail_active">
                         <label>促销</label>
                         <div class="detail_active_list">
                             <div class="detail_active_item">
@@ -103,10 +103,10 @@
                                 <p>已优惠￥285.78</p>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="detail_describe_count">
                         <label class="label_text">采购量</label>
-                        <plusOreduce :maxNum="goodsDetail.maxGoodsNum" @countNum="goodsCounts"></plusOreduce>
+                        <plusOreduce :maxNum="detailData.productInfo.stockNum" @countNum="goodsCounts"></plusOreduce>
                     </div>
                 </div>
             </div>
@@ -297,19 +297,39 @@ export default {
                 productPrice:[]
             },
             time: '',
+            attrDetail: {},
         }
     },
     created() {
         this.getDetail().then((res) =>{
             this.detailData = res.data;
+            this.getAttr().then((res) => {
+                this.attrDetail = res.data;
+            })
         })
     },
     methods: {
+        getAttr() {
+            let data ={
+                sysId: 1,
+                proSku: '8688396'
+            };
+            return new Promise((resolve,reject) => {
+                this.$api.post('/oteaoProductExtInfo/findExtProDetail',data,res => {
+                    resolve(res);
+                },res=>{
+                    return Toast({
+                        message: res.errorMsg,
+                        iconClass: 'icon icon-fail'
+                    });
+                })
+            })
+        },
         getDetail() {
             let data = {
                 sysId: 1,
                 device: 'WAP',
-                productSku: '8688366'
+                productSku: '8688396'
             }
             return new Promise((resolve,reject) => {
                 this.$api.get('/oteaoProduct/getProExtInfo',data,res => {
@@ -454,13 +474,15 @@ export default {
     },
     mounted () {
         this.setLine();             // 判断超出隐藏或者显示
-        this.time = setInterval(()=>{            // 倒计时
-           if(this.flag == true){
-               clearInterval(this.time)
-           }else{
-               this.timeDown();
-           }
-       },500)
+        if(this.detailData.productExtInfo.isSales){
+            this.time = setInterval(()=>{            // 倒计时
+               if(this.flag == true){
+                   clearInterval(this.time)
+               }else{
+                   this.timeDown();
+               }
+           },500)
+        }
        this.wxFlag = this.$tool.isWx;
   　}
 }

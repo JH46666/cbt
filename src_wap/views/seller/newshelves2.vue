@@ -145,10 +145,10 @@
         <div class="popup suc_popup" v-show="sucFlag">
             <div class="popup_inner suc_inner">
                 <div class="algin_c">
-                    <p class="suc-tip">成功上架</p>
+                    <p class="suc-tip">{{ sussTips }}</p>
                 </div>
                 <div class="flex pop-btns">
-                    <a class="flex-1 see" href="javascript:void(0);" @click="sucFlag = false">查看商品</a>
+                    <a class="flex-1 see" href="javascript:void(0);" @click="goShopMange">查看商品</a>
                     <a class="flex-1 go-on" href="javascript:void(0);" @click="goCreated">继续创建</a>
                 </div>
             </div>
@@ -178,6 +178,7 @@ import { Toast } from 'mint-ui';
                 },
                 path: 'test_path/',
                 flag: 0,
+                sussTips: '成功上架！',
             }
         },
         computed:{
@@ -203,7 +204,6 @@ import { Toast } from 'mint-ui';
             if(process.env.NODE_ENV != 'development'){
                 this.path = 'online_img/';
             }
-            alert(process.env.NODE_ENV);
         },
         methods:{
             random_string(len) {
@@ -345,20 +345,12 @@ import { Toast } from 'mint-ui';
                     }
                     fourImgContent = `<div class="mint_cell_img_title">茶韵展示</div><div class="mint_cell_img">${fourStr}</div><p class="mint_cell_img_content">${this.resize.textMs4}</p>`
                 }
+                let allImgContent = oneImgContent + twoImgContent + threeImgContent + fourImgContent;
                 let data = {
                     "catProps": [],
                     "productDetails": [
                         {
-                            "content": oneImgContent,
-                        },
-                        {
-                            "content": twoImgContent,
-                        },
-                        {
-                            "content": threeImgContent,
-                        },
-                        {
-                            "content": fourImgContent,
+                            "content": allImgContent,
                         }
                     ],
                     "productImgs": mainImg
@@ -373,59 +365,31 @@ import { Toast } from 'mint-ui';
                 if(this.resize.form.goodsZw != ''){
                     data.catProps.push({
                         propType: 2,
-                        propName: '商品属性',
+                        propName: '滋味',
                         propertyVal: this.resize.form.goodsZw
                     })
                 }
-                if(this.resize.form.goodsGoodType != ''){
-                    data.catProps.push({
-                        propType: 2,
-                        propName: '商品属性',
-                        propertyVal: this.resize.form.goodsGoodType
-                    })
-                }
-                if(this.resize.form.goodsJj != '') {
-                    data.catProps.push({
-                        propType: 2,
-                        propName: '采摘季节',
-                        propertyVal: this.resize.form.goodsJj
-                    })
-                }
-                if(this.resize.form.goodsCd != '') {
-                    data.catProps.push({
-                        propType: 2,
-                        propName: '产地',
-                        propertyVal: this.resize.form.goodsCd
-                    })
-                }
-                if(this.resize.form.goodsGg != '') {
-                    data.catProps.push({
-                        propType: 2,
-                        propName: '规格',
-                        propertyVal: this.resize.form.goodsGg
-                    })
-                }
-                if(this.resize.form.goodsCc != '') {
-                    data.catProps.push({
-                        propType: 2,
-                        propName: '存储方法',
-                        propertyVal: this.resize.form.goodsCc
-                    })
-                }
-                this.$api.post(`/oteaoProduct/createProductInfo
-                    ?frontOrgProInfoDetailVo.catId=${ encodeURI(this.resize.twoClass) }
-                    &frontOrgProInfoDetailVo.brandId=${ encodeURI(this.resize.selId.pp) }
-                    &frontOrgProInfoDetailVo.proName=${ encodeURI(this.resize.form.goodsName) }
-                    &frontOrgProInfoDetailVo.unint=${ encodeURI(this.resize.form.goodsDw) }
-                    &frontOrgProInfoDetailVo.weight=${ encodeURI(this.resize.form.goodsMz) }
-                    &frontOrgProInfoDetailVo.netWeight=${ encodeURI(this.resize.form.goodsJz) }
-                    &frontOrgProInfoDetailVo.reason=${ encodeURI(this.resize.form.goodsSell) }
-                    &frontOrgProInfoDetailVo.stockNum=${ encodeURI(this.resize.form.goodsKc) }
-                    &frontOrgProInfoDetailVo.specifications=${ encodeURI(this.resize.form.goodsGg) }
-                    &frontOrgProInfoDetailVo.proPrice=${ encodeURI(this.resize.form.goodsSx) }
-                    &frontOrgProInfoDetailVo.retailPrice=${encodeURI(this.resize.form.goodsPtsj) }
-                    &frontOrgProInfoDetailVo.isSaveOnShelf=${ encodeURI(stata) }`,JSON.stringify(data),res => {
-                    console.log(res);
+                this.$api.post(`/oteaoProduct/createProductInfo` +
+                    `?frontOrgProInfoDetailVo.catId=${ encodeURI(this.resize.twoClass) }` +
+                    `&frontOrgProInfoDetailVo.brandId=${ encodeURI(this.resize.selId.pp) }` +
+                    `&frontOrgProInfoDetailVo.proName=${ encodeURI(this.resize.form.goodsName) }` +
+                    `&frontOrgProInfoDetailVo.unint=${ encodeURI(this.resize.form.goodsDw) }` +
+                    `&frontOrgProInfoDetailVo.weight=${ encodeURI(this.resize.form.goodsMz) }` +
+                    `&frontOrgProInfoDetailVo.netWeight=${ encodeURI(this.resize.form.goodsJz) }` +
+                    `&frontOrgProInfoDetailVo.reason=${ encodeURI(this.resize.form.goodsSell) }` +
+                    `&frontOrgProInfoDetailVo.stockNum=${ encodeURI(this.resize.form.goodsKc) }` +
+                    `&frontOrgProInfoDetailVo.specifications=${ encodeURI(this.resize.form.goodsGg) }` +
+                    `&frontOrgProInfoDetailVo.proPrice=${ encodeURI(this.resize.form.goodsSx) }` +
+                    `&frontOrgProInfoDetailVo.retailPrice=${encodeURI(this.resize.form.goodsPtsj) }` +
+                    `&frontOrgProInfoDetailVo.isSaveOnShelf=${ encodeURI(stata) }`,JSON.stringify(data),res => {
+                        this.sucFlag = true;
+                        if(stata == 0){
+                            this.sussTips = '创建成功！';
+                            this.goShopMange('OFF_SHELF');
+                        }else{
+                            this.sussTips = '成功上架！';
+                            this.goShopMange('ON_SHELF');
+                        }
                 },res=>{
                     return Toast({
                         message: res.errorMsg,
@@ -493,6 +457,14 @@ import { Toast } from 'mint-ui';
                         }
                     }
                 }
+            },
+            goShopMange(status) {
+                this.$router.push({
+                    name: '商品管理',
+                    query: {
+                        status: status
+                    }
+                })
             },
             //删除图片
             deleteImg(arg,ismain){
