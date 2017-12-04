@@ -108,46 +108,19 @@
                         </div>
                     </div>
                 </div>
-                <div class="good_type_list">
+                <div class="good_type_list" v-if="resize.proValList.length != 0">
                     <div class="good_type_list_wrapper">
                         <div class="item">
                             <label class="item-left" for="11">
                                 商品属性：
                             </label>
-                            <div class="item-right">
-                                <input type="text" id="11" placeholder="非必填" v-model="resize.form.goodsGoodType" />
-                            </div>
                         </div>
-                        <div class="item">
-                            <label class="item-left" for="12">
-                                采摘季节：
+                        <div class="item" v-for="(item,index) in resize.proValList" :key="index">
+                            <label class="item-left" :for="index+12">
+                                {{ item.propName }}
                             </label>
                             <div class="item-right">
-                                <input type="text" id="12" placeholder="非必填，例如雨前/春茶之前" v-model="resize.form.goodsJj" />
-                            </div>
-                        </div>
-                        <div class="item">
-                            <label class="item-left" for="13">
-                                产地：
-                            </label>
-                            <div class="item-right">
-                                <input type="text" id="13" placeholder="非必填，例如福鼎太姥山" v-model="resize.form.goodsCd" />
-                            </div>
-                        </div>
-                        <div class="item">
-                            <label class="item-left" for="14">
-                                规格：
-                            </label>
-                            <div class="item-right">
-                                <input type="text" id="14" placeholder="非必填，请填写商品规格" v-model="resize.form.goodsGg" />
-                            </div>
-                        </div>
-                        <div class="item">
-                            <label class="item-left" for="15">
-                                存储方法：
-                            </label>
-                            <div class="item-right">
-                                <input type="text" id="15" placeholder="非必填，例如避光密封等" v-model="resize.form.goodsCc" />
+                                <input type="text" :id="index+12" v-model="item.proVal" placeholder="非必填" />
                             </div>
                         </div>
                     </div>
@@ -204,9 +177,45 @@ export default {
             oneTypeList: [],
             twoTypeList: [],
             clickSure: true,
+            device: 'PC',
+
+        }
+    },
+    watch: {
+        'resize.twoClass': {
+            handler(curVal,oldVal){
+                this.getProVal(curVal).then((res) => {
+                    this.resize.proValList = res.data;
+                    if(this.resize.proValList.length != 0){
+                        for(let i=0;i<this.resize.proValList.length;i++){
+                            this.$set(this.resize.proValList[i],'proVal','');
+                            this.$set(this.resize.proValList[i],'proIndex',null);
+                        }
+                    }
+                })
+　　　　　　　},
+　　　　　　　deep:true
         }
     },
     methods: {
+        getProVal(id) {
+            let data = {
+                    catId: id,
+                    sysId: 1,
+                    device: this.device,
+                    position: 0
+                }
+            return new Promise((resolve,reject) => {
+                this.$api.get('/propInfo/queryPropVal',data,res => {
+                    resolve(res);
+                },res=>{
+                    return Toast({
+                        message: res.errorMsg,
+                        iconClass: 'icon icon-fail'
+                    });
+                })
+            })
+        },
         sureType() {
             this.dialogTypeBol = false;
             this.resize.form.goodTypes = this.oneTypeList[this.resize.oneIndex].name+'-'+this.twoTypeList[this.resize.twoIndex].name;
@@ -464,7 +473,6 @@ export default {
                 })
             }
         })
-
     },
 }
 </script>
