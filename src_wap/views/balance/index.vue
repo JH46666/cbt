@@ -49,13 +49,15 @@
                     </div>
                 </section>
                 <section class="pay-pannel">
-                    <div class="express" @click="upPayType">
+                    <div class="express" @click="upPayType(index)">
                         <div class="left">
                             <i class="icon-wuliu"></i> 支付配送
                         </div>
                         <div class="center">
                             <p>在线支付  {{ expressName[item.currentDeliveryMethod] }}</p>
-                            <p>运费： <span class="gold">15.00</span></p>
+                            <!-- 运费 -->
+                            <p v-if="item.shopName === '自营'">运费： <span class="gold">{{ item.deliveryAndfreightMap[item.currentDeliveryMethod] | toFix2  }}</span></p>
+                            <p v-else>运费： <span class="gold">{{ item.shopExpress | toFix2  }}</span></p>
                         </div>
                         <div class="right">
                             <i class="icon-xiangyou"></i>
@@ -89,8 +91,8 @@
                     <div class="remark">
                         <div class="left">备注</div>
                         <div class="right">
-                            <input type="text" placeholder="对订单特殊要求进行描述" maxlength="50">
-                            <p class="count">0/50</p>
+                            <input type="text" placeholder="对订单特殊要求进行描述" maxlength="50" v-model="item.remark">
+                            <p class="count">{{ item.remark.length }}/50</p>
                         </div>
                     </div>
                 </section>
@@ -130,7 +132,7 @@
 
         <!-- 选择快递弹出 -->
         <transition name="fadeUp" mode="out-in">
-            <pay-type v-show="showPayType" @confirm="confirmPayType"></pay-type>
+            <pay-type v-show="showPayType" @confirm="confirmPayType" ref="payType"></pay-type>
         </transition>
 
         <!-- 红包窗口 -->
@@ -161,7 +163,8 @@
                     ship_ems: 'EMS',
                     ship_sf: '顺丰快递',
                     ship_sto: '申通快递'
-                }
+                },
+                activePannel: {},           // 当前激活的店铺
             }
         },
         computed: {
@@ -174,7 +177,9 @@
         },
         methods: {
             // 弹出付款方式弹窗
-            upPayType() {
+            upPayType(index) {
+                this.activePannel = this.pannel[index];
+                this.$refs.payType.setActive(this.activePannel)
                 this.showPayType = true;
             },
             // 点击付款方式弹窗的确定
@@ -208,6 +213,19 @@
                         cartIds: this.cartList,
                         device: 'WAP'
                     },res => {
+                        // 为每一家第三方店铺设定运费初始字段
+                        let shopList = res.data.oteaoCart;
+
+                        shopList.forEach(val => {
+                            if(val.shopName !== '自营') {
+                                val.shopExpress = 0;
+                            }
+
+                            // 设置备注
+                            val.remark = '';
+
+                        });
+
                         this.myData = res.data;
                         resolve(res)
                     },res => {
@@ -223,6 +241,24 @@
                 sessionStorage.setItem('edit',true);
                 sessionStorage.setItem('cart',this.cartList);
                 this.$router.push('/center/address');
+            },
+            // 获取每个第三方店铺的运费
+            getThirdExpress() {
+                let pannel = this.myData.oteaoCart;
+                pannel.forEach(val => {
+                    if(val.shopName !== '自营') {
+                        this.$api.get('/oteao/shoppingCart/getFreight',{
+                            provinceCode: this.address.provinceCode,
+                            payMethod: 'ONLINE',
+                            delivery: 'ship_sto',
+                            totalWeight: val.totalWeightForFreight,
+                            payTotalAmount: val.totalProductAmountAfterPromotion,
+                            orgId: val.orgId
+                        },res => {
+                            val.shopExpress = res.data.freightPrice;
+                        })
+                    }
+                })
             }
         },
         created() {
@@ -242,7 +278,8 @@
                     this.address = this.myData.receiveAddrList.filter(val => val.isDefault)[0]
                 }
 
-
+                // 获取第三方运费
+                this.getThirdExpress();
             })
         }
     }

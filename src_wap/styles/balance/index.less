@@ -334,12 +334,21 @@
             }
         }
         .left{
-            .flex-1;
+            .flex_num(2);
             .line(1.5);
+        }
+        .center{
+            .flex_num(1);
+            .line(1.5);
+            span{
+                .line(1.5);
+                .position(r);
+                top: .2rem;
+            }
         }
         .right{
             .algin(r);
-            .flex-1;
+            .flex_num(3);
             label{
                 background: url('~@/assets/images/check_bg.png') no-repeat;
                 background-size: 100% 100%;
