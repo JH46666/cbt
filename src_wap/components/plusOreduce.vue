@@ -29,7 +29,7 @@ export default {
                 Toast({
                     message: '您需购买的数量超出商品的现有库存！',
                     position: 'center',
-                    duration: 2000
+                    duration: 500
                 });
             }
             this.$emit('countNum',this.num);
@@ -50,15 +50,15 @@ export default {
                     Toast({
                         message: '请输入大于等于1的正整数',
                         position: 'center',
-                        duration: 2000
+                        duration: 500
                     });
-                    this.num = 1;
+                    this.num = Math.floor(this.num);
                 }else{
                     if(parseInt(val) > this.maxNum){
                         Toast({
                             message: '您需购买的数量超出商品的现有库存！',
                             position: 'center',
-                            duration: 2000
+                            duration: 500
                         });
                         this.num = this.maxNum;
                     }
@@ -67,7 +67,7 @@ export default {
                 Toast({
                     message: '请输入大于等于1的正整数',
                     position: 'center',
-                    duration: 2000
+                    duration: 500
                 });
                 this.num = 1;
             }

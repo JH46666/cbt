@@ -148,6 +148,14 @@ export default new Router({
 					meta: {
 						hideFooter: true
 					}
+				},
+				{
+					path: 'select',
+					name: '茶帮通注册4',
+					component: resolve => require(['@/views/regist/select.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
 				}
 			]
 		},
