@@ -145,9 +145,11 @@
                 try {
                     this.$api.get('/oteao/login/logout',{},res => {
                         this.$router.push('/')
+                    },res => {
+                        this.$router.push('/')
                     })
                 } catch (error) {
-
+                    this.$router.push('/')
                 }
             }
         },

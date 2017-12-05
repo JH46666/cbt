@@ -5,11 +5,11 @@
                 <div class="pannel">
                     <h3 class="title">
                         支付方式
-                        <template v-if="active.shopName !== '自营'">
+                        <template v-if="active.selfSupport !== true">
                             ： ({{ payMethods[active.currentPayMethod] }})
                         </template>
                     </h3>
-                    <template v-if="active.shopName === '自营'">
+                    <template v-if="active.selfSupport === true">
                         <div class="check-item online">
                             <div class="left"><i class="icon-zaixianzhifu"></i> 在线支付</div>
                             <div class="right">
@@ -29,13 +29,15 @@
                     </template>
                 </div>
                 <div class="pannel">
-                    <h3 class="title" v-if="active.shopName === '自营'">配送快递</h3>
+                    <h3 class="title" v-if="active.selfSupport === true">配送快递</h3>
                     <h3 class="title" v-else>配送方式</h3>
-                    <template v-if="active.shopName === '自营'">
+                    <!-- 自营配送快递 -->
+                    <template v-if="active.selfSupport === true">
                         <div class="check-item">
                             <div class="left"><span class="icon"><img src="../../assets/images/stkd.png" alt=""></span> 申通快递 </div>
                             <div class="center">
-                                <span class="gold">￥{{active.deliveryAndfreightMap['ship_sto'] | toFix2}}</span>
+                                <span class="gold" v-if="active.currentPayMethod === 'ONLINE'">￥{{ active.payAndDeliveryAndfreightMap.ONLINE['ship_sto'] | toFix2 }}</span>
+                                <span class="gold" v-else>￥{{ active.payAndDeliveryAndfreightMap.CASH_DELIVERY['ship_sto'] | toFix2 }}</span>
                             </div>
                             <div class="right">
                                 <label :class="{checked:active.currentDeliveryMethod === 'ship_sto'}">
@@ -46,7 +48,8 @@
                         <div class="check-item">
                             <div class="left"><span class="icon"><img src="../../assets/images/sfkd.png" alt=""></span> 顺丰快递 </div>
                             <div class="center">
-                                <span class="gold">￥{{active.deliveryAndfreightMap['ship_sf'] | toFix2}}</span>
+                                <span class="gold" v-if="active.currentPayMethod === 'ONLINE'">￥{{active.payAndDeliveryAndfreightMap.ONLINE['ship_sf'] | toFix2}}</span>
+                                <span class="gold" v-else>￥{{ active.payAndDeliveryAndfreightMap.CASH_DELIVERY['ship_sf'] | toFix2 }}</span>
                             </div>
                             <div class="right">
                                 <label :class="{checked:active.currentDeliveryMethod === 'ship_sf'}">
@@ -54,10 +57,11 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="check-item">
+                        <div class="check-item" v-if="active.currentPayMethod === 'ONLINE'">
                             <div class="left"><span class="icon"><img src="../../assets/images/emskd.png" alt=""></span> EMS </div>
                             <div class="center">
-                                <span class="gold">￥{{active.deliveryAndfreightMap['ship_ems'] | toFix2}}</span>
+                                <span class="gold" v-if="active.currentPayMethod === 'ONLINE'">￥{{active.payAndDeliveryAndfreightMap.ONLINE['ship_ems'] | toFix2}}</span>
+                                <span class="gold" v-else>￥{{ active.payAndDeliveryAndfreightMap.CASH_DELIVERY['ship_ems'] | toFix2 }}</span>
                             </div>
                             <div class="right">
                                 <label :class="{checked:active.currentDeliveryMethod === 'ship_ems'}">
@@ -79,7 +83,7 @@
                             </div>
                         </div>
                     </template>
-                    <div class="indoor-wrap" v-if="(active.canPickUpBySelf && active.shopName === '自营') || active.shopName !== '自营'">
+                    <div class="indoor-wrap" v-if="(active.canPickUpBySelf && active.selfSupport === true) || active.selfSupport !== true">
                         <div class="check-item delivery">
                             <div class="left"><i class="icon-jifenshangcheng"></i> 门店自提 </div>
                             <div class="center">
@@ -112,6 +116,13 @@
                     ONLINE: '在线支付'
                 },
                 active: {},             // 激活的面板
+            }
+        },
+        watch: {
+            'active.currentPayMethod'(val) {
+                if(val === 'ONLINE' && this.active.selfSupport === true) {
+                    this.active.currentDeliveryMethod = 'ship_sto'
+                }
             }
         },
         methods: {

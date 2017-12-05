@@ -23,7 +23,7 @@
                             <p>
                                 <template v-if="item.redPacketType === 'DISCOUNT_AMOUNT'">
                                     <span class="type">￥</span>
-                                    <span class="num">{{ item.amount  }}</span>
+                                    <span class="num">{{ item.amountOrDiscount  }}</span>
                                 </template>
                                 <template v-else>
                                     <span class="num">{{ item.discount  }}</span>

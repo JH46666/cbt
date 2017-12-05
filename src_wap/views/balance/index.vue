@@ -13,7 +13,7 @@
             <template v-for="(item,index) in pannel">
                 <section class="goods-pannel">
                     <div class="title">
-                        <img src="../../assets/images/logo.png" alt="" v-if="item.shopName === '自营'">
+                        <img src="../../assets/images/logo.png" alt="" v-if="item.selfSupport === true">
                         {{ item.shopName }}
                     </div>
                     <template v-for="(todo,i) in item.cartList">
@@ -45,7 +45,7 @@
                         </div>
                     </template>
                     <div class="sum">
-                        商品总额: <span class="gold">{{ item.totalProductAmountAfterPromotion | toFix2 }}</span>
+                        商品总额: <span class="gold">{{ item.totalProductAmount | toFix2 }}</span>
                     </div>
                 </section>
                 <section class="pay-pannel">
@@ -54,38 +54,37 @@
                             <i class="icon-wuliu"></i> 支付配送
                         </div>
                         <div class="center">
-                            <p>在线支付  {{ expressName[item.currentDeliveryMethod] }}</p>
+                            <p>{{ payMethods[item.currentPayMethod] }}  {{ expressName[item.currentDeliveryMethod] }}</p>
                             <!-- 运费 -->
-                            <p v-if="item.shopName === '自营'">运费： <span class="gold">{{ item.deliveryAndfreightMap[item.currentDeliveryMethod] | toFix2  }}</span></p>
+                            <p v-if="item.selfSupport === true">运费： 
+                                <template v-if="item.currentPayMethod === 'ONLINE'">
+                                    <span class="gold">{{ item.payAndDeliveryAndfreightMap.ONLINE[item.currentDeliveryMethod] | toFix2  }}</span>
+                                </template> 
+                                <template v-else>
+                                    <span class="gold">{{ item.payAndDeliveryAndfreightMap.CASH_DELIVERY[item.currentDeliveryMethod] | toFix2  }}</span>
+                                </template>
+                            </p>
                             <p v-else>运费： <span class="gold">{{ item.shopExpress | toFix2  }}</span></p>
                         </div>
                         <div class="right">
                             <i class="icon-xiangyou"></i>
                         </div>
                     </div>
-                    <div class="redpacket" @click="upRedpacket" v-if="item.shopName === '自营'">
+                    <div class="redpacket" @click="upRedpacket(index)" v-if="item.selfSupport === true">
                         <div class="left">
                             红包
                         </div>
                         <div class="center">
-                            -{{ myData.redPacketDeduction | toFix2   }}
+                            - {{ myData.redPacketDeduction | toFix2   }}
                         </div>
                         <div class="right">
                             <i class="icon-xiangyou"></i>
                         </div>
                     </div>
-                    <div class="redpacket-list-wrap" v-if="item.shopName === '自营'">
-                        <div class="redpacket-list">
-                            <div class="left">2017春节促销</div>
-                            <div class="right">- 5.00</div>
-                        </div>
-                        <div class="redpacket-list">
-                            <div class="left">2017春节促销</div>
-                            <div class="right">- 5.00</div>
-                        </div>
-                        <div class="redpacket-list">
-                            <div class="left">2017春节促销</div>
-                            <div class="right">- 5.00</div>
+                    <div class="redpacket-list-wrap" v-if="item.selfSupport === true">
+                        <div class="redpacket-list" v-for="(todo,i) in item.canUseRuleSetList">
+                            <div class="left">{{ todo.showName }}</div>
+                            <div class="right">- {{ todo.giveNum | toFix2 }}</div>
                         </div>
                     </div>
                     <div class="remark">
@@ -127,7 +126,7 @@
         </div>
         <section class="save-order">
             <p class="price">应付：<span class="gold">￥{{ myData.proTotalAmount | toFix2 }}</span></p>
-            <mt-button type="default">提交订单</mt-button>
+            <mt-button type="default" :disabled="disabled">提交订单</mt-button>
         </section>
 
         <!-- 选择快递弹出 -->
@@ -137,7 +136,7 @@
 
         <!-- 红包窗口 -->
         <transition name="fadeUp" mode="out-in">
-            <redpacket-pannel v-show="showRedpacket" @close="closeRedpacket"></redpacket-pannel>
+            <redpacket-pannel v-show="showRedpacket" @close="closeRedpacket" ref="redpacket"></redpacket-pannel>
         </transition>
     </div>
 </template>
@@ -153,6 +152,11 @@
         },
         data() {
             return {
+                disabled: true,             // 禁用提交按钮
+                payMethods: {               // 支付方式
+                    CASH_DELIVERY: '货到付款',
+                    ONLINE: '在线支付'
+                },
                 cartList: '',               // 购物车id列表
                 showPayType: false,         // 支付方式与快递弹窗
                 showRedpacket: false,       // 红包弹窗
@@ -162,14 +166,21 @@
                 expressName: {              // 快递名称
                     ship_ems: 'EMS',
                     ship_sf: '顺丰快递',
-                    ship_sto: '申通快递'
+                    ship_sto: '申通快递',
+                    ship_express: '快递配送',
+                    ship_self_pickup: '门店自提'
                 },
                 activePannel: {},           // 当前激活的店铺
             }
         },
         computed: {
+            // 店铺面板
             pannel() {
                 return this.myData.oteaoCart ? this.myData.oteaoCart : [];
+            },
+            // 总计价钱
+            totalPrice() {
+
             },
             ...mapState({
                 id: state => state.member.member.id
@@ -187,7 +198,9 @@
                 this.showPayType = false;
             },
             // 显示红包弹窗
-            upRedpacket() {
+            upRedpacket(index) {
+                this.activePannel = this.pannel[index];
+                this.$refs.redpacket.setActive(this.activePannel);
                 this.showRedpacket = true;
             },
             // 红包弹窗关闭时，不管确定还是取消
@@ -213,19 +226,14 @@
                         cartIds: this.cartList,
                         device: 'WAP'
                     },res => {
-                        // 为每一家第三方店铺设定运费初始字段
                         let shopList = res.data.oteaoCart;
-
+                        // 设置备注
                         shopList.forEach(val => {
-                            if(val.shopName !== '自营') {
-                                val.shopExpress = 0;
-                            }
 
-                            // 设置备注
                             val.remark = '';
 
                         });
-
+                        this.disabled = false;
                         this.myData = res.data;
                         resolve(res)
                     },res => {
@@ -236,28 +244,61 @@
                     })
                 })
             },
+            // 更新数据
+            upDate() {
+
+                let orgSettleRequestList = [];
+                // 遍历每个店铺，更新数据
+                this.pannel.forEach(val => {
+                    orgSettleRequestList.push({
+                        "deliveryMethodCode": val.currentDeliveryMethod,
+                        "invoiceCode": "NOT_INVOICE",
+                        "invoiceTitle": "string",
+                        "isUseIntegral": 0,
+                        "orderRemark": val.remark,
+                        "payMethodCode": val.currentPayMethod,
+                        "sellerOrgId": val.orgId,
+                        "useRedPacketId": 0
+                    })
+                })
+
+
+                let data = {
+                    "cartIds": this.cartList,
+                    "device": "WAP",
+                    orgSettleRequestList,
+                    "receiveAddrId": this.address.id,
+                    "sysId": 1,
+                    "useBackBalance": 0,
+                    "useStoreBalance": 0
+                }
+
+                this.$api.post('/oteao/shoppingCart/settle',JSON.stringify(data),res => {
+
+                    // 恢复之前的订单备注
+                    res.data.oteaoCart.forEach((val,i) => {
+                        val.remark = this.getRemark()[i];
+                    })
+                    this.myData = res.data;
+
+                })
+            },
             // 修改地址
             editAddress() {
                 sessionStorage.setItem('edit',true);
                 sessionStorage.setItem('cart',this.cartList);
+                sessionStorage.setItem('remark',JSON.stringify(this.getRemark()))
                 this.$router.push('/center/address');
             },
-            // 获取每个第三方店铺的运费
-            getThirdExpress() {
-                let pannel = this.myData.oteaoCart;
-                pannel.forEach(val => {
-                    if(val.shopName !== '自营') {
-                        this.$api.get('/oteao/shoppingCart/getFreight',{
-                            provinceCode: this.address.provinceCode,
-                            payMethod: 'ONLINE',
-                            delivery: 'ship_sto',
-                            totalWeight: val.totalWeightForFreight,
-                            payTotalAmount: val.totalProductAmountAfterPromotion,
-                            orgId: val.orgId
-                        },res => {
-                            val.shopExpress = res.data.freightPrice;
-                        })
-                    }
+            // 得到备注
+            getRemark() {
+                return this.pannel.map(val => {
+                    return val.remark;
+                })
+            },
+            setRemark(data) {
+                this.pannel.forEach((val, i) => {
+                    val.remark = data[i];
                 })
             }
         },
@@ -269,17 +310,18 @@
                 // 判断是不是去修改地址
                 let cart = sessionStorage.cart;
                 let address = sessionStorage.address;
+                let remark = sessionStorage.remark;
 
                 if(this.cartList === cart && address) {
                     this.address = JSON.parse(address);
+                    this.setRemark(JSON.parse(remark));
                     delete sessionStorage.cart;
                     delete sessionStorage.address;
+                    delete sessionStorage.remark;
+                    this.upDate();
                 } else {
                     this.address = this.myData.receiveAddrList.filter(val => val.isDefault)[0]
                 }
-
-                // 获取第三方运费
-                this.getThirdExpress();
             })
         }
     }
