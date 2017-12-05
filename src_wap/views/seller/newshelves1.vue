@@ -99,7 +99,7 @@
                             </div>
                         </div>
                         <div class="item">
-                            <label class="item-left" for="16">
+                            <label class="item-left" for="16" style="white-space: nowrap;">
                                 建议零售价：
                             </label>
                             <div class="item-right">
@@ -119,9 +119,15 @@
                             <label class="item-left" :for="index+12">
                                 {{ item.propName }}
                             </label>
-                            <div class="item-right">
-                                <input type="text" :id="index+12" v-model="item.proVal" placeholder="非必填" />
+                            <div class="item-right" @click="clickSelProVal(index)">
+                                <input type="text" :readonly="item.propValList.length>0" :id="index+12" v-model="item.proVal" placeholder="非必填" />
                             </div>
+                            <i class="iconfont" @click="clickSelProVal(index)" v-if="item.propValList.length>0">&#xe744;</i>
+                            <mt-popup v-model="item.proShowHide" position="bottom" v-if="item.propValList.length>0">
+                                <div class="close-wrap">
+                                    <p class="close-tip"  v-for="(secobj,secindex) in item.propValList" :class="{on: index === item.proIndex}" :key="index" @click="selectPro(item,secindex,secobj)">{{ secobj.propVal }}<i class="iconfont">&#xe684;</i></p>
+                                </div>
+                            </mt-popup>
                         </div>
                     </div>
                 </div>
@@ -130,6 +136,7 @@
                 <mt-button type="primary" :disabled="disabledBol" @click="goStep3">下一步</mt-button>
             </div>
         </div>
+
         <mt-popup v-model="closeUp" position="bottom">
             <div class="close-wrap">
                 <p class="close-tip"  v-for="(item,index) in selList" :class="{on: index === selectClass}" :key="index" @click="selectRightList(index)">{{ item.name }}<i class="iconfont">&#xe684;</i></p>
@@ -169,6 +176,7 @@ export default {
         return {
             wxFlag: false,          // 是否微信
             closeUp: false,         // 下拉框
+            closeProValUp: false,
             brandList: [],
             danWei: [],
             selectClass: null,
@@ -178,7 +186,6 @@ export default {
             twoTypeList: [],
             clickSure: true,
             device: 'PC',
-
         }
     },
     watch: {
@@ -190,6 +197,8 @@ export default {
                         for(let i=0;i<this.resize.proValList.length;i++){
                             this.$set(this.resize.proValList[i],'proVal','');
                             this.$set(this.resize.proValList[i],'proIndex',null);
+                            this.$set(this.resize.proValList[i],'proShowHide',false);
+                            this.$set(this.resize.proValList[i],'proValId','');
                         }
                     }
                 })
@@ -198,6 +207,18 @@ export default {
         }
     },
     methods: {
+        selectPro(item,index,secobj) {
+            item.proIndex = index;
+            item.proVal = secobj.propVal;
+            item.proValId = secobj.id;
+            item.proShowHide = false;
+        },
+        clickSelProVal(index) {
+            for(let i=0;i<this.resize.proValList.length;i++){
+                this.resize.proValList[i].proShowHide = false;
+                this.resize.proValList[index].proShowHide = true;
+            }
+        },
         getProVal(id) {
             let data = {
                     catId: id,

@@ -121,19 +121,12 @@
                 <mt-tab-container v-model="tabSelected" :swipeable="true">
                     <mt-tab-container-item id="1">
                         <div class="detail_img_title" :class="{'on': tabFixed,'wxon': wxFixed}" ref="imgHeight">图片详情</div>
-                        <div class="mint_cell_wrapper mint_cell_img_wrapper">
-                            <mt-cell v-for="(item,index) in goodsDetail.detailImgArray" :key="index">
-                                <div class="mint_cell_img_title">茶韵展示</div>
-                                <div class="mint_cell_img">
-                                    <img :src="item.imgUrl" />
-                                </div>
-                                <p class="mint_cell_img_content">{{ item.content }}</p>
-                            </mt-cell>
+                        <div class="mint_cell_wrapper mint_cell_img_wrapper" v-html="attrImgDetail.content">
                         </div>
                     </mt-tab-container-item>
                     <mt-tab-container-item id="2">
                         <div class="reguler_wrapper">
-                            <div class="reguler_item">
+                            <div class="reguler_item" v-if="detailData.productExtInfo.reason!=''">
                                 <div>推荐理由</div>
                                 <div>{{ detailData.productExtInfo.reason }}</div>
                             </div>
@@ -157,15 +150,10 @@
                                     <span class="z_grey">极浓</span>
                                 </div>
                             </div>
-                            <div class="reguler_item">
-                                <div>产地</div>
-                                <div>想要哪里的</div>
+                            <div class="reguler_item" v-for="(item,index) in attrImgDetail.propValList">
+                                <div>{{ item.propName }}</div>
+                                <div>{{ item.propertiesVal.propVal }}</div>
                             </div>
-                            <div class="reguler_item">
-                                <div>工艺</div>
-                                <div>想要哪里的</div>
-                            </div>
-
                         </div>
                     </mt-tab-container-item>
                     <mt-tab-container-item id="3">
@@ -173,6 +161,7 @@
                             <div class="comment_title">商品评价</div>
                             <div class="comment_number">
                                 <div class="comment_star">好评 <span>97%</span></div>
+                                <!-- commentRecond -->
                                 <div class="comment_total">共 <span>{{ commentArray.length }}</span> 条</div>
                             </div>
                         </div>
@@ -214,7 +203,9 @@
                 <mt-badge type="error" size="small">99+</mt-badge>
             </mt-tab-item>
             <mt-tab-item id="3">
-                <mt-button type="default">加入购物车</mt-button>
+                <!-- <mt-button type="default">加入购物车</mt-button> -->
+                <mt-button type="default" disabled v-if="">缺货</mt-button>
+                <!-- <mt-button type="default" disabled>已下架</mt-button> -->
             </mt-tab-item>
         </mt-tabbar>
     </div>
@@ -232,27 +223,6 @@ export default {
             selected: null,
             imgIndex: 1,
             goodsCount: 0,
-            goodsDetail: {
-                swiperImg: ['../src_wap/assets/detail.png','../src_wap/assets/detail.png','../src_wap/assets/detail.png'],
-                goodsText: '安溪西坪 清香型（消酸）铁观音 303-5072015秋茶外形稍肥状较结安溪西坪 清香型（消酸）铁观音 303-5072015秋茶外形稍肥状较结',
-                goodsPrice: 362,
-                suggestPrice: 800,
-                maxGoodsNum: 100,
-                detailImgArray: [
-                    {
-                        imgUrl: '../src_wap/assets/detail_1.png',
-                        content: '戎羯逼我兮为室家，将我行兮向天涯。云山万重兮归路遐，疾风千里兮扬尘沙。人多暴猛兮如虺蛇，控弦被甲兮为骄奢。两拍张弦兮弦欲绝，志摧心折兮自悲嗟。'
-                    },
-                    {
-                        imgUrl: '../src_wap/assets/detail_2.png',
-                        content: '戎羯逼我兮为室家，将我行兮向天涯。云山万重兮归路遐，疾风千里兮扬尘沙。人多暴猛兮如虺蛇，控弦被甲兮为骄奢。两拍张弦兮弦欲绝，志摧心折兮自悲嗟。'
-                    },
-                    {
-                        imgUrl: '../src_wap/assets/detail_3.png',
-                        content: '戎羯逼我兮为室家，将我行兮向天涯。云山万重兮归路遐，疾风千里兮扬尘沙。人多暴猛兮如虺蛇，控弦被甲兮为骄奢。两拍张弦兮弦欲绝，志摧心折兮自悲嗟。'
-                    },
-                ]
-            },
             tabSelected: '2',
             commentArray: [
                 {
@@ -282,7 +252,7 @@ export default {
                 min: '',
                 sec: ''
             },
-            endTime: '2017/12/01 00:00:00',
+            endTime: '2017/12/12 00:00:00',
             flag : false,
             wxFlag: false,
             wxFixed: false,
@@ -297,25 +267,64 @@ export default {
                 productPrice:[]
             },
             time: '',
-            attrDetail: {},
+            attrImgDetail: {},
+            page: 1,
+            commentList: [],
+            commentRecond: 0,
         }
     },
     created() {
         this.getDetail().then((res) =>{
             this.detailData = res.data;
-            this.getAttr().then((res) => {
-                this.attrDetail = res.data;
+            this.getAttrOrImg().then((res) => {
+                this.attrImgDetail = res.data;
+                this.getCommentList(this.detailData.productExtInfo.id).then((res) => {
+                    this.commentList = res.data;
+                    this.commentRecond = res.total_record;
+                })
             })
         })
     },
     methods: {
-        getAttr() {
+        getMoreComment() {
+            this.page++;
+            this.getCommentList().then((res) => {
+                this.commentList = this.commentList.concat(res.data);
+            })
+        },
+        getCommentList(extendId) {
+            let pageSize = 10;
+            if(this.page == 1){
+                pageSize = 3;
+            }else if(this.page == 2){
+                pageSize = 7;
+            }else{
+                pageSize = 10;
+            }
             let data ={
-                sysId: 1,
-                proSku: '8688396'
+                'eval.proExtId': extendId,
+                'page.pageNumber': this.page,
+                'page.pageSize': pageSize
             };
             return new Promise((resolve,reject) => {
-                this.$api.post('/oteaoProductExtInfo/findExtProDetail',data,res => {
+                this.$api.post('/oteao/evaluation/seachEvaluation',data,res => {
+                    resolve(res);
+                },res=>{
+                    return Toast({
+                        message: res.errorMsg,
+                        iconClass: 'icon icon-fail'
+                    });
+                })
+            })
+        },
+        getAttrOrImg() {
+            let data ={
+                sysId: 1,
+                productSku: 8688401,
+                device: 'WAP'
+            };
+            return new Promise((resolve,reject) => {
+                this.$api.get('/oteaoProduct/getProExtDetail',data,res => {
                     resolve(res);
                 },res=>{
                     return Toast({
@@ -329,7 +338,7 @@ export default {
             let data = {
                 sysId: 1,
                 device: 'WAP',
-                productSku: '8688396'
+                productSku: 8688401
             }
             return new Promise((resolve,reject) => {
                 this.$api.get('/oteaoProduct/getProExtInfo',data,res => {
@@ -463,7 +472,6 @@ export default {
         flag(val) {
             if(val){
                 clearInterval(this.time)
-                console.log(111111);
             }
         },
         showOrHide(val) {

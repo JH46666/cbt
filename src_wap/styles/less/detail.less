@@ -382,6 +382,7 @@
                             width: .6rem;
                             .flex;
                             .align-items;
+                            word-break: break-all;
                         }
                         &:nth-child(2){
                             .flex-1;
@@ -440,35 +441,37 @@
             }
             .mint_cell_wrapper{
                 .bg(#fff);
+                .mint_cell_img_title{
+                    height: .56rem;
+                    width: 100%;
+                    padding: 0 .2rem;
+                    .line(.56rem);
+                    .bg(#fff8f0);
+                    .color(#cca67a);
+                    .fontSize(.26rem);
+                }
+                .mint_cell_img{
+                    // padding: 0 .2rem;
+                    img{
+                        max-width: 100%;
+                    }
+                }
+                .mint_cell_img_content{
+                    padding: .4rem .2rem;
+                    .line(1.5);
+                    .fontSize(.26rem);
+                    .color(#666);
+                    text-indent: .52rem;
+                }
                 &.mint_cell_img_wrapper{
                     .mint-cell{
                         border-top: 0 none;
                         width: 100%;
                         .mint-cell-wrapper{
                             .padding(0);
+                            width: 100%;
                             background-image: none;
-                            .mint_cell_img_title{
-                                height: .56rem;
-                                width: 100%;
-                                padding: 0 .2rem;
-                                .line(.56rem);
-                                .bg(#fff8f0);
-                                .color(#cca67a);
-                                .fontSize(.26rem);
-                            }
-                            .mint_cell_img{
-                                // padding: 0 .2rem;
-                                img{
-                                    max-width: 100%;
-                                }
-                            }
-                            .mint_cell_img_content{
-                                padding: .4rem .2rem 0;
-                                .line(1.5);
-                                .fontSize(.26rem);
-                                .color(#666);
-                                text-indent: .52rem;
-                            }
+
                         }
                     }
                 }

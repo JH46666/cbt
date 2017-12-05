@@ -334,16 +334,16 @@ import { Toast } from 'mint-ui';
                         imgUrl: this.urls.main[i]
                     })
                 }
-                let oneImgContent = `<div class="mint_cell_img_title">茶韵展示</div><div class="mint_cell_img"><img src="${this.urls.one[0]}" /></div><p class="mint_cell_img_content">${this.resize.textMs1}</p>`;
-                let twoImgContent = `<div class="mint_cell_img_title">茶韵展示</div><div class="mint_cell_img"><img src="${this.urls.two[0]}" /></div><p class="mint_cell_img_content">${this.resize.textMs2}</p>`;
-                let threeImgContent = `<div class="mint_cell_img_title">茶韵展示</div><div class="mint_cell_img"><img src="${this.urls.third[0]}" /></div><p class="mint_cell_img_content">${this.resize.textMs3}</p>`
+                let oneImgContent = `<mt-cell></mt-cell><div class="mint_cell_img_title">茶韵展示</div><div class="mint_cell_img"><img src="${this.urls.one[0]}" /></div><p class="mint_cell_img_content">${this.resize.textMs1}</p></mt-cell>`;
+                let twoImgContent = `<mt-cell><div class="mint_cell_img_title">茶韵展示</div><div class="mint_cell_img"><img src="${this.urls.two[0]}" /></div><p class="mint_cell_img_content">${this.resize.textMs2}</p></mt-cell>`;
+                let threeImgContent = `<mt-cell><div class="mint_cell_img_title">茶韵展示</div><div class="mint_cell_img"><img src="${this.urls.third[0]}" /></div><p class="mint_cell_img_content">${this.resize.textMs3}</p></mt-cell>`
                 let fourImgContent = '';
                 if(this.urls.four.length != 0){
                     let fourStr = '';
                     for(let i=0;i<this.urls.four.length;i++){
                         fourStr += `<img src="${this.urls.four[i]}" />`
                     }
-                    fourImgContent = `<div class="mint_cell_img_title">茶韵展示</div><div class="mint_cell_img">${fourStr}</div><p class="mint_cell_img_content">${this.resize.textMs4}</p>`
+                    fourImgContent = `<mt-cell><div class="mint_cell_img_title">茶韵展示</div><div class="mint_cell_img">${fourStr}</div><p class="mint_cell_img_content">${this.resize.textMs4}</p></mt-cell>`
                 }
                 let allImgContent = oneImgContent + twoImgContent + threeImgContent + fourImgContent;
                 let data = {
@@ -369,6 +369,22 @@ import { Toast } from 'mint-ui';
                         propertyVal: this.resize.form.goodsZw
                     })
                 }
+                for(let i=0;i<this.resize.proValList.length;i++){
+                    if(this.resize.proValList[i].propValList.length === 0){
+                        data.catProps.push({
+                            propType: 2,
+                            propId: this.resize.proValList[i].id,
+                            propertyVal: this.resize.proValList[i].proVal
+                        })
+                    }else{
+                        data.catProps.push({
+                            propType: 1,
+                            propId: this.resize.proValList[i].id,
+                            propertyVal: this.resize.proValList[i].proVal,
+                            propValId: this.resize.proValList[i].proValId
+                        })
+                    }
+                }
                 this.$api.post(`/oteaoProduct/createProductInfo` +
                     `?frontOrgProInfoDetailVo.catId=${ encodeURI(this.resize.twoClass) }` +
                     `&frontOrgProInfoDetailVo.brandId=${ encodeURI(this.resize.selId.pp) }` +
@@ -378,17 +394,14 @@ import { Toast } from 'mint-ui';
                     `&frontOrgProInfoDetailVo.netWeight=${ encodeURI(this.resize.form.goodsJz) }` +
                     `&frontOrgProInfoDetailVo.reason=${ encodeURI(this.resize.form.goodsSell) }` +
                     `&frontOrgProInfoDetailVo.stockNum=${ encodeURI(this.resize.form.goodsKc) }` +
-                    `&frontOrgProInfoDetailVo.specifications=${ encodeURI(this.resize.form.goodsGg) }` +
                     `&frontOrgProInfoDetailVo.proPrice=${ encodeURI(this.resize.form.goodsSx) }` +
                     `&frontOrgProInfoDetailVo.retailPrice=${encodeURI(this.resize.form.goodsPtsj) }` +
                     `&frontOrgProInfoDetailVo.isSaveOnShelf=${ encodeURI(stata) }`,JSON.stringify(data),res => {
                         this.sucFlag = true;
                         if(stata == 0){
                             this.sussTips = '创建成功！';
-                            this.goShopMange('OFF_SHELF');
                         }else{
                             this.sussTips = '成功上架！';
-                            this.goShopMange('ON_SHELF');
                         }
                 },res=>{
                     return Toast({
@@ -458,7 +471,13 @@ import { Toast } from 'mint-ui';
                     }
                 }
             },
-            goShopMange(status) {
+            goShopMange() {
+                let  status = '';
+                if(this.sussTips === '创建成功！') {
+                    status = 'OFF_SHELF';
+                }else{
+                    status = 'ON_SHELF';
+                }
                 this.$router.push({
                     name: '商品管理',
                     query: {
