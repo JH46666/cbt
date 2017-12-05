@@ -2,7 +2,7 @@
     <div id="address">
         <div class="address-wrap">
             <template v-for="(item,index) in value">
-                <div class="address-item">
+                <div class="address-item" @click="setBalance(item)">
                     <div class="hd">
                         <div class="had-head">
                             <div class="name">{{ item.recName }}</div>
@@ -66,6 +66,12 @@
                 },res => {
                     this.value = res.data;
                 })
+            },
+            setBalance(val) {
+                let edit = Boolean(sessionStorage.edit);
+                if(!edit) return;
+                sessionStorage.setItem('address',JSON.stringify(val));
+                this.$router.go(-1);
             }
         },
         created() {

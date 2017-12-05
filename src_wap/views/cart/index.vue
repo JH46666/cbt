@@ -160,7 +160,7 @@
                 </p>
             </div>
             <div class="go_pay" :class="{'disabled': selectIds.length===0}">
-                <a v-if="!edit" href="javascript:void(0);" id="toCheckout">去结算</a>
+                <a v-if="!edit" href="javascript:void(0);" id="toCheckout" @click="gotoBalance">去结算</a>
                 <a v-else href="javascript:void(0);" @click="deletePro">删除</a>
             </div>
         </div>
@@ -398,6 +398,17 @@
                     }
                     this.checkedAll = !this.checkedAll;
                 }
+            },
+            // 结算
+            gotoBalance() {
+                let map = this.selectIds.map(val => val.id);
+                if(map.length === 0) return;
+                this.$router.push({
+                    name: '结算中心',
+                    query: {
+                        cart: map.join(',')
+                    }
+                })
             }
         },
         beforeRouteEnter (to, from, next) {

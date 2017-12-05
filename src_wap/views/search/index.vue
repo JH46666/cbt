@@ -63,7 +63,19 @@
                 infinite-scroll-disabled="true"
                 infinite-scroll-distance="10"
             >
-                <goods-item v-for="(item,index) in list" :key="index"></goods-item>
+                <goods-item 
+                v-for="(item,index) in list" 
+                :key="index"
+                :mainTit="item.proTitle"
+                :subTit="item.subTitle"
+                :link="item.proSku"
+                :price="item.proPrice"
+                :unit="item.unint"
+                :imgUrl="item.proImg"
+                :businessType="item.shopType"
+                :tagUrl="item.tagImgUrl"
+                :isLogin="$tool.isLogin()">
+                </goods-item>
             </div>
             <div class="goods-loading" v-if="list.length < total">
                 <mt-spinner type="fading-circle" color="#f08200"></mt-spinner>
@@ -242,6 +254,46 @@
                     
                     return new Promise((resolve,reject) => {
                         this.$api.post(`/oteaoProduct/seachProduct?page.pageNumber=${page}&page.pageSize=20`,JSON.stringify(data),res => {
+                            let tempArr = res.data;
+                            for(let item of tempArr){
+                                for(let prop of item.proInfoPropertyVos){
+                                    if(prop.propName === '香气'){
+                                        let star = 0;
+                                        if(prop.propertyVal === '偏淡'){
+                                            star = 1;
+                                        }else if(prop.propertyVal === '一般'){
+                                            star = 2;
+                                        }else if(prop.propertyVal === '香'){
+                                            star = 3;
+                                        }else if(prop.propertyVal === '高香'){
+                                            star = 4;
+                                        }else if(prop.propertyVal === '极香'){
+                                            star = 5;
+                                        }else {
+                                            star = 0;
+                                        }
+                                        item.aromaVal = prop.propertyVal;
+                                        item.aromaStar = star;
+                                    }else if(prop.propName === '滋味'){
+                                        let star = 0;
+                                        if(prop.propertyVal === '偏淡'){
+                                            star = 1;
+                                        }else if(prop.propertyVal === '一般'){
+                                            star = 2;
+                                        }else if(prop.propertyVal === '浓'){
+                                            star = 3;
+                                        }else if(prop.propertyVal === '很浓'){
+                                            star = 4;
+                                        }else if(prop.propertyVal === '极浓'){
+                                            star = 5;
+                                        }else {
+                                            star = 0;
+                                        }
+                                        item.tasteVal = prop.prpertyVal;
+                                        item.tasteStar = star;
+                                    }
+                                }
+                            }
                             resolve(res)
                         })
                     })
@@ -254,6 +306,7 @@
             },
         },
         created() {
+            this.$store.dispatch('getMemberData')
             // 根据地址栏获取条件
             try {
                 this.handle().then(res => {

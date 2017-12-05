@@ -1,9 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import store from 'store'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
 	routes: [
 		{
 			path: '/',
@@ -372,3 +373,12 @@ export default new Router({
 		}
 	]
 })
+
+router.beforeEach((to,from,next) => {
+	store.commit('RECORD_ROUTER',{type:'to',data:to})
+	store.commit('RECORD_ROUTER',{type:'from',data:from})
+	next()
+})
+
+
+export default router

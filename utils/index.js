@@ -1,3 +1,4 @@
+import store from '../store'
 import math from 'mathjs' ;
  
  
@@ -7,7 +8,17 @@ let isWx = (function () {
     return ua.match(/MicroMessenger/i) == "micromessenger";
 })();
 
+// 是否登陆
+let isLogin = () => {
+    return Boolean(store.state.member.member.id)
+}
+
+
+
+
 
 export {isWx}
 
 export {math} 
+
+export {isLogin}
