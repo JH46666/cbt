@@ -76,7 +76,7 @@
                     this.pageNum++
                     this.getData(this.pageNum).then(res => {
                         let data = res.data.record || [];
-                        if(data < 10) {
+                        if(this.list.length === this.total) {
                             this.pageNum--
                         }
                     })
@@ -88,6 +88,11 @@
             if(this.member.id === undefined) {
                 this.$store.dispatch('getMemberData').then(res => {
                     this.getData();
+                }).catch(res => {
+                    if(res.code === 2000){
+                        this.$toast('您还没有登陆呦~')
+                        this.$router.push('/login')
+                    }
                 })
             } else {
                 this.getData();

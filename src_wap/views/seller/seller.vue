@@ -12,12 +12,12 @@
                 </p>
                 <div class="level-wrap">
                     <div class="level-left">
-                        <span class="level level-4" v-for="n in 3"></span>
+                        <span class="level" :class="level" v-for="n in levelNum"></span>
                     </div>
-                    <div class="level-right">100000分</div>
+                    <div class="level-right">{{ sellerData.growth }}分</div>
                 </div>
                 <p class="sum-count">
-                    您在茶帮通已收入 ￥5000.00 元
+                    您在茶帮通已收入 ￥{{ count.allOrderSum | toFix2 }} 元
                 </p>
             </div>
             <div class="goback" @click="$router.push({name: '个人中心'})">
@@ -26,11 +26,11 @@
         </section>
         <section class="count-entry">
             <router-link to="#" tag="div" class="count-item">
-                <p class="num">0.00</p>
+                <p class="num">{{ count.monthOrderSum | toFix2}}</p>
                 <p class="tips">当月收入</p>
             </router-link>
             <router-link to="#" tag="div" class="count-item">
-                <p class="num">{{ count.monthNum }}</p>
+                <p class="num">{{ count.monthOrderNum }}</p>
                 <p class="tips">当月订单数</p>
             </router-link>
         </section>
@@ -96,7 +96,7 @@
             </div>
         </section>
         <div class="new-up">
-            <mt-button type="default" @click="$router.push({name: '新品上架-1'})"><span class="add"><i class="icon-xinzeng"></i></span>新品上架</mt-button>
+            <mt-button type="default" @click="$router.push({name: '新品上架-1'})"><span class="add"><i class="icon-xinzeng"></i></span>创建商品</mt-button>
         </div>
     </div>
 </template>
@@ -107,7 +107,8 @@
     export default {
         data() {
             return {
-                count: {}
+                count: {},
+                sellerData: {}
             }
         },
         computed: {
@@ -126,11 +127,38 @@
                 thirdAccount: state => state.member.thirdAccount,
                 sign: state => state.member.sign,
                 redpacket: state => state.member.redpacket
-            })
+            }),
+            // 等级图标
+            level() {
+                let g = this.sellerData.growth
+                if(g <= 250) {
+                    return 'level-1'
+                } else if(g <= 10000) {
+                    return 'level-2'
+                } else if(g <= 500000) {
+                    return 'level-3'
+                } else {
+                    return 'level-4'
+                }
+            },
+            // 等级数量
+            levelNum() {
+                let g = this.sellerData.growth
+
+                switch(g) {
+                    case g > 4 && g < 10: return 1
+                    case g > 251 && g < 500: return 1
+                    break;
+                }
+                return 1;
+            }
         },
         created() {
             this.$api.post('/oteao/order/countOrderNumBySeller',{},res => {
                 this.count = res.data;
+            })
+            this.$api.post('/orgAccount/getShopCenterInfo',{},res => {
+                this.sellerData = res.data;
             })
         },
         beforeRouteEnter (to, from, next) {
@@ -143,6 +171,10 @@
                     vm.$store.dispatch('getMemberData').then(res =>{
                         if(!res.shop) {
                             // 未通过返回
+                            vm.$router.go(-1);
+                        }
+                        if(res.shop.shopStatus === 2 || res.shop.shopStatus === -2) {
+                        } else {
                             vm.$router.go(-1);
                         }
                     })

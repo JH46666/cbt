@@ -23,7 +23,7 @@
                             <p>
                                 <template v-if="item.redPacketType === 'DISCOUNT_AMOUNT'">
                                     <span class="type">￥</span>
-                                    <span class="num">{{ item.amount  }}</span>
+                                    <span class="num">{{ item.amountOrDiscount  }}</span>
                                 </template>
                                 <template v-else>
                                     <span class="num">{{ item.discount  }}</span>
@@ -89,10 +89,10 @@
                 }
             },
             nomore() {
-                return !!this.list.length === this.total[this.selected + 'NUM']
+                return Boolean(this.list.length === this.total[this.selected + 'NUM'])
             },
             loading() {
-                return !!this.list.length < this.total[this.selected + 'NUM']
+                return Boolean(this.list.length < this.total[this.selected + 'NUM'])
             },
             ...mapState({
                 list(state) {
@@ -208,6 +208,11 @@
                     })
                 }
 
+            }).catch(res =>{
+                if(res.code === 2000){
+                    this.$toast('您还没有登陆呦~')
+                    this.$router.push('/login')
+                }
             })
         }
     }

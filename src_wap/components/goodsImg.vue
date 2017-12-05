@@ -14,8 +14,8 @@
     <div class="cbt-goods-img" :style="{width: imgWidth,height:imgWidth}">
         <div class="img-wrap">
             <img v-lazy="imgUrl" class="goods-img">
-            <div class="tag-wrap" v-if="tagUrl !== ''">
-                <img src="../assets/images/特价.png" class="goods-tag">
+            <div class="tag-wrap" v-if="tagUrl">
+                <img :src="tagUrl" class="goods-tag">
             </div>
         </div>
     </div>

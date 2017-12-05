@@ -11,6 +11,7 @@
     subTit          String          ''              副标题
     price           Number          0               价格
     unit            String          斤              单位
+    isLogin         Boolean         false
 
 
 
@@ -32,7 +33,7 @@
             <div class="goods-title">
                 {{mainTit}}
             </div>
-            <div class="goods-title">
+            <div class="goods-title one-line" v-if="subTit">
                 {{subTit}}
             </div>
             <div class="goods-attr-wrap">
@@ -55,7 +56,12 @@
             </div>
             <div class="goods-bd">
                 <div class="goods-price">
+                <template v-if="isLogin">
                     {{price}}元/{{unit}}
+                </template>
+                <template v-else>
+                    询价
+                </template>
                 </div>
                 <div class="goods-type self">
                     {{businessType}}
@@ -122,6 +128,10 @@
             tasteName:{
                 type: String,
                 default: ''
+            },
+            isLogin:{
+                type: Boolean,
+                default: false
             }
         }
     }
