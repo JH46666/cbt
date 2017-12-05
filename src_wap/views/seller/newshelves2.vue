@@ -136,19 +136,19 @@
         </div>
         <div class="flex btns">
             <mt-button type="primary" @click="$router.go(-1)">上一步</mt-button>
-            <mt-button type="primary" :disabled="disabledBol" @click="doUpload">保存</mt-button>
+            <mt-button type="primary" :disabled="disabledBol" @click="saveMethod('0')">保存</mt-button>
         </div>
         <div class="save-rackup">
-            <mt-button type="primary" :disabled="disabledBol">保存并上架</mt-button>
+            <mt-button type="primary" :disabled="disabledBol" @click="saveMethod('1')">保存并上架</mt-button>
         </div>
         <!-- 成功上架弹窗 -->
         <div class="popup suc_popup" v-show="sucFlag">
             <div class="popup_inner suc_inner">
                 <div class="algin_c">
-                    <p class="suc-tip">成功上架</p>
+                    <p class="suc-tip">{{ sussTips }}</p>
                 </div>
                 <div class="flex pop-btns">
-                    <a class="flex-1 see" href="javascript:void(0);" @click="sucFlag = false">查看商品</a>
+                    <a class="flex-1 see" href="javascript:void(0);" @click="goShopMange">查看商品</a>
                     <a class="flex-1 go-on" href="javascript:void(0);" @click="goCreated">继续创建</a>
                 </div>
             </div>
@@ -169,7 +169,16 @@ import { Toast } from 'mint-ui';
                 region: 'oss-cn-hangzhou',
                 bucket: 'imgcbt',
                 urlList: [],
-                url: '',
+                urls: {
+                    main: [],
+                    one: [],
+                    two: [],
+                    third: [],
+                    four: []
+                },
+                path: 'test_path/',
+                flag: 0,
+                sussTips: '成功上架！',
             }
         },
         computed:{
@@ -183,25 +192,18 @@ import { Toast } from 'mint-ui';
             ...mapGetters([
                 'resize'
             ]),
-            // disabledBol() {
-            //     if(this.resize.mainImg.length>0 && this.resize.imgs.detailImg1!= '' && this.resize.imgs.detailImg2!= '' && this.resize.imgs.detailImg3!= '' && this.resize.textMs1 != ''&& this.resize.textMs2 != ''&& this.resize.textMs3 != ''){
-            //         return false;
-            //     }else{
-            //         return true;
-            //     }
-            // }
-        },
-        watch: {
-            url(val) {
-                if(val){
-                    this.urls.push(val);
+            disabledBol() {
+                if(this.resize.mainImg.length>0 && this.resize.imgs.detailImg1!= '' && this.resize.imgs.detailImg2!= '' && this.resize.imgs.detailImg3!= '' && this.resize.textMs1 != ''&& this.resize.textMs2 != ''&& this.resize.textMs3 != ''){
+                    return false;
+                }else{
+                    return true;
                 }
             }
         },
         created() {
-            var ossData = new FormData();
-            ossData.append('OSSAccessKeyId','obj.accessid');
-            console.log(ossData);
+            if(process.env.NODE_ENV != 'development'){
+                this.path = 'online_img/';
+            }
         },
         methods:{
             random_string(len) {
@@ -227,36 +229,172 @@ import { Toast } from 'mint-ui';
                     })
                 })
             },
-            doUpload () {
-                this.getToken().then((res) => {
-                    let client = new OSS.Wrapper({
-                        region: this.region,
-                        accessKeyId: res.data.accessKeyId,
-                        accessKeySecret: res.data.accessKeySecret,
-                        stsToken: res.data.securityToken,
-                        bucket: this.bucket
-                    })
-                    console.log(this.resize.allImg);
-                    console.log(client);
-                    for(let i=0; i<this.resize.allImg.length; i++){
-                        let random_name = this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.allImg[i].name.split('.').pop()
-                        client.multipartUpload(random_name, this.resize.allImg[i]).then((results) => {
-                            const url = 'http://img0.oteao.com/'+ results.name;
-                            this.url = url;
-                            console.log(url);
-                        }).catch((err) => {
-                            console.log(err)
-                        })
-                    }
+            saveMethod(flag) {
+                if(flag === '0'){
+                    this.flag = 0;
+                }else{
+                    this.flag = 1;
+                }
+                this.doUpload(flag).then(() => {
+                    this.onlySave(this.flag);
                 })
             },
-            onlySave() {
-                this.postImg('img').then((res) => {
-                    var ossObj = res.data;
-                    for(let i=0;i<this.resize.allImg.length;i++){
-                        let datas = this.ossMethod(ossObj,this.resize.allImg[i]);
-                        this.postOss(datas,ossObj.host);
+            doUpload (flag) {
+                let flags =  {
+                    main: 0,
+                    one: 0,
+                    two: 0,
+                    third: 0,
+                    four: 0
+                }
+                let isFlag = (resolve,reject) => {
+                    if( flags.main != this.resize.mainImgFile.length) return;
+                    if( flags.one != this.resize.oneImgFile.length) return;
+                    if( flags.two != this.resize.secondImgFile.length) return;
+                    if( flags.third != this.resize.thirdImgFile.length) return;
+                    if( flags.four != this.resize.fourImgFile.length) return;
+                    resolve()
+                }
+                return new Promise((resolve,reject) => {
+                    this.getToken().then((res) => {
+                        let client = new OSS.Wrapper({
+                            region: this.region,
+                            accessKeyId: res.data.accessKeyId,
+                            accessKeySecret: res.data.accessKeySecret,
+                            stsToken: res.data.securityToken,
+                            bucket: this.bucket
+                        })
+                        for(let i=0; i<this.resize.mainImgFile.length; i++){            // 主图
+                            let random_name =res.data.basePath + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.mainImgFile[i].name.split('.').pop()
+                            client.multipartUpload(random_name, this.resize.mainImgFile[i]).then((results) => {
+                                const url = '//img0.oteao.com/'+ results.name;
+                                this.urls.main.push(url);
+                                flags.main++;
+                                isFlag(resolve,reject);
+                            }).catch((err) => {
+                                flags.main++;
+                                isFlag(resolve,reject);
+                            })
+                        }
+                        for(let i=0; i<this.resize.oneImgFile.length; i++){            // 1图
+                            let random_name = res.data.basePath + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.oneImgFile[i].name.split('.').pop()
+                            client.multipartUpload(random_name, this.resize.oneImgFile[i]).then((results) => {
+                                const url = '//img0.oteao.com/'+ results.name;
+                                this.urls.one.push(url);
+                                flags.one++;
+                                isFlag(resolve,reject);
+                            }).catch((err) => {
+                                flags.one++;
+                                isFlag(resolve,reject);
+                            })
+                        }
+                        for(let i=0; i<this.resize.secondImgFile.length; i++){            // 2图
+                            let random_name = res.data.basePath + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.secondImgFile[i].name.split('.').pop()
+                            client.multipartUpload(random_name, this.resize.secondImgFile[i]).then((results) => {
+                                const url = '//img0.oteao.com/'+ results.name;
+                                this.urls.two.push(url);
+                                flags.two++;
+                                isFlag(resolve,reject);
+                            }).catch((err) => {
+                                flags.two++;
+                                isFlag(resolve,reject);
+                            })
+                        }
+                        for(let i=0; i<this.resize.thirdImgFile.length; i++){            // 3图
+                            let random_name = res.data.basePath + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.thirdImgFile[i].name.split('.').pop()
+                            client.multipartUpload(random_name, this.resize.thirdImgFile[i]).then((results) => {
+                                const url = '//img0.oteao.com/'+ results.name;
+                                this.urls.third.push(url);
+                                flags.third++;
+                                isFlag(resolve,reject);
+                            }).catch((err) => {
+                                flags.third++;
+                                isFlag(resolve,reject);
+                            })
+                        }
+                        for(let i=0; i<this.resize.fourImgFile.length; i++){            // 4图
+                            let random_name = res.data.basePath + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.fourImgFile[i].name.split('.').pop()
+                            client.multipartUpload(random_name, this.resize.fourImgFile[i]).then((results) => {
+                                const url = '//img0.oteao.com/'+ results.name;
+                                this.urls.four.push(url);
+                                flags.four++;
+                                isFlag(resolve,reject);
+                            }).catch((err) => {
+                                flags.four++;
+                                isFlag(resolve,reject);
+                            })
+                        }
+                    })
+                })
+            },
+            onlySave(stata) {
+                let mainImg = [];
+                for(let i=0;i<this.urls.main.length;i++){
+                    mainImg.push({
+                        imgUrl: this.urls.main[i]
+                    })
+                }
+                let oneImgContent = `<div class="mint_cell_img_title">茶韵展示</div><div class="mint_cell_img"><img src="${this.urls.one[0]}" /></div><p class="mint_cell_img_content">${this.resize.textMs1}</p>`;
+                let twoImgContent = `<div class="mint_cell_img_title">茶韵展示</div><div class="mint_cell_img"><img src="${this.urls.two[0]}" /></div><p class="mint_cell_img_content">${this.resize.textMs2}</p>`;
+                let threeImgContent = `<div class="mint_cell_img_title">茶韵展示</div><div class="mint_cell_img"><img src="${this.urls.third[0]}" /></div><p class="mint_cell_img_content">${this.resize.textMs3}</p>`
+                let fourImgContent = '';
+                if(this.urls.four.length != 0){
+                    let fourStr = '';
+                    for(let i=0;i<this.urls.four.length;i++){
+                        fourStr += `<img src="${this.urls.four[i]}" />`
                     }
+                    fourImgContent = `<div class="mint_cell_img_title">茶韵展示</div><div class="mint_cell_img">${fourStr}</div><p class="mint_cell_img_content">${this.resize.textMs4}</p>`
+                }
+                let allImgContent = oneImgContent + twoImgContent + threeImgContent + fourImgContent;
+                let data = {
+                    "catProps": [],
+                    "productDetails": [
+                        {
+                            "content": allImgContent,
+                        }
+                    ],
+                    "productImgs": mainImg
+                }
+                if(this.resize.form.goodsXq != ''){
+                    data.catProps.push({
+                        propType: 2,
+                        propName: '香气',
+                        propertyVal: this.resize.form.goodsXq
+                    })
+                }
+                if(this.resize.form.goodsZw != ''){
+                    data.catProps.push({
+                        propType: 2,
+                        propName: '滋味',
+                        propertyVal: this.resize.form.goodsZw
+                    })
+                }
+                this.$api.post(`/oteaoProduct/createProductInfo` +
+                    `?frontOrgProInfoDetailVo.catId=${ encodeURI(this.resize.twoClass) }` +
+                    `&frontOrgProInfoDetailVo.brandId=${ encodeURI(this.resize.selId.pp) }` +
+                    `&frontOrgProInfoDetailVo.proName=${ encodeURI(this.resize.form.goodsName) }` +
+                    `&frontOrgProInfoDetailVo.unint=${ encodeURI(this.resize.form.goodsDw) }` +
+                    `&frontOrgProInfoDetailVo.weight=${ encodeURI(this.resize.form.goodsMz) }` +
+                    `&frontOrgProInfoDetailVo.netWeight=${ encodeURI(this.resize.form.goodsJz) }` +
+                    `&frontOrgProInfoDetailVo.reason=${ encodeURI(this.resize.form.goodsSell) }` +
+                    `&frontOrgProInfoDetailVo.stockNum=${ encodeURI(this.resize.form.goodsKc) }` +
+                    `&frontOrgProInfoDetailVo.specifications=${ encodeURI(this.resize.form.goodsGg) }` +
+                    `&frontOrgProInfoDetailVo.proPrice=${ encodeURI(this.resize.form.goodsSx) }` +
+                    `&frontOrgProInfoDetailVo.retailPrice=${encodeURI(this.resize.form.goodsPtsj) }` +
+                    `&frontOrgProInfoDetailVo.isSaveOnShelf=${ encodeURI(stata) }`,JSON.stringify(data),res => {
+                        this.sucFlag = true;
+                        if(stata == 0){
+                            this.sussTips = '创建成功！';
+                            this.goShopMange('OFF_SHELF');
+                        }else{
+                            this.sussTips = '成功上架！';
+                            this.goShopMange('ON_SHELF');
+                        }
+                },res=>{
+                    return Toast({
+                        message: res.errorMsg,
+                        iconClass: 'icon icon-fail'
+                    });
                 })
             },
             handleChangeThird(index) {
@@ -273,12 +411,10 @@ import { Toast } from 'mint-ui';
             },
             //预览图片
             onPreview(str,e,ismain){
-                console.log(e.target.files);
                 if(e.target.files[0].size > 8*1024*1024) return Toast({
                     message: '图片不能超出8M哦~',
                     iconClass: 'icon icon-info'
                 });
-                this.resize.allImg.push(e.target.files[0])
                 let reader = new FileReader();
                 reader.readAsDataURL(e.target.files[0]);
                 if(ismain){
@@ -289,10 +425,22 @@ import { Toast } from 'mint-ui';
                             this.resize.mainImg.push({'imgSrc':e.target.result});
                         }
                     }
+                    if(this.resize.mainImg.length>str){
+                        this.resize.mainImgFile[str] = e.target.files[0];
+                    }else{
+                        this.resize.mainImgFile.push(e.target.files[0])
+                    }
                 }else{
                     if(typeof str === 'string'){
                         reader.onload = (e)=>{
                             this.resize.imgs[str] = e.target.result;
+                        }
+                        if(str === 'detailImg1'){
+                            this.resize.oneImgFile[0] = e.target.files[0];
+                        }else if(str === 'detailImg2'){
+                            this.resize.secondImgFile[0] = e.target.files[0];
+                        }else if(str === 'detailImg3'){
+                            this.resize.thirdImgFile[0] = e.target.files[0];
                         }
                     }else if(typeof str === 'number'){
                         reader.onload = (e)=>{
@@ -302,18 +450,40 @@ import { Toast } from 'mint-ui';
                                 this.resize.imgsStep4.push({'imgSrc':e.target.result});
                             }
                         }
+                        if(this.resize.imgsStep4.length>str){
+                            this.resize.fourImgFile[str] = e.target.files[0];
+                        }else{
+                            this.resize.fourImgFile.push(e.target.files[0]);
+                        }
                     }
                 }
+            },
+            goShopMange(status) {
+                this.$router.push({
+                    name: '商品管理',
+                    query: {
+                        status: status
+                    }
+                })
             },
             //删除图片
             deleteImg(arg,ismain){
                 if(ismain){
                     this.resize.mainImg.splice(arg,1);
+                    this.resize.mainImgFile.splice(arg,1);
                 }else{
                     if(typeof arg === 'string'){
                         this.resize.imgs[arg] = '';
+                        if(arg === 'detailImg1'){
+                            this.resize.oneImgFile = [];
+                        }else if(arg === 'detailImg2'){
+                            this.resize.secondImgFile = [];
+                        }else if(arg === 'detailImg3'){
+                            this.resize.thirdImgFile = [];
+                        }
                     }else if(typeof arg === 'number'){
                         this.resize.imgsStep4.splice(arg,1);
+                        this.resize.fourImgFile.splice(arg,1);
                     }
                 }
             }
@@ -321,5 +491,5 @@ import { Toast } from 'mint-ui';
     }
 </script>
 <style lang="less">
-    @import '~@/styles/seller/newshelves2.less';
+@import '~@/styles/seller/newshelves2.less';
 </style>
