@@ -150,6 +150,7 @@
                     case g > 251 && g < 500: return 1
                     break;
                 }
+                return 1;
             }
         },
         created() {
@@ -170,7 +171,6 @@
                     vm.$store.dispatch('getMemberData').then(res =>{
                         if(!res.shop) {
                             // 未通过返回
-                            console.log(1)
                             vm.$router.go(-1);
                         }
                         if(res.shop.shopStatus === 2 || res.shop.shopStatus === -2) {

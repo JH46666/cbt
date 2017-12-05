@@ -4,94 +4,100 @@
             <div class="address">
                 <div class="left"><i class="icon-dizhi"></i></div>
                 <div class="center">
-                    <p class="user">陈伟欸 &nbsp;&nbsp; 18006062601</p>
-                    <p>很长很长的地址很长很长的地址很长很长的地址很长很长的地址很长很长的地址很长很长的地址很长很长的地址很长很长的地址很长很长的地址很长很长的地址很长很长的地址很长很长的地址</p>
+                    <p class="user">{{ address.recName }} &nbsp;&nbsp; {{ address.mobilePhone }}</p>
+                    <p>{{ (address.provinceName + address.cityName + address.areaName + address.detailAddress) || '&nbsp;' }}</p>
                 </div>
-                <div class="right"><i class="icon-icon07"></i></div>
+                <div class="right" @click="editAddress"><i class="icon-icon07"></i></div>
             </div>
 
-            <section class="goods-pannel">
-                <div class="title">
-                    <img src="../../assets/images/logo.png" alt="">
-                    自营
-                </div>
-                <div class="goods-item">
-                    <goods-img style="width:1.6rem;height:1.6rem;"></goods-img>
-                    <div class="right">
-                        <p class="goods-title">醉品朴茶 安溪铁观音2017秋茶 乌龙茶 清香型醉品朴茶 安溪铁观音2017秋茶 乌龙茶 清香型醉品朴茶 安溪铁观音2017秋茶 乌龙茶 清香型</p>
-                        <p class="goods-bd">
-                            <span class="price">￥500</span>
-                            <span class="num">×1</span>
-                        </p>
+            <template v-for="(item,index) in pannel">
+                <section class="goods-pannel">
+                    <div class="title">
+                        <img src="../../assets/images/logo.png" alt="" v-if="item.shopName === '自营'">
+                        {{ item.shopName }}
                     </div>
-                </div>
-                <div class="pro_free_caption">
-                    <span class="full_free">满赠</span>
-                    <span>满358元送金骏眉</span>
-                </div>
-                <div class="goods-item">
-                    <goods-img style="width:1.6rem;height:1.6rem;"></goods-img>
-                    <div class="right">
-                        <p class="goods-title">醉品朴茶 安溪铁观音2017秋茶 乌龙茶 清香型醉品朴茶 安溪铁观音2017秋茶 乌龙茶 清香型醉品朴茶 安溪铁观音2017秋茶 乌龙茶 清香型</p>
-                        <p class="goods-bd">
-                            <span class="price">￥0.00</span>
-                            <span class="num">×1</span>
-                        </p>
+                    <template v-for="(todo,i) in item.cartList">
+                        <div class="goods-item">
+                            <goods-img style="width:1.6rem;height:1.6rem;" :imgUrl="todo.imageUrl"></goods-img>
+                            <div class="right">
+                                <p class="goods-title">{{ todo.proName }}</p>
+                                <p class="goods-bd">
+                                    <span class="price">￥{{ todo.actualPayPrice | toFix2  }}</span>
+                                    <span class="num">×{{ todo.buyNum }}</span>
+                                </p>
+                            </div>
+                        </div>
+                    </template>
+                    <template v-if="item.giftList && item.giftList.length > 0">
+                        <div class="pro_free_caption">
+                            <span class="full_free">满赠</span>
+                            <span>满358元送金骏眉</span>
+                        </div>
+                        <div class="goods-item" v-for="(todo,i) in item.giftList">
+                            <goods-img style="width:1.6rem;height:1.6rem;" :imgUrl="todo.imageUrl"></goods-img>
+                            <div class="right">
+                                <p class="goods-title">{{ todo.proName }}</p>
+                                <p class="goods-bd">
+                                    <span class="price">￥{{ todo.actualPayPrice | toFix2  }}</span>
+                                    <span class="num">×{{ todo.buyNum }}</span>
+                                </p>
+                            </div>
+                        </div>
+                    </template>
+                    <div class="sum">
+                        商品总额: <span class="gold">{{ item.totalProductAmountAfterPromotion | toFix2 }}</span>
                     </div>
-                </div>
-                <div class="sum">
-                    商品总额: <span class="gold">1314.00 + 111积分</span>
-                </div>
-            </section>
+                </section>
+                <section class="pay-pannel">
+                    <div class="express" @click="upPayType">
+                        <div class="left">
+                            <i class="icon-wuliu"></i> 支付配送
+                        </div>
+                        <div class="center">
+                            <p>在线支付  {{ expressName[item.currentDeliveryMethod] }}</p>
+                            <p>运费： <span class="gold">15.00</span></p>
+                        </div>
+                        <div class="right">
+                            <i class="icon-xiangyou"></i>
+                        </div>
+                    </div>
+                    <div class="redpacket" @click="upRedpacket" v-if="item.shopName === '自营'">
+                        <div class="left">
+                            红包
+                        </div>
+                        <div class="center">
+                            -{{ myData.redPacketDeduction | toFix2   }}
+                        </div>
+                        <div class="right">
+                            <i class="icon-xiangyou"></i>
+                        </div>
+                    </div>
+                    <div class="redpacket-list-wrap" v-if="item.shopName === '自营'">
+                        <div class="redpacket-list">
+                            <div class="left">2017春节促销</div>
+                            <div class="right">- 5.00</div>
+                        </div>
+                        <div class="redpacket-list">
+                            <div class="left">2017春节促销</div>
+                            <div class="right">- 5.00</div>
+                        </div>
+                        <div class="redpacket-list">
+                            <div class="left">2017春节促销</div>
+                            <div class="right">- 5.00</div>
+                        </div>
+                    </div>
+                    <div class="remark">
+                        <div class="left">备注</div>
+                        <div class="right">
+                            <input type="text" placeholder="对订单特殊要求进行描述" maxlength="50">
+                            <p class="count">0/50</p>
+                        </div>
+                    </div>
+                </section>
+            </template>
 
-            <section class="pay-pannel">
-                <div class="express" @click="upPayType">
-                    <div class="left">
-                        <i class="icon-wuliu"></i> 支付配送
-                    </div>
-                    <div class="center">
-                        <p>在线支付  申通快递</p>
-                        <p>运费： <span class="gold">15.00</span></p>
-                    </div>
-                    <div class="right">
-                        <i class="icon-xiangyou"></i>
-                    </div>
-                </div>
-                <div class="redpacket" @click="upRedpacket">
-                    <div class="left">
-                        红包
-                    </div>
-                    <div class="center">
-                        -10.00
-                    </div>
-                    <div class="right">
-                        <i class="icon-xiangyou"></i>
-                    </div>
-                </div>
-                <div class="redpacket-list-wrap">
-                    <div class="redpacket-list">
-                        <div class="left">2017春节促销</div>
-                        <div class="right">- 5.00</div>
-                    </div>
-                    <div class="redpacket-list">
-                        <div class="left">2017春节促销</div>
-                        <div class="right">- 5.00</div>
-                    </div>
-                    <div class="redpacket-list">
-                        <div class="left">2017春节促销</div>
-                        <div class="right">- 5.00</div>
-                    </div>
-                </div>
-                <div class="remark">
-                    <div class="left">备注</div>
-                    <div class="right">
-                        <input type="text" placeholder="对订单特殊要求进行描述" maxlength="50">
-                        <p class="count">0/50</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="invoice-pannel">
+            <!-- 发票，暂时不做 -->
+            <!-- <section class="invoice-pannel">
                 <div class="invoice">
                     <div class="left">
                         发票信息
@@ -110,34 +116,15 @@
                         <p class="count">0/50</p>
                     </div>
                 </div>
-            </section>
+            </section> -->
 
-            <section class="goods-pannel">
-                <div class="title">
-                    <i class="icon-dianpu"></i>
-                    这是一家第三发地铺
-                </div>
-                <div class="goods-item">
-                    <goods-img style="width:1.6rem;height:1.6rem;"></goods-img>
-                    <div class="right">
-                        <p class="goods-title">醉品朴茶 安溪铁观音2017</p>
-                        <p class="goods-bd">
-                            <span class="price">￥500</span>
-                            <span class="num">×1</span>
-                        </p>
-                    </div>
-                </div>
-                <div class="sum">
-                    商品总额: <span class="gold">1314.00 + 111积分</span>
-                </div>
-            </section>
 
             <section class="bd-address" @click="gotoTop">
-                收货地址：横穿横穿横穿横穿横穿横穿横穿横穿横穿横穿横穿横穿横穿横穿&nbsp;&nbsp;&nbsp;&nbsp;陈校团 18206062601
+                收货地址：{{ (address.provinceName + address.cityName + address.areaName + address.detailAddress) || '&nbsp;' }}&nbsp;&nbsp;&nbsp;&nbsp;{{ address.recName }} {{ address.mobilePhone }}
             </section>
         </div>
         <section class="save-order">
-            <p class="price">应付：<span class="gold">￥1813.00</span></p>
+            <p class="price">应付：<span class="gold">￥{{ myData.proTotalAmount | toFix2 }}</span></p>
             <mt-button type="default">提交订单</mt-button>
         </section>
 
@@ -156,6 +143,7 @@
 <script>
     import payType from './payType.vue';
     import redpacketPannel from './repacketPannel.vue'
+    import { mapState } from 'vuex'
     export default{
         components: {
             payType,
@@ -163,10 +151,26 @@
         },
         data() {
             return {
+                cartList: '',               // 购物车id列表
                 showPayType: false,         // 支付方式与快递弹窗
                 showRedpacket: false,       // 红包弹窗
                 timer: null,                // 返回顶部的定时器
+                myData: {},                 // 结算数据,
+                address: {},                // 地址数据
+                expressName: {              // 快递名称
+                    ship_ems: 'EMS',
+                    ship_sf: '顺丰快递',
+                    ship_sto: '申通快递'
+                }
             }
+        },
+        computed: {
+            pannel() {
+                return this.myData.oteaoCart ? this.myData.oteaoCart : [];
+            },
+            ...mapState({
+                id: state => state.member.member.id
+            })
         },
         methods: {
             // 弹出付款方式弹窗
@@ -196,7 +200,50 @@
                     }
                     this.$refs.main.scrollTop = top
                 },16)
+            },
+            // 初始化数据
+            initData() {
+                return new Promise((resolve,reject) => {
+                    this.$api.post('/oteao/shoppingCart/initSettle',{
+                        cartIds: this.cartList,
+                        device: 'WAP'
+                    },res => {
+                        this.myData = res.data;
+                        resolve(res)
+                    },res => {
+                        if(res.code === 4065) {
+                            this.$toast(res.message);
+                            this.$router.go(-1)
+                        }
+                    })
+                })
+            },
+            // 修改地址
+            editAddress() {
+                sessionStorage.setItem('edit',true);
+                sessionStorage.setItem('cart',this.cartList);
+                this.$router.push('/center/address');
             }
+        },
+        created() {
+            this.cartList = this.$route.query.cart;
+            sessionStorage.setItem('edit',false);
+            this.initData().then(res => {
+
+                // 判断是不是去修改地址
+                let cart = sessionStorage.cart;
+                let address = sessionStorage.address;
+
+                if(this.cartList === cart && address) {
+                    this.address = JSON.parse(address);
+                    delete sessionStorage.cart;
+                    delete sessionStorage.address;
+                } else {
+                    this.address = this.myData.receiveAddrList.filter(val => val.isDefault)[0]
+                }
+
+
+            })
         }
     }
 </script>

@@ -36,6 +36,8 @@ const actions = {
                     this.commit('SET_MEMBERDATA',{type:attr,val:res.data[attr]})
                 }
                 resolve(res.data);
+            },res => {
+                reject(res)
             })
         })
     },
@@ -80,6 +82,8 @@ const actions = {
             } else {
                 dispatch('getMemberData').then(res => {
                     getData(resolve,reject);
+                },res =>{
+                    reject(res);
                 })
             }
         })

@@ -208,6 +208,11 @@
                     })
                 }
 
+            }).catch(res =>{
+                if(res.code === 2000){
+                    this.$toast('您还没有登陆呦~')
+                    this.$router.push('/login')
+                }
             })
         }
     }

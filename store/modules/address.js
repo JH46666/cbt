@@ -1,13 +1,18 @@
 import $api from '../../api'
 
 const state = {
-    data: []
+    data: [],
+    to: {},
+    from: {}
 }
 const mutations = {
     SET_ADDRESS(state,newVal) {
         if(newVal instanceof Array) {
             state.data = newVal
         }
+    },
+    RECORD_ROUTER(state,val) {
+        state[val.type] = val.data;
     }
 }
 
