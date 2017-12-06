@@ -135,9 +135,9 @@ const router = new Router({
 					}
 				},
 				{
-					path: 'seller',
+					path: 'select',
 					name: '茶帮通注册2',
-					component: resolve => require(['@/views/regist/seller.vue'],resolve),
+					component: resolve => require(['@/views/regist/select.vue'],resolve),
 					meta: {
 						hideFooter: true
 					}
@@ -146,14 +146,6 @@ const router = new Router({
 					path: 'examine',
 					name: '茶帮通注册3',
 					component: resolve => require(['@/views/regist/examine.vue'],resolve),
-					meta: {
-						hideFooter: true
-					}
-				},
-				{
-					path: 'select',
-					name: '茶帮通注册4',
-					component: resolve => require(['@/views/regist/select.vue'],resolve),
 					meta: {
 						hideFooter: true
 					}
@@ -349,14 +341,6 @@ const router = new Router({
 					path: 'recruit',
 					name: '卖家招募',
 					component: resolve => require(['@/views/seller/selleRecruit.vue'],resolve),
-					meta: {
-						hideFooter: true
-					}
-				},
-				{
-					path: 'regist',
-					name: '卖家注册',
-					component: resolve => require(['@/views/seller/regist.vue'],resolve),
 					meta: {
 						hideFooter: true
 					}
