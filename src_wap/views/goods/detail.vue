@@ -45,7 +45,7 @@
             </div>
         </mt-popup>
         <div class="detail_wrapper" @scroll="docScroll" ref="wrapper">
-            <div class="goIndex" v-if="!(tabFixed || wxFixed)">
+            <div class="goIndex" v-if="!(tabFixed || wxFixed)" @click="$router.push({name: '首页'})">
                 <span>去首页</span>
                 <i class="iconfont">&#xe61b;</i>
             </div>
@@ -112,7 +112,7 @@
             </div>
             <div class="detail_tab" ref="tab">
                 <mt-navbar v-model="tabSelected" :class="{'on': tabFixed , 'wxon': wxFixed}">
-                    <i class="iconfont fixIndex" :class="{'on': tabFixed || wxFixed }" v-if="tabFixed || wxFixed">&#xe61b;</i>
+                    <i class="iconfont fixIndex" :class="{'on': tabFixed || wxFixed }" v-if="tabFixed || wxFixed" @click="$router.push({name: '首页'})">&#xe61b;</i>
                     <mt-tab-item id="1">详情</mt-tab-item>
                     <mt-tab-item id="2">规格</mt-tab-item>
                     <mt-tab-item id="3">评论</mt-tab-item>

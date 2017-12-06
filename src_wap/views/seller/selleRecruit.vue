@@ -29,7 +29,9 @@ export default {
     },
     methods: {
         goRegist() {
-            this.$router.push('/seller/regist');
+            this.$router.push({
+                name: '茶帮通注册2'
+            });
         }
     }
 }
