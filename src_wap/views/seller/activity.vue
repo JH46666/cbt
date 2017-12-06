@@ -9,41 +9,41 @@
         <div class="activityt_date">
             <div class="activityt_date_wrapper">
                 <label for="activeStartDate">开始时间</label>
-                <input type="text" id="activeStartDate" placeholder="请选择" v-model="activeStartDate" />
+                <input type="text" id="activeStartDate" placeholder="请选择" v-model="activeStartDate" @click="openPicker('start')" />
                 <i class="iconfont">&#xe744;</i>
             </div>
         </div>
         <div class="activityt_date">
             <div class="activityt_date_wrapper border_none">
                 <label for="activeEndDate">结束时间</label>
-                <input type="text" id="activeEndDate" placeholder="请选择" v-model="activeEndDate" />
+                <input type="text" id="activeEndDate" placeholder="请选择" v-model="activeEndDate"  @click="openPicker('end')" />
                 <i class="iconfont">&#xe744;</i>
             </div>
         </div>
         <div class="f5-2"></div>
         <div class="activity_name">
             <label for="activeLimit">每人限购</label>
-            <input type="text" id="activeLimit" placeholder="不填表示不限制" v-model="activeLimit" />
+            <input type="age" id="activeLimit" placeholder="不填表示不限制" v-model="activeLimit" />
         </div>
         <div class="f5-2"></div>
         <div class="activity_name">
-            特价商品（{{ specialNum }}）件
+            特价商品（{{ selProList.length }}）件
         </div>
         <div class="activity_pro">
-            <div class="activity_pro_item">
+            <div class="activity_pro_item" v-for="(item,index) in selProList" :key="index">
                 <div class="activity_pro_item_top">
                     <div class="activity_pro_item_top_left">
-                        <img src="../../assets/list_img.png" />
+                        <img :src="item.proImg" />
                     </div>
                     <div class="activity_pro_item_top_right">
-                        <p>醉品朴茶 安溪铁观音2017秋茶 乌龙茶 清香型</p>
-                        <p>￥500</p>
+                        <p>{{ item.proName }}</p>
+                        <p>￥{{ item.proPrice }}</p>
                     </div>
                 </div>
                 <div class="activity_pro_item_bottom">
-                    <div>折扣：<span>100</span></div>
-                    <div>折扣价：<span>100.00</span></div>
-                    <i class="iconfont">&#xe60d;</i>
+                    <div><label>折扣：</label><input type="age" v-model="item.discount" @blur="toFixedTwo(item,'discount')" /></div>
+                    <div><label>折扣价：</label><input type="age" v-model="item.discountPrice" @blur="toFixedTwo(item,'discountPrice')" /></div>
+                    <i class="iconfont" @click="deteledPro(index)">&#xe60d;</i>
                 </div>
             </div>
         </div>
@@ -57,28 +57,28 @@
             <div class="dialog_wrapper">
                 <div class="dialog_search">
                     <div class="search_wrapper">
-                        <input type="text" placeholder="搜索商品">
-                        <i class="iconfont">&#xe649;</i>
+                        <input type="text" placeholder="搜索商品" v-model="searchKeyWord" />
+                        <i class="iconfont" @click="searchMethod">&#xe649;</i>
                     </div>
                 </div>
                 <div class="dialig_list">
                     <div class="dialig_list_wrapper">
-                        <div class="item" v-for="(item,index) in list" :key="index" @click="checkedOne(item)" :class="{on: item.checked}">
+                        <div class="item" v-for="(item,index) in proList" :key="index" @click="item.checked = !item.checked" :class="{on: item.checked}">
                             <div class="item_left">
                                 <div class="checkedBox" :class="{on: item.checked}"></div>
                             </div>
                             <div class="item_center">
-                                <img :src="item.imgUrl" />
+                                <img :src="item.proImg" />
                             </div>
                             <div class="item_right">
-                                <p class="item_text">{{ item.text }}</p>
-                                <p class="item_price">￥ {{ item.price }}</p>
+                                <p class="item_text">{{ item.proName }}</p>
+                                <p class="item_price">￥ {{ item.proPrice }}</p>
                                 <div class="item_bottom">
                                     <div class="selled">
-                                        已售<span>{{ item.selled }}</span>
+                                        已售<span>{{ item.salesNum }}</span>
                                     </div>
                                     <div class="totaled">
-                                        库存<span>{{ item.total }}</span>
+                                        库存<span>{{ item.stockNum }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -90,14 +90,21 @@
                         <div class="checkedAll" :class="{on: selectAll}" @click="checkedAllMethod"></div>
                         <div class="checkedNum">已选<span>{{ selectNum }}</span>款</div>
                     </div>
-                    <mt-button type="primary" @click.native="selectEnd">选好了</mt-button>
+                    <mt-button type="primary" :disabled="selDisable" @click.native="selProMethod">选好了</mt-button>
                 </div>
             </div>
         </div>
+        <template>
+            <mt-datetime-picker ref="picker1" type="datetime" @confirm="handleConfirm1"></mt-datetime-picker>
+        </template>
+        <template>
+            <mt-datetime-picker ref="picker2" type="datetime" @confirm="handleConfirm2"></mt-datetime-picker>
+        </template>
     </div>
 </template>
 
 <script>
+import { MessageBox,Toast } from 'mint-ui';
 export default {
     data() {
         return {
@@ -105,94 +112,167 @@ export default {
             activeStartDate: '',
             activeEndDate: '',
             activeLimit: '',
-            specialNum: 3,
-            selectAll: false,
             selectPro: false,
-            list: [
-                {
-                    checked: false,
-                    imgUrl: '../src_wap/assets/list_img.png',
-                    text: '醉品朴茶 安溪铁观音2017秋茶 乌龙茶 清香型',
-                    price: 500,
-                    selled: 5000,
-                    total: 5000
-                },
-                {
-                    checked: false,
-                    imgUrl: '../src_wap/assets/list_img.png',
-                    text: '醉品朴茶 安溪铁观音2017秋茶 乌龙茶 清香型',
-                    price: 500,
-                    selled: 5000,
-                    total: 5000
-                },
-                {
-                    checked: false,
-                    imgUrl: '../src_wap/assets/list_img.png',
-                    text: '醉品朴茶 安溪铁观音2017秋茶 乌龙茶 清香型',
-                    price: 500,
-                    selled: 5000,
-                    total: 5000
-                },
-                {
-                    checked: false,
-                    imgUrl: '../src_wap/assets/list_img.png',
-                    text: '醉品朴茶 安溪铁观音2017秋茶 乌龙茶 清香型',
-                    price: 500,
-                    selled: 5000,
-                    total: 5000
-                },
-                {
-                    checked: false,
-                    imgUrl: '../src_wap/assets/list_img.png',
-                    text: '醉品朴茶 安溪铁观音2017秋茶 乌龙茶 清香型',
-                    price: 500,
-                    selled: 5000,
-                    total: 5000
-                }
-            ],
-            selectNum: 0,
-        }
-    },
-    methods: {
-        checkedAllMethod() {
-            if(!this.selectAll){
-                this.selectAll = true;
-                this.selectNum = this.list.length;
-                for(let obj of this.list){
-                    obj.checked = true;
-                }
-                return ;
-            }else{
-                this.selectAll = false;
-                this.selectNum = 0;
-                for(let obj of this.list){
-                    obj.checked = false;
-                }
-                return ;
-            }
-        },
-        checkedOne(obj) {
-            obj.checked = !obj.checked;
-            let num = 0;
-            for(let obj of this.list){
-                if(obj.checked === true){
-                    num++;
-                }
-            }
-            this.selectNum = num;
-        },
-        selectEnd() {
-            this.selectPro = false;
+            proList: [],
+            searchKeyWord: '',
+            selProList: [],
         }
     },
     watch: {
-        selectNum(val) {
-            let len = this.list.length;
-            if(val === len){
-                this.selectAll = true;
+        'selProList': {
+            handler(curVal,oldVal){
+                for(let obj of curVal){
+                    if(obj.discount!= ''){
+                        return obj.discountPrice = (parseFloat(obj.proPrice)*parseFloat(obj.discount)/100).toFixed(2);
+                    }else if(obj.discountPrice!= ''){
+                        return obj.discount = (parseFloat(obj.discountPrice)*100/parseFloat(obj.proPrice)).toFixed(2);
+                    }
+                }
+　　　　　　　},
+　　　　　　　deep:true
+        }
+    },
+    methods: {
+        toFixedTwo(item,str) {
+            if(str === 'discount'){
+                if(item[str] == ''){
+                    item[str] = '0.00'
+                }else{
+                    if(parseFloat(item[str])>10 || parseFloat(item[str]) <= 0){
+                        Toast({
+                            message: '请输入小于10的两位小数',
+                            iconClass: 'icon icon-fail'
+                        });
+                        item[str] = '0.00'
+                    }else{
+                        item[str] = parseFloat(item[str]).toFixed(2);
+                    }
+                }
             }else{
-                this.selectAll = false;
+                if(item[str] == ''){
+                    item[str] = '0.00'
+                }else{
+                    if(item[str] >= item.proPrice || item[str] < 0){
+                        Toast({
+                            message: '请输入小于该商品价格的数字',
+                            iconClass: 'icon icon-fail'
+                        });
+                        item[str] = '0.00'
+                    }else{
+                        item[str] = parseFloat(item[str]).toFixed(2);
+                    }
+                }
             }
+        },
+        deteledPro(index) {
+            this.selProList.splice(index,1)
+        },
+        selProMethod() {
+            for(let obj of this.proList){
+                if(obj.checked){
+                    this.selProList.push(obj)
+                }
+            }
+            for(let obj of this.selProList){
+                this.$set(obj,'discount','');
+                this.$set(obj,'discountPrice','');
+            }
+            this.proList = [];
+            this.selectPro = false;
+        },
+        searchMethod() {
+            this.getSearchList(this.searchKeyWord).then((res) => {
+                this.proList = res.data;
+                for(let obj of this.proList){
+                    this.$set(obj,'checked',false);
+                }
+            })
+        },
+        getSearchList(keyWord) {
+            let data = {
+                    'page.pageNumber': 1,
+                    'page.pageSize': 9999,
+                    'pro.sysId': 1,
+                    'pro.device': 'WAP',
+                    'pro.seachKey': keyWord,
+                    'pro.state': 'ON_SHELF'
+                }
+            return new Promise((resolve,reject) => {
+                this.$api.post('/oteaoProduct/seachFrontOrgProduct',data,res => {
+                    resolve(res);
+                },res=>{
+                    return Toast({
+                        message: res.errorMsg,
+                        iconClass: 'icon icon-fail'
+                    });
+                })
+            })
+        },
+        openPicker(type) {
+            if(type === 'start'){
+                this.$refs.picker1.open();
+            }else if(type === 'end'){
+                this.$refs.picker2.open();
+            }
+        },
+        handleConfirm1(val) {
+            let start  = new Date(val);
+            this.activeStartDate = `${start.getFullYear()}年${this.addZero(start.getMonth()+1)}月${this.addZero(start.getDate())}日-${this.addZero(start.getHours())}时${this.addZero(start.getMinutes())}分${this.addZero(start.getSeconds())}秒`;
+        },
+        handleConfirm2(val) {
+            let end  = new Date(val);
+            this.activeEndDate = `${end.getFullYear()}年${this.addZero(end.getMonth()+1)}月${this.addZero(end.getDate())}日-${this.addZero(end.getHours())}时${this.addZero(end.getMinutes())}分${this.addZero(end.getSeconds())}秒`;
+        },
+        addZero(val) {
+            if(Number(val)<9){
+                return `0${Number(val)}`;
+            }else{
+                return val;
+            }
+        },
+        checkedAllMethod() {
+            let isTrue = this.proList.every((item) => {
+                return item.checked === true;
+            })
+            if(isTrue){
+                for(let obj of this.proList){
+                    obj.checked = false;
+                }
+            }else{
+                for(let obj of this.proList){
+                    obj.checked = true;
+                }
+            }
+        },
+
+    },
+    computed: {
+        selectNum() {
+            let num = 0;
+            for(let obj of this.proList){
+                if(obj.checked){
+                    num++;
+                }
+            }
+            return num;
+        },
+        selectAll() {
+            let isTrue = this.proList.every((item) => {
+                return item.checked === true;
+            })
+            if(isTrue){
+                return true;
+            }else{
+                return false;
+            }
+        },
+        selDisable() {
+            for(let obj of this.proList){
+                if(obj.checked){
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }

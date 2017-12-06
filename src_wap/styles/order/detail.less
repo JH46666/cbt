@@ -136,7 +136,7 @@
         .order_address{
             height: .84rem;
             overflow: hidden;
-            .bg(#fafafa);
+            .bg(#fff);
             transition: all .3s;
             &.on{
                 height: auto;
@@ -153,6 +153,9 @@
                 .color(#999);
                 .fontSize(.3rem);
                 .line(1);
+                .order_address_num{
+                    .color(#333);
+                }
                 .order_address_icon{
                     .flex;
                     .flex-dir(row);
@@ -187,6 +190,10 @@
                     margin-top: 0;
                 }
                 .order_head{
+                    &.order_white{
+                        .bg(#fff);
+                        border: 0 none;
+                    }
                     padding: 0 .36rem;
                     height: .86rem;
                     border-top: 1px solid #e5e5e5;
@@ -200,6 +207,7 @@
                     img{
                         width: .32rem;
                         vertical-align: bottom;
+                        margin-right: .2rem;
                     }
                 }
                 .list_wrapper{
@@ -250,6 +258,7 @@
     .order_price{
         padding: .5rem .36rem .34rem;
         .bg(#fff);
+        margin-top: .2rem;
         .order_price_detail{
             border-bottom: 1px dotted #e5e5e5;
             width: 100%;

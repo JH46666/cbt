@@ -60,78 +60,40 @@
             <div class="order_shop" v-if="orderDetailData.sellerOrgId == 1">
                 <i class="iconfont">&#xe66d;</i> {{ orderDetailData.shopName }}
             </div>
-            <div class="order_address" v-if="orderDetailData.expressDeliveryCode != 'ship_sto'" :class="{ 'on': pullOrDownShop }">
-                <div class="order_address_1">
-                    <div class="order_address_num">
-                        556226452
-                    </div>
-                    <div class="order_address_icon">
-                        自提
-                        <span @click="pullOrDownShopMethod">门店地址<i class="iconfont" :class="{ 'icon-single-down': !pullOrDownShop,'icon-shang': pullOrDownShop }"></i></span>
-                    </div>
-                </div>
-                <div class="order_address_2">
-                    <div class="order_addrss_text">
-                        提货地址：西安市新城区长乐路高德茶业茶帮通运营中心
-                    </div>
-                    <div class="order_addrss_tel">
-                        联系电话：<a href="tel://17656565656">17656565656</a>
-                    </div>
-                </div>
-            </div>
             <!-- 订单列表 -->
             <div class="order_wrapper">
-                <template v-if="orderListDetail.subOrder!=null">
-                    <div class="order_item" v-for="(item,index) in orderListDetail.subOrder">
-                        <div class="order_head">
-                            <div class="order_num">
-                                111111111
-                            </div>
-                            <div class="order_express">
-                                <img :src="express.sf.img" /> {{ express.sf.name }}
-                                <span>1111111111</span>
+                <template v-if="orderListDetail.subOrder!=null && orderListDetail.mainOrder == null">
+                    <div class="order_item">
+                        <div class="list_wrapper">
+                            <div class="list_item" v-for="(item,index) in orderListDetail.subOrder.products">
+                                <div class="list_img">
+                                    <img :src="item.imageUrl" />
+                                </div>
+                                <div class="list_content">
+                                    <p>{{ item.productName }}</p>
+                                    <div class="list_price_count">
+                                        <span>￥{{ item.productPrice | toFix2 }}</span>
+                                        <span>x{{ item.productNum | toFix2 }}</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="list_wrapper">
-                            <div class="list_item">
-                                <div class="list_img">
-                                    <img src="../../assets/list_img.png" alt="">
-                                </div>
-                                <div class="list_content">
-                                    <p>醉品朴茶 安溪铁观音2017秋茶 乌龙茶 清香型</p>
-                                    <div class="list_price_count">
-                                        <span>￥500</span>
-                                        <span>x23</span>
-                                    </div>
-                                </div>
+                        <div class="order_head order_white">
+                            <div class="order_express">
+                                <img :src="express[orderListDetail.subOrder.expressName]" /> {{ orderListDetail.subOrder.expressName }}
+                                <span>{{ orderListDetail.subOrder.expressNo }}</span>
                             </div>
-                            <div class="list_item">
-                                <div class="list_img">
-                                    <img src="../../assets/list_img.png" alt="">
-                                </div>
-                                <div class="list_content">
-                                    <p>醉品朴茶 安溪铁观音2017秋茶 乌龙茶 清香型</p>
-                                    <div class="list_price_count">
-                                        <span>￥500</span>
-                                        <span>x23</span>
-                                    </div>
-                                </div>
-                            </div>
+                            <!-- <div class="order_num">
+                                <mt-button plain v-if="orderListDetail.subOrder.subOrderStatus === 'FINISH' && orderListDetail.subOrder.isComment === false" class="pay_now" @click.native="commentMethod(item.orderId)">评价</mt-button>
+                                <mt-button plain v-if="orderListDetail.subOrder.subOrderStatus === 'WAIT_PAY' || orderListDetail.subOrder.subOrderStatus === 'WAIT_CHECK'" @click.native="cancelMethod">取消订单</mt-button>
+                                <mt-button plain v-if="orderListDetail.subOrder.subOrderStatus === 'WAIT_PAY'" class="pay_now" @click.native="payMethod">立即支付</mt-button>
+                                <mt-button plain v-if="orderListDetail.subOrder.subOrderStatus === 'DELIVERED' || orderListDetail.subOrder.subOrderStatus === 'CBT_BUYER'" class="pay_now" @click.native="confrimMethod">确认收货</mt-button>
+                            </div> -->
                         </div>
                     </div>
                 </template>
-                <template v-if="orderListDetail.subOrder == null">
+                <template v-if="orderListDetail.subOrder == null && orderListDetail.mainOrder != null">
                     <div class="order_item">
-                        <div class="order_head">
-                            <div class="order_num">
-                                {{ orderListDetail.mainOrder.mainrNo }}
-                            </div>
-                            <div class="order_express">
-                                <!-- orderListDetail.mainOrder.expressName 快递名称  orderListDetail.mainOrder.expressCode 快递类型  -->
-                                <img :src="express.sf.img" /> {{ express.sf.name}}
-                                <span>{{ orderListDetail.mainOrder.expressNo }}</span>
-                            </div>
-                        </div>
                         <div class="list_wrapper">
                             <div class="list_item" v-for="(item,index) in orderListDetail.mainOrder.products" @click="$router.push({name: '商品详情',query: {proSku: item.proSku}})">
                                 <div class="list_img">
@@ -146,8 +108,32 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="order_head"  v-if="orderDetailData.expressDeliveryName != '客户自提'">
+                            <div class="order_express">
+                                <img :src="express[orderListDetail.mainOrder.expressName]" /> {{ orderListDetail.mainOrder.expressName }}
+                                <span>{{ orderListDetail.mainOrder.expressNo }}</span>
+                            </div>
+                        </div>
                     </div>
                 </template>
+            </div>
+            <div class="order_address" v-if="orderDetailData.expressDeliveryName === '客户自提'" :class="{ 'on': pullOrDownShop }">
+                <div class="order_address_1">
+                    <div class="order_address_num">
+                        自提
+                    </div>
+                    <div class="order_address_icon">
+                        <span @click="pullOrDownShopMethod">门店地址<i class="iconfont" :class="{ 'icon-single-down': !pullOrDownShop,'icon-shang': pullOrDownShop }"></i></span>
+                    </div>
+                </div>
+                <div class="order_address_2">
+                    <div class="order_addrss_text">
+                        {{ orderDetailData.shopAddress }}
+                    </div>
+                    <div class="order_addrss_tel">
+                        联系电话：<a :href="linkShopTel">{{ orderDetailData.shopPhone }}</a>
+                    </div>
+                </div>
             </div>
         </div>
         <!-- 价格总 -->
@@ -213,7 +199,7 @@
             </div>
         </div>
         <!-- 按钮 -->
-        <div class="order_btn">
+        <div class="order_btn"  v-if="orderListDetail.mainOrder != null && orderListDetail.subOrder == null">
             <!-- <mt-button plain v-if="status === '待审核' || status === '待评价' || status === '待发货'" @click.native="confrimMethod">再次购买</mt-button> -->
             <mt-button plain v-if="orderDetailData.orderStatus === 'FINISH' && orderDetailData.isComment === false" class="pay_now" @click.native="commentMethod(orderDetailData.orderId)">评价</mt-button>
             <mt-button plain v-if="orderDetailData.orderStatus === 'WAIT_PAY' || orderDetailData.orderStatus === 'WAIT_CHECK'" @click.native="cancelMethod">取消订单</mt-button>
@@ -229,7 +215,7 @@
 </template>
 
 <script>
-import { MessageBox } from 'mint-ui';
+import { MessageBox,Toast } from 'mint-ui';
 import {mapGetters} from 'vuex';
 export default {
     data() {
@@ -239,18 +225,9 @@ export default {
             shopLogo: '../src_wap/assets/images/list_logo.png',
             isThird: true,
             express: {
-                sf: {
-                    img: '../src_wap/assets/images/sfkd.png',
-                    name: '顺丰快递'
-                },
-                st: {
-                    img: '../src_wap/assets/images/stkd.png',
-                    name: '申通快递'
-                },
-                ems: {
-                    img: '../src_wap/assets/images/emskd.png',
-                    name: 'EMS快递'
-                }
+                '顺丰快递': '../src_wap/assets/images/sfkd.png',
+                '申通E物流': '../src_wap/assets/images/stkd.png',
+                'EMS快递': '../src_wap/assets/images/emskd.png'
             },
             titleText: '订单详情',
             orderDetailData: {},
@@ -406,6 +383,9 @@ export default {
         ...mapGetters([
             'orderStatus'
         ]),
+        linkShopTel() {
+            return `tel//${this.orderDetailData.shopPhone}`;
+        }
     }
 }
 </script>
