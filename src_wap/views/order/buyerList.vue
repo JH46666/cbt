@@ -9,10 +9,10 @@
                 <div class="mt_cell_wrapper" v-if="orderNum != 0" v-infinite-scroll="loadMore" infinite-scroll-disabled="noInfinity" infinite-scroll-distance="10">
                     <mt-cell v-for="(item,index) in orderList" :key="index">
                         <div class="order_head">
-                            <div class="order_logo" v-if="item.sellerOrgId === 1">
+                            <div class="order_logo" v-if="item.sellerOrgId == null">
                                 <img :src="shopLogo" />自营
                             </div>
-                            <div class="order_icon" v-if="item.sellerOrgId == null">
+                            <div class="order_icon" v-else>
                                 <i class="iconfont">&#xe66d;</i>
                                 {{ item.shopName }}
                             </div>

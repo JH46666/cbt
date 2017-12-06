@@ -92,11 +92,24 @@
                     .color(#99928a);
                     height: .8rem;
                     .flex-1;
-                    span{
-                        .color(@mainCol);
+                    .flex;
+                    .flex-dir(row);
+                    label{
+                        width: 1rem;
+                    }
+                    input{
+                        padding-left: .24rem;
+                        width: 2rem;
+                        border: 0 none;
+                        .bg(#fafafa);
                     }
                     border-right: 1px solid #e5e5e5;
                     .line(.8rem);
+                    &:nth-child(2){
+                        label{
+                            width: 1.2rem;
+                        }
+                    }
                 }
                 i{
                     width: 1.4rem;
@@ -337,6 +350,10 @@
                     padding: 0;
                     .position(r);
                     height: 100%;
+                }
+                .mint-button.is-disabled {
+                    .bg(#e6e6e6);
+                    .color(#adadad);
                 }
             }
         }

@@ -1,6 +1,7 @@
 @import '~@/styles/base/tools.less';
 .freight_wrapper{
     .bg(#fff);
+    padding-bottom: 1.2rem;
     .f5-2{
         .bg(#f5f5f5);
         .h(.2rem);
@@ -78,9 +79,16 @@
         .line(.98rem);
         .algin(c);
         .bg(#f08200);
-        a{
-            .color(#fff);
-            .fontSize(.3rem);
+        .mint-button--primary{
+            width: 100%;
+            .bg(#f08200);
+            height: 100%;
+            border-radius: 0;
+        }
+        .mint-button.is-disabled {
+            .bg(#e6e6e6);
+            .color(#adadad);
+            opacity: 1;
         }
     }
     .popup-city{
@@ -127,8 +135,8 @@
                 .fontSize(.3rem);
                 font-weight: normal;
                 .color(#8f8881);
-                
-            }   
+
+            }
         }
         .check-cir{
             .w(.4rem);
@@ -153,10 +161,15 @@
             .fontSize(.3rem);
             .selected-btn{
                 .w(3.2rem);
-                .bg(#f08200);
-                .algin(c);
-                a{
-                    .color(#fff);
+                .mint-button--primary{
+                    width: 100%;
+                    .bg(#f08200);
+                    height: 100%;
+                    border-radius: 0;
+                }
+                .mint-button.is-disabled {
+                    .bg(#e6e6e6);
+                    .color(#adadad);
                 }
             }
         }
