@@ -5,12 +5,16 @@
                 <mt-tab-item id="active">可使用({{ active.canUseRedPacketList ? active.canUseRedPacketList.length : 0 | ninenineAdd }})</mt-tab-item>
                 <mt-tab-item id="disabled">不可使用({{ active.cannotUseRedPacketList ? active.cannotUseRedPacketList.length : 0 | ninenineAdd }})</mt-tab-item>
             </mt-navbar>
-            <div class="redpacket-content">
+            <div class="redpacket-content" 
+            :key="selected"
+            v-infinite-scroll="loadMore"
+            :infinite-scroll-disabled="false"
+            infinite-scroll-distance="10">
                 <div class="active-red" v-if="selected === 'active'">
                     <mt-button type="default" @click="showActiveRed">激活红包</mt-button>
                 </div>
                 <template v-for="(item,index) in list">
-                    <div class="redpacket-item" :class="{active: item.id === active.activeRed.id }" v-if="index < listNum">
+                    <div class="redpacket-item" :class="{active: item.id === activeRed,disabled:selected === 'disabled' }" v-if="index < listNum" @click="pick(item)">
                         <div class="hd">
                             <div class="left">
                                 <p>
@@ -38,7 +42,7 @@
                         </div>
                         <div class="bd">
                             <p class="tips" :class="{onlyone:item.one}">{{ item.remark }}</p>
-                            <div class="direction" @click="showMore(index)" v-if="item.remark ? item.remark.length > 24 : false">
+                            <div class="direction" @click.stop="showMore(index)" v-if="item.remark ? item.remark.length > 24 : false">
                                 <i class="icon-single-down" v-if="item.one"></i>
                                 <i class="icon-shang" v-else="!item.one"></i>
                             </div>
@@ -64,13 +68,19 @@
 
 
 <script>
+    import { mapState } from 'vuex'
     export default {
         data(){
             return {
                 selected: 'active',
                 active: {},
+                activeRed: null,
                 listNum: 3,
-                one: true
+            }
+        },
+        watch: {
+            selected() {
+                this.listNum = 3;
             }
         },
         computed: {
@@ -83,7 +93,10 @@
                 } else {
                     return this.active.cannotUseRedPacketList; 
                 }
-            }
+            },
+            ...mapState({
+                id: state => state.member.member.id
+            })
         },
         methods:{
             // 显示更多文字
@@ -92,28 +105,73 @@
             },
             // 激活红包
             showActiveRed() {
-                this.$messageBox({
-                    title: '',
-                    message: '激活优惠码',
-                    confirmButtonText: '立即激活',
-                    showCancelButton: true,
-                    showInput: true,
-                    inputPlaceholder: '请输入优惠码'
-                }).then((val) => {
-                    console.log(val)
-                })
+                this.$redActive().then(data => {
+                    this.$api.post('/member/redPacket/doActivateBySerialNumber',{
+                        memberId: this.id,
+                        sysId:1,
+                        serialNumber: data.redCode
+                    },res => {
+                        this.$toast('激活成功，已放入我的红包');
+
+                        // 从新拉取数据
+                        this.$store.dispatch('getRedList',{type: this.selected}).then(res => {
+                            for (let i = 0; i < res.data.length; i++) {
+                                res.data[i].showMore = false;
+                            }
+                            this.$store.commit('SET_REDPACKET',{type: this.selected + 'NUM',val: res.total_record})
+                            this.$store.commit('SET_REDPACKET',{type:this.selected,val: res.data})
+                        })
+                        this.pageNum = 1;
+
+                    },res => {
+
+                        let toast = {
+                            1000: '该激活码己被使用！',
+                            4018: '该激活码不存在或己过期！',
+                            4041: '该激活码不存在或己过期！',
+                            4042: '您的等级不允许领取该红包哟~',
+                            4043: '超出领用次数，请勿重复领取！',
+                            4061: '该激活码已超出领取时间，不可领取！',
+                            4048: '该激活码码仅在wap/pc平台领取'
+                        }
+
+                        this.$toast(toast[res.code])
+                    })
+                }).catch(() =>{})
+            },
+            // 无限滚动
+            loadMore() {
+                if(this.listNum < this.list.length) {
+                    setTimeout(() => {
+                        this.listNum += 3;
+                        if(this.listNum > this.list.length) {
+                            this.listNum = this.list.length;
+                        }
+                    },100)
+                }
             },
             // 取消按钮
             cancel() {
-                this.emit();
+                this.emit('close');
             },
             // 确定按钮
             confirm() {
-                this.emit();
+                this.active.useRedPacketId = this.activeRed;
+                this.emit('confirm');
             },
-            emit() {
+            // 选择红包
+            pick(item){
+                if(this.selected === 'disabled') return;
+                if(item.id === this.activeRed) {
+                    this.activeRed = -1;
+                } else {
+                    this.activeRed = item.id
+                }
+            },
+            // 触发事件
+            emit(type) {
+                this.$emit('close',type);
                 this.selected = 'active';
-                this.$emit('close');
             },
             setActive(val) {
                 this.active = val;
@@ -123,10 +181,7 @@
                 val.cannotUseRedPacketList.forEach(val => {
                     this.$set(val,'one',true);
                 })
-                // 给定默认的红包
-                if(!val.activeRed) {
-                    this.$set(val,'activeRed',val.canUseRedPacketList[0] || {})
-                }
+                this.activeRed = val.useRedPacketId;
             }
         }
     }
