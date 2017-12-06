@@ -210,18 +210,26 @@ export default {
             exampleFlag: false,
             addressShowOrHide: false,
             addressObj: {},
+            region: 'oss-cn-hangzhou',
+            bucket: 'imgcbt',
+            path: 'test_path/',
+        }
+    },
+    created() {
+        if(process.env.NODE_ENV != 'development'){
+            this.path = 'online_img/';
         }
     },
     computed: {
         iSubmit() {
-            if(this.registClass === 0){
-                if(this.formData.shopName != '' && this.formData.shopTel != '' && this.formData.shopArea != '' && this.formData.shopAddress != '' && this.formData.shopPayNumber != '' && this.formData.licenseImgUrl.length === 1){
+            if(this.registClass === 1){
+                if(this.formData.shopName != '' && this.formData.shopTel != '' && this.formData.shopArea != '' && this.formData.shopAddress != '' && this.formData.shopPayNumber != '' && this.licenseImg.length === 1){
                     return false;
                 }else{
                     return true;
                 }
             }else{
-                if(this.formData.shopName != '' && this.formData.shopTel != '' && this.formData.shopArea != '' && this.formData.shopAddress != '' && this.formData.shopImgUrl.length === 1){
+                if(this.formData.shopName != '' && this.formData.shopTel != '' && this.formData.shopArea != '' && this.formData.shopAddress != '' && this.shopImg.length === 1){
                     return false;
                 }else{
                     return true;
@@ -253,17 +261,17 @@ export default {
                     this.shopImg =  [{'imgUrl': e.target.result}];
                     this.exampleFlag = false;
                 }
-                this.shopImgFile = ev.target.files[0];
+                this.shopImgFile = [ev.target.files[0]];
             }else if(type === 'shop_lic'){
                 reader.onload = (e)=>{
                     this.licenseImg =  [{'imgUrl': e.target.result}];
                 }
-                this.licenseImgFile = ev.target.files[0];
+                this.licenseImgFile = [ev.target.files[0]];
             }else if(type === 'shop_pro'){
                 reader.onload = (e)=>{
                     this.productImg =  [{'imgUrl': e.target.result}];
                 }
-                this.productImgFile = ev.target.files[0];
+                this.productImgFile = [ev.target.files[0]];
             }
         },
         random_string(len) {
@@ -289,7 +297,7 @@ export default {
                 })
             })
         },
-        doUpload () {
+        doUpload() {
             let flag = {
                 shop: 0,
                 lic: 0,
@@ -310,11 +318,13 @@ export default {
                         stsToken: res.data.securityToken,
                         bucket: this.bucket
                     })
+                    console.log(client);
                     for(let i=0; i<this.shopImgFile.length; i++){            // 主图
-                        let random_name =res.data.basePath + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.mainImgFile[i].name.split('.').pop()
+                        console.log(this.shopImgFile[i]);
+                        let random_name =res.data.basePath + this.random_string(6) + '_' + new Date().getTime() + '.' + this.shopImgFile[i].name.split('.').pop()
                         client.multipartUpload(random_name, this.shopImgFile[i]).then((results) => {
                             const url = '//img0.oteao.com/'+ results.name;
-                            this.shopImgUrl = [{'url': url}];
+                            this.shopImgUrl = [url];
                             flag.shop++;
                             isFlag(resolve,reject);
                         }).catch((err) => {
@@ -323,10 +333,10 @@ export default {
                         })
                     }
                     for(let i=0; i<this.licenseImgFile.length; i++){            // 主图
-                        let random_name =res.data.basePath + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.mainImgFile[i].name.split('.').pop()
+                        let random_name =res.data.basePath + this.random_string(6) + '_' + new Date().getTime() + '.' + this.licenseImgFile[i].name.split('.').pop()
                         client.multipartUpload(random_name, this.licenseImgFile[i]).then((results) => {
                             const url = '//img0.oteao.com/'+ results.name;
-                            this.licenseImgUrl = [{'url': url}];
+                            this.licenseImgUrl = [url];
                             flag.lic++;
                             isFlag(resolve,reject);
                         }).catch((err) => {
@@ -338,7 +348,7 @@ export default {
                         let random_name =res.data.basePath + this.random_string(6) + '_' + new Date().getTime() + '.' + this.productImgFile[i].name.split('.').pop()
                         client.multipartUpload(random_name, this.productImgFile[i]).then((results) => {
                             const url = '//img0.oteao.com/'+ results.name;
-                            this.productImgUrl = [{'url': url}];
+                            this.productImgUrl = [url];
                             flag.pro++;
                             isFlag(resolve,reject);
                         }).catch((err) => {
@@ -351,6 +361,7 @@ export default {
         },
         submitMethod() {
             this.doUpload().then(() => {
+                console.log(111111111);
                 this.postMember();
             })
         },
@@ -365,23 +376,19 @@ export default {
                     "contactor": this.formData.shopTel,
                     "detailAddress": this.formData.shopAddress,
                     "device": 'WAP',
-                    "facadePics": this.shopImgUrl[0].url,
+                    "facadePics": this.shopImgUrl[0],
                     "orgName": this.formData.shopName,
-                    "provinceCode": this.formData.provinceCode,
-                    "provinceName": this.formData.provinceName,
-                    "shop": {
-                        "businessLicensePic": "string",
-                        "createTime": "2017-12-05T01:09:30.646Z",
-                        "orgId": 0,
-                        "produceLicensePic": "string",
-                        "qsLicensePic": "string",
-                        "shopId": 0,
-                        "shopName": "string",
-                        "shopStatus": 0,
-                        "shopType": 0,
-                        "updateId": 0
-                    }
+                    "provinceCode": this.addressObj.provinceCode,
+                    "provinceName": this.addressObj.provinceName
                 }
+                this.$api.post('/oteao/login/fillOrgInfo',JSON.stringify(data),res => {
+                    
+                },res=>{
+                    return Toast({
+                        message: res.errorMsg,
+                        iconClass: 'icon icon-fail'
+                    });
+                })
             }else{
                 data = {
                     'alipayAccount': this.formData.shopPayNumber,
@@ -393,47 +400,47 @@ export default {
                     "detailAddress": this.formData.shopAddress,
                     "device": 'WAP',
                     "orgName": this.formData.shopName,
-                    "provinceCode": this.formData.provinceCode,
-                    "provinceName": this.formData.provinceName,
+                    "provinceCode": this.addressObj.provinceCode,
+                    "provinceName": this.addressObj.provinceName,
                     "shop": {
-                        "businessLicensePic": this.licenseImgUrl[0].url,
-                        "produceLicensePic": this.licenseImgUrl[0].url,
-                        "qsLicensePic": this.productImgUrl[0].url,
+                        "businessLicensePic": this.licenseImgUrl[0],
+                        "produceLicensePic": this.licenseImgUrl[0],
+                        "qsLicensePic": this.productImgUrl[0],
                         "shopType": this.sellerClass+1,
                     }
                 }
                 if(this.sellerClass === 0){
                     data.shop = {
-                        "businessLicensePic": this.licenseImgUrl[0].url,
-                        "produceLicensePic": this.licenseImgUrl[0].url,
+                        "businessLicensePic": this.licenseImgUrl[0],
+                        "produceLicensePic": this.licenseImgUrl[0],
                         "shopType": 1,
                     }
                 }else if(this.sellerClass === 1){
                     data.shop = {
-                        "businessLicensePic": this.licenseImgUrl[0].url,
-                        "qsLicensePic": this.productImgUrl[0].url,
+                        "businessLicensePic": this.licenseImgUrl[0],
+                        "qsLicensePic": this.productImgUrl[0],
                         "shopType": 2,
                     }
                 }else if(this.sellerClass === 2){
                     data.shop = {
-                        "businessLicensePic": this.licenseImgUrl[0].url,
+                        "businessLicensePic": this.licenseImgUrl[0],
                         "shopType": 3,
                     }
                 }else if(this.sellerClass === 3){
                     data.shop = {
-                        "businessLicensePic": this.licenseImgUrl[0].url,
+                        "businessLicensePic": this.licenseImgUrl[0],
                         "shopType": 4,
                     }
                 }
+                this.$api.post('/oteao/login/fillShop',JSON.stringify(data),res => {
+
+                },res=>{
+                    return Toast({
+                        message: res.errorMsg,
+                        iconClass: 'icon icon-fail'
+                    });
+                })
             }
-            this.$api.post('/oteao/login/fillOrgInfo',JSON.stringify(data),res => {
-                    console.log(res);
-            },res=>{
-                return Toast({
-                    message: res.errorMsg,
-                    iconClass: 'icon icon-fail'
-                });
-            })
         }
     }
 }
