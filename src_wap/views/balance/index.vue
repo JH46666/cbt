@@ -75,7 +75,7 @@
                             红包
                         </div>
                         <div class="center">
-                            - {{ myData.redPacketDeduction | toFix2   }}
+                            - {{ item.redPacketDeduction | toFix2   }}
                         </div>
                         <div class="right">
                             <i class="icon-xiangyou"></i>
@@ -125,8 +125,8 @@
             </section>
         </div>
         <section class="save-order">
-            <p class="price">应付：<span class="gold">￥{{ myData.proTotalAmount | toFix2 }}</span></p>
-            <mt-button type="default" :disabled="disabled">提交订单</mt-button>
+            <p class="price">应付：<span class="gold">￥{{ totalPrice | toFix2 }}</span></p>
+            <mt-button type="default" :disabled="disabled" @click="upOrder">提交订单</mt-button>
         </section>
 
         <!-- 选择快递弹出 -->
@@ -145,6 +145,7 @@
     import payType from './payType.vue';
     import redpacketPannel from './repacketPannel.vue'
     import { mapState } from 'vuex'
+    import store from 'store';
     export default{
         components: {
             payType,
@@ -180,10 +181,25 @@
             },
             // 总计价钱
             totalPrice() {
-
+                let math = this.$tool.math;
+                let sum = 0;
+                this.pannel.forEach(val => {
+                    sum = math.add(sum,val.totalProductAmountAfterPromotion);
+                    // 计算运费
+                    let map = val.payAndDeliveryAndfreightMap;
+                    if(val.currentPayMethod === 'ONLINE') {
+                        let price = map['ONLINE'][val.currentDeliveryMethod];
+                        sum = math.add(sum,price);
+                    } else {
+                        let price = map['CASH_DELIVERY'][val.currentDeliveryMethod];
+                        sum = math.add(sum,price);
+                    }
+                })
+                return sum;
             },
             ...mapState({
-                id: state => state.member.member.id
+                id: state => state.member.member.id,
+                totalAmount: state => state.member.memberAccount.totalAmount
             })
         },
         methods: {
@@ -206,6 +222,9 @@
             // 红包弹窗关闭时，不管确定还是取消
             closeRedpacket(data) {
                 this.showRedpacket = false;
+                if(data === 'confirm') {
+                    this.upDate();
+                }
             },
             // 点击底下地址返回顶部
             gotoTop() {
@@ -239,8 +258,8 @@
                     },res => {
                         if(res.code === 4065) {
                             this.$toast(res.message);
-                            this.$router.go(-1)
                         }
+                        this.$router.go(-1)
                     })
                 })
             },
@@ -258,7 +277,7 @@
                         "orderRemark": val.remark,
                         "payMethodCode": val.currentPayMethod,
                         "sellerOrgId": val.orgId,
-                        "useRedPacketId": 0
+                        "useRedPacketId": val.useRedPacketId
                     })
                 })
 
@@ -283,11 +302,79 @@
 
                 })
             },
+            // 提交订单
+            upOrder() {
+                let orgSettleRequestList = [];
+
+                // 表示货到付款还是在线支付
+                let online = false,delivery = false;
+
+                // 遍历每个店铺，更新数据
+                this.pannel.forEach(val => {
+                    orgSettleRequestList.push({
+                        "deliveryMethodCode": val.currentDeliveryMethod,
+                        "invoiceCode": "NOT_INVOICE",
+                        "invoiceTitle": "string",
+                        "isUseIntegral": 0,
+                        "orderRemark": val.remark,
+                        "payMethodCode": val.currentPayMethod,
+                        "sellerOrgId": val.orgId,
+                        "useRedPacketId": val.useRedPacketId
+                    })
+
+                    // 获取支付状态 在线or货到付款
+                    if(val.currentPayMethod === 'ONLINE') {
+                        online = true;
+                    } else {
+                        delivery = true;
+                    }
+
+
+                })
+                
+                let data = {
+                    "cartIds": this.cartList,
+                    "device": "WAP",
+                    orgSettleRequestList,
+                    "receiveAddrId": this.address.id,
+                    "sysId": 1,
+                    "useBackBalance": 0,
+                    "useStoreBalance": 0
+                }
+                // 禁用提交按钮，防止重复提交
+                this.disabled = true;
+
+
+
+
+                this.$api.post('/oteao/shoppingCart/submitOrder',JSON.stringify(data),res => {
+
+                    // 都是在线支付
+                    if(online && !delivery) {
+                        this.$router.push({name: '收银台',query: {payId: res.data.payId}});
+                    }
+
+                    // 货到付款
+                    if(!online && delivery) {
+                        if(this.totalAmount > 0) {
+                            this.$router.push({name: '结算成功',query: {payId: res.data.payId}});
+                        } else {
+                            this.$router.push({name: '货到付款结算',query: {payId: res.data.payId}});
+                        }
+                    }
+
+                    // 在线支付 + 货到付款
+                    if(online && delivery) {
+                        this.$router.push({name: '货到付款结算',query: {payId: res.data.payId}});
+                    }
+
+                })
+            },
             // 修改地址
             editAddress() {
                 sessionStorage.setItem('edit',true);
                 sessionStorage.setItem('cart',this.cartList);
-                sessionStorage.setItem('remark',JSON.stringify(this.getRemark()))
+                this.backupsData();
                 this.$router.push('/center/address');
             },
             // 得到备注
@@ -296,10 +383,43 @@
                     return val.remark;
                 })
             },
-            setRemark(data) {
+            // 备份数据
+            backupsData() {
+                // 离开当前页去改地址与发票需要备份备注，红包以及付款方式
+
+                // 备注
+                sessionStorage.setItem('remark',JSON.stringify(this.getRemark()));
+
+                // 激活的红包
+                sessionStorage.setItem('redpacket',JSON.stringify(this.pannel.map(val => val.useRedPacketId)));
+
+                // 支付方式
+                sessionStorage.setItem('paymethod',JSON.stringify(this.pannel.map(val => val.currentPayMethod)));
+
+                // 快递方式
+                sessionStorage.setItem('express',JSON.stringify(this.pannel.map(val => val.currentDeliveryMethod)));
+
+            },
+            // 恢复数据
+            recoveryData() {
+                let remark = JSON.parse(sessionStorage.remark);
+                let redpacket = JSON.parse(sessionStorage.redpacket);
+                let paymethod = JSON.parse(sessionStorage.paymethod);
+                let express = JSON.parse(sessionStorage.express);
+
+
                 this.pannel.forEach((val, i) => {
-                    val.remark = data[i];
+                    val.remark = remark[i];
+                    val.useRedPacketId = redpacket[i];
+                    val.currentPayMethod = paymethod[i];
+                    val.currentDeliveryMethod = express[i];
                 })
+
+                delete sessionStorage.remark;
+                delete sessionStorage.redpacket;
+                delete sessionStorage.paymethod;
+                delete sessionStorage.express;
+
             }
         },
         created() {
@@ -310,19 +430,34 @@
                 // 判断是不是去修改地址
                 let cart = sessionStorage.cart;
                 let address = sessionStorage.address;
-                let remark = sessionStorage.remark;
 
                 if(this.cartList === cart && address) {
                     this.address = JSON.parse(address);
-                    this.setRemark(JSON.parse(remark));
                     delete sessionStorage.cart;
                     delete sessionStorage.address;
-                    delete sessionStorage.remark;
+                    this.recoveryData();
                     this.upDate();
                 } else {
                     this.address = this.myData.receiveAddrList.filter(val => val.isDefault)[0]
                 }
             })
+        },
+        beforeRouteEnter(to, from, next){
+
+            // 先获取会员的id
+            if(!store.state.member.member.id) {
+                store.dispatch('getMemberData').then((res) => {
+                    next();
+                }).catch(res => {
+                    if(res.code === 2000){
+                        next(vm => {
+                            vm.$router.go(-1);
+                        })
+                    }
+                })
+            } else {
+                next();
+            }
         }
     }
 </script>

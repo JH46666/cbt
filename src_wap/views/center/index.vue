@@ -30,7 +30,7 @@
                 </div>
             </div>
             <div class="bd">
-                <p class="bd-text">累积消费￥{{ memberAccount.growthValue }}，还差￥{{ level.cumulativeConsume - memberAccount.growthValue }}晋升{{ level.memberLevelName  }}</p>
+                <p class="bd-text">累积消费￥{{ memberAccount.growthValue }}，还差￥{{ level.cumulativeConsume - memberAccount.growthValue }}晋升{{ level.lever + level.memberLevelName  }}</p>
             </div>
         </section>
         <section class="count-entry">
