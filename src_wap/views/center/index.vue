@@ -7,7 +7,7 @@
                     <div class="user" v-else>{{ member.phone | filterPhone }}</div>
                     <div class="sign">
                         <div class="sign-btn">
-                            <span>+ {{ sign.nextSign }}积分</span>
+                            <span>+ {{ sign.returnResult ? sign.signed : sign.nextSign }}积分</span>
                             <mt-button size="small" @click="signTo" :disabled="sign.returnResult">
                                 <template v-if="!sign.returnResult">
                                     签到领取
