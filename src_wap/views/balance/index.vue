@@ -22,7 +22,7 @@
                             <div class="right">
                                 <p class="goods-title">{{ todo.proName }}</p>
                                 <p class="goods-bd">
-                                    <span class="price">￥{{ todo.actualPayPrice | toFix2  }}</span>
+                                    <span class="price">￥{{ todo.priorityPrice | toFix2  }}</span>
                                     <span class="num">×{{ todo.buyNum }}</span>
                                 </p>
                             </div>

@@ -30,7 +30,7 @@
                 </div>
             </div>
             <div class="bd">
-                <p class="bd-text">累积消费￥{{ memberAccount.growthValue }}，还差￥{{ level.cumulativeConsume - memberAccount.growthValue }}晋升{{ level.lever + level.memberLevelName  }}</p>
+                <p class="bd-text">累积消费￥{{ memberAccount.growthValue || 0 }}，还差￥{{ level.cumulativeConsume - memberAccount.growthValue }}晋升{{ level.lever + level.memberLevelName  }}</p>
             </div>
         </section>
         <section class="count-entry">
@@ -91,7 +91,7 @@
                 <div class="left"><i class="icon-xiugaimima"></i>修改密码</div>
                 <div class="right"><i class="icon-icon07"></i></div>
             </router-link>
-            <router-link :to="{name: '卖家注册'}" class="tools-entry" v-if="!shop">
+            <router-link :to="{name: '卖家招募'}" class="tools-entry" v-if="!shop">
                 <div class="left"><i class="icon-zhongxindianpu"></i>申请为卖家</div>
                 <div class="right"><i class="icon-icon07"></i></div>
             </router-link>
@@ -161,7 +161,7 @@
         beforeRouteEnter (to, from, next) {
             next(vm => {
                 vm.$store.dispatch('getMemberData').then(res =>{
-                    let status = res.orgDTO.status;
+                    let status = res.shop.shopStatus;
                     if(status === 2) {
                         vm.$store.dispatch('viewSign')
                         vm.$store.dispatch('getRedTotal')

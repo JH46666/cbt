@@ -56,7 +56,7 @@
                 <mt-spinner type="fading-circle" color="#f08200"></mt-spinner>
                 <span class="loading-text">正在努力加载中</span>
             </div>
-            <div class="no-more" v-if="nomore">没有更多了呦~</div>
+            <div class="no-more" v-if="nomore && list.length !== 0">没有更多了呦~</div>
         </section>
         <section class="redpacket-bd" v-if="selected === 'UNUSED' && id">
             <mt-button type="default" @click="activeRed">激活红包</mt-button>

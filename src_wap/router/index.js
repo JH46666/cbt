@@ -165,6 +165,14 @@ const router = new Router({
 					}
 				},
 				{
+					path: 'payview',
+					name: '结算显示',
+					component: resolve => require(['@/views/balance/payView.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+				{
 					path: 'success',
 					name: '结算成功',
 					component: resolve => require(['@/views/balance/payView.vue'],resolve),
