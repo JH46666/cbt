@@ -2,7 +2,7 @@
     <div id="pay-view">
         <div class="hd">
             <!-- 失败 -->
-            <template v-if="$route.name === '结算失败'">
+            <!-- <template v-if="$route.name === '结算显示'">
                 <div class="fail-text">
                     <i class="icon-zhifushibai"></i>支付失败
                 </div>
@@ -10,15 +10,15 @@
                     <mt-button type="default">查看订单</mt-button>
                     <mt-button type="default">立即支付</mt-button>
                 </div>
-            </template>
+            </template> -->
             <!-- 成功 -->
-            <template v-if="$route.name === '结算成功'">
+            <template v-if="$route.name === '结算显示'">
                 <div class="success-text">
                     <i class="icon-zhifuchenggong"></i>支付成功
                 </div>
                 <div class="success-btn-wrap">
                     <mt-button type="default">查看订单</mt-button>
-                    <mt-button type="default">返回首页</mt-button>
+                    <mt-button type="default" @click="$router.push('/')">返回首页</mt-button>
                 </div>
             </template>
             <!-- 货到付款 -->
@@ -35,19 +35,23 @@
         </div>
         <div class="bd">
             <div class="text-item">
-                <div class="left">陈达团子</div>
-                <div class="right">18606062601</div>
+                <div class="left">{{ address.receiptName }}</div>
+                <div class="right">{{ address.phone }}</div>
             </div>
             <div class="text-item">
-                <p>公交总站对面公交总站对面公交总站对面公交总站对面公交总站对面公交总站对面公交总站对面公交总站对面公交总站对面公交总站对面公交总站对面公交总站对面公交总站对面公交总站对面</p>
+                <p>{{ address.address }}</p>
             </div>
             <div class="text-item">
                 <div class="left">待付金额：</div>
                 <div class="right"><span class="gold">￥5000</span></div>
             </div>
             <div class="text-item">
+                <div class="left">已付金额：</div>
+                <div class="right"><span class="gold">￥{{ order.orderSum | toFix2 }}</span></div>
+            </div>
+            <div class="text-item">
                 <div class="left">支付方式：</div>
-                <div class="right">在线支付</div>
+                <div class="right">{{ payType[order.payType] }}</div>
             </div>
         </div>
         <!-- 猜你喜欢 -->
@@ -56,10 +60,65 @@
 </template>
 
 <script>
+    import { mapState } from 'vuex'
+    import store from 'store';
+    import api from 'api';
     export default {
         data() {
             return {
-                
+                myData: {},
+                payType: {
+                    ONLINE: '在线支付'
+                }
+            }
+        },
+        computed: {
+            address() {
+                return this.myData.OrderConsignee || {};
+            },
+            order() {
+                return this.myData.payOrder || {};
+            }
+        },
+        methods: {
+            // 设置数据
+            setData(data) {
+                this.myData = data;
+            }
+        },
+        beforeRouteEnter(to, from, next) {
+
+            // 判断付款单
+            if(!to.query.payId) {
+                next(vm => vm.$router.push('/'))
+            }
+
+            // 判断是否登陆
+            let getData = () => {
+                api.post('/oteao/payOrder/queryPayOrderById',{
+                    payOrderId: to.query.payId
+                },res => {
+                    next(vm => {
+                        vm.setData(res.data)
+                    })
+                },res => {
+                    next(vm => {
+                        vm.$toast(res.message);
+                        vm.$router.go(0);
+                    })
+                })
+            }
+
+            if(store.state.member.member.id) {
+                getData();
+            } else {
+                store.dispatch('getMemberData').then(res => {
+                    getData();
+                }).catch(res =>{
+                    next(vm => {
+                        vm.router.push('/login')
+                    })
+                })
             }
         }
     }

@@ -79,7 +79,7 @@
                     <span><i class="icon-yunfeipeizhi"></i></span>
                     <p>运费配置</p>
                 </router-link>
-                <router-link :to="{name: '商品管理'}" class="item">
+                <router-link :to="{name: '活动列表'}" class="item">
                     <span><i class="icon-tejiaguanli"></i></span>
                     <p>限时特价</p>
                 </router-link>

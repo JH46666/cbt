@@ -100,7 +100,9 @@
     .floor3{
         padding: 0 .35rem;
         .confirm-pay{
+            border: none;
             display: block;
+            .w(100%);
             .algin(c);
             .bg(#f08200);
             .color(#fff);
@@ -108,6 +110,9 @@
             margin-top: .56rem;
             .line(1.04rem);
             .reduis(3px);
+        }
+        .confirm-pay[disabled] {
+            opacity: .5;
         }
     }
 }
