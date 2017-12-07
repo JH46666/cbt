@@ -51,7 +51,8 @@
         },
         computed: {
             ...mapState({
-                member: state => state.member.memberAccount
+                member: state => state.member.memberAccount,
+                id: state => state.member.member.id
             }),
         },
         methods: {
@@ -60,7 +61,7 @@
                     this.$api.get('/member/balanceRecord/searchBalanceRecord',{
                         'page.pageNumber': page,
                         'page.pageSize': 10,
-                        'memberId': this.member.id,
+                        'memberId': this.id,
                         'sysId': 1,
                         'searchTime': 'ALL_AGO'
                     },res => {
@@ -85,7 +86,7 @@
         },
         created() {
             // 判断是否刷新导致会员信息丢失
-            if(this.member.id === undefined) {
+            if(this.id === undefined) {
                 this.$store.dispatch('getMemberData').then(res => {
                     this.getData();
                 }).catch(res => {

@@ -59,7 +59,7 @@
                 <span class="loading-text">正在努力加载中</span>
             </div>
             <div class="no-more" v-if="nomore && list.length !== 0">没有更多了呦</div>
-            <div class="mt_empty_wrapper">
+            <div class="mt_empty_wrapper" v-if="list.length === 0">
                 <div class="empty_img">
                     <img src="../../assets/images/empty_list.png" />
                 </div>
