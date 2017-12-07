@@ -58,7 +58,13 @@
                 <mt-spinner type="fading-circle" color="#f08200"></mt-spinner>
                 <span class="loading-text">正在努力加载中</span>
             </div>
-            <div class="no-more" v-if="nomore">没有更多了呦</div>
+            <div class="no-more" v-if="nomore && list.length !== 0">没有更多了呦</div>
+            <div class="mt_empty_wrapper">
+                <div class="empty_img">
+                    <img src="../../assets/images/empty_list.png" />
+                </div>
+                <p class="empty_text">您还没有相关的订单哟~</p>
+            </div>
         </section>
         <!-- 关闭订单部分 -->
         <mt-popup
