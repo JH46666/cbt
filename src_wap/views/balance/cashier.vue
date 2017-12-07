@@ -19,7 +19,7 @@
                 :options="options">
             </mt-radio>
         </div>
-        <div class="floor3"><a class="confirm-pay" href="javscript:void(0);" @click="pay">确定支付 <span>￥{{ myData.orderSum | toFix2 }}</span></a></div>
+        <div class="floor3"><button class="confirm-pay" @click="pay" :disabled="disabled">确定支付 <span>￥{{ myData.orderSum | toFix2 }}</span></button></div>
         <div id="form" v-html="form"></div>
     </div>
 </template>
@@ -44,7 +44,8 @@
                         value: 'WECHAT'
                     }
                 ],
-                form: ''
+                form: '',
+                disabled: false
             }
         },
         computed: {
@@ -65,6 +66,7 @@
             // 支付
             pay() {
                 let method = this.payMethod;
+                this.disabled = true;
 
                 if(this.isUse) {
                     // 使用余额
@@ -74,7 +76,8 @@
                         // 支付宝
 
                         this.$api.post('/payOrder/aliPay',{
-                            payId: this.payId
+                            payId: this.payId,
+                            device: 'WAP'
                         },res => {
                             // 过滤传过来的script标签
                             let str = res.data.replace(/<script.*?>.*?<\/script>/ig, '');

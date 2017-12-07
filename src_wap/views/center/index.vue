@@ -26,7 +26,7 @@
                     <div class="experience-bar">
                         <div class="experience" :style="{width:memberAccount.growthValue / level.cumulativeConsume * 100 + '%'}"></div>
                     </div>
-                    {{ memberAccount.growthValue }} &nbsp;/&nbsp; {{ level.cumulativeConsume }}
+                    {{ memberAccount.growthValue || 0 }} &nbsp;/&nbsp; {{ level.cumulativeConsume }}
                 </div>
             </div>
             <div class="bd">
