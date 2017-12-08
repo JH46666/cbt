@@ -120,14 +120,14 @@
                                 {{ item.propName }}
                             </label>
                             <div class="item-right" @click="clickSelProVal(index)">
-                                <input type="text" :readonly="item.propValList.length>0" :id="index+12" v-model="item.proVal" placeholder="非必填" />
+                                <input type="text" :id="index+12" v-model="item.propertiesVal.propVal" placeholder="非必填" />
                             </div>
-                            <i class="iconfont" @click="clickSelProVal(index)" v-if="item.propValList.length>0">&#xe744;</i>
-                            <mt-popup v-model="item.proShowHide" position="bottom" v-if="item.propValList.length>0">
+                            <i class="iconfont" @click="clickSelProVal(index)">&#xe744;</i>
+                            <!-- <mt-popup v-model="item.proShowHide" position="bottom">
                                 <div class="close-wrap">
                                     <p class="close-tip"  v-for="(secobj,secindex) in item.propValList" :class="{on: index === item.proIndex}" :key="index" @click="selectPro(item,secindex,secobj)">{{ secobj.propVal }}<i class="iconfont">&#xe684;</i></p>
                                 </div>
-                            </mt-popup>
+                            </mt-popup> -->
                         </div>
                     </div>
                 </div>
@@ -186,6 +186,8 @@ export default {
             twoTypeList: [],
             clickSure: true,
             device: 'PC',
+            proSku: 0,
+            detailObj: {},
         }
     },
     watch: {
@@ -423,11 +425,9 @@ export default {
             }
         },
         getBrandList() {
-            let data = {
-                sysId: 1
-            }
+            let data = {}
             return new Promise((resolve,reject) => {
-                this.$api.get('/OteaoProductBrand/findProductBrandByListSysId',data,res => {
+                this.$api.get('/OteaoProductBrand/findProductBrand',data,res => {
                     resolve(res);
                 },res=>{
                     return Toast({
@@ -451,7 +451,41 @@ export default {
                     });
                 })
             })
-        }
+        },
+        getDetail() {
+            let data = {
+                    sysId: 1,
+                    device: 'WAP',
+                    productSku: this.proSku
+                }
+            return new Promise((resolve,reject) => {
+                this.$api.get('/oteaoProduct/getProExtInfo',data,res => {
+                    resolve(res);
+                },res=>{
+                    return Toast({
+                        message: res.errorMsg,
+                        iconClass: 'icon icon-fail'
+                    });
+                })
+            })
+        },
+        getAttrOrImg() {
+            let data ={
+                sysId: 1,
+                productSku: this.proSku,
+                device: 'WAP'
+            };
+            return new Promise((resolve,reject) => {
+                this.$api.get('/oteaoProduct/getProExtDetail',data,res => {
+                    resolve(res);
+                },res=>{
+                    return Toast({
+                        message: res.errorMsg,
+                        iconClass: 'icon icon-fail'
+                    });
+                })
+            })
+        },
     },
     computed: {
         ...mapGetters([
@@ -469,6 +503,28 @@ export default {
         this.wxFlag = this.$tool.isWx;
     },
     created() {
+        this.proSku = this.$route.query.edit;
+        this.getDetail().then((res) => {
+            this.detailObj = res.data;
+            this.resize.form.goodsName = this.detailObj.productInfo.proName;
+            this.resize.form.goodsDw = this.detailObj.productInfo.unint;
+            this.resize.form.goodsBrand = this.detailObj.productInfo.brandName;
+            this.resize.form.goodsJz = this.detailObj.productInfo.netWeight;
+            this.resize.form.goodsMz = this.detailObj.productInfo.weight;
+            this.resize.form.goodsKc = this.detailObj.productInfo.stockNum;
+            this.resize.form.goodsSx = this.detailObj.productPrice[0].price;
+            this.resize.form.goodTypes = this.detailObj.productInfo.catName;
+            this.resize.form.goodsPtsj = this.detailObj.productPrice[1].price;
+            this.resize.form.goodsSell = this.detailObj.productExtInfo.reason;
+            for(let oj of this.detailObj.productImgList){
+                this.resize.mainImg.push({
+                    'imgSrc': obj.imgUrl
+                })
+            }
+            this.getAttrOrImg().then((rs) => {
+                this.resize.proValList = rs.data.propValList;
+            })
+        })
         this.getOneTypeList().then((res) => {
             let parentList = res.data;
             for(let obj of parentList){

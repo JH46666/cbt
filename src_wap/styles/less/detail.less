@@ -457,11 +457,12 @@
                     }
                 }
                 .mint_cell_img_content{
-                    padding: .4rem .2rem;
+                    padding: .4rem .2rem 0;
                     .line(1.5);
                     .fontSize(.26rem);
                     .color(#666);
                     text-indent: .52rem;
+                    width: 100%;
                 }
                 &.mint_cell_img_wrapper{
                     .mint-cell{
@@ -487,6 +488,7 @@
                         .flex;
                         .flex-dir;
                         .fontSize(.26rem);
+                        width: 100%;
                         .comment_head{
                             .flex;
                             .flex-dir(row);
@@ -504,7 +506,6 @@
                                 }
                             }
                             .comment_head_time{
-                                width: 1.6rem;
                                 .algin(r);
                                 .color(#999);
                             }
@@ -514,6 +515,8 @@
                             .color(#666);
                             .line(1.5);
                             max-height: none;
+                            width: 100%;
+                            text-indent: .48rem;
                             .position(r);
                             &.on{
                                 max-height: 1.9rem;
