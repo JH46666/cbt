@@ -5,21 +5,21 @@
                 <div>
                     <img src="../../assets/images/all_income.png" />总销售额
                 </div>
-                <div>400.00</div>
+                <div>{{ myData.allRevenue | toFix2 }}</div>
             </div>
             <div class="income_head_center">
                 <div>
-                    <span>4000.00</span>
+                    <span>{{ myData.finshSum | toFix2 }}</span>
                     <span>已结算（元）</span>
                 </div>
                 <div>
-                    <span>4000.00</span>
+                    <span>{{ myData.unFinshSum | toFix2 }}</span>
                     <span>未结算（元）</span>
                 </div>
             </div>
             <div class="income_head_bottom">订单状态为完成时，订单收入才会转到您的账上呦~</div>
         </div>
-        <router-link :to="{name: '卖家订单明细'}" tag="div" class="income_content">
+        <router-link :to="{name: '卖家订单明细',query:{type: 'allRevenue'}}" tag="div" class="income_content">
             <i class="iconfont">&#xe67e;</i>
             <span>订单明细</span>
             <i class="iconfont">&#xe744;</i>
@@ -27,7 +27,7 @@
         <div class="income_content">
             <i class="iconfont">&#xe67b;</i>
             <span>今日交易额</span>
-            <span>3000.00</span>
+            <span>{{ myData.nowRevenue | toFix2 }}</span>
         </div>
         <div class="income_list">
             <div class="list_item" v-for="(item,i) in list">
@@ -50,16 +50,21 @@ import store from 'store';
 export default {
     data() {
         return {
-            list: []
+            list: [],
+            myData: {}
         }
     },
     created() {
         this.$api.post('/oteao/order/preSellerOrderList',{
+            'orderStatus': 'nowRevenue',
             pageNumber: 1,
-            pageSize: 10,
+            pageSize: 99999,
             device: 'WAP'
         },res => {
             this.list = res.data.order || [];
+        })
+        this.$api.post('/oteao/order/countRevenueBySeller',{},res => {
+            this.myData = res.data;
         })
     },
     // 判断登陆

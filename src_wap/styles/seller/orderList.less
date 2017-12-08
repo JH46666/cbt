@@ -174,36 +174,72 @@
     .h(8.4rem);
     .w(100%);
     .popup-content{
-        padding: .34rem .36rem .12rem;
+        padding: 0 0rem 1rem;
         .h(7.4rem);
+        .bg(#f5f5f5);
         overflow-y: auto; 
     }
-    .con-item{
-        h4{
-            .fontSize(.3rem);
-            .color(#666);
-            margin-bottom: .2rem;
-            margin-top: .12rem;
-            font-weight: normal;
+    .title{
+        .line(.97rem);
+        .fontSize(.3rem);
+        .color(#666);
+        .paddingL(.36rem);
+        font-weight: normal;
+        border-bottom: 1px solid #e5e5e5;
+    }
+    .date-row{
+        border-bottom: 1px solid #e5e5e5;
+        .bg(#fff);
+        .paddingRow(.36rem);
+        .flex;
+        .line(.97rem);
+        .left{
+            .w(1.8rem);
         }
-        li{
-            .w(2.04rem);
-            .h(.88rem);
-            .line(.88rem);
+        .left,.center{
+            .color(#333);
+        }
+        .center{
+            .flex-1;
+            .color(#666);
+        }
+        .right{
+            .algin(r);
+            .w(.4rem);
+        }
+    }
+    .date-block{
+        justify-content: space-around;
+        margin-bottom: .2rem;
+        .bg(#fff);
+        .paddingRow(.36rem);
+        .flex;
+        .paddingT(.3rem);
+        .paddingB(.3rem);
+        .item{
+            .w(2.1rem);
+            .line(.8rem);
+            .color(#666);
             .algin(c);
-            .fontSize(.3rem);
-            float: left;
-            border: 1px solid #e6e6e6;
-            margin-bottom: .34rem;
-            &.on{
-                border-color: #f08200;
-                .color(#f08200);
+            .bg(#f5f5f5);
+            &.active{
+                .color(@mainCol);
             }
-            &+li{
-                margin-left: .32rem;
-            }
-            &:nth-of-type(3n+4){
-                margin-left: 0;
+        }
+    }
+    .input-row{
+        margin-bottom: .2rem;
+        .bg(#fff);
+        .paddingRow(.36rem);
+        .flex;
+        .line(.97rem);
+        .left{
+            .w(1.8rem);
+        }
+        .center{
+            .flex-1;
+            input{
+                .w(100%);
             }
         }
     }
@@ -219,6 +255,9 @@
         .confirm{
             .bg(#f08200);
             .color(#fff);
+        }
+        a{
+            .color(@b-3);
         }
     }
 }
