@@ -1,5 +1,5 @@
 <template lang="html">
-    <div class="activity">
+    <div class="activity edit">
         <div class="f5-2"></div>
         <div class="activity_name">
             <label for="activeName">活动名称</label>
@@ -37,12 +37,12 @@
                     </div>
                     <div class="activity_pro_item_top_right">
                         <p>{{ item.proName }}</p>
-                        <p>￥{{ item.proPrice }}</p>
+                        <p>￥{{ item.price }}</p>
                     </div>
                 </div>
                 <div class="activity_pro_item_bottom">
                     <div><label>折扣：</label><input type="age" v-model="item.discount" @blur="toFixedTwo(item,'discount')" /></div>
-                    <div><label>折扣价：</label><input type="age" v-model="item.discountPrice" @blur="toFixedTwo(item,'discountPrice')" /></div>
+                    <div><label>折扣价：</label><input type="age" v-model="item.specialPrice" @blur="toFixedTwo(item,'specialPrice')" /></div>
                     <i class="iconfont" @click="deteledPro(index)">&#xe60d;</i>
                 </div>
             </div>
@@ -116,9 +116,42 @@ export default {
             proList: [],
             searchKeyWord: '',
             selProList: [],
+            ruleDetail: {},
+            id: '',
         }
     },
+    created() {
+        this.id = this.$route.query.edit;
+        this.getDetail(this.id).then(res => {
+            this.ruleDetail = res.data;
+            this.activeStartDate = this.ruleDetail.startTime;
+            this.activeEndDate = this.ruleDetail.endTime;
+            this.activeName = this.ruleDetail.showName;
+            if(this.ruleDetail.isLimitBuyNum == 0){
+                this.activeLimit = '';
+            }else{
+                this.activeLimit = this.ruleDetail.numTop;
+            }
+            this.selProList = this.ruleDetail.proRuleList;
+        })
+    },
     methods: {
+        getDetail(ruleid) {
+            let data = {
+                    sysId: 1,
+                    id: ruleid
+                }
+            return new Promise((resolve,reject) => {
+                this.$api.post('/OteaoruleSet/special/findRuleById',data,res => {
+                    resolve(res);
+                },res=>{
+                    return Toast({
+                        message: res.errorMsg,
+                        iconClass: 'icon icon-fail'
+                    });
+                })
+            })
+        },
         saveActive() {
             let data = {
                 "device": 'WAP',
@@ -128,21 +161,23 @@ export default {
                 "proRuleList": [],
                 "showName": this.activeName,
                 "startTime": this.activeStartDate,
-                "sysId": 1
+                "sysId": 1,
+                'id':  this.id
             }
             for(let obj of this.selProList){
                 data.proRuleList.push({
+                    'id': obj.id,
                     "discount": obj.discount,
-                    "price": obj.proPrice,
+                    "price": obj.price,
                     "proName": obj.proName,
                     "proSku": obj.proSku,
-                    "specialPrice": obj.discountPrice,
-                    'subAmount': parseFloat(obj.proPrice) - parseFloat(obj.discountPrice)
+                    "specialPrice": obj.specialPrice,
+                    'subAmount': parseFloat(obj.price) - parseFloat(obj.specialPrice)
                 })
             }
             this.$api.post('/OteaoruleSet/special/addOrModityRule',JSON.stringify(data),res => {
                 Toast ({
-                    message:`活动${res.data.id}已保存成功`,
+                    message:`活动已修改成功`,
                     iconClass: 'icon icon-success'
                 })
                 setTimeout(() => {
@@ -159,7 +194,7 @@ export default {
         },
         toFixedTwo(item,str) {
             if(str === 'discount'){
-                item.discountPrice = (parseFloat(item.proPrice)*parseFloat(item.discount)).toFixed(2)
+                item.specialPrice = (parseFloat(item.price)*parseFloat(item.discount)).toFixed(2)
                 if(item[str] == ''){
                     item[str] = '0.00'
                 }else{
@@ -174,11 +209,11 @@ export default {
                     }
                 }
             }else{
-                item.discount = (parseFloat(item.discountPrice)/parseFloat(item.proPrice)).toFixed(2)
+                item.discount = (parseFloat(item.specialPrice)/parseFloat(item.price)).toFixed(2)
                 if(item[str] == ''){
                     item[str] = '0.00'
                 }else{
-                    if(item[str] >= item.proPrice || item[str] < 0){
+                    if(item[str] >= item.price || item[str] < 0){
                         Toast({
                             message: '请输入小于该商品价格的数字',
                             iconClass: 'icon icon-fail'
@@ -196,12 +231,17 @@ export default {
         selProMethod() {
             for(let obj of this.proList){
                 if(obj.checked){
-                    this.selProList.push(obj)
+                    this.selProList.push({
+                        discount: '',
+                        id: obj.proId,
+                        price: obj.proPrice,
+                        proName: obj.proName,
+                        proSku: obj.proSku,
+                        ruleSetId: this.id,
+                        specialPrice: '',
+                        subAmount: '',
+                    })
                 }
-            }
-            for(let obj of this.selProList){
-                this.$set(obj,'discount','');
-                this.$set(obj,'discountPrice','');
             }
             this.proList = [];
             this.selectPro = false;

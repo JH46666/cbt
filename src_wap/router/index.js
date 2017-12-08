@@ -298,6 +298,14 @@ const router = new Router({
 					}
 				},
 				{
+					path: 'activityedit',
+					name: '编辑活动',
+					component: resolve => require(['@/views/seller/activityedit.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+				{
 					path: 'freight',
 					name: '运费配置',
 					component: resolve => require(['@/views/seller/freight.vue'],resolve),

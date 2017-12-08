@@ -1,133 +1,101 @@
 <template lang="html">
     <div class="list">
         <mt-navbar v-model="selected" :class="{on: !wxFlag}">
-            <mt-tab-item id="1">全部</mt-tab-item>
-            <mt-tab-item id="2">未开始</mt-tab-item>
-            <mt-tab-item id="3">进行中</mt-tab-item>
-            <mt-tab-item id="4">已结束</mt-tab-item>
+            <mt-tab-item id="0">全部</mt-tab-item>
+            <mt-tab-item id="1">未开始</mt-tab-item>
+            <mt-tab-item id="2">进行中</mt-tab-item>
+            <mt-tab-item id="3">已结束</mt-tab-item>
         </mt-navbar>
         <mt-tab-container v-model="selected">
-            <mt-tab-container-item id="1" class="on">
-                <mt-cell v-for="(item,index) in activeData" :key="index">
-                    <div class="f5-2"></div>
-                    <div class="active_head">
-                        <div class="head_left">
-                            <img src="../../assets/images/%.png" />
-                            <span>{{ item.name }}</span>
+            <mt-tab-container-item :id="selected" class="on">
+                <!-- <div class="mt_cell_wrapper" v-if="orderNum != 0" v-infinite-scroll="loadMore" infinite-scroll-disabled="noInfinity" infinite-scroll-distance="10"> -->
+                    <mt-cell v-for="(item,index) in actiiveList" :key="index">
+                        <div class="f5-2"></div>
+                        <div class="active_head">
+                            <div class="head_left">
+                                <img src="../../assets/images/%.png" />
+                                <span>{{ item.showName }}</span>
+                            </div>
+                            <div class="head_right on" v-if="new Date(item.startTime) < new Date() && new Date(item.endTime) > new Date()">进行中</div>
+                            <div class="head_right" v-else-if="new Date(item.endTime) < new Date()">已结束</div>
+                            <div class="head_right" v-else>未开始</div>
                         </div>
-                        <div class="head_right" :class="{on: item.status != '已结束'}">{{ item.status }}</div>
-                    </div>
-                    <div class="active_section" @click="goEdit(item.code)">
-                        <div class="section_left">
-                            <template v-for="(img,num) in item.proImg">
-                                <div class="section_img" :key="num" v-if="num < 4">
-                                    <img :src="img" />
-                                </div>
-                            </template>
-                            <div class="white_wrapper"></div>
+                        <div class="active_section" @click="goEdit(item.id)">
+                            <div class="section_left">
+                                <template v-for="(img,num) in item.specialPriceList">
+                                    <div class="section_img" :key="num" v-if="num < 4">
+                                        <img :src="img.mainImgUrl" />
+                                    </div>
+                                </template>
+                                <div class="white_wrapper"></div>
+                            </div>
+                            <div class="section_right">
+                                <i class="iconfont">&#xe744;</i>
+                                共{{ item.specialPriceList.length }}件
+                            </div>
                         </div>
-                        <div class="section_right">
-                            <i class="iconfont">&#xe744;</i>
-                            共{{ item.proImg.length }}件
+                        <div class="active_foot">
+                            {{ item.startTime }}至{{ item.endTime }}
+                            <i class="iconfont" @click="deleteActive(item)">&#xe60d;</i>
                         </div>
+                    </mt-cell>
+                    <!-- <div class="goods-loading" v-if="!noInfinity && orderList.length < orderNum">
+                        <mt-spinner type="fading-circle" color="#f08200"></mt-spinner>
+                        <span class="loading-text">正在努力加载中~</span>
                     </div>
-                    <div class="active_foot">
-                        {{ item.date }}
-                        <i class="iconfont">&#xe60d;</i>
-                    </div>
-                </mt-cell>
+                    <div class="no-more" v-if="orderList.length == orderNum">没有更多了呦~</div> -->
+                <!-- </div> -->
+                <div class="add_activily" @click="goAdd" v-if="selected == '0' || selected == '2'">
+                    <div class="plus_icon">+</div>
+                    添加活动
+                </div>
+            </mt-tab-container-item>
+            <!-- <mt-tab-container-item id="1">
+                <div class="f5-2"></div>
+                <div class="active_empty">
+                    <img src="../../assets/images/empty_activily.png" />
+                    <span>没有任何特价活动哟~</span>
+                </div>
+            </mt-tab-container-item>
+            <mt-tab-container-item id="2" class="on">
+                <div class="f5-2"></div>
+                <div class="active_empty">
+                    <img src="../../assets/images/empty_activily.png" />
+                    <span>没有任何特价活动哟~</span>
+                </div>
                 <div class="add_activily" @click="goAdd">
                     <div class="plus_icon">+</div>
                     添加活动
                 </div>
             </mt-tab-container-item>
-            <mt-tab-container-item id="2">
+            <mt-tab-container-item id="3">
                 <div class="f5-2"></div>
                 <div class="active_empty">
                     <img src="../../assets/images/empty_activily.png" />
                     <span>没有任何特价活动哟~</span>
                 </div>
-            </mt-tab-container-item>
-            <mt-tab-container-item id="3" class="on">
-                <div class="f5-2"></div>
-                <div class="active_empty">
-                    <img src="../../assets/images/empty_activily.png" />
-                    <span>没有任何特价活动哟~</span>
-                </div>
-                <div class="add_activily" @click="goAdd">
-                    <div class="plus_icon">+</div>
-                    添加活动
-                </div>
-            </mt-tab-container-item>
-            <mt-tab-container-item id="4">
-                <div class="f5-2"></div>
-                <div class="active_empty">
-                    <img src="../../assets/images/empty_activily.png" />
-                    <span>没有任何特价活动哟~</span>
-                </div>
-            </mt-tab-container-item>
+            </mt-tab-container-item> -->
         </mt-tab-container>
     </div>
 </template>
 
 <script>
+import { Toast,MessageBox } from 'mint-ui';
 export default {
     data() {
         return {
-            selected: '1',
+            selected: '0',
             wxFlag: false,
-            activeData: [
-                {
-                    name: '坐过路过不要错过，全场两块',
-                    status: '进行中',
-                    proImg: [
-                        '../src_wap/assets/list_img.png',
-                        '../src_wap/assets/list_img.png',
-                        '../src_wap/assets/list_img.png',
-                        '../src_wap/assets/list_img.png',
-                        '../src_wap/assets/list_img.png',
-                    ],
-                    code: 1,
-                    date: '2017-11-10 10:00:00 至 2017-11-11 00:00:00'
-                },
-                {
-                    name: '坐过路过不要错过，全场两块',
-                    status: '已结束',
-                    proImg: [
-                        '../src_wap/assets/list_img.png',
-                        '../src_wap/assets/list_img.png',
-                        '../src_wap/assets/list_img.png'
-                    ],
-                    code: 1,
-                    date: '2017-11-10 10:00:00 至 2017-11-11 00:00:00'
-                },
-                {
-                    name: '坐过路过不要错过，全场两块',
-                    status: '未开始',
-                    proImg: [
-                        '../src_wap/assets/list_img.png',
-                        '../src_wap/assets/list_img.png',
-                        '../src_wap/assets/list_img.png',
-                        '../src_wap/assets/list_img.png',
-                        '../src_wap/assets/list_img.png',
-                    ],
-                    code: 1,
-                    date: '2017-11-10 10:00:00 至 2017-11-11 00:00:00'
-                },
-                {
-                    name: '坐过路过不要错过，全场两块',
-                    status: '未开始',
-                    proImg: [
-                        '../src_wap/assets/list_img.png',
-                        '../src_wap/assets/list_img.png',
-                        '../src_wap/assets/list_img.png',
-                        '../src_wap/assets/list_img.png',
-                        '../src_wap/assets/list_img.png',
-                    ],
-                    code: 1,
-                    date: '2017-11-10 10:00:00 至 2017-11-11 00:00:00'
-                }
-            ]
+            statusType: {
+                0: '全部',
+                1: '未开始',
+                2: '进行中',
+                3: '已结束'
+            },
+            pageSize: 1,
+            actiiveList: [],
+            orderNum: 0,
+            noInfinity: false,
         }
     },
     head: {
@@ -135,12 +103,130 @@ export default {
           inner: '活动列表'
         }
     },
+    watch: {
+        selected(val) {
+            if(val === '0'){
+                this.$router.replace({
+                    name: '活动列表',
+                    query: {
+                        sort: 0
+                    }
+                })
+                this.getList(0).then(res => {
+                    this.actiiveList = res.data;
+                })
+            }else if(val === '1'){
+                this.$router.replace({
+                    name: '活动列表',
+                    query: {
+                        sort: 1
+                    }
+                })
+                this.getList(1).then(res => {
+                    this.actiiveList = res.data;
+                })
+            }else if(val === '2'){
+                this.$router.replace({
+                    name: '活动列表',
+                    query: {
+                        sort: 2
+                    }
+                })
+                this.getList(2).then(res => {
+                    this.actiiveList = res.data;
+                })
+            }else if(val === '3'){
+                this.$router.replace({
+                    name: '活动列表',
+                    query: {
+                        sort: 3
+                    }
+                })
+                this.getList(3).then(res => {
+                    this.actiiveList = res.data;
+                })
+            }
+        },
+    },
+    created() {
+        if(this.$route.query.sort != undefined){
+            this.getList(this.$route.query.sort).then(res => {
+                this.actiiveList = res.data;
+                this.selected = this.$route.query.sort;
+            })
+        }else{
+            this.getList(0).then(res => {
+                this.actiiveList = res.data;
+                this.selected = '0';
+            })
+        }
+    },
     methods: {
+        // loadMore() {
+        //     try {
+        //         if(this.actiiveList.length >= this.orderNum) return this.noInfinity = true;
+        //         this.currentNum++;
+        //         this.getList().then((res) =>{
+        //             let timeData = res.data.order;
+        //             this.orderList = this.orderList.concat(timeData);
+        //             this.noInfinity = false;
+        //         })
+        //     } catch (e) {
+        //
+        //     }
+        // },
+        deleteActive(obj) {
+            let data = {
+                ruleId: obj.id
+            }
+            MessageBox.confirm(`确定删除活动【${obj.showName}】`).then(action => {
+                this.$api.post('/OteaoruleSet/special/deleteRuleSet',data,res => {
+                    Toast({
+                        message: `活动已删除，页面将刷新`,
+                        iconClass: 'icon icon-success'
+                    });
+                    return window.location.reload();
+                },res=>{
+                    return Toast({
+                        message: res.errorMsg,
+                        iconClass: 'icon icon-fail'
+                    });
+                })
+            },action => {
+                console.log('cancel!');
+            });
+        },
+        getList(state) {
+            let data = {
+                    'page.pageNumber': this.pageSize,
+                    'page.pageSize': 20,
+                    'sysId': 1,
+                    'device': 'WAP',
+                    'sort': state
+                }
+            return new Promise((resolve,reject) => {
+                this.$api.get('/oteaoProductExtInfo/searchSpecialPrice',data,res => {
+                    resolve(res);
+                },res=>{
+                    return Toast({
+                        message: res.errorMsg,
+                        iconClass: 'icon icon-fail'
+                    });
+                })
+            })
+        },
         goAdd() {
-            this.$router.push('/seller/activity?add');
+            this.$router.push({
+                name: '添加活动'
+            });
         },
         goEdit(id) {
-            this.$router.push('/seller/activity?edit='+id);
+            this.$router.push({
+                name: '编辑活动',
+                query: {
+                    edit: id
+                }
+            });
         }
     },
     mounted () {
