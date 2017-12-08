@@ -47,8 +47,18 @@
                         </div>
                         <div v-infinite-scroll="loadMore" infinite-scroll-disabled="true" infinite-scroll-distance="10">
                             <goods-item v-for="item of resultData" :key="item.id"
-                                :link="item.proSku" :mainTit="item.proTitle" :subTit="item.subTitle" :price="item.proPrice" :imgUrl="item.proImg" :tagUrl="item.tagImgUrl"
-                                :aromaStar="item.aromaStar" :aromaName="item.aromaVal" :tasteStar="item.tasteStar" :tasteName="item.tasteVal" imgWidth="1.56rem">
+                                :link="item.proSku" 
+                                :mainTit="item.proTitle" 
+                                :subTit="item.subTitle" 
+                                :price="item.proPrice" 
+                                :imgUrl="item.proImg" 
+                                :tagUrl="item.tagImgUrl"
+                                :aromaStar="item.aromaStar" 
+                                :aromaName="item.aromaVal" 
+                                :tasteStar="item.tasteStar" 
+                                :tasteName="item.tasteVal" 
+                                :isLogin="$tool.isLogin()"
+                                imgWidth="1.56rem">
                             </goods-item>
                         </div>
                         <div class="goods-loading" v-if="loading">
@@ -93,6 +103,8 @@
     </div>
 </template>
 <script>
+    import { mapState } from 'vuex'
+    import store from 'store';
     import { InfiniteScroll } from 'mint-ui';
     export default{
         data(){
@@ -177,7 +189,9 @@
             }
         },
         created(){
+            // 设置title
             this.$store.commit('SET_TITLE','分类');
+
             this.$api.get('/proCat/queryCatTree',{sysId: 2},res=>{
                 this.catTree = res.data[0].children;
                 this.subCat = this.catTree[0].children;
@@ -374,6 +388,20 @@
                 }else if(index === 2){
                     this.sortDesc = false;
                 }
+            }
+        },
+        // 判断登陆
+        beforeRouteEnter (to, from, next) {
+            if(!store.state.member.member.id) {
+                store.dispatch('getMemberData').then((res) => {
+                    next();
+                }).catch(res => {
+                    next(vm => {
+                        vm.$router.push('/');
+                    })
+                })
+            } else {
+                next();
             }
         },
         head: {
