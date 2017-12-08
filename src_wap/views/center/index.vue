@@ -177,21 +177,21 @@
                 if(status === 'WAIT_AUDIT') {
                     vm.$messageBox({
                         title:'提示', 
-                        message:`您的账号审核中,只有正式会员才可查看<br>若有疑问，请联系客服<br>400-996-3399`,
+                        message:`您的账号审核中,只有正式会员才可查看，若有疑问，请联系客服400-996-3399`,
                         confirmButtonText: '我知道了'
                     });
                 }
                 if(status === 'FREEZE') {
                     vm.$messageBox({
                         title:'提示', 
-                        message:`您的账号因违规操作而被冻结无法进入~<br>若有疑问，请联系客服<br>400-996-3399`,
+                        message:`您的账号因违规操作而被冻结无法进入~若有疑问，请联系客服400-996-3399`,
                         confirmButtonText: '我知道了'
                     });
                 }
                 if(status === 'AUDIT_NO_PASS' || status === 'INACTIVE') {
                     vm.$messageBox({
                         title:'提示', 
-                        message:`您的账号审核未通过，只有正式会员才可查看<br>若有疑问，请联系客服<br>400-996-3399`,
+                        message:`您的账号审核未通过，只有正式会员才可查看，若有疑问，请联系客服400-996-3399`,
                         showCancelButton: true,
                         cancelButtonText: '取消',
                         confirmButtonText: '完善资料'

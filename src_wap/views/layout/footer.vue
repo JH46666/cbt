@@ -19,7 +19,7 @@
         </mt-tab-item>
     </mt-tabbar> -->
     <div class="cbt_footer">
-        <router-link v-for="(item,index) in footerData" :class="{on: item.path === classIndex}" :to="item.path">
+        <router-link v-for="(item,index) in footerData" :class="{on: item.path === classIndex}" :to="item.path" :key="index">
             <i class="iconfont" :class="item.icon"></i>
             {{ item.name }}
             <mt-badge type="error" size="small" v-if="index === 2">99+</mt-badge>

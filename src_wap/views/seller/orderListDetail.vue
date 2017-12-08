@@ -2,11 +2,11 @@
     <div id="order-list" class="detail">
         <section class="head-bar">
             <mt-navbar v-model="selected">
-                <mt-tab-item id="null">全部</mt-tab-item>
-                <mt-tab-item id="waitPay">已结算</mt-tab-item>
-                <mt-tab-item id="waitSend">未结算</mt-tab-item>
+                <mt-tab-item id="allRevenue">全部</mt-tab-item>
+                <mt-tab-item id="successed">已结算</mt-tab-item>
+                <mt-tab-item id="unFinsh">未结算</mt-tab-item>
             </mt-navbar>
-            <div class="screen-bar">
+            <div class="screen-bar" :class="{active: filterVisible}" @click="filterVisible = true">
                 <i class="iconfont">&#xe674;</i> 筛选
             </div>
         </section>
@@ -42,7 +42,7 @@
                             <p class="left">{{ item.createTime }}</p>
                             <p class="right">共{{ item.products.length }}件&nbsp;&nbsp;<span class="gold">￥{{ item.orderAllSum | toFix2 }}</span></p>
                         </div>
-                        <div class="btn-wrap">
+                        <!-- <div class="btn-wrap">
                             <template v-if="item.orderStatus === 'WAIT_PAY'">
                                 <mt-button size="small" @click.stop="closeOrder(item)">关闭订单</mt-button>
                                 <mt-button size="small" @click.stop="editPrice(item)">修改价格</mt-button>
@@ -54,7 +54,7 @@
                             <template v-if="item.orderStatus === 'DELIVERED'">
                                 <mt-button size="small" @click.stop="$router.push({name:'修改配送方式',query:{orderNo:item.orderNo}})">修改快递</mt-button>
                             </template>
-                        </div>
+                        </div> -->
                     </div>
                 </router-link>
             </template>
@@ -70,19 +70,52 @@
                 <p class="empty_text">您还没有相关的订单哟~</p>
             </div>
         </section>
+        <!-- 日期选择器 -->
+        <mt-datetime-picker
+            ref="start"
+            :startDate="new Date('2010-01-01 00:00:00')"
+            :endDate="new Date()"
+            type="datetime"
+            v-model="startTime">
+        </mt-datetime-picker>
+        <mt-datetime-picker
+            ref="end"
+            :startDate="new Date(startTime)"
+            :endDate="new Date()"
+            type="datetime"
+            v-model="endTime">
+        </mt-datetime-picker>
         <!-- 筛选弹窗 -->
         <mt-popup v-model="filterVisible" position="bottom" class="popup-filter">
+            <h4 class="title">交易日期</h4>
             <div class="popup-content">
-                <div class="con-item" v-for="list in filterConditions">
-                    <h4>{{list.propName}}</h4>
-                    <ul class="clearfix">
-                        <li :class="{on:index == list.filterIndex}" v-for="(item,index) in list.propValList" @click="selectFilter(list,item,index)">{{item.propVal}}</li>
-                    </ul>
+                <div class="date-row" @click="$refs.start.open()">
+                    <div class="left">开始日期</div>
+                    <div class="center">{{ $tool.formatDate(startTime) }}</div>
+                    <div class="right"><i class="iconfont">&#xe612;</i></div>
+                </div>
+                <div class="date-row" @click="$refs.end.open()">
+                    <div class="left">结束日期</div>
+                    <div class="center">{{ $tool.formatDate(endTime) }}</div>
+                    <div class="right"><i class="iconfont">&#xe612;</i></div>
+                </div>
+                <div class="date-block">
+                    <div class="item" @click="setData(3)">近三个月</div>
+                    <div class="item" @click="setData(7)">近一周</div>
+                    <div class="item" @click="setData(1)">近一个月</div>
+                </div>
+                <div class="input-row">
+                    <div class="left">收货人</div>
+                    <div class="center"><input type="text" placeholder="请输入收货人姓名或者手机号" v-model="name"></div>
+                </div>
+                <div class="input-row">
+                    <div class="left">商品名称</div>
+                    <div class="center"><input type="text" placeholder="请输入商品名称" v-model="goodName"></div>
                 </div>
             </div>
             <div class="pop-btns flex">
-                <a class="flex-1" href="javscript:void(0)" @click="resetConditions">重置</a>
-                <a class="flex-1 confirm" href="javscript:void(0)" @click="confirmConditions">确定</a>
+                <a class="flex-1" href="javscript:void(0)" @click="restScreen">重置</a>
+                <a class="flex-1 confirm" href="javscript:void(0)" @click="confirm">确定</a>
             </div>
         </mt-popup>
     </div>
@@ -91,12 +124,25 @@
 
 
 <script>
+    import { mapState } from 'vuex'
+    import store from 'store';
     export default{
         data() {
             return {
-                filterVisible: true,    // 关闭订单弹出
-                pageNum: 1,             // 初始页面
-                activeOrder: null,      // 当前激活的订单
+                filterVisible: false,    // 筛选
+                startTime: null,         // 开始日期 
+                endTime: null,           // 结束日期 
+                name: '' ,               // 收货人
+                goodName: '',            // 商品名
+                pageNum: 1,              // 初始页面
+                list: [],                // 订单列表
+                total: 0,                // 订单个数 
+                screen: {
+                    startTime: '',
+                    endTime: '',
+                    name: '',
+                    goodName: ''
+                }
             }
         },
         computed: {
@@ -105,128 +151,172 @@
                     if(this.$route.query.type) {
                         return this.$route.query.type
                     } else {
-                        // this.$router.replace({name: '卖家订单列表',query: {type: 'null'}})
-                        // return 'null';
+                        this.$router.replace({name: '卖家订单明细',query: {type: 'allRevenue'}})
+                        return 'allRevenue';
                     }
                 },
                 set(val) {
-                    this.$router.replace({name: '卖家订单列表',query: {type: val}})
-                }
-            },
-            list() {
-                try {
-                    return this.$store.state.seller.orderList[this.selected].order
-                } catch (error) {
-                    return []
+                    this.$router.replace({name: '卖家订单明细',query: {type: val}})
                 }
             },
             nomore() {
-                try {
-                    if(this.list.length === this.$store.state.seller.orderList[this.selected].orderNum && list.length !== 0) {
-                        return true
-                    } else {
-                        return false
-                    }
-                } catch (error) {
-                    return false
+                if(this.list.length === this.total && this.list.length !==0){
+                    return true;
                 }
+                return false;
             },
             loading() {
-                try {
-                    if(this.list.length < this.$store.state.seller.orderList[this.selected].orderNum) {
-                        return true
-                    } else {
-                        return false
-                    }
-                } catch (error) {
-                    return true
+                
+                if(this.list.length < this.total) {
+                    return true;
                 }
+                return false;
             },
             noOrder() {
-                try {
-                    if(this.list.length === this.$store.state.seller.orderList[this.selected].orderNum) {
-                        return true
-                    } else {
-                        return false
-                    }
-                    
-                } catch (error) {
-                    return true
-                }
-            }
+                return !this.list.length
+            },
         },
         watch: {
             selected(val) {
-                this.$store.dispatch('getSellerOrder',{type: this.selected}).then(res => {
-                    this.$store.commit('SET_ORDERLIST',{type:this.selected,data: res.data})
-                })
-                this.pageNum = 1;
+                this.reset();
+                this.handle();
             }
         },
         methods: {
-            // 选择关闭订单
-            pickClose(way) {
-                if(way === '暂不关闭') return  this.closeUp = false;
-                this.$api.post('/oteao/order/closeOteaoOrderBySeller',{
-                    orderNo: this.activeOrder.orderNo,
-                    closeReason: way
-                },res => {
-                    this.$toast('关闭成功')
-                    this.closeUp = false;
-                    this.activeOrder.orderStatus = 'CLOSE'
-                    this.activeOrder = null;
-                },res => {
-                    this.$toast(res.message)
-                    this.closeUp = false;
-                    this.activeOrder = null;
-                })
-            },
-            // 关闭订单
-            closeOrder(order) {
-                this.activeOrder = order;
-                this.closeUp = true;
-            },
-            // 修改价格
-            editPrice(data) {
-                let math = this.$tool.math
-                this.$editPrice({
-                    goodsPrice: (math.eval(`${data.orderAllSum} - ${data.freightSum}`)).toFixed(2),
-                    expressPrice:  Number(data.freightSum).toFixed(2)
-                }).then(prices => {
-                    this.$api.post('/oteao/order/updateOrderSum',{
-                        orderId: data.orderId,
-                        orderSum: prices.goodsPrice,
-                        freightSum: prices.expressPrice
-                    },res => {
-                        this.$toast('成功修改价格！');
-                        data.freightSum = prices.expressPrice;
-                        data.orderAllSum = math.eval(`${prices.goodsPrice} + ${prices.expressPrice}`).toFixed(2);
-                    },res => {
-                        this.$toast(res.message)
-                    })
-                }).catch(res =>{})
-            },
             // 无限滚动
             loadMore() {
-                try {
-                    if(this.list.length < this.$store.state.seller.orderList[this.selected].orderNum) {
-                        this.pageNum++
-                        this.$store.dispatch('getSellerOrder',{type: this.selected,page:this.pageNum}).then(res => {
-                            // 小于10表示最后一页
-                            if(res.data.order.length < 10) {
-                                this.pageNum--
-                            }
-                            let data = this.list.concat(res.data.order)
-                            this.$store.commit('SET_ORDERLIST',{type:this.selected,data: {
-                                order: data,
-                                orderNum: res.data.orderNum
-                            }})
-                        })
-                    }
-                } catch (error) {
-                    return false
+                if(this.list.length < this.total) {
+                    this.pageNum++;
+                    this.handle(this.pageNum).then(res => {
+                        if(this.list.length >= this.total ) {
+                            this.pageNum--;
+                        }
+                    })
                 }
             },
+            // 处理函数
+            handle(page = 1) {
+                return new Promise((resolve,reject) => {
+
+                    let data = {
+                        orderStatus: this.selected,
+                        pageNumber: page,
+                        pageSize: 10,
+                        device: 'WAP',
+                    }
+
+                    if(this.screen.startTime) {
+                        data.startCreateTime = this.screen.startTime
+                    }
+                    if(this.screen.endTime) {
+                        data.endCreateTime = this.screen.endTime
+                    }
+                    if(this.screen.name) {
+                        data.receiptManSeachKey = this.screen.name
+                    }
+                    if(this.screen.goodName) {
+                        data.productName = this.screen.goodName
+                    }
+
+                    this.$api.post('/oteao/order/preSellerOrderList',data,res => {
+                        let data = res.data.order || [];
+                        this.list = this.list.concat(data);
+                        this.total = res.data.orderNum;
+                        resolve(res)
+                    })
+                })
+            },
+            // 设置日期
+            setData(type) {
+                let d = new Date();
+
+                if(type === 3) {
+                    d.setMonth(d.getMonth() - 3);
+                    this.startTime = d;
+                    this.$nextTick(() => {
+                        this.endTime = new Date();
+                    })
+                }
+
+                if(type === 7) {
+                    d.setDate(d.getDate() - 7);
+                    this.startTime = d;
+                    this.$nextTick(() => {
+                        this.endTime = new Date();
+                    })
+                }
+
+                if(type === 1) {
+                    d.setMonth(d.getMonth() - 1);
+                    this.startTime = d;
+                    this.$nextTick(() => {
+                        this.endTime = new Date();
+                    })
+                }
+            },
+            // 重置选项
+            reset() {
+                this.pageNum = 1;
+                this.list = [];
+                this.total = 0;
+                this.screen = {
+                    startTime:'',
+                    endTime: '',
+                    name: '',
+                    goodName: ''
+                }
+                this.startTime = new Date('2010-01-01 00:00:00');
+                this.endTime = new Date();
+                this.name = '';
+                this.goodName = '';
+            },
+            // 保存筛选的快照
+            flashScreen() {
+                this.screen = {
+                    startTime: this.$tool.formatDate(this.startTime),
+                    endTime: this.$tool.formatDate(this.endTime),
+                    name: this.name,
+                    goodName: this.goodName
+                }
+            },
+            // 重置筛选
+            restScreen() {
+                this.startTime = new Date('2010-01-01 00:00:00');
+                this.endTime = new Date();
+                this.name = '';
+                this.goodName = '';
+            },
+            // 确定筛选
+            confirm() {
+                this.flashScreen();
+                this.filterVisible = false;
+                this.pageNum = 1;
+                this.list = [];
+                this.total = 0;
+                this.handle();
+            }
+        },
+        created() {
+            // 设置title
+            this.$store.commit('SET_TITLE','订单明细');
+            this.endTime = new Date();
+            // 进入页面拉取数据
+            this.handle();
+
+        },
+        // 判断登陆
+        beforeRouteEnter (to, from, next) {
+            if(!store.state.member.member.id) {
+                store.dispatch('getMemberData').then((res) => {
+                    next();
+                }).catch(res => {
+                    next(vm => {
+                        vm.$router.push('/');
+                    })
+                })
+            } else {
+                next();
+            }
         },
         head: {
             title() {
@@ -235,14 +325,6 @@
                 }
             }
         },
-        created() {
-            // 设置title
-            this.$store.commit('SET_TITLE','订单明细');
-            // 进入页面拉取数据
-            this.$store.dispatch('getSellerOrder',{type: this.selected}).then(res => {
-                this.$store.commit('SET_ORDERLIST',{type:this.selected,data: res.data})
-            })
-        }
     }
 </script>
 
