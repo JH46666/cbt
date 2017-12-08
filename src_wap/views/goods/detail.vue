@@ -119,7 +119,14 @@
                 <mt-tab-container v-model="tabSelected" :swipeable="true">
                     <mt-tab-container-item id="1">
                         <div class="detail_img_title" :class="{'on': tabFixed,'wxon': wxFixed}" ref="imgHeight">图片详情</div>
-                        <div class="mint_cell_wrapper mint_cell_img_wrapper" v-html="attrImgDetail.content">
+                        <div class="mint_cell_wrapper mint_cell_img_wrapper">
+                            <mt-cell v-for="(item,index) in imgDetail" :key="index">
+                                <div class="mint_cell_img_title">茶韵展示</div>
+                                <div class="mint_cell_img">
+                                    <img :src="ur" v-for="(ur,k) in item.imgUrl" :key="k" />
+                                </div>
+                                <p class="mint_cell_img_content">{{ item.content }}</p>
+                            </mt-cell>
                         </div>
                     </mt-tab-container-item>
                     <mt-tab-container-item id="2">
@@ -255,6 +262,7 @@ export default {
             commentRecond: 0,
             proSku: '',
             prectent: 0,
+            imgDetail: {},
         }
     },
     created() {
@@ -263,6 +271,7 @@ export default {
             this.detailData = res.data;
             this.getAttrOrImg().then((res) => {
                 this.attrImgDetail = res.data;
+                this.imgDetail =  JSON.parse(res.data.content)
                 this.getCommentList(this.detailData.productExtInfo.id).then((res) => {
                     this.commentList = res.data.evaluations;
                     this.commentRecond = res.total_record;

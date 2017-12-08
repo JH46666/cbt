@@ -376,7 +376,23 @@ const router = new Router({
 					meta: {
 						hideFooter: true
 					}
-				}
+				},
+				{
+					path: 'goodEdit-1',
+					name: '商品编辑-1',
+					component: resolve => require(['@/views/seller/goodEdit-1.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+				{
+					path: 'goodEdit-2',
+					name: '商品编辑-2',
+					component: resolve => require(['@/views/seller/goodEdit-2.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
 			]
 		}
 	]
