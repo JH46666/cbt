@@ -3,91 +3,57 @@
         <!-- 商品 -->
         <div class="tab-content-wrapper">
             <div class="no-shelves">
-                <div class="good-item" v-for="item in products">
+                <div class="good-item" v-for="item in proList">
                     <!-- 头部 caption -->
                     <div class="item-caption flex">
                         <div class="cap-l flex flex-1 align_items_c">
-                            <label class="check-cir" :class="{'checked':item.checkedFlag}">
-                                <input type="checkbox" name=""  v-model="selectIdsNo" hidden @click="item.checkedFlag = !item.checkedFlag">
-                            </label> 
-                            <span>创建 {{item.createdTime}}</span>
+                            <label class="check-cir" :class="{'checked':item.checked}" @click="item.checked = !item.checked"></label>
+                            <span>创建 {{item.createTime}}</span>
                         </div>
                         <div class="cap-r algin_r">
-                            <span class="saled">已售<span class="number">{{item.saleNum}}</span></span>
-                            <span class="stock">库存<span class="number">{{item.stock}}</span></span>
+                            <span class="saled">已售<span class="number">{{item.salesNum}}</span></span>
+                            <span class="stock">库存<span class="number">{{item.stockNum}}</span></span>
                         </div>
                     </div>
                     <!-- 中间商品 -->
                     <div class="good-info flex">
                         <div class="pro-img">
-                            <img :src="item.proImg" alt="">
-                            <div v-if="item.saleFinish" class="sale-finish">已售完</div>
+                            <img :src="item.proImg" />
+                            <div v-if="item.isSoldOut == 0" class="sale-finish">已售完</div>
                         </div>
                         <div class="flex-1 pro-txt">
-                            <h4 class="tit">{{item.proTit}}</h4>
+                            <h4 class="tit">{{item.proName}}</h4>
                             <p class="price">￥{{toFixed(item.proPrice)}}</p>
                         </div>
                     </div>
+                </div>
+                <div class="get_more" @click="getMore" v-if="proList.length < totalPage">
+                    点击加载更多~
                 </div>
             </div>
         </div>
         <!-- 底部fixed栏 -->
         <div class="flex fix-bottom align_items_c">
-            <div class="flex-1 flex align_items_c">
-                <label class="check-cir">
-                    <input type="checkbox" name=""  v-model="selectIdsNo" hidden>
-                </label>
-                <span>已选（<span>5</span>）</span>
+            <div class="flex-1 flex align_items_c" style="padding-left: .3rem;">
+                <label class="check-cir" :class="{checked: isAll}" @click="checkedAll"></label>
+                <span>已选（<span>{{ checkedNum }}</span>）</span>
             </div>
-            <a class="delete-btn" href="javascript:void(0);">删除</a>  
-            <a class="rackup-btn" href="javascript:void(0);">上架</a>  
+            <a class="delete-btn" href="javascript:void(0);" @click="deleteMethod" v-if="state === 'OFF_SHELF'">删除</a>
+            <a class="rackup-btn" href="javascript:void(0);" @click="downMethod" v-if="state === 'ON_SHELF'">下架</a>
+            <a class="rackup-btn" href="javascript:void(0);" @click="downMethod" v-else>上架</a>
         </div>
     </div>
 </template>
 <script>
+import { Toast } from 'mint-ui';
     export default{
         data(){
             return {
-                wxFixedFlag: false,         //tab是否固定 wx环境
-                selectIdsNo: [],           //已选的未上架商品
-                products: [
-                    {
-                        createdTime: '2017-11-11 19:00:08',        //创建时间
-                        saleNum: 5000,                             //已售
-                        stock: 2000,                               //库存
-                        proId: 1,                                  //id
-                        proImg: '../src_wap/assets/cart_img1.png', //商品图片
-                        proTit: '醉品朴茶 安溪铁观', //商品title
-                        proHref: '/detail',                        //商品链接
-                        proPrice: 5000,                            //商品价格
-                        checkedFlag: false,                        //是否被选中
-                        saleFinish: false,                         //是否售完
-                    },
-                    {
-                        createdTime: '2017-11-11 19:00:08',        
-                        saleNum: 5000,                             
-                        stock: 2000,                            
-                        proId: 2,   
-                        proTit: '醉品朴茶 安溪铁观音2017秋茶 乌龙茶 清香型',
-                        proImg: '../src_wap/assets/cart_img1.png', 
-                        proHref: '/detail',                        
-                        proPrice: 5000,  
-                        checkedFlag: false, 
-                        saleFinish: true,                         
-                    },
-                    {
-                        createdTime: '2017-11-11 19:00:08',        
-                        saleNum: 5000,                             
-                        stock: 2000,                            
-                        proId: 2,   
-                        proTit: '醉品朴茶 安溪铁观音2017秋茶 乌龙茶 清香型铁观音2017秋铁观音2017秋',
-                        proImg: '../src_wap/assets/cart_img1.png', 
-                        proHref: '/detail',                        
-                        proPrice: 5000,  
-                        checkedFlag: false,  
-                        saleFinish: false,                       
-                    }
-                ]
+                proList: [],
+                currentPage: 1,
+                totalPage: 0,
+                keyWord: '',
+                state: '',
             }
         },
         computed:{
@@ -97,19 +63,183 @@
                 }else{
                     return false;
                 }
+            },
+            checkedNum() {
+                let num = 0;
+                for(let obj of this.proList){
+                    if(obj.checked){
+                        num++;
+                    }
+                }
+                return num;
+            },
+            isAll() {
+                let isTrue = this.proList.every((item) =>{
+                    return item.checked === true
+                })
+                if(isTrue){
+                    return true;
+                }else{
+                    return false;
+                }
+            },
+        },
+        created() {
+            this.state = this.$route.query.state;
+            this.keyWord = this.$route.query.keyWord;
+            if(this.state === 'ON_SHELF'){
+                this.getList(this.currentPage,this.state).then((res) => {
+                    this.proList = res.data;
+                    this.totalPage = res.total_record;
+                    for(let obj of this.proList){
+                        this.$set(obj,'checked',false);
+                    }
+                })
+            }else{
+                this.getList(this.currentPage,this.state).then((res) => {
+                    this.proList = res.data;
+                    this.totalPage = res.total_record;
+                    for(let obj of this.proList){
+                        this.$set(obj,'checked',false);
+                    }
+                })
             }
+
         },
         methods:{
-            //清空搜索内容
-            clearTxt(){
-                this.searchTxt = "";
+            downMethod() {
+                let checkedId = [];
+                for(let obj of this.proList){
+                    if(obj.checked){
+                        checkedId.push(obj.proExtId)
+                    }
+                }
+                let states = 'ON_SHELF';
+                if(this.state === 'ON_SHELF'){
+                    states = 'OFF_SHELF';
+                }
+                let data = {
+                    sysId: 1,
+                    state: states,
+                    proExtIds: checkedId.join(',')
+                }
+                this.upOrDown(data).then(res => {
+                    if(this.state === 'ON_SHELF'){
+                        Toast({
+                            message: '商品下架成功',
+                            iconClass: 'icon icon-success'
+                        });
+                    }else{
+                        Toast({
+                            message: '商品上架成功',
+                            iconClass: 'icon icon-success'
+                        });
+                    }
+                    setTimeout(() => {
+                        window.location.reload();
+                    },500)
+                })
             },
-            //升序或降序
-            ascOrDes(){
-
+            upOrDown(data) {
+                return new Promise((resolve,reject) => {
+                    this.$api.post('/oteaoProduct/modifyOrgProInfoState',data,res => {
+                        resolve(res);
+                    },res=>{
+                        return Toast({
+                            message: res.errorMsg,
+                            iconClass: 'icon icon-fail'
+                        });
+                    })
+                })
+            },
+            deleteMethod() {
+                let checkedId = [];
+                for(let obj of this.proList){
+                    if(obj.checked){
+                        checkedId.push(obj.proExtId)
+                    }
+                }
+                let data = {
+                    proExtIds: checkedId.join(',')
+                }
+                this.deleteM(data).then(res => {
+                    Toast({
+                        message: '商品删除成功',
+                        iconClass: 'icon icon-success'
+                    });
+                    setTimeout(() => {
+                        window.location.reload();
+                    },500)
+                })
+            },
+            deleteM(data) {
+                return new Promise((resolve,reject) => {
+                    this.$api.post('/oteaoProduct/deleteFrontOrgProduct',data,res => {
+                        resolve(res);
+                    },res=>{
+                        return Toast({
+                            message: res.errorMsg,
+                            iconClass: 'icon icon-fail'
+                        });
+                    })
+                })
+            },
+            getMore() {
+                this.currentPage++;
+                if(this.state === 'ON_SHELF'){
+                    this.getList(this.currentPage,this.state).then((res) => {
+                        let result = res.data;
+                        for(let obj of result){
+                            this.$set(obj,'checked',false);
+                        }
+                        this.proList = this.proList.concat(result);
+                    })
+                }else{
+                    this.getList(this.currentPage,this.state).then((res) => {
+                        let result = res.data;
+                        for(let obj of result){
+                            this.$set(obj,'checked',false);
+                        }
+                        this.proList = this.proList.concat(result);
+                    })
+                }
+            },
+            checkedAll() {
+                let isTrue = this.proList.every((item) =>{
+                    return item.checked === true
+                })
+                if(isTrue){
+                    for(let obj of this.proList){
+                        obj.checked = false;
+                    }
+                }else{
+                    for(let obj of this.proList){
+                        obj.checked = true;
+                    }
+                }
+            },
+            getList(pages,states) {
+                let data = {
+                        'page.pageNumber': pages,
+                        'page.pageSize': 20,
+                        'pro.sysId': 1,
+                        'pro.device': 'WAP',
+                        'pro.state': states,
+                        'pro.seachKey': this.keyWord
+                    }
+                return new Promise((resolve,reject) => {
+                    this.$api.post('/oteaoProduct/seachFrontOrgProduct',data,res => {
+                        resolve(res);
+                    },res=>{
+                        return Toast({
+                            message: res.errorMsg,
+                            iconClass: 'icon icon-fail'
+                        });
+                    })
+                })
             },
             //保留两位小数
-            toFixed(num) { 
+            toFixed(num) {
                 if(isNaN(num)) {
                     return '0.00'
                 }else{

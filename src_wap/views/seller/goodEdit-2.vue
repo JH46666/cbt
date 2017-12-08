@@ -334,57 +334,23 @@ import { Toast } from 'mint-ui';
                         imgUrl: this.urls.main[i]
                     })
                 }
-                // let oneImgContent = `<mt-cell></mt-cell><div class="mint_cell_img_title">茶韵展示</div><div class="mint_cell_img"><img src="${this.urls.one[0]}" /></div><p class="mint_cell_img_content">${this.resize.textMs1}</p></mt-cell>`;
-                // let twoImgContent = `<mt-cell><div class="mint_cell_img_title">茶韵展示</div><div class="mint_cell_img"><img src="${this.urls.two[0]}" /></div><p class="mint_cell_img_content">${this.resize.textMs2}</p></mt-cell>`;
-                // let threeImgContent = `<mt-cell><div class="mint_cell_img_title">茶韵展示</div><div class="mint_cell_img"><img src="${this.urls.third[0]}" /></div><p class="mint_cell_img_content">${this.resize.textMs3}</p></mt-cell>`;
-                let oneImgContent = {
-                    imgUrl: [this.urls.one[0]],
-                    content: this.resize.textMs1
-                }
-                let twoImgContent = {
-                    imgUrl: [this.urls.two[0]],
-                    content: this.resize.textMs2
-                }
-                let threeImgContent = {
-                    imgUrl: [this.urls.third[0]],
-                    content: this.resize.textMs3
-                }
-                // let fourImgContent = '';
-                let fourImgContent = {
-                    imgUrl: [],
-                    content: this.resize.textMs4
-                };
+                let oneImgContent = `<mt-cell></mt-cell><div class="mint_cell_img_title">茶韵展示</div><div class="mint_cell_img"><img src="${this.urls.one[0]}" /></div><p class="mint_cell_img_content">${this.resize.textMs1}</p></mt-cell>`;
+                let twoImgContent = `<mt-cell><div class="mint_cell_img_title">茶韵展示</div><div class="mint_cell_img"><img src="${this.urls.two[0]}" /></div><p class="mint_cell_img_content">${this.resize.textMs2}</p></mt-cell>`;
+                let threeImgContent = `<mt-cell><div class="mint_cell_img_title">茶韵展示</div><div class="mint_cell_img"><img src="${this.urls.third[0]}" /></div><p class="mint_cell_img_content">${this.resize.textMs3}</p></mt-cell>`
+                let fourImgContent = '';
                 if(this.urls.four.length != 0){
                     let fourStr = '';
                     for(let i=0;i<this.urls.four.length;i++){
-                        // fourStr += `<img src="${this.urls.four[i]}" />`
-                        fourImgContent.imgUrl.push(this.urls.four[i])
+                        fourStr += `<img src="${this.urls.four[i]}" />`
                     }
-                    // fourImgContent = `<mt-cell><div class="mint_cell_img_title">茶韵展示</div><div class="mint_cell_img">${fourStr}</div><p class="mint_cell_img_content">${this.resize.textMs4}</p></mt-cell>`
-
+                    fourImgContent = `<mt-cell><div class="mint_cell_img_title">茶韵展示</div><div class="mint_cell_img">${fourStr}</div><p class="mint_cell_img_content">${this.resize.textMs4}</p></mt-cell>`
                 }
-                // let allImgContent = oneImgContent + twoImgContent + threeImgContent + fourImgContent;
-                let allContent = {
-                    oneImgContent: oneImgContent,
-                    twoImgContent: twoImgContent,
-                    threeImgContent: threeImgContent,
-                    fourImgContent: fourImgContent
-                }
-                console.log(JSON.stringify(allContent));
-                // let data = {
-                //     "catProps": [],
-                //     "productDetails": [
-                //         {
-                //             "content": allImgContent,
-                //         }
-                //     ],
-                //     "productImgs": mainImg
-                // }
+                let allImgContent = oneImgContent + twoImgContent + threeImgContent + fourImgContent;
                 let data = {
                     "catProps": [],
                     "productDetails": [
                         {
-                            "content": JSON.stringify(allContent),
+                            "content": allImgContent,
                         }
                     ],
                     "productImgs": mainImg
