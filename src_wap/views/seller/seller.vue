@@ -25,11 +25,11 @@
             </div>
         </section>
         <section class="count-entry">
-            <router-link to="#" tag="div" class="count-item">
+            <router-link to="" tag="div" class="count-item">
                 <p class="num">{{ count.monthOrderSum | toFix2}}</p>
                 <p class="tips">当月收入</p>
             </router-link>
-            <router-link to="#" tag="div" class="count-item">
+            <router-link to="" tag="div" class="count-item">
                 <p class="num">{{ count.monthOrderNum }}</p>
                 <p class="tips">当月订单数</p>
             </router-link>
@@ -58,8 +58,8 @@
                     <p>已发货</p>
                 </router-link>
                 <router-link to="/seller/orderlist?type=null" class="item">
-                    <mt-badge size="small" type="error" :class="{one:allCount < 10}" v-if="allCount > 0">{{ allCount | ninenineAdd }}</mt-badge>
-                    <span><i class="icon-zhengchangdingdan"></i></span>
+                    <!-- <mt-badge size="small" type="error" :class="{one:allCount < 10}" v-if="allCount > 0">{{ allCount | ninenineAdd }}</mt-badge> -->
+                    <span><i class="icon-gengduo"></i></span>
                     <p>全部</p>
                 </router-link>
                 <!-- <router-link to="#" class="item">
@@ -79,7 +79,7 @@
                     <span><i class="icon-yunfeipeizhi"></i></span>
                     <p>运费配置</p>
                 </router-link>
-                <router-link :to="{name: '商品管理'}" class="item">
+                <router-link :to="{name: '活动列表'}" class="item">
                     <span><i class="icon-tejiaguanli"></i></span>
                     <p>限时特价</p>
                 </router-link>
@@ -144,20 +144,36 @@
             // 等级数量
             levelNum() {
                 let g = this.sellerData.growth
+                let l = 0;
 
-                switch(g) {
-                    case g > 4 && g < 10: return 1
-                    case g > 251 && g < 500: return 1
-                    break;
+                if(g >= 4 && g <= 10 || g >= 251 && g <= 500 || g >= 10001 && g <= 20000 || g >= 500001 && g <= 1000000 ) {
+                    l = 1;
                 }
-                return 1;
+
+                if(g >= 11 && g <= 40 || g >= 501 && g <= 1000 || g >= 20001 && g <= 50000 || g >= 1000001 && g <= 2000000) {
+                    l = 2;
+                }
+
+                if(g >= 41 && g <= 90 || g >= 1001 && g <= 2000 || g >= 50001 && g <= 100000 || g >= 2000001 && g <= 5000000) {
+                    l = 3;
+                }
+
+                if(g >= 91 && g <= 150 || g >= 2001 && g <= 5000 || g >= 100001 && g <= 200000 || g >= 5000001 && g <= 10000000) {
+                    l = 4;
+                }
+
+                if(g >= 151 && g <= 250 || g >= 5001 && g <= 10000 || g >= 200001 && g <= 500000 || g > 10000000) {
+                    l = 5;
+                }
+
+                return l;
             }
         },
         created() {
             this.$api.post('/oteao/order/countOrderNumBySeller',{},res => {
                 this.count = res.data;
             })
-            this.$api.post('/orgAccount/getShopCenterInfo',{},res => {
+            this.$api.post('/orgShop/getShopCenterInfo',{},res => {
                 this.sellerData = res.data;
             })
         },

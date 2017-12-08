@@ -19,11 +19,11 @@
         </mt-tab-item>
     </mt-tabbar> -->
     <div class="cbt_footer">
-        <a href="javascript:;" v-for="(item,index) in footerData" :class="{on: item.path === classIndex}" @click="selectedClass(item)">
+        <router-link v-for="(item,index) in footerData" :class="{on: item.path === classIndex}" :to="item.path">
             <i class="iconfont" :class="item.icon"></i>
             {{ item.name }}
             <mt-badge type="error" size="small" v-if="index === 2">99+</mt-badge>
-        </a>
+        </router-link>
     </div>
 </template>
 
@@ -59,11 +59,6 @@
         computed:{
             classIndex() {
                 return this.$route.path
-            }
-        },
-        methods: {
-            selectedClass(item) {
-               this.$router.push(item.path)
             }
         }
     }

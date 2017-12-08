@@ -17,24 +17,14 @@
         <section class="history-pannel" v-if="noSearch">
             <div class="title"><h3>历史搜索</h3></div>
             <ul class="history-wrap">
-                <div class="history-item">
-                    大红袍
-                </div>
-                <div class="history-item">
-                    大红袍
-                </div>
-                <div class="history-item">
-                    大红袍
-                </div>
-                <div class="history-item">
-                    大红袍
-                </div>
-                <div class="history-item">
-                    大红袍
-                </div>
+                <template v-for="(item,i) in history">
+                    <router-link to="#" tag="div" class="history-item">
+                        {{ item.searchContent }}
+                    </router-link>
+                </template>
             </ul>
-            <div class="btn-wrap">
-                <button>清空历史搜索</button>
+            <div class="btn-wrap" v-if="history.length > 0">
+                <button @click="history = []">清空历史搜索</button>
             </div>
         </section>
         <!-- 搜索列表 -->
@@ -83,7 +73,7 @@
             </div>
             <div class="no-more" v-if="list.length === total">没有更多了呦</div>
         </section>
-        <section class="no-search" v-if="!noSearch && list.length === 0">
+        <section class="no-search" v-if="!noSearch && noList">
             <div class="sorry-img">
                 <img src="../../assets/images/55.png" alt="">
             </div>
@@ -101,6 +91,8 @@
 </template>
 
 <script>
+    import { mapState } from 'vuex'
+    import store from 'store';
     export default {
         data() {
             return {
@@ -168,7 +160,14 @@
                 list: [],               // 搜索结果
                 total: 0,               // 总条目
                 pageNum: 1,             // 页码
+                noList: false,          // 没有搜索到
+                history: [],            // 历史记录
             }
+        },
+        computed: {
+            ...mapState({
+                id: state => state.member.member.id,
+            })
         },
         watch: {
             '$route'(val) {
@@ -176,6 +175,9 @@
                 try {
                     this.handle().then(res => {
                         let data = this.list.concat(res.data);
+                        if(data.length === 0) {
+                            this.noList = true;
+                        }
                         this.list = data;
                         this.total = res.total_record;
                     })
@@ -185,7 +187,7 @@
             },
             sortClass(val) {
                 this.reset();
-                this.$router.replace({name: '搜索',query: {q: this.text,c: val,sort: 'desc'}})
+                this.$router.replace({name: '搜索',query: {q: this.$route.query.q,c: val,sort: 'desc'}})
             }
         },
         methods: {
@@ -194,6 +196,7 @@
                 this.pageNum = 1;
                 this.list = [];
                 this.total = 0;
+                this.noList = false;
             },
             // 价格排序发生改变
             editPriceSort() {
@@ -206,7 +209,7 @@
                     } else {
                         this.priceSort = !this.priceSort;
                         this.reset();
-                        this.$router.replace({name: '搜索',query: {q: this.text,c: '3',sort: this.priceSort ? 'asc' : 'desc'}})
+                        this.$router.replace({name: '搜索',query: {q: this.$route.query,c: '3',sort: this.priceSort ? 'asc' : 'desc'}})
                     }
                 })
             },
@@ -249,9 +252,21 @@
                         "proType": "PRO",
                         "seachKey": query.q,
                         "sort": query.c,
-                        "sysId": 2
+                        "sysId": 1
                     }
-                    
+                    // 如果有登陆，储存搜索历史
+                    if(this.id) {
+                        this.$api.post('/oteao/searchProductRecord/insert',{
+                            'searchProductRecord.memberId': this.id,
+                            'searchProductRecord.sysId': 1,
+                            'searchProductRecord.searchContent': query.q,
+                            'searchProductRecord.device': 'WAP'
+                        },res => {})
+                    }
+
+
+
+
                     return new Promise((resolve,reject) => {
                         this.$api.post(`/oteaoProduct/seachProduct?page.pageNumber=${page}&page.pageSize=20`,JSON.stringify(data),res => {
                             let tempArr = res.data;
@@ -306,16 +321,41 @@
             },
         },
         created() {
-            this.$store.dispatch('getMemberData')
             // 根据地址栏获取条件
             try {
                 this.handle().then(res => {
                     let data = this.list.concat(res.data);
+                    if(data.length === 0) {
+                        this.noList = true;
+                    }
                     this.list = data;
                     this.total = res.total_record;
                 })
             } catch (error) {
-                return false;
+                // 获取搜索历史
+                if(this.id) {
+                    this.$api.post('/oteao/searchProductRecord/query',{
+                        pageSize: 10,
+                        'searchProductRecord.memberId': this.id,
+                        'searchProductRecord.sysId': 1,
+                        'searchProductRecord.device': 'WAP'
+                    },res => {
+                        res.data = res.data || [];
+                        this.history = res.data;
+                    },res =>{})
+                }
+            }
+        },
+        // 进来先判断登陆与否
+        beforeRouteEnter(to, from, next) {
+            if(!store.state.member.member.id) {
+                store.dispatch('getMemberData').then((res) => {
+                    next();
+                }).catch(res => {
+                    next();
+                })
+            } else {
+                next();
             }
         }
     }

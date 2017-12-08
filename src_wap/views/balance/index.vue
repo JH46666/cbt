@@ -22,7 +22,7 @@
                             <div class="right">
                                 <p class="goods-title">{{ todo.proName }}</p>
                                 <p class="goods-bd">
-                                    <span class="price">￥{{ todo.actualPayPrice | toFix2  }}</span>
+                                    <span class="price">￥{{ todo.priorityPrice | toFix2  }}</span>
                                     <span class="num">×{{ todo.buyNum }}</span>
                                 </p>
                             </div>
@@ -357,7 +357,7 @@
                     // 货到付款
                     if(!online && delivery) {
                         if(this.totalAmount > 0) {
-                            this.$router.push({name: '结算成功',query: {payId: res.data.payId}});
+                            this.$router.push({name: '结算显示',query: {payId: res.data.payId}});
                         } else {
                             this.$router.push({name: '货到付款结算',query: {payId: res.data.payId}});
                         }

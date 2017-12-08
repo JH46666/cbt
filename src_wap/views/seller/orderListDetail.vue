@@ -1,11 +1,15 @@
 <template>
-    <div id="order-list">
-        <mt-navbar v-model="selected">
-            <mt-tab-item id="null">全部</mt-tab-item>
-            <mt-tab-item id="waitPay">待付款</mt-tab-item>
-            <mt-tab-item id="waitSend">待发货</mt-tab-item>
-            <mt-tab-item id="waitRec">已发货</mt-tab-item>
-        </mt-navbar>
+    <div id="order-list" class="detail">
+        <section class="head-bar">
+            <mt-navbar v-model="selected">
+                <mt-tab-item id="null">全部</mt-tab-item>
+                <mt-tab-item id="waitPay">已结算</mt-tab-item>
+                <mt-tab-item id="waitSend">未结算</mt-tab-item>
+            </mt-navbar>
+            <div class="screen-bar">
+                <i class="iconfont">&#xe674;</i> 筛选
+            </div>
+        </section>
         <!-- 订单面板 -->
         <section
             :key="selected" 
@@ -66,16 +70,19 @@
                 <p class="empty_text">您还没有相关的订单哟~</p>
             </div>
         </section>
-        <!-- 关闭订单部分 -->
-        <mt-popup
-            v-model="closeUp"
-            position="bottom">
-            <div class="close-wrap">
-                <h3>选择关闭订单原因</h3>
-                <p class="close-tip" @click="pickClose('缺货')">缺货</p>
-                <p class="close-tip" @click="pickClose('买家不想买了')">买家不想买了</p>
-                <p class="close-tip" @click="pickClose('其他')">其他</p>
-                <p class="close-tip" @click="pickClose('暂不关闭')">暂不关闭</p>
+        <!-- 筛选弹窗 -->
+        <mt-popup v-model="filterVisible" position="bottom" class="popup-filter">
+            <div class="popup-content">
+                <div class="con-item" v-for="list in filterConditions">
+                    <h4>{{list.propName}}</h4>
+                    <ul class="clearfix">
+                        <li :class="{on:index == list.filterIndex}" v-for="(item,index) in list.propValList" @click="selectFilter(list,item,index)">{{item.propVal}}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="pop-btns flex">
+                <a class="flex-1" href="javscript:void(0)" @click="resetConditions">重置</a>
+                <a class="flex-1 confirm" href="javscript:void(0)" @click="confirmConditions">确定</a>
             </div>
         </mt-popup>
     </div>
@@ -87,7 +94,7 @@
     export default{
         data() {
             return {
-                closeUp: false,         // 关闭订单弹出
+                filterVisible: true,    // 关闭订单弹出
                 pageNum: 1,             // 初始页面
                 activeOrder: null,      // 当前激活的订单
             }
@@ -98,8 +105,8 @@
                     if(this.$route.query.type) {
                         return this.$route.query.type
                     } else {
-                        this.$router.replace({name: '卖家订单列表',query: {type: 'null'}})
-                        return 'null';
+                        // this.$router.replace({name: '卖家订单列表',query: {type: 'null'}})
+                        // return 'null';
                     }
                 },
                 set(val) {
@@ -221,7 +228,16 @@
                 }
             },
         },
+        head: {
+            title() {
+                return {
+                    inner : '订单明细'
+                }
+            }
+        },
         created() {
+            // 设置title
+            this.$store.commit('SET_TITLE','订单明细');
             // 进入页面拉取数据
             this.$store.dispatch('getSellerOrder',{type: this.selected}).then(res => {
                 this.$store.commit('SET_ORDERLIST',{type:this.selected,data: res.data})

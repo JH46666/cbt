@@ -7,7 +7,7 @@
                     <div class="user" v-else>{{ member.phone | filterPhone }}</div>
                     <div class="sign">
                         <div class="sign-btn">
-                            <span>+ {{ sign.nextSign }}积分</span>
+                            <span>+ {{ sign.returnResult ? sign.signed : sign.nextSign }}积分</span>
                             <mt-button size="small" @click="signTo" :disabled="sign.returnResult">
                                 <template v-if="!sign.returnResult">
                                     签到领取
@@ -26,11 +26,11 @@
                     <div class="experience-bar">
                         <div class="experience" :style="{width:memberAccount.growthValue / level.cumulativeConsume * 100 + '%'}"></div>
                     </div>
-                    {{ memberAccount.growthValue }} &nbsp;/&nbsp; {{ level.cumulativeConsume }}
+                    {{ memberAccount.growthValue || 0 }} &nbsp;/&nbsp; {{ level.cumulativeConsume }}
                 </div>
             </div>
             <div class="bd">
-                <p class="bd-text">累积消费￥{{ memberAccount.growthValue }}，还差￥{{ level.cumulativeConsume - memberAccount.growthValue }}晋升{{ level.lever + level.memberLevelName  }}</p>
+                <p class="bd-text">累积消费￥{{ memberAccount.growthValue || 0 }}，还差￥{{ level.cumulativeConsume - memberAccount.growthValue }}晋升{{ level.lever + level.memberLevelName  }}</p>
             </div>
         </section>
         <section class="count-entry">
@@ -91,7 +91,7 @@
                 <div class="left"><i class="icon-xiugaimima"></i>修改密码</div>
                 <div class="right"><i class="icon-icon07"></i></div>
             </router-link>
-            <router-link :to="{name: '卖家注册'}" class="tools-entry" v-if="!shop">
+            <router-link :to="{name: '卖家招募'}" class="tools-entry" v-if="!shop">
                 <div class="left"><i class="icon-zhongxindianpu"></i>申请为卖家</div>
                 <div class="right"><i class="icon-icon07"></i></div>
             </router-link>
@@ -108,6 +108,7 @@
 
 
 <script>
+    import store from 'store';
     import { mapState } from 'vuex'
     export default {
         data() {
@@ -158,32 +159,65 @@
                 this.count = res.data;
             })
         },
+        // 判断会员状态
         beforeRouteEnter (to, from, next) {
-            next(vm => {
-                vm.$store.dispatch('getMemberData').then(res =>{
-                    let status = res.orgDTO.status;
-                    if(status === 2) {
-                        vm.$store.dispatch('viewSign')
-                        vm.$store.dispatch('getRedTotal')
-                        vm.$api.get('/member/memberLevel/findNextLevelByMemberIdAndSysId',{
-                            memberId: vm.$store.state.member.member.id,
-                            sysId:1
-                        },res =>{
-                            vm.level = res.data;
-                        })
-                        return;
-                    };
-                    if(status === 1) {
-                        vm.$messageBox({
-                            title:'提示', 
-                            message:`您的账号审核中，请耐心等待~~<br>若有疑问，请联系客服<br>4006-066-068`,
-                            confirmButtonText: '我知道了'
-                        });
-                    }
-                    // 未通过返回
-                    vm.$router.go(-1);
+            let vm = vm => {
+                let status = store.state.member.memberAccount.status;
+                if(status === 'ACTIVE') {
+                    vm.$store.dispatch('viewSign')
+                    vm.$store.dispatch('getRedTotal')
+                    vm.$api.get('/member/memberLevel/findNextLevelByMemberIdAndSysId',{
+                        memberId: store.state.member.member.id,
+                        sysId:1
+                    },res =>{
+                        vm.level = res.data;
+                    })
+                    return;
+                };
+                if(status === 'WAIT_AUDIT') {
+                    vm.$messageBox({
+                        title:'提示', 
+                        message:`您的账号审核中,只有正式会员才可查看<br>若有疑问，请联系客服<br>400-996-3399`,
+                        confirmButtonText: '我知道了'
+                    });
+                }
+                if(status === 'FREEZE') {
+                    vm.$messageBox({
+                        title:'提示', 
+                        message:`您的账号因违规操作而被冻结无法进入~<br>若有疑问，请联系客服<br>400-996-3399`,
+                        confirmButtonText: '我知道了'
+                    });
+                }
+                if(status === 'AUDIT_NO_PASS' || status === 'INACTIVE') {
+                    vm.$messageBox({
+                        title:'提示', 
+                        message:`您的账号审核未通过，只有正式会员才可查看<br>若有疑问，请联系客服<br>400-996-3399`,
+                        showCancelButton: true,
+                        cancelButtonText: '取消',
+                        confirmButtonText: '完善资料'
+                    }).then(res => {
+                        if(res === 'cancel') {
+                            return;
+                        } else {
+                            vm.$router.push({name: '茶帮通注册2'})
+                        }
+                    })
+                }
+                return vm.$router.go(-1);
+            }
+
+
+            if(!store.state.member.member.id) {
+                store.dispatch('getMemberData').then((res) => {
+                    next(vm);
+                }).catch(res => {
+                    next(vm => {
+                        vm.$router.push('/login');
+                    })
                 })
-            })
+            } else {
+                next(vm);
+            }
         }
     }
 </script>
