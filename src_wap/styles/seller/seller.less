@@ -78,7 +78,7 @@
             }
         }
         .sum-count{
-            .fontSize(.2rem);
+            .fontSize(.24rem);
         }
         .goback{
             border-radius: 20px 0 0 20px;
@@ -98,12 +98,13 @@
         .flex;
         .paddingRow(.35rem);
         .bg(#fff);
+        .paddingT(.2rem);
+        .paddingB(.2rem);
         .count-item{
+            border-right: 1px solid #f5f5f5;
             .flex-1;
             .algin(c);
-            .h(1.35rem);
-            .paddingT(.2rem);
-            .paddingB(.2rem);
+            .h(.95rem);
             .num{
                 margin-bottom: .06rem;
                 .fontSize(.28rem);
@@ -113,6 +114,9 @@
                 .fontSize(.22rem);
                 .color(@b-6);
             }
+            &:nth-last-of-type(1){
+                border: none;
+            }
         }
     }
     // 订单入口
@@ -120,7 +124,7 @@
         margin-bottom: .24rem;
         .bg(#fff);
         .title{
-            border-bottom: 1px solid @borCol;
+            border-bottom: 1px solid #f5f5f5;
             .flex;
             .paddingRow(.35rem);
             .line(.92rem);
@@ -149,6 +153,11 @@
                     .fontSize(.4rem);
                     .line(1);
                 }
+                &:nth-last-child(1){
+                    i{
+                        .color(#c2c2c2);
+                    }
+                }
                 p{
                     margin-top: .08rem;
                     .color(@b-6);
@@ -176,7 +185,7 @@
         margin-bottom: .48rem;
         .bg(#fff);
         .tools-row{
-            border-bottom: 1px solid @borCol;
+            border-bottom: 1px solid #f5f5f5;
             // .paddingRow(.35rem);
             .flex;
             &:nth-last-of-type(1){
@@ -198,7 +207,7 @@
                     .color(#49bbf2);
                 }
                 &.small{
-                    .fontSize(.34rem);
+                    .fontSize(.3rem);
                     .line(.4rem);
                 }
             }

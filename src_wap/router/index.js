@@ -258,6 +258,14 @@ const router = new Router({
 					}
 				},
 				{
+					path: 'orderlistdetail',
+					name: '卖家订单明细',
+					component: resolve => require(['@/views/seller/orderListDetail.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+				{
 					path: 'editexpress',
 					name: '修改配送方式',
 					component: resolve => require(['@/views/seller/editExpress.vue'],resolve),

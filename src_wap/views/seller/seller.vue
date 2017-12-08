@@ -25,11 +25,11 @@
             </div>
         </section>
         <section class="count-entry">
-            <router-link to="#" tag="div" class="count-item">
+            <router-link to="" tag="div" class="count-item">
                 <p class="num">{{ count.monthOrderSum | toFix2}}</p>
                 <p class="tips">当月收入</p>
             </router-link>
-            <router-link to="#" tag="div" class="count-item">
+            <router-link to="" tag="div" class="count-item">
                 <p class="num">{{ count.monthOrderNum }}</p>
                 <p class="tips">当月订单数</p>
             </router-link>
@@ -58,8 +58,8 @@
                     <p>已发货</p>
                 </router-link>
                 <router-link to="/seller/orderlist?type=null" class="item">
-                    <mt-badge size="small" type="error" :class="{one:allCount < 10}" v-if="allCount > 0">{{ allCount | ninenineAdd }}</mt-badge>
-                    <span><i class="icon-zhengchangdingdan"></i></span>
+                    <!-- <mt-badge size="small" type="error" :class="{one:allCount < 10}" v-if="allCount > 0">{{ allCount | ninenineAdd }}</mt-badge> -->
+                    <span><i class="icon-gengduo"></i></span>
                     <p>全部</p>
                 </router-link>
                 <!-- <router-link to="#" class="item">
@@ -173,7 +173,7 @@
             this.$api.post('/oteao/order/countOrderNumBySeller',{},res => {
                 this.count = res.data;
             })
-            this.$api.post('/orgAccount/getShopCenterInfo',{},res => {
+            this.$api.post('/orgShop/getShopCenterInfo',{},res => {
                 this.sellerData = res.data;
             })
         },

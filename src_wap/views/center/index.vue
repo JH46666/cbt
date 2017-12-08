@@ -108,6 +108,7 @@
 
 
 <script>
+    import store from 'store';
     import { mapState } from 'vuex'
     export default {
         data() {
@@ -158,32 +159,65 @@
                 this.count = res.data;
             })
         },
+        // 判断会员状态
         beforeRouteEnter (to, from, next) {
-            next(vm => {
-                vm.$store.dispatch('getMemberData').then(res =>{
-                    let status = res.shop.shopStatus;
-                    if(status === 2) {
-                        vm.$store.dispatch('viewSign')
-                        vm.$store.dispatch('getRedTotal')
-                        vm.$api.get('/member/memberLevel/findNextLevelByMemberIdAndSysId',{
-                            memberId: vm.$store.state.member.member.id,
-                            sysId:1
-                        },res =>{
-                            vm.level = res.data;
-                        })
-                        return;
-                    };
-                    if(status === 1) {
-                        vm.$messageBox({
-                            title:'提示', 
-                            message:`您的账号审核中，请耐心等待~~<br>若有疑问，请联系客服<br>4006-066-068`,
-                            confirmButtonText: '我知道了'
-                        });
-                    }
-                    // 未通过返回
-                    vm.$router.go(-1);
+            let vm = vm => {
+                let status = store.state.member.memberAccount.status;
+                if(status === 'ACTIVE') {
+                    vm.$store.dispatch('viewSign')
+                    vm.$store.dispatch('getRedTotal')
+                    vm.$api.get('/member/memberLevel/findNextLevelByMemberIdAndSysId',{
+                        memberId: store.state.member.member.id,
+                        sysId:1
+                    },res =>{
+                        vm.level = res.data;
+                    })
+                    return;
+                };
+                if(status === 'WAIT_AUDIT') {
+                    vm.$messageBox({
+                        title:'提示', 
+                        message:`您的账号审核中,只有正式会员才可查看<br>若有疑问，请联系客服<br>400-996-3399`,
+                        confirmButtonText: '我知道了'
+                    });
+                }
+                if(status === 'FREEZE') {
+                    vm.$messageBox({
+                        title:'提示', 
+                        message:`您的账号因违规操作而被冻结无法进入~<br>若有疑问，请联系客服<br>400-996-3399`,
+                        confirmButtonText: '我知道了'
+                    });
+                }
+                if(status === 'AUDIT_NO_PASS' || status === 'INACTIVE') {
+                    vm.$messageBox({
+                        title:'提示', 
+                        message:`您的账号审核未通过，只有正式会员才可查看<br>若有疑问，请联系客服<br>400-996-3399`,
+                        showCancelButton: true,
+                        cancelButtonText: '取消',
+                        confirmButtonText: '完善资料'
+                    }).then(res => {
+                        if(res === 'cancel') {
+                            return;
+                        } else {
+                            vm.$router.push({name: '茶帮通注册2'})
+                        }
+                    })
+                }
+                return vm.$router.go(-1);
+            }
+
+
+            if(!store.state.member.member.id) {
+                store.dispatch('getMemberData').then((res) => {
+                    next(vm);
+                }).catch(res => {
+                    next(vm => {
+                        vm.$router.push('/login');
+                    })
                 })
-            })
+            } else {
+                next(vm);
+            }
         }
     }
 </script>
