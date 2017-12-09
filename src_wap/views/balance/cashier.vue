@@ -51,7 +51,8 @@
         computed: {
             ...mapState({
                 // id: state => state.member.member.id,
-                totalAmount: state => state.member.memberAccount.totalAmount
+                totalAmount: state => state.member.memberAccount.totalAmount,
+                id: state => state.member.member.id
             })
         },
         methods:{
@@ -70,7 +71,34 @@
 
                 if(this.isUse) {
                     // 使用余额
+
+                    
+                    // 使用余额支付的话需要判断当前的余额是否够用，需要配合在线支付
+
+                    this.$api.post('/oteao/payOrder/modityOrderStoreValue',{
+                        payOrderId: this.payId,
+                    },res => {
+
+                        if(res.data.orderSum > 0) {
+                            // 余额不够了,还需配合在线支付
+                            payUp.call(this)
+
+
+                        } else {
+                            // 交易成功
+                            this.$router.push({name: '结算显示',query:{payId:this.payId}})
+                        }
+                    })
+
+
+
+
                 } else {
+                    payUp.call(this)
+                }
+
+                // 在线支付，支付宝or微信
+                function payUp() {
                     // 在线支付
                     if(method === 'ALIPAY') {
                         // 支付宝
@@ -98,14 +126,12 @@
                             // 在浏览器
                             this.$api.post('/payOrder/wxPay',{
                                 payId: this.payId,
+                                ip: '117.30.209.152',
                                 tradeType: 'MWEB'
                             },res => {
                                 console.log(res)
                             })
                         }
-
-                        
-
 
                     }
                 }
