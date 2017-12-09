@@ -356,8 +356,8 @@
 
                     // 货到付款
                     if(!online && delivery) {
-                        if(this.totalAmount > 0) {
-                            this.$router.push({name: '结算显示',query: {payId: res.data.payId,type:'delivery'}});
+                        if(this.totalAmount >= this.totalPrice) {
+                            this.$router.push({name: '收银台',query: {payId: res.data.payId,type:'delivery'}});
                         } else {
                             this.$router.push({name: '货到付款结算',query: {payId: res.data.payId,type:'delivery'}});
                         }
@@ -368,6 +368,9 @@
                         this.$router.push({name: '货到付款结算',query: {payId: res.data.payId,type:'onlineanddelivery'}});
                     }
 
+                },res => {
+                    this.$toast(res.cnMessage);
+                    this.disabled = false;
                 })
             },
             // 修改地址
