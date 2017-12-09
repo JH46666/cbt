@@ -86,6 +86,26 @@
                                 document.forms[0].submit();
                             })
                         })
+                    } else {
+                        // 微信支付
+
+                        // 微信支付需要判断是在浏览器还是微信内
+
+                        let isWx = this.$tool.isWx;
+                        if(isWx) {
+
+                        } else {
+                            // 在浏览器
+                            this.$api.post('/payOrder/wxPay',{
+                                payId: this.payId,
+                                tradeType: 'MWEB'
+                            },res => {
+                                console.log(res)
+                            })
+                        }
+
+                        
+
 
                     }
                 }

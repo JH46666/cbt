@@ -351,21 +351,21 @@
 
                     // 都是在线支付
                     if(online && !delivery) {
-                        this.$router.push({name: '收银台',query: {payId: res.data.payId}});
+                        this.$router.push({name: '收银台',query: {payId: res.data.payId,type:'online'}});
                     }
 
                     // 货到付款
                     if(!online && delivery) {
                         if(this.totalAmount > 0) {
-                            this.$router.push({name: '结算显示',query: {payId: res.data.payId}});
+                            this.$router.push({name: '结算显示',query: {payId: res.data.payId,type:'delivery'}});
                         } else {
-                            this.$router.push({name: '货到付款结算',query: {payId: res.data.payId}});
+                            this.$router.push({name: '货到付款结算',query: {payId: res.data.payId,type:'delivery'}});
                         }
                     }
 
                     // 在线支付 + 货到付款
                     if(online && delivery) {
-                        this.$router.push({name: '货到付款结算',query: {payId: res.data.payId}});
+                        this.$router.push({name: '货到付款结算',query: {payId: res.data.payId,type:'onlineanddelivery'}});
                     }
 
                 })

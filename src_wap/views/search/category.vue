@@ -56,6 +56,7 @@
                                 :aromaStar="item.aromaStar" 
                                 :aromaName="item.aromaVal" 
                                 :tasteStar="item.tasteStar" 
+                                :businessType="item.tagNum"
                                 :tasteName="item.tasteVal" 
                                 :isLogin="$tool.isLogin()"
                                 imgWidth="1.56rem">

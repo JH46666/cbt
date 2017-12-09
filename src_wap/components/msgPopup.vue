@@ -18,12 +18,12 @@
             <p class="error_tips" v-show="errorTxt != ''"><i class="iconfont">&#xe667;</i>{{errorTxt}}</p>
             <div class="flex img_box">
                 <div class="img_code" ref="imgcode">
-                    <img src="api/recaptcha/getReCaptha" alt="">
+                    <img src="" alt="">
                 </div>
-                <a class="refresh" @click="getCode"><i class="iconfont">&#xe665;</i></a>
+                <a class="refresh" @click="reset"><i class="iconfont">&#xe665;</i></a>
             </div>
             <div class="flex img_code_input" ref="forms">
-                <input class="flex-1" :class="{on: i==curIndex}" v-for="(c,i) in codes" type="text" :name="i" v-model="c.code" maxlength="1" @click="setIndex(i)" @input="setFocus(i,$event.target.value)">
+                <input class="flex-1" :class="{on: i==curIndex}" v-for="(c,i) in codes" type="number" :name="i" v-model="c.code" maxlength="1" @click="setIndex(i)" @input="setFocus(i,$event.target.value)">
             </div>
         </div>
     </div>
@@ -64,7 +64,9 @@
             getCode(){
                 let str = `<img src="api/recaptcha/getReCaptha?v=${Math.random()*100}" alt="">`;
                 this.$refs.imgcode.innerHTML = str;
-                this.$refs.forms.childNodes[this.curIndex].focus();
+                this.$nextTick(() => {
+                    this.$refs.forms.childNodes[this.curIndex].focus();
+                })
             },
             //设置curIndex
             setIndex(i){
@@ -83,6 +85,12 @@
                     });
                 }
             },
+            // 重置信息，失败的时候重置
+            reset() {
+                this.curIndex = 0;
+                this.codes = [{code:''},{code:''},{code:''},{code:''}];
+                this.getCode();
+            }
         },
         watch:{
             curIndex(val){
@@ -92,9 +100,6 @@
                         strCode += item.code;
                     }
                     this.$emit('getMsgCode',strCode);
-                    this.curIndex = 0;
-                    this.codes = [{code:''},{code:''},{code:''},{code:''}];
-                    this.getCode();
                 }
             },
         }

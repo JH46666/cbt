@@ -18,7 +18,8 @@
             <div class="title"><h3>历史搜索</h3></div>
             <ul class="history-wrap">
                 <template v-for="(item,i) in history">
-                    <router-link to="#" tag="div" class="history-item">
+                    <router-link :to="{name: '搜索',query: {q: item.searchContent,c: '4',sort: 'desc'}
+                        }" tag="div" class="history-item">
                         {{ item.searchContent }}
                     </router-link>
                 </template>
@@ -62,7 +63,7 @@
                 :price="item.proPrice"
                 :unit="item.unint"
                 :imgUrl="item.proImg"
-                :businessType="item.shopType"
+                :businessType="item.tagNum"
                 :tagUrl="item.tagImgUrl"
                 :isLogin="$tool.isLogin()">
                 </goods-item>

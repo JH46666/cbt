@@ -64,7 +64,7 @@
                 </template>
                 </div>
                 <div class="goods-type self">
-                    {{businessType}}
+                    {{ businessName[businessType - 1] || businessName[4] }}
                 </div>
             </div>
         </div>
@@ -98,8 +98,7 @@
                 default: '#'
             },
             businessType: {
-                type: String,
-                default: '自营'
+                default: '5'
             },
             imgUrl: {
                 type: String,
@@ -132,6 +131,11 @@
             isLogin:{
                 type: Boolean,
                 default: false
+            }
+        },
+        data() {
+            return {
+                businessName: ['茶厂','合作社','茶企','批发商','自营','联营']
             }
         }
     }
