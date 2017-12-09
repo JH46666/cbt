@@ -56,22 +56,22 @@
             </div>
             <div class="order-entry">
                 <router-link :to="{name: '订单列表',query: {orderStatus:'waitPay'}}" class="item">
-                    <mt-badge size="small" type="error" :class="{one:count.waitSend < 10}" v-if="count.waitPay > 0">{{ count.waitPay }}</mt-badge>
+                    <mt-badge size="small" type="error" :class="{one:count.waitSend < 10}" v-if="count.waitPay > 0">{{ count.waitPay | ninenineAdd }}</mt-badge>
                     <span><i class="icon-gerenzhongxin_daifukuan"></i></span>
                     <p>待付款</p>
                 </router-link>
                 <router-link :to="{name: '订单列表',query: {orderStatus:'waitSend'}}" class="item">
-                    <mt-badge size="small" type="error" :class="{one:count.waitSend < 10}" v-if="count.waitSend > 0">{{ count.waitSend }}</mt-badge>
+                    <mt-badge size="small" type="error" :class="{one:count.waitSend < 10}" v-if="count.waitSend > 0">{{ count.waitSend | ninenineAdd }}</mt-badge>
                     <span><i class="icon-gerenzhongxin_daifahuo"></i></span>
                     <p>待发货</p>
                 </router-link>
                 <router-link :to="{name: '订单列表',query: {orderStatus:'waitRec'}}" class="item">
-                    <mt-badge size="small" type="error" :class="{one:count.waitSend < 10}" v-if="count.send > 0">{{ count.send }}</mt-badge>
+                    <mt-badge size="small" type="error" :class="{one:count.waitSend < 10}" v-if="count.send > 0">{{ count.send | ninenineAdd }}</mt-badge>
                     <span><i class="icon-gerenzhongxin_yifahuo"></i></span>
                     <p>待收货</p>
                 </router-link>
                 <router-link :to="{name: '订单列表',query: {orderStatus:'waitComment'}}" class="item">
-                    <mt-badge size="small" type="error" :class="{one:count.waitSend < 10}" v-if="count.waitCommentNum > 0">{{ count.waitCommentNum }}</mt-badge>
+                    <mt-badge size="small" type="error" :class="{one:count.waitSend < 10}" v-if="count.waitCommentNum > 0">{{ count.waitCommentNum | ninenineAdd }}</mt-badge>
                     <span><i class="icon-shangpinpingjia"></i></span>
                     <p>待评价</p>
                 </router-link>
@@ -143,18 +143,27 @@
             },
             // 推出登陆
             quit() {
-                try {
-                    this.$api.get('/oteao/login/logout',{},res => {
-                        this.$router.push('/')
-                    },res => {
-                        this.$router.push('/')
-                    })
-                } catch (error) {
-                    this.$router.push('/')
-                }
+                this.$messageBox({
+                    title:'提示', 
+                    message:`是否退出登录`,
+                    showCancelButton: true,
+                    cancelButtonText: '取消',
+                    confirmButtonText: '确定'
+                }).then(res => {
+                    if(res === 'cancel') {
+                        return;
+                    } else {
+                        this.$api.get('/oteao/login/logout',{},res => {
+                            this.$router.push('/')
+                        },res => {
+                            this.$router.push('/')
+                        })
+                    }
+                })
             }
         },
         created() {
+            // 获取订单数量
             this.$api.post('/oteao/order/countOrderNum',{},res => {
                 this.count = res.data;
             })

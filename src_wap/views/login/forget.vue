@@ -32,7 +32,7 @@
             </div>
         </div>
         <!-- 验证码弹窗 -->
-        <msg-popup v-if="verifyFlag" @closePopup="closePopup" @getMsgCode="getMsgCode" :errorTxt="errorTips"></msg-popup>
+        <msg-popup v-if="verifyFlag" @closePopup="closePopup" @getMsgCode="getMsgCode" :errorTxt="errorTips" ref="imgCode"></msg-popup>
     </div>
 </template>
 <script>
@@ -93,6 +93,7 @@
             //关闭弹窗
             closePopup(){
                 this.verifyFlag = false;
+                this.errorTips = "";
             },
             //提交图片验证码获取短信验证码
             getMsgCode(val){
@@ -102,12 +103,14 @@
                     reCaptcha: val,
                 }
                 this.$api.get('/oteao/login/doSendSms',data,res=>{
-                    this.verifyFlag = false;
+                    this.verifyFlag = false;   
                     this.getFlag = false;
+                    this.errorTips = "";        
                     Toast('验证码己发至您的手机，5分钟内有效，请注意查收');
                     this.getCount++;
                     this.countTime();
                 },res=>{
+                    this.$refs.imgCode.reset();
                     this.errorTips = "您输入的图片验证码错误，请核对后重新输入";
                 });
             },
@@ -163,9 +166,13 @@
             showPopup(){
                 if(this.getFlag && this.phoneFlag){
                     this.$api.get('/oteao/memberAccount/searchIsExist',{memberAccount:this.regInfo.phone},res=>{
-                        this.verifyFlag = true;
+                        if(res.data.returnResult) {
+                            this.verifyFlag = true;
+                        } else {
+                            Toast('您输入的手机号未注册，请重新输入');
+                        }
                     },res=>{
-                        Toast('您输入的手机号未注册，请重新输入');
+                         Toast(res.cnMessage);
                     });
                 }
             },
