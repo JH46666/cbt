@@ -185,7 +185,7 @@ export default {
             oneTypeList: [],
             twoTypeList: [],
             clickSure: true,
-            device: 'PC',
+            device: 'WAP',
         }
     },
     watch: {
@@ -278,7 +278,7 @@ export default {
                     parentId: parentId
                 }
             return new Promise((resolve,reject) => {
-                this.$api.get('/oteaoProCat/queryCatChilds',data,res => {
+                this.$api.get('/oteao/proCat/queryCatChilds',data,res => {
                     resolve(res);
                 },res=>{
                     return Toast({
@@ -293,7 +293,7 @@ export default {
                     sysId: 1
                 }
             return new Promise((resolve,reject) => {
-                this.$api.get('/oteaoProCat/getBaseTea',data,res => {
+                this.$api.get('/oteao/proCat/getBaseTea',data,res => {
                     resolve(res);
                 },res=>{
                     return Toast({
@@ -427,7 +427,7 @@ export default {
                 sysId: 1
             }
             return new Promise((resolve,reject) => {
-                this.$api.get('/OteaoProductBrand/findProductBrandByListSysId',data,res => {
+                this.$api.get('/oteao/productBrand/findProductBrandByListSysId',data,res => {
                     resolve(res);
                 },res=>{
                     return Toast({

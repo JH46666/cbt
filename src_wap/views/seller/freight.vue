@@ -10,20 +10,20 @@
                     <span class="color_6 lab" style="float:left;">不包邮省份</span>
                     <p class="cities empty" v-if="item.areaText.length === 0">请选择</p>
                     <p class="cities" v-else>{{ item.areaText }}</p>
-                    <a class="r-select" href="javascript:void(0);" @click="popupVisible=true"><i class="iconfont color_ad">&#xe744;</i></a>
+                    <a class="r-select" href="javascript:void(0);" @click="showDialog(index)"><i class="iconfont color_ad">&#xe744;</i></a>
                 </div>
             </div>
             <div class="input-item">
                 <div class="flex input-inner">
                     <span class="flex-1 color_6">首重(1kg)</span>
-                    <input class="algin_r" type="age" placeholder="请输入首重运费" v-model="item.sweight" />
+                    <input class="algin_r" type="age" placeholder="请输入首重运费" v-model="item.sweight" @blur="toFixedTwo(item.sweight,'sweight',index)" />
                     <span>元</span>
                 </div>
             </div>
             <div class="input-item">
                 <div class="flex input-inner">
                     <span class="flex-1 color_6">续重（每增加1kg增加）</span>
-                    <input class="algin_r" type="age" placeholder="请输入金额" v-model="item.xweight" @blur="toFixedTwo($event.target.value)" />
+                    <input class="algin_r" type="age" placeholder="请输入金额" v-model="item.xweight" />
                     <span>元</span>
                 </div>
             </div>
@@ -34,6 +34,9 @@
                     <span>元</span>
                 </div>
             </div>
+            <div class="deleted-item" v-if="index>0" @click="delectMethod(index)">
+                <i class="iconfont">&#xe60d;</i>
+            </div>
             <div class="f5-2"></div>
         </div>
 
@@ -41,7 +44,7 @@
             <a class="add-btns" href="javascript:void(0);"><i class="iconfont">&#xe67a;</i>添加指定省份运费</a>
         </div>
         <div class="save-box">
-            <mt-button type="primary" :disabled="saveDisable">保存</mt-button>
+            <mt-button type="primary" :disabled="saveDisable" @click.native="savePost">保存</mt-button>
         </div>
         <!-- 选择省份弹窗 -->
         <mt-popup v-model="popupVisible" position="right" class="popup-city">
@@ -56,11 +59,9 @@
                         <span>江浙沪</span>
                     </h4>
                     <div class="city-inner clearfix">
-                        <a class="city-item" href="javascript:void(0);" v-for="(item,index) in addressType.one" :class="{on: item.flag}" :key="index" @click="item.flag = !item.flag">
-                            <label>
-                                <span>{{item.name}}</span>
-                            </label>
-                        </a>
+                        <mt-button type="primary" :disabled="item.disabled" class="city-item" v-for="(item,index) in addressType.one" :class="{on: item.flag && !item.disabled}" :key="index" @click.native="item.flag = !item.flag">
+                            {{item.name}}
+                        </mt-button>
                     </div>
                 </div>
                 <div class="city-box other-box">
@@ -69,11 +70,9 @@
                         <span>偏远地区</span>
                     </h4>
                     <div class="city-inner clearfix">
-                        <a class="city-item" href="javascript:void(0);" v-for="(item,index) in addressType.two" :class="{on: item.flag}" :key="index" @click="item.flag = !item.flag">
-                            <label>
-                                <span>{{item.name}}</span>
-                            </label>
-                        </a>
+                        <mt-button type="primary" :disabled="item.disabled" class="city-item" v-for="(item,index) in addressType.two" :class="{on: item.flag && !item.disabled}" :key="index" @click.native="item.flag = !item.flag">
+                            {{item.name}}
+                        </mt-button>
                     </div>
                 </div>
                 <div class="city-box other-box">
@@ -82,11 +81,9 @@
                         <span>东北三省</span>
                     </h4>
                     <div class="city-inner clearfix">
-                        <a class="city-item" href="javascript:void(0);" v-for="(item,index) in addressType.three" :class="{on: item.flag}" :key="index" @click="item.flag = !item.flag">
-                            <label>
-                                <span>{{item.name}}</span>
-                            </label>
-                        </a>
+                        <mt-button type="primary" :disabled="item.disabled" class="city-item" v-for="(item,index) in addressType.three" :class="{on: item.flag && !item.disabled}" :key="index" @click.native="item.flag = !item.flag">
+                            {{item.name}}
+                        </mt-button>
                     </div>
                 </div>
                 <div class="city-box other-box">
@@ -95,11 +92,9 @@
                         <span>其它省份</span>
                     </h4>
                     <div class="city-inner clearfix">
-                        <a class="city-item" href="javascript:void(0);" v-for="(item,index) in addressType.four" :class="{on: item.flag}" :key="index" @click="item.flag = !item.flag">
-                            <label>
-                                <span>{{item.name}}</span>
-                            </label>
-                        </a>
+                        <mt-button type="primary" :disabled="item.disabled" class="city-item" v-for="(item,index) in addressType.four" :class="{on: item.flag && !item.disabled}" :key="index" @click.native="item.flag = !item.flag">
+                            {{item.name}}
+                        </mt-button>
                     </div>
                 </div>
             </div>
@@ -110,7 +105,7 @@
                         <span class="color_6">已选<span class="color_f08">{{ checkedNum }}</span>款</span>
                     </div>
                     <div class="selected-btn">
-                        <mt-button type="primary" :disabled="disabledBol">选好了</mt-button>
+                        <mt-button type="primary" :disabled="disabledBol" @click.native="selectOk">选好了</mt-button>
                     </div>
                 </div>
             </div>
@@ -137,14 +132,15 @@ import { MessageBox,Toast } from 'mint-ui';
                 popupVisible: false,
                 postArray: [
                     {
-                        area: '',
+                        area: [],
                         areaText: '',
                         sweight: '',
                         xweight: '',
                         buyer: ''
                     }
                 ],
-                saveDisable: true,
+                selectPro: [],
+                selectIndex: null,
             }
         },
         created(){
@@ -152,30 +148,34 @@ import { MessageBox,Toast } from 'mint-ui';
                 for(let i=0;i<res.data.length-3;i++){
                     if(res.data[i].regionName === '江苏省' || res.data[i].regionName === '上海市' || res.data[i].regionName === '浙江省'){
                         this.addressType.one.push({
-                            code: res.data[i].code,
+                            code: res.data[i].id,
                             name: res.data[i].regionName,
-                            flag: false
+                            flag: false,
+                            disabled: false
                         })
                     }
                     if(res.data[i].regionName === '新疆维吾尔自治区' || res.data[i].regionName === '西藏自治区' || res.data[i].regionName === '甘肃省' || res.data[i].regionName === '青海省' || res.data[i].regionName === '宁夏回族自治区' || res.data[i].regionName === '内蒙古自治区'){
                         this.addressType.two.push({
-                            code: res.data[i].code,
+                            code: res.data[i].id,
                             name: res.data[i].regionName,
-                            flag: false
+                            flag: false,
+                            disabled: false
                         })
                     }
                     if(res.data[i].regionName === '辽宁省' || res.data[i].regionName === '吉林省' || res.data[i].regionName === '黑龙江省'){
                         this.addressType.three.push({
-                            code: res.data[i].code,
+                            code: res.data[i].id,
                             name: res.data[i].regionName,
-                            flag: false
+                            flag: false,
+                            disabled: false
                         })
                     }
                     if(res.data[i].regionName != '江苏省' && res.data[i].regionName != '上海市' && res.data[i].regionName != '浙江省' && res.data[i].regionName != '辽宁省' && res.data[i].regionName != '吉林省' && res.data[i].regionName != '黑龙江省' && res.data[i].regionName != '新疆维吾尔自治区' && res.data[i].regionName != '西藏自治区' && res.data[i].regionName != '甘肃省' && res.data[i].regionName != '青海省' && res.data[i].regionName != '宁夏回族自治区' && res.data[i].regionName != '内蒙古自治区'){
                         this.addressType.four.push({
-                            code: res.data[i].code,
+                            code: res.data[i].id,
                             name: res.data[i].regionName,
-                            flag: false
+                            flag: false,
+                            disabled: false
                         })
                     }
                 }
@@ -205,25 +205,113 @@ import { MessageBox,Toast } from 'mint-ui';
                     }
                 }
                 return num;
+            },
+            saveDisable() {
+                for(let i=0;i<this.postArray.length;i++){
+                    if(this.postArray[i].area.length > 0 && this.postArray[i].sweight!='' && this.postArray[i].xweight != '' && this.postArray[i].buyer != ''){
+                        return false;
+                    }else if(this.postArray[i].area.length === 0){
+                        return false;
+                    }else{
+                        return true;
+                    }
+                }
             }
         },
         methods:{
+            savePost() {
+                this.addFreight().then((res) => {
+                    Toast({
+                        message: '运费配置成功',
+                        iconClass: 'icon icon-success'
+                    });
+                    setTimeout(()=>{
+                        this.$router.push({
+                            name: '卖家中心'
+                        })
+                    },500)
+                })
+            },
+            addFreight() {
+                let data = {
+                    "orgFreightTemplateVoList": []
+                }
+                for(let i=0;i<this.postArray.length;i++){
+                    data.orgFreightTemplateVoList.push({
+                        "baseRegionVoList": [],
+                        "continuedHeavyCost": this.postArray[i].sweight,
+                        "firstHeavyCost": this.postArray[i].xweight,
+                        "freeCost": this.postArray[i].buyer
+                    })
+                    let areaArray = this.postArray[i].area,
+                        areaNameArray = this.postArray[i].areaText.split(',');
+                    for(let obj of areaArray){
+                        data.orgFreightTemplateVoList[i].baseRegionVoList.push({
+                            "id": obj,
+                            "regionName": ''
+                        })
+                    }
+                    for(let obj of areaNameArray){
+                        data.orgFreightTemplateVoList[i].baseRegionVoList.regionName = obj;
+                    }
+                }
+                return new Promise((resolve,reject) => {
+                    this.$api.post('/oteao/orgFreightTemplate/insertOrgFreightTemplateVo',JSON.stringify(data),res => {
+                        resolve(res);
+                    },res=>{
+                        return Toast({
+                            message: res.errorMsg,
+                            iconClass: 'icon icon-fail'
+                        });
+                    })
+                })
+            },
+            toFixedTwo(val,str,index) {
+                let delTrim = String(val).trim();
+                if(delTrim == ''){
+                    this.postArray[index].sweight = '0.00'
+                }else{
+                    this.postArray[index].sweight = parseFloat(delTrim).toFixed(2);
+                }
+            },
+            delectMethod(index) {
+                this.postArray.splice(index,1);
+            },
+            selectOk() {
+                this.postArray[this.selectIndex].area = [];
+                let nameArray = [];
+                let arr = this.addressType.one.concat(this.addressType.two,this.addressType.three,this.addressType.four);
+                for(let obj of arr){
+                    if(obj.flag && !obj.disabled){
+                        this.postArray[this.selectIndex].area.push(obj.code);
+                        nameArray.push(obj.name)
+                    }
+                }
+                this.postArray[this.selectIndex].areaText = nameArray.join(',');
+                this.popupVisible = false;
+            },
+            showDialog(index) {
+                this.selectIndex = index;
+                this.selectPro = [];
+                let arr = this.addressType.one.concat(this.addressType.two,this.addressType.three,this.addressType.four);
+                let selectCode = this.postArray[index].area;
+                for(let obj of arr){
+                    obj.disabled = false;
+                    if(obj.flag && selectCode.indexOf(obj.code) == -1){
+                        obj.disabled = true;
+                        this.selectPro.push(obj.code);
+                    }
+                }
+                this.popupVisible = true;
+            },
             addFree() {
                 this.postArray.push({
-                    area: '',
+                    area: [],
                     areaText: '',
                     sweight: '',
                     xweight: '',
                     buyer: ''
                 })
-            },
-            toFixedTwo(val) {
-                let delTrim = String(val).trim();
-                if(delTrim == ''){
-                    return delTrim = '0.00'
-                }else{
-                    return delTrim  = parseFloat(delTrim).toFixed(2);
-                }
             },
             selectAll(type) {
                 if(type === 'one'){

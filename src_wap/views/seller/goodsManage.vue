@@ -297,7 +297,7 @@ import { Toast } from 'mint-ui';
                     state: 'ON_SHELF',
                     proExtIds: checkedId.join(',')
                 }
-                this.$api.post('/oteaoProduct/modifyOrgProInfoState',data,res => {
+                this.$api.post('/oteao/product/modifyOrgProInfoState',data,res => {
                     Toast({
                         message: '商品上架成功',
                         iconClass: 'icon icon-success'
@@ -343,7 +343,7 @@ import { Toast } from 'mint-ui';
                 let data = {
                     proExtIds: checkedId.join(',')
                 }
-                this.$api.post('/oteaoProduct/deleteFrontOrgProduct',data,res => {
+                this.$api.post('/oteao/product/deleteFrontOrgProduct',data,res => {
                     Toast({
                         message: '商品删除成功',
                         iconClass: 'icon icon-success'
@@ -369,7 +369,7 @@ import { Toast } from 'mint-ui';
                 }else if(type === 'up'){
                     data.state = 'ON_SHELF';
                 }
-                this.$api.post('/oteaoProduct/modifyOrgProInfoState',data,res => {
+                this.$api.post('/oteao/product/modifyOrgProInfoState',data,res => {
                     Toast({
                         message: res.message,
                         iconClass: 'icon icon-success'
@@ -430,7 +430,7 @@ import { Toast } from 'mint-ui';
                         'pro.orderBy': orderBy
                     }
                 return new Promise((resolve,reject) => {
-                    this.$api.post('/oteaoProduct/seachFrontOrgProduct',data,res => {
+                    this.$api.post('/oteao/product/seachFrontOrgProduct',data,res => {
                         resolve(res);
                     },res=>{
                         return Toast({
