@@ -370,7 +370,6 @@ import { Toast } from 'mint-ui';
                     threeImgContent: threeImgContent,
                     fourImgContent: fourImgContent
                 }
-                console.log(JSON.stringify(allContent));
                 // let data = {
                 //     "catProps": [],
                 //     "productDetails": [
@@ -419,7 +418,7 @@ import { Toast } from 'mint-ui';
                         })
                     }
                 }
-                this.$api.post(`/oteaoProduct/createProductInfo` +
+                this.$api.post(`/oteao/product/createProductInfo` +
                     `?frontOrgProInfoDetailVo.catId=${ encodeURI(this.resize.twoClass) }` +
                     `&frontOrgProInfoDetailVo.brandId=${ encodeURI(this.resize.selId.pp) }` +
                     `&frontOrgProInfoDetailVo.proName=${ encodeURI(this.resize.form.goodsName) }` +

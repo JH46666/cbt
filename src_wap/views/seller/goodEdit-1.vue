@@ -120,14 +120,15 @@
                                 {{ item.propName }}
                             </label>
                             <div class="item-right" @click="clickSelProVal(index)">
-                                <input type="text" :id="index+12" v-model="item.propertiesVal.propVal" placeholder="非必填" />
+                                <input type="text" :id="index+12" v-model="item.proVal" placeholder="非必填" />
                             </div>
                             <i class="iconfont" @click="clickSelProVal(index)">&#xe744;</i>
-                            <!-- <mt-popup v-model="item.proShowHide" position="bottom">
+                            <mt-popup v-model="item.proShowHide" position="bottom">
                                 <div class="close-wrap">
-                                    <p class="close-tip"  v-for="(secobj,secindex) in item.propValList" :class="{on: index === item.proIndex}" :key="index" @click="selectPro(item,secindex,secobj)">{{ secobj.propVal }}<i class="iconfont">&#xe684;</i></p>
+                                    <!-- index === item.proIndex -->
+                                    <p class="close-tip"  v-for="(secobj,secindex) in item.propValList" :class="{on: secobj.flag}" :key="index" @click="selectPro(item,secindex,secobj)">{{ secobj.propVal }}<i class="iconfont">&#xe684;</i></p>
                                 </div>
-                            </mt-popup> -->
+                            </mt-popup>
                         </div>
                     </div>
                 </div>
@@ -185,25 +186,62 @@ export default {
             oneTypeList: [],
             twoTypeList: [],
             clickSure: true,
-            device: 'PC',
+            device: 'WAP',
             proSku: 0,
             detailObj: {},
+            parentCatId: 0,
+            getProvList: [],
         }
     },
     watch: {
-        'resize.twoClass': {
+        'resize.form.goodTypes': {
             handler(curVal,oldVal){
-                this.getProVal(curVal).then((res) => {
-                    this.resize.proValList = res.data;
-                    if(this.resize.proValList.length != 0){
-                        for(let i=0;i<this.resize.proValList.length;i++){
-                            this.$set(this.resize.proValList[i],'proVal','');
-                            this.$set(this.resize.proValList[i],'proIndex',null);
-                            this.$set(this.resize.proValList[i],'proShowHide',false);
-                            this.$set(this.resize.proValList[i],'proValId','');
+                if(this.resize.twoClass){
+                    this.getProVal(this.resize.twoClass).then((res) => {
+                        this.resize.proValList = res.data;
+                        if(this.resize.proValList.length != 0){
+                            for(let i=0;i<this.resize.proValList.length;i++){
+                                this.$set(this.resize.proValList[i],'proVal','');
+                                this.$set(this.resize.proValList[i],'proIndex',null);
+                                this.$set(this.resize.proValList[i],'proShowHide',false);
+                                this.$set(this.resize.proValList[i],'proValId','');
+                                for(let obj of this.resize.proValList[i].propValList){
+                                    this.$set(obj,'flag',false);
+                                }
+                            }
+                            for(let i=0;i<this.resize.proValList.length;i++){
+                                for(let j=0;j<this.getProvList.length;j++){
+                                    if(this.resize.proValList[i].id == this.getProvList[j].id){
+                                        this.resize.proValList[i].proValId = this.getProvList[j].id;
+                                        this.resize.proValList[i].proIndex = i;
+                                        this.resize.proValList[i].proVal = this.getProvList[j].selval;
+                                        for(let obj of this.resize.proValList[i].propValList){
+                                            if(obj.id == this.getProvList[j].content){
+                                                console.log(this.getProvList[j].content);
+                                                obj.flag = true;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
-                    }
-                })
+                    })
+                }
+　　　　　　　},
+　　　　　　　deep:true
+        },
+        twoTypeList(val) {
+            for(let j=0;j<val.length;j++){
+                if(this.twoTypeList[j].id == this.detailObj.productInfo.catId){
+                     this.resize.twoIndex = j;
+                }
+            }
+        },
+        'resize': {
+            handler(curVal,oldVal){
+                if(curVal.oneIndex && curVal.twoIndex ){
+                    this.clickSure = false;
+                }
 　　　　　　　},
 　　　　　　　deep:true
         }
@@ -214,6 +252,10 @@ export default {
             item.proVal = secobj.propVal;
             item.proValId = secobj.id;
             item.proShowHide = false;
+            for(let obj of item.propValList){
+                obj.flag =false;
+            }
+            secobj.flag = true;
         },
         clickSelProVal(index) {
             for(let i=0;i<this.resize.proValList.length;i++){
@@ -280,7 +322,7 @@ export default {
                     parentId: parentId
                 }
             return new Promise((resolve,reject) => {
-                this.$api.get('/oteaoProCat/queryCatChilds',data,res => {
+                this.$api.get('/oteao/proCat/queryCatChilds',data,res => {
                     resolve(res);
                 },res=>{
                     return Toast({
@@ -295,7 +337,7 @@ export default {
                     sysId: 1
                 }
             return new Promise((resolve,reject) => {
-                this.$api.get('/oteaoProCat/getBaseTea',data,res => {
+                this.$api.get('/oteao/proCat/getBaseTea',data,res => {
                     resolve(res);
                 },res=>{
                     return Toast({
@@ -325,7 +367,7 @@ export default {
         },
         goStep3() {
             this.$router.push({
-                name: '新品上架-2'
+                name: '商品编辑-2'
             })
         },
         selectRightList(index) {
@@ -425,9 +467,11 @@ export default {
             }
         },
         getBrandList() {
-            let data = {}
+            let data = {
+                sysId: 1
+            }
             return new Promise((resolve,reject) => {
-                this.$api.get('/OteaoProductBrand/findProductBrand',data,res => {
+                this.$api.get('/oteao/productBrand/findProductBrandByListSysId',data,res => {
                     resolve(res);
                 },res=>{
                     return Toast({
@@ -459,7 +503,7 @@ export default {
                     productSku: this.proSku
                 }
             return new Promise((resolve,reject) => {
-                this.$api.get('/oteaoProduct/getProExtInfo',data,res => {
+                this.$api.get('/oteao/product/getProExtInfo',data,res => {
                     resolve(res);
                 },res=>{
                     return Toast({
@@ -476,7 +520,23 @@ export default {
                 device: 'WAP'
             };
             return new Promise((resolve,reject) => {
-                this.$api.get('/oteaoProduct/getProExtDetail',data,res => {
+                this.$api.get('/oteao/product/getProExtDetail',data,res => {
+                    resolve(res);
+                },res=>{
+                    return Toast({
+                        message: res.errorMsg,
+                        iconClass: 'icon icon-fail'
+                    });
+                })
+            })
+        },
+        getCatDetail(child) {
+            let data ={
+                id: child,
+                sysId: 1
+            };
+            return new Promise((resolve,reject) => {
+                this.$api.get('/oteao/proCat/getSystemCategoryInfoById',data,res => {
                     resolve(res);
                 },res=>{
                     return Toast({
@@ -511,18 +571,60 @@ export default {
             this.resize.form.goodsBrand = this.detailObj.productInfo.brandName;
             this.resize.form.goodsJz = this.detailObj.productInfo.netWeight;
             this.resize.form.goodsMz = this.detailObj.productInfo.weight;
-            this.resize.form.goodsKc = this.detailObj.productInfo.stockNum;
             this.resize.form.goodsSx = this.detailObj.productPrice[0].price;
             this.resize.form.goodTypes = this.detailObj.productInfo.catName;
             this.resize.form.goodsPtsj = this.detailObj.productPrice[1].price;
             this.resize.form.goodsSell = this.detailObj.productExtInfo.reason;
-            for(let oj of this.detailObj.productImgList){
+            this.resize.mainId = this.detailObj.productInfo.id;
+            for(let obj of this.detailObj.productImgList){
                 this.resize.mainImg.push({
                     'imgSrc': obj.imgUrl
                 })
             }
+            this.getCatDetail(this.detailObj.productInfo.catId).then((reses) =>{
+                 this.parentCatId = reses.data.parentId;
+                 this.resize.form.goodTypes = reses.data.parentName+'-'+this.detailObj.productInfo.catName;
+                 for(let i=0;i<this.oneTypeList.length;i++){
+                     if(this.oneTypeList[i].id == this.parentCatId){
+                         this.resize.oneIndex = i;
+                         this.resize.oneClass = this.oneTypeList[i].id;
+                         this.selectOneType(this.resize.oneClass,this.resize.oneIndex);
+                         this.getTypeList(3).then((ress) => {
+                             let parentList = ress.data;
+                             for(let obj of parentList){
+                                 this.twoTypeList.push({
+                                     id: obj.id,
+                                     name: obj.catName
+                                 })
+                             }
+
+                         })
+                     }
+                 }
+                 this.resize.twoClass = this.detailObj.productInfo.catId;
+            })
             this.getAttrOrImg().then((rs) => {
-                this.resize.proValList = rs.data.propValList;
+                let proArr = rs.data.propValList;
+                for(let obj of proArr){
+                    this.getProvList.push({
+                        id: obj.propertiesVal.catPropId,
+                        content:  obj.propertiesVal.id,
+                        selval: obj.propertiesVal.propVal
+                    })
+                }
+                let content = JSON.parse(rs.data.content);
+                this.resize.imgs.detailImg1 = content.oneImgContent.imgUrl[0];
+                this.resize.textMs1 = content.oneImgContent.content;
+                this.resize.imgs.detailImg2 = content.twoImgContent.imgUrl[0];
+                this.resize.textMs2 = content.twoImgContent.content;
+                this.resize.imgs.detailImg3 = content.threeImgContent.imgUrl[0];
+                this.resize.textMs3 = content.threeImgContent.content;
+                for(let obj of content.fourImgContent.imgUrl){
+                    this.resize.imgsStep4.push({
+                        imgSrc: obj
+                    })
+                }
+                this.resize.textMs4 = content.fourImgContent.content;
             })
         })
         this.getOneTypeList().then((res) => {
@@ -542,6 +644,12 @@ export default {
                     name: obj.brandName
                 })
             }
+            for(let i=0;i<this.brandList.length;i++){
+                if(this.brandList[i].name == this.resize.form.goodsBrand){
+                    this.resize.selIndex.pp = i;
+                    this.resize.selId.pp = this.brandList[i].id;
+                }
+            }
         });
         this.getDwList().then((res) => {
             let parentList = res.data;
@@ -550,6 +658,12 @@ export default {
                     id: obj.id,
                     name: obj.dataName
                 })
+            }
+            for(let i=0;i<this.danWei.length;i++){
+                if(this.danWei[i].name == this.resize.form.goodsDw){
+                    this.resize.selIndex.dw = i;
+                    this.resize.selId.dw = this.danWei[i].id;
+                }
             }
         })
     },

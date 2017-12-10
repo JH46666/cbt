@@ -140,7 +140,7 @@ export default {
                     'subAmount': parseFloat(obj.proPrice) - parseFloat(obj.discountPrice)
                 })
             }
-            this.$api.post('/OteaoruleSet/special/addOrModityRule',JSON.stringify(data),res => {
+            this.$api.post('/oteao/ruleSet/special/addOrModityRule',JSON.stringify(data),res => {
                 Toast ({
                     message:`活动${res.data.id}已保存成功`,
                     iconClass: 'icon icon-success'

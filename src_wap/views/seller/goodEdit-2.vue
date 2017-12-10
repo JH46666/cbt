@@ -334,23 +334,56 @@ import { Toast } from 'mint-ui';
                         imgUrl: this.urls.main[i]
                     })
                 }
-                let oneImgContent = `<mt-cell></mt-cell><div class="mint_cell_img_title">茶韵展示</div><div class="mint_cell_img"><img src="${this.urls.one[0]}" /></div><p class="mint_cell_img_content">${this.resize.textMs1}</p></mt-cell>`;
-                let twoImgContent = `<mt-cell><div class="mint_cell_img_title">茶韵展示</div><div class="mint_cell_img"><img src="${this.urls.two[0]}" /></div><p class="mint_cell_img_content">${this.resize.textMs2}</p></mt-cell>`;
-                let threeImgContent = `<mt-cell><div class="mint_cell_img_title">茶韵展示</div><div class="mint_cell_img"><img src="${this.urls.third[0]}" /></div><p class="mint_cell_img_content">${this.resize.textMs3}</p></mt-cell>`
-                let fourImgContent = '';
+                // let oneImgContent = `<mt-cell></mt-cell><div class="mint_cell_img_title">茶韵展示</div><div class="mint_cell_img"><img src="${this.urls.one[0]}" /></div><p class="mint_cell_img_content">${this.resize.textMs1}</p></mt-cell>`;
+                // let twoImgContent = `<mt-cell><div class="mint_cell_img_title">茶韵展示</div><div class="mint_cell_img"><img src="${this.urls.two[0]}" /></div><p class="mint_cell_img_content">${this.resize.textMs2}</p></mt-cell>`;
+                // let threeImgContent = `<mt-cell><div class="mint_cell_img_title">茶韵展示</div><div class="mint_cell_img"><img src="${this.urls.third[0]}" /></div><p class="mint_cell_img_content">${this.resize.textMs3}</p></mt-cell>`;
+                let oneImgContent = {
+                    imgUrl: [this.urls.one[0]],
+                    content: this.resize.textMs1
+                }
+                let twoImgContent = {
+                    imgUrl: [this.urls.two[0]],
+                    content: this.resize.textMs2
+                }
+                let threeImgContent = {
+                    imgUrl: [this.urls.third[0]],
+                    content: this.resize.textMs3
+                }
+                // let fourImgContent = '';
+                let fourImgContent = {
+                    imgUrl: [],
+                    content: this.resize.textMs4
+                };
                 if(this.urls.four.length != 0){
                     let fourStr = '';
                     for(let i=0;i<this.urls.four.length;i++){
-                        fourStr += `<img src="${this.urls.four[i]}" />`
+                        // fourStr += `<img src="${this.urls.four[i]}" />`
+                        fourImgContent.imgUrl.push(this.urls.four[i])
                     }
-                    fourImgContent = `<mt-cell><div class="mint_cell_img_title">茶韵展示</div><div class="mint_cell_img">${fourStr}</div><p class="mint_cell_img_content">${this.resize.textMs4}</p></mt-cell>`
+                    // fourImgContent = `<mt-cell><div class="mint_cell_img_title">茶韵展示</div><div class="mint_cell_img">${fourStr}</div><p class="mint_cell_img_content">${this.resize.textMs4}</p></mt-cell>`
+
                 }
-                let allImgContent = oneImgContent + twoImgContent + threeImgContent + fourImgContent;
+                // let allImgContent = oneImgContent + twoImgContent + threeImgContent + fourImgContent;
+                let allContent = {
+                    oneImgContent: oneImgContent,
+                    twoImgContent: twoImgContent,
+                    threeImgContent: threeImgContent,
+                    fourImgContent: fourImgContent
+                }
+                // let data = {
+                //     "catProps": [],
+                //     "productDetails": [
+                //         {
+                //             "content": allImgContent,
+                //         }
+                //     ],
+                //     "productImgs": mainImg
+                // }
                 let data = {
                     "catProps": [],
                     "productDetails": [
                         {
-                            "content": allImgContent,
+                            "content": JSON.stringify(allContent),
                         }
                     ],
                     "productImgs": mainImg
@@ -385,8 +418,9 @@ import { Toast } from 'mint-ui';
                         })
                     }
                 }
-                this.$api.post(`/oteaoProduct/createProductInfo` +
-                    `?frontOrgProInfoDetailVo.catId=${ encodeURI(this.resize.twoClass) }` +
+                this.$api.post(`/oteao/product/updateProductInfo` +
+                    `?frontOrgProInfoDetailVo.proId=${ encodeURI(this.resize.mainId) }`+
+                    `&frontOrgProInfoDetailVo.catId=${ encodeURI(this.resize.twoClass) }` +
                     `&frontOrgProInfoDetailVo.brandId=${ encodeURI(this.resize.selId.pp) }` +
                     `&frontOrgProInfoDetailVo.proName=${ encodeURI(this.resize.form.goodsName) }` +
                     `&frontOrgProInfoDetailVo.unint=${ encodeURI(this.resize.form.goodsDw) }` +
