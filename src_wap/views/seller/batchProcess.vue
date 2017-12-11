@@ -142,7 +142,7 @@ import { Toast } from 'mint-ui';
             },
             upOrDown(data) {
                 return new Promise((resolve,reject) => {
-                    this.$api.post('/oteaoProduct/modifyOrgProInfoState',data,res => {
+                    this.$api.post('/oteao/productInfo/modifyOrgProInfoState',data,res => {
                         resolve(res);
                     },res=>{
                         return Toast({
@@ -174,7 +174,7 @@ import { Toast } from 'mint-ui';
             },
             deleteM(data) {
                 return new Promise((resolve,reject) => {
-                    this.$api.post('/oteaoProduct/deleteFrontOrgProduct',data,res => {
+                    this.$api.post('/oteao/productInfo/deleteFrontOrgProduct',data,res => {
                         resolve(res);
                     },res=>{
                         return Toast({
@@ -228,7 +228,7 @@ import { Toast } from 'mint-ui';
                         'pro.seachKey': this.keyWord
                     }
                 return new Promise((resolve,reject) => {
-                    this.$api.post('/oteaoProduct/seachFrontOrgProduct',data,res => {
+                    this.$api.post('/oteao/productInfo/seachFrontOrgProduct',data,res => {
                         resolve(res);
                     },res=>{
                         return Toast({

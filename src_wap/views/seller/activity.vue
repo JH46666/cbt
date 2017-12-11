@@ -221,7 +221,7 @@ export default {
                     'pro.seachKey': keyWord
                 }
             return new Promise((resolve,reject) => {
-                this.$api.post('/oteaoProduct/searchCreateSpecialProductList',data,res => {
+                this.$api.post('/oteao/productInfo/searchCreateSpecialProductList',data,res => {
                     resolve(res);
                 },res=>{
                     return Toast({
