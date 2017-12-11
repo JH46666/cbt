@@ -418,7 +418,7 @@ import { Toast } from 'mint-ui';
                         })
                     }
                 }
-                this.$api.post(`/oteao/product/updateProductInfo` +
+                this.$api.post(`/oteao/productInfo/updateProductInfo` +
                     `?frontOrgProInfoDetailVo.proId=${ encodeURI(this.resize.mainId) }`+
                     `&frontOrgProInfoDetailVo.catId=${ encodeURI(this.resize.twoClass) }` +
                     `&frontOrgProInfoDetailVo.brandId=${ encodeURI(this.resize.selId.pp) }` +
