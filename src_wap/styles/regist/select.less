@@ -104,6 +104,12 @@
                     outline: 0 none;
                     width: 100%;
                 }
+                textarea{
+                    border: 0 none;
+                    outline: 0 none;
+                    width: 100%;
+                    resize: none;
+                }
                 .flex;
                 .flex-dir(row);
                 flex-wrap: wrap;
@@ -377,6 +383,48 @@
                     .line(.98rem);
                     .fontSize(.3rem);
                 }
+            }
+        }
+    }
+    .dialog{
+        width: 100%;
+        height: 100%;
+        .bg(rgba(0,0,0,.5));
+        .position(f);
+        z-index: 101;
+        left: 0;
+        bottom: 0;
+        padding: 0 .3rem;
+        display: none;
+        &.on{
+            display: block;
+        }
+        .dialog_wrapper{
+            .position(r);
+            width: 100%;
+            height: 100%;
+            img{
+                width: 1.45rem;
+                height: 1.25rem;
+                .position(a);
+                right: 1%;
+                top: 20%;
+            }
+            .mint-button--primary{
+                width: 100%;
+                height: .98rem;
+                .bg(@mainCol);
+                .line(.98rem);
+                .algin(c);
+                .fontSize(.3rem);
+                .color(#fff);
+                .position(a);
+                bottom: .3rem;
+                left: 0;
+            }
+            .mint-button.is-disabled{
+                .bg(#e6e6e6);
+                .color(#adadad);
             }
         }
     }
