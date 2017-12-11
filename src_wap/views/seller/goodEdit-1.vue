@@ -172,6 +172,9 @@
 <script>
 import {mapGetters} from 'vuex';
 import { Toast } from 'mint-ui';
+import { mapState } from 'vuex'
+import store from 'store';
+import $api from 'api';
 export default {
     data() {
         return {
@@ -217,7 +220,6 @@ export default {
                                         this.resize.proValList[i].proVal = this.getProvList[j].selval;
                                         for(let obj of this.resize.proValList[i].propValList){
                                             if(obj.id == this.getProvList[j].content){
-                                                console.log(this.getProvList[j].content);
                                                 obj.flag = true;
                                             }
                                         }
@@ -563,7 +565,8 @@ export default {
         this.wxFlag = this.$tool.isWx;
     },
     created() {
-        this.proSku = this.$route.query.edit;
+        this.proSku = this.$route.query.proSku;
+        this.resize.mainId = this.$route.query.edit;
         this.getDetail().then((res) => {
             this.detailObj = res.data;
             this.resize.form.goodsName = this.detailObj.productInfo.proName;
@@ -575,7 +578,6 @@ export default {
             this.resize.form.goodTypes = this.detailObj.productInfo.catName;
             this.resize.form.goodsPtsj = this.detailObj.productPrice[1].price;
             this.resize.form.goodsSell = this.detailObj.productExtInfo.reason;
-            this.resize.mainId = this.detailObj.productInfo.id;
             for(let obj of this.detailObj.productImgList){
                 this.resize.mainImg.push({
                     'imgSrc': obj.imgUrl
@@ -626,6 +628,18 @@ export default {
                 }
                 this.resize.textMs4 = content.fourImgContent.content;
             })
+            for(let i=0;i<this.brandList.length;i++){
+                if(this.brandList[i].name == this.resize.form.goodsBrand){
+                    this.resize.selIndex.pp = i;
+                    this.resize.selId.pp = this.brandList[i].id;
+                }
+            }
+            for(let i=0;i<this.danWei.length;i++){
+                if(this.danWei[i].name == this.resize.form.goodsDw){
+                    this.resize.selIndex.dw = i;
+                    this.resize.selId.dw = this.danWei[i].id;
+                }
+            }
         })
         this.getOneTypeList().then((res) => {
             let parentList = res.data;
@@ -644,12 +658,7 @@ export default {
                     name: obj.brandName
                 })
             }
-            for(let i=0;i<this.brandList.length;i++){
-                if(this.brandList[i].name == this.resize.form.goodsBrand){
-                    this.resize.selIndex.pp = i;
-                    this.resize.selId.pp = this.brandList[i].id;
-                }
-            }
+
         });
         this.getDwList().then((res) => {
             let parentList = res.data;
@@ -659,14 +668,22 @@ export default {
                     name: obj.dataName
                 })
             }
-            for(let i=0;i<this.danWei.length;i++){
-                if(this.danWei[i].name == this.resize.form.goodsDw){
-                    this.resize.selIndex.dw = i;
-                    this.resize.selId.dw = this.danWei[i].id;
-                }
-            }
+
         })
     },
+    beforeRouteEnter(to, from, next) {
+        if(store.state.member.member.id) {
+            next();
+        } else {
+            store.dispatch('getMemberData').then(res => {
+                next();
+            }).catch(res =>{
+                next(vm => {
+                    vm.router.push('/login')
+                })
+            })
+        }
+    }
 }
 </script>
 
