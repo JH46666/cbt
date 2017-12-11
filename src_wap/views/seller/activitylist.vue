@@ -180,7 +180,7 @@ export default {
                 ruleId: obj.id
             }
             MessageBox.confirm(`确定删除活动【${obj.showName}】`).then(action => {
-                this.$api.post('/OteaoruleSet/special/deleteRuleSet',data,res => {
+                this.$api.post('/oteao/ruleSet/special/deleteRuleSet',data,res => {
                     Toast({
                         message: `活动已删除，页面将刷新`,
                         iconClass: 'icon icon-success'
@@ -205,7 +205,7 @@ export default {
                     'sort': state
                 }
             return new Promise((resolve,reject) => {
-                this.$api.get('/oteaoProductExtInfo/searchSpecialPrice',data,res => {
+                this.$api.get('/oteao/productExtInfo/searchSpecialPrice',data,res => {
                     resolve(res);
                 },res=>{
                     return Toast({

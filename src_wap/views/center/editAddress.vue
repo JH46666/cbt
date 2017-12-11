@@ -7,7 +7,7 @@
             <input type="text" placeholder="手机号码" v-model="data.phone" maxlength="11">
         </label>
         <label class="address-wrap">
-            <input type="text" placeholder="省份 城市 区县" readonly @click="showAddress" v-model="data.address">
+            <input type="text" placeholder="省份 城市 区县" readonly @click="showAddress($event)" v-model="data.address">
         </label>
         <label class="address-wrap">
             <input type="text" placeholder="详细地址，如街道、门牌号等" maxlength="200" v-model="data.detail">
@@ -68,8 +68,11 @@
         },
         methods: {
             // 显示地址弹框
-            showAddress() {
+            showAddress(ev) {
                 this.pannel = !this.pannel;
+                this.$nextTick(() => {
+                    ev.target.blur();
+                })
             },
             // 选择完地址回调
             selectAddress(data) {
@@ -79,9 +82,14 @@
             },
             // 保存
             save() {
+
+                if(this.data.name.length < 2) {
+                    return this.$toast('姓名不能少于2字符')
+                }
+
                 // 验证手机号
                 if(!(/^1[34578]\d{9}$/.test(this.data.phone))){ 
-                    return this.$toast('您输入的手机号有误');  
+                    return this.$toast('您输入的手机号格式有误');  
                 }
 
                 // 卖家更新地址
