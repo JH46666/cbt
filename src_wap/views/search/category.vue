@@ -300,7 +300,7 @@
                     sysId: 2,
                     propertiesValList: propValList
                 }
-                this.$api.post(`/oteaoProduct/seachProduct?page.pageNumber=${this.pageNumber}&page.pageSize=${this.pageSize}`,JSON.stringify(data),res=>{
+                this.$api.post(`/oteao/productInfo/seachProduct?page.pageNumber=${this.pageNumber}&page.pageSize=${this.pageSize}`,JSON.stringify(data),res=>{
                     this.filterVisible = false;
                     this.sortVisible = false;
                     let tempArr = res.data;

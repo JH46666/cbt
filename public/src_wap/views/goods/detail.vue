@@ -295,7 +295,7 @@ export default {
                 productSku: '8688366'
             }
             return new Promise((resolve,reject) => {
-                this.$api.get('/oteaoProduct/getProExtInfo',data,res => {
+                this.$api.get('/oteao/productInfo/getProExtInfo',data,res => {
                     resolve(res);
                 },res=>{
                     return Toast({

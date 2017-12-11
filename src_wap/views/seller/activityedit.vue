@@ -142,7 +142,7 @@ export default {
                     id: ruleid
                 }
             return new Promise((resolve,reject) => {
-                this.$api.post('/OteaoruleSet/special/findRuleById',data,res => {
+                this.$api.post('/oteao/ruleSet/special/findRuleById',data,res => {
                     resolve(res);
                 },res=>{
                     return Toast({
@@ -175,7 +175,7 @@ export default {
                     'subAmount': parseFloat(obj.price) - parseFloat(obj.specialPrice)
                 })
             }
-            this.$api.post('/OteaoruleSet/special/addOrModityRule',JSON.stringify(data),res => {
+            this.$api.post('/oteao/ruleSet/special/addOrModityRule',JSON.stringify(data),res => {
                 Toast ({
                     message:`活动已修改成功`,
                     iconClass: 'icon icon-success'
@@ -261,7 +261,7 @@ export default {
                     'pro.seachKey': keyWord
                 }
             return new Promise((resolve,reject) => {
-                this.$api.post('/oteaoProduct/searchCreateSpecialProductList',data,res => {
+                this.$api.post('/oteao/productInfo/searchCreateSpecialProductList',data,res => {
                     resolve(res);
                 },res=>{
                     return Toast({

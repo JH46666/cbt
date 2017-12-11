@@ -269,7 +269,7 @@
 
 
                     return new Promise((resolve,reject) => {
-                        this.$api.post(`/oteaoProduct/seachProduct?page.pageNumber=${page}&page.pageSize=20`,JSON.stringify(data),res => {
+                        this.$api.post(`/oteao/productInfo/seachProduct?page.pageNumber=${page}&page.pageSize=20`,JSON.stringify(data),res => {
                             let tempArr = res.data;
                             for(let item of tempArr){
                                 for(let prop of item.proInfoPropertyVos){
