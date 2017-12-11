@@ -21,6 +21,7 @@
         </div>
         <div class="floor3"><button class="confirm-pay" @click="pay" :disabled="disabled">确定支付 <span>￥{{ myData.orderSum | toFix2 }}</span></button></div>
         <div id="form" v-html="form"></div>
+        <a :href="wxhost" ref="wxhost"></a>
     </div>
 </template>
 <script>
@@ -45,6 +46,7 @@
                     }
                 ],
                 form: '',
+                wxhost: '',             // 微信回调
                 disabled: false
             }
         },
@@ -120,15 +122,64 @@
 
                         let isWx = this.$tool.isWx;
                         if(isWx) {
+                            // 微信内部
+                            this.$api.post('/payOrder/wxPay',{
+                                payId: this.payId,
+                                ip: '192.168.1.1',
+                                tradeType: 'JSAPI'
+                            },res => {
+                                function onBridgeReady(){
+                                    WeixinJSBridge.invoke(
+                                        'getBrandWCPayRequest', {
+                                            "appId":res.data.appid,     //公众号名称，由商户传入     
+                                            "timeStamp":res.data.timeStamp,         //时间戳，自1970年以来的秒数     
+                                            "nonceStr":res.data.nonce_str, //随机串  
+                                            "package": `prepay_id=${res.data.prepay_id}`,
+                                            "signType":"HMACSHA256",         //微信签名方式：     
+                                            "paySign":res.data.sign //微信签名 
+                                        },
+                                        function(res){     
+                                            if(res.err_msg == "get_brand_wcpay_request:ok" ) {
+                                                return alert('支付成功')
+                                            }     // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。 
+                                            alert(JSON.stringify(res))
+                                        }
+                                    ); 
+                                }
+                                if (typeof WeixinJSBridge == "undefined"){
+                                    if( document.addEventListener ){
+                                        document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+                                    }else if (document.attachEvent){
+                                        document.attachEvent('WeixinJSBridgeReady', onBridgeReady); 
+                                        document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+                                    }
+                                }else{
+                                    onBridgeReady();
+                                }
+                            },res => {
+                                alert(JSON.stringify(res))
+                                // window.location = res.data.mweb_url;
+                            })
+
 
                         } else {
                             // 在浏览器
                             this.$api.post('/payOrder/wxPay',{
                                 payId: this.payId,
-                                ip: '117.30.209.152',
+                                ip: '192.168.1.1',
                                 tradeType: 'MWEB'
                             },res => {
-                                console.log(res)
+                                let src = res.data.mweb_url + `&redirect_url=` + encodeURI(location.origin + `/?wxpaycallback=${this.payId}`);
+                                this.wxhost = src;
+                                this.$nextTick(() =>{
+                                    this.$refs.wxhost.click();
+                                })
+                            },res => {
+                                let src = res.data.mweb_url + `&redirect_url=` + encodeURI(location.origin + `/?wxpaycallback=${this.payId}`);
+                                this.wxhost = src;
+                                this.$nextTick(() =>{
+                                    this.$refs.wxhost.click();
+                                })
                             })
                         }
 
@@ -140,7 +191,6 @@
         },
         created(){
             this.payId = this.$route.query.payId;
-
             if(this.$tool.isWx) {
                 this.payMethod = 'WECHAT';
                 this.options = [
@@ -157,11 +207,6 @@
             }
         },
         beforeRouteEnter(to, from, next) {
-            if(!to.query.payId) {
-                return next(vm => {
-                    vm.$router.go(-1);
-                })
-            }
             if(store.state.member.member.id) {
                 next();
             } else {

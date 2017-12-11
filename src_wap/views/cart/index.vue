@@ -1,5 +1,5 @@
 <template>
-    <div class="empty" v-if="cartData===[]">
+    <div class="empty" v-if="cartData.length === 0">
         <div class="img-wrap">
             <img src="../../assets/images/empty.jpg" alt="">
         </div>
@@ -136,7 +136,7 @@
                         </div>
                     </div>
                 </div>
-                <a class="clear_expired" href="javascript:void(0);">清空失效商品</a>
+                <a class="clear_expired" href="javascript:void(0);" @click="clearDisabled" v-if="baseData.disableList ? baseData.disableList.length > 0 : false">清空失效商品</a>
             </div>
         </div>
         <!-- 猜你喜欢 -->
@@ -178,30 +178,6 @@
                 checkedAll: false, //结算栏的全选或全不选
                 totalNum:  0,      //有效商品总数（不包括赠品和失效）
                 baseData:[],
-                mayProducts:[
-                    {   
-                        proId: 11,
-                        tagImg: '../src_wap/assets/images/specail_tag.png',  //商品图片
-                        proImg: '../src_wap/assets/cart_img1.png',  //商品图片
-                        proName: "安溪西坪 清香型（消酸）铁观音303-507  2015秋茶",  //商品名称
-                        proDesc: "正岩核心产区 花香馥郁",
-                        proPrice: 300, //商品价格
-                        proWeight: "斤",
-                        proHref: "/login",
-                        isSpecial: true,    //是否为特价商品
-                    },
-                    {
-                        proId: 12,
-                        tagImg: null,
-                        proImg: '../src_wap/assets/cart_img1.png',  //商品图片
-                        proName: "安溪西坪 清香型（消酸）铁观音303-507  2015秋茶",  //商品名称
-                        proDesc: "正岩核心产区 花香馥郁",
-                        proPrice: 330, //商品价格
-                        proWeight: "斤",
-                        proHref: "/login",
-                        isSpecial: false,    //是否为特价商品
-                    },
-                ]
             }
         },
         computed:{
@@ -228,22 +204,6 @@
                 return this.toFixed(sumMoney/100);
             }
         },
-        created(){
-            this.$store.dispatch('queryCart',{}).then(res=>{
-                this.baseData = res.data;
-                this.totalNum = this.baseData.proTotalNum;
-                for(let list of this.baseData.oteaoCart){
-                    this.$set(list,'count',0);
-                    this.$set(list,'checkedAll',false);
-                    for(let item of list.cartList){
-                        this.$set(item,'checkedFlag',false);
-                        this.$set(item,'tipsFlag',false);
-                        this.$set(item,'tips','');
-                    }
-                }
-                this.$store.commit('SET_CART_LIST',this.baseData);
-            },res=>{});
-        },
         methods: {
             //删除商品
             deletePro(){
@@ -254,9 +214,20 @@
                     }
                     idStr = idStr.substr(0, idStr.length - 1); 
                     this.$api.post('/oteao/shoppingCart/del',{ids:idStr},res=>{
-                        window.location.reload();
+                        this.getData();
                     },res=>{
-                        console.log(res);
+                        this.$toast(res.cnMessage)
+                    })
+                }
+            },
+            // 清空失效商品
+            clearDisabled() {
+                if(this.cartData.disableList.length > 0) {
+                    let ids = this.cartData.disableList.map(val => val.id).join();
+                    this.$api.post('/oteao/shoppingCart/del',{ids},res=>{
+                        this.getData();
+                    },res=>{
+                        this.$toast(res.cnMessage)
                     })
                 }
             },
@@ -313,8 +284,9 @@
             },
             //input输入数量
             numChange(val,item){
-                 let reg = /^[1-9]\d*$/;
+                let reg = /^[1-9]\d*$/;
                 if(reg.test(val)){
+                    if(val > item.buyUpperLimit) return Toast('超过最大购买数量');
                     let data = {
                         id: item.id,
                         proId: item.proId,
@@ -330,24 +302,28 @@
                     })
                 }else{
                     Toast('您输入的格式有误，请重新输入');
-                    item.buyNum = 1;
+                    item.buyNum = item.buyLowLimit || 1;
                 }
             },
             // 加
             numPlus(item){
-                let data = {
-                    id: item.id,
-                    proId: item.proId,
-                    buyNum: item.buyNum+1,
-                    device: 'WAP'
+                if(!!item.buyUpperLimit && item.buyNum < item.buyUpperLimit) {
+                    let data = {
+                        id: item.id,
+                        proId: item.proId,
+                        buyNum: item.buyNum+1,
+                        device: 'WAP'
+                    }
+                    this.$api.post('/oteao/shoppingCart/updateBuyNum',data,res=>{
+                        item.buyNum++;
+                        this.updateSeleNum(item.id,item.buyNum);
+                    },res=>{
+                        item.tipsFlag = true;
+                        item.tips = res.errorMsg;
+                    })
+                } else {
+                    Toast('超过最大购买数量');
                 }
-                this.$api.post('/oteao/shoppingCart/updateBuyNum',data,res=>{
-                    item.buyNum++;
-                    this.updateSeleNum(item.id,item.buyNum);
-                },res=>{
-                    item.tipsFlag = true;
-                    item.tips = res.errorMsg;
-                })
             },
             //单个选择或取消选择
             selectOne(list,item){
@@ -410,7 +386,28 @@
                         cart: map.join(',')
                     }
                 })
+            },
+            // 查询购物车书库
+            getData() {
+                this.$store.dispatch('queryCart',{}).then(res=>{
+                    this.baseData = res.data;
+                    this.totalNum = this.baseData.proTotalNum;
+                    for(let list of this.baseData.oteaoCart){
+                        this.$set(list,'count',0);
+                        this.$set(list,'checkedAll',false);
+                        for(let item of list.cartList){
+                            this.$set(item,'checkedFlag',false);
+                            this.$set(item,'tipsFlag',false);
+                            this.$set(item,'tips','');
+                        }
+                    }
+                    this.$store.commit('SET_CART_LIST',this.baseData);
+                },res=>{});
+
             }
+        },
+        created(){
+            this.getData();
         },
         // 判断会员状态
         beforeRouteEnter (to, from, next) {
