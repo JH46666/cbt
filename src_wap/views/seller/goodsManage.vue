@@ -77,7 +77,7 @@
                     <!-- 商品操作按钮 -->
                     <div class="flex options">
                         <a href="javascript:void(0);" class="flex-1 algin_c" @click="$router.push({name: '商品详情',query: {proSku:item.proSku}})"><i class="iconfont">&#xe681;</i>预览</a>
-                        <a href="javascript:void(0);" class="flex-1 algin_c" @click="$router.push({name: '新品上架-1',query: {edit:item.proSku}})"><i class="iconfont">&#xe682;</i>编辑</a>
+                        <a href="javascript:void(0);" class="flex-1 algin_c" @click="$router.push({name: '商品编辑-1',query: {edit:item.proId,proSku: item.proSku}})"><i class="iconfont">&#xe682;</i>编辑</a>
                         <a href="javascript:void(0);" class="flex-1 algin_c" @click="stateMethod(item.proExtId,'down')"><i class="iconfont">&#xe683;</i>下架</a>
                     </div>
                 </div>
@@ -118,7 +118,7 @@
                     <!-- 商品操作按钮 -->
                     <div class="flex options">
                         <a href="javascript:void(0);" class="flex-1 algin_c" @click="$router.push({name: '商品详情',query: {proSku:item.proSku}})"><i class="iconfont">&#xe681;</i>预览</a>
-                        <a href="javascript:void(0);" class="flex-1 algin_c" @click="$router.push({name: '商品编辑-1',query: {edit:item.proSku}})"><i class="iconfont">&#xe682;</i>编辑</a>
+                        <a href="javascript:void(0);" class="flex-1 algin_c" @click="$router.push({name: '商品编辑-1',query: {edit:item.proId,proSku:item.proSku}})"><i class="iconfont">&#xe682;</i>编辑</a>
                         <a href="javascript:void(0);" class="flex-1 algin_c" @click="stateMethod(item.proExtId,'up')"><i class="iconfont">&#xe683;</i>上架</a>
                     </div>
                 </div>
@@ -164,6 +164,9 @@
 </template>
 <script>
 import { Toast } from 'mint-ui';
+import { mapState } from 'vuex'
+import store from 'store';
+import $api from 'api';
     export default{
         data(){
             return {
@@ -516,6 +519,19 @@ import { Toast } from 'mint-ui';
                         })
                     }
                 }
+            }
+        },
+        beforeRouteEnter(to, from, next) {
+            if(store.state.member.member.id) {
+                next();
+            } else {
+                store.dispatch('getMemberData').then(res => {
+                    next();
+                }).catch(res =>{
+                    next(vm => {
+                        vm.router.push('/login')
+                    })
+                })
             }
         }
     }

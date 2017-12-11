@@ -105,6 +105,9 @@
 
 <script>
 import { MessageBox,Toast } from 'mint-ui';
+import { mapState } from 'vuex'
+import store from 'store';
+import $api from 'api';
 export default {
     data() {
         return {
@@ -343,6 +346,19 @@ export default {
             }else{
                 return true;
             }
+        }
+    },
+    beforeRouteEnter(to, from, next) {
+        if(store.state.member.member.id) {
+            next();
+        } else {
+            store.dispatch('getMemberData').then(res => {
+                next();
+            }).catch(res =>{
+                next(vm => {
+                    vm.router.push('/login')
+                })
+            })
         }
     }
 }

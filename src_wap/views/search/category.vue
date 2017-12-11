@@ -7,7 +7,7 @@
             </div>
             <div class="flex-1 flex search-inner">
                 <div class="search-txt">
-                    <input type="text" name="" value="" v-model="searchTxt" placeholder="搜索您喜欢的好茶！" @click="goSearch">
+                    <input type="text" readonly v-model="searchTxt" placeholder="搜索您喜欢的好茶！" @click="goSearch">
                     <a href="javascript:void(0)" class="clear-txt" v-show="clearFlag" @click="clearTxt">
                         <i class="iconfont">&#xe651;</i>
                     </a>
@@ -47,17 +47,17 @@
                         </div>
                         <div v-infinite-scroll="loadMore" infinite-scroll-disabled="true" infinite-scroll-distance="10">
                             <goods-item v-for="item of resultData" :key="item.id"
-                                :link="item.proSku" 
-                                :mainTit="item.proTitle" 
-                                :subTit="item.subTitle" 
-                                :price="item.proPrice" 
-                                :imgUrl="item.proImg" 
+                                :link="item.proSku"
+                                :mainTit="item.proTitle"
+                                :subTit="item.subTitle"
+                                :price="item.proPrice"
+                                :imgUrl="item.proImg"
                                 :tagUrl="item.tagImgUrl"
-                                :aromaStar="item.aromaStar" 
-                                :aromaName="item.aromaVal" 
-                                :tasteStar="item.tasteStar" 
+                                :aromaStar="item.aromaStar"
+                                :aromaName="item.aromaVal"
+                                :tasteStar="item.tasteStar"
                                 :businessType="item.tagNum"
-                                :tasteName="item.tasteVal" 
+                                :tasteName="item.tasteVal"
                                 :isLogin="$tool.isLogin()"
                                 imgWidth="1.56rem">
                             </goods-item>
@@ -125,11 +125,11 @@
                 filterConditions:[],   //筛选条件
                 propertiesValList:{},  //筛选属性值
                 resultData:[],         //查询结果
-                pageNumber: 1,       
+                pageNumber: 1,
                 pageSize: 5,
                 totalSize: 0,
                 sortDesc: true,      //排序
-                sort: 4,     
+                sort: 4,
                 sortData:[{
                     sortName: '排序',
                     sortIndex: 0,
@@ -153,7 +153,7 @@
                         {
                             propVal: '库存',
                             propId: 1
-                        }  
+                        }
                     ]
                 }]
             }
@@ -217,7 +217,7 @@
                 this.sortDesc = true;
                 let data = {
                     catId: val,
-                    sysId: 2,
+                    sysId: 1,
                     device: 'WAP',
                     position: 1
                 }
@@ -262,6 +262,7 @@
                 for(let item in this.propertiesValList){
                     this.propertiesValList[item].propValId = 'all';
                 }
+                this.filterVisible = false;
             },
             //重置排序
             resetSort(){
@@ -269,6 +270,7 @@
                     item.sortIndex = 0;
                 }
                 this.sort = 4;
+                this.sortVisible = false;
             },
             //加载更多
             loadMore(){
@@ -297,7 +299,7 @@
                     orderBy: this.sortDesc ? 'desc':'asc',
                     sort: this.sort,
                     device: 'WAP',
-                    sysId: 2,
+                    sysId: 1,
                     propertiesValList: propValList
                 }
                 this.$api.post(`/oteao/productInfo/seachProduct?page.pageNumber=${this.pageNumber}&page.pageSize=${this.pageSize}`,JSON.stringify(data),res=>{
@@ -377,7 +379,7 @@
                 list.filterIndex = index;
                 this.propertiesValList[list.id] = {
                     propId: item.catPropId,
-                    propValId: item.id 
+                    propValId: item.id
                 };
             },
             //排序
