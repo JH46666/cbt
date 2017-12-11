@@ -164,6 +164,9 @@
 
 <script>
 import addressPanel from '../center/addressPanel.vue'
+import { mapState } from 'vuex'
+import store from 'store';
+import $api from 'api';
 export default {
     components: {
         addressPanel
@@ -219,6 +222,7 @@ export default {
         if(process.env.NODE_ENV != 'development'){
             this.path = 'online_img/';
         }
+        this.loginNumber = store.state.member.member.memberAccount
     },
     computed: {
         iSubmit() {
@@ -361,7 +365,6 @@ export default {
         },
         submitMethod() {
             this.doUpload().then(() => {
-                console.log(111111111);
                 this.postMember();
             })
         },
@@ -382,7 +385,10 @@ export default {
                     "provinceName": this.addressObj.provinceName
                 }
                 this.$api.post('/oteao/login/fillOrgInfo',JSON.stringify(data),res => {
-                    
+                    return Toast({
+                        message: '信息资料已提交，待审核',
+                        iconClass: 'icon icon-success'
+                    });
                 },res=>{
                     return Toast({
                         message: res.errorMsg,
@@ -402,17 +408,12 @@ export default {
                     "orgName": this.formData.shopName,
                     "provinceCode": this.addressObj.provinceCode,
                     "provinceName": this.addressObj.provinceName,
-                    "shop": {
-                        "businessLicensePic": this.licenseImgUrl[0],
-                        "produceLicensePic": this.licenseImgUrl[0],
-                        "qsLicensePic": this.productImgUrl[0],
-                        "shopType": this.sellerClass+1,
-                    }
+                    "shop": {}
                 }
                 if(this.sellerClass === 0){
                     data.shop = {
                         "businessLicensePic": this.licenseImgUrl[0],
-                        "produceLicensePic": this.licenseImgUrl[0],
+                        "produceLicensePic": this.productImgUrl[0],
                         "shopType": 1,
                     }
                 }else if(this.sellerClass === 1){
@@ -433,7 +434,10 @@ export default {
                     }
                 }
                 this.$api.post('/oteao/login/fillShop',JSON.stringify(data),res => {
-
+                    return Toast({
+                        message: '信息资料已提交，待审核',
+                        iconClass: 'icon icon-success'
+                    });
                 },res=>{
                     return Toast({
                         message: res.errorMsg,
@@ -441,6 +445,19 @@ export default {
                     });
                 })
             }
+        }
+    },
+    beforeRouteEnter(to, from, next) {
+        if(store.state.member.member.id) {
+            next();
+        } else {
+            store.dispatch('getMemberData').then(res => {
+                next();
+            }).catch(res =>{
+                next(vm => {
+                    vm.router.push('/login')
+                })
+            })
         }
     }
 }

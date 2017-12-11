@@ -322,7 +322,7 @@ export default {
                 device: 'WAP'
             };
             return new Promise((resolve,reject) => {
-                this.$api.get('/oteao/product/getProExtDetail',data,res => {
+                this.$api.get('/oteao/productInfo/getProExtDetail',data,res => {
                     resolve(res);
                 },res=>{
                     return Toast({
@@ -339,7 +339,7 @@ export default {
                 productSku: this.proSku
             }
             return new Promise((resolve,reject) => {
-                this.$api.get('/oteao/product/getProExtInfo',data,res => {
+                this.$api.get('/oteao/productInfo/getProExtInfo',data,res => {
                     resolve(res);
                 },res=>{
                     return Toast({

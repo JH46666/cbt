@@ -149,7 +149,7 @@
                 </div>
                 <div class="flex pop-btns">
                     <a class="flex-1 see" href="javascript:void(0);" @click="goShopMange">查看商品</a>
-                    <a class="flex-1 go-on" href="javascript:void(0);" @click="goCreated">继续创建</a>
+                    <a class="flex-1 go-on" href="javascript:void(0);" @click="goCreated">创建商品</a>
                 </div>
             </div>
         </div>
@@ -159,6 +159,9 @@
 <script>
 import {mapGetters} from 'vuex';
 import { Toast } from 'mint-ui';
+import { mapState } from 'vuex'
+import store from 'store';
+import $api from 'api';
     export default{
         data(){
             return {
@@ -204,6 +207,15 @@ import { Toast } from 'mint-ui';
             if(process.env.NODE_ENV != 'development'){
                 this.path = 'online_img/';
             }
+            this.urls.one = [this.resize.imgs.detailImg1];
+            this.urls.two = [this.resize.imgs.detailImg2];
+            this.urls.third = [this.resize.imgs.detailImg3];
+            for(let obj of this.resize.imgsStep4){
+                this.urls.four.push(obj.imgSrc)
+            }
+            for(let obj of this.resize.mainImg){
+                this.urls.main.push(obj.imgSrc)
+            }
         },
         methods:{
             random_string(len) {
@@ -235,11 +247,15 @@ import { Toast } from 'mint-ui';
                 }else{
                     this.flag = 1;
                 }
-                this.doUpload(flag).then(() => {
+                if(this.resize.mainImgFile.length != 0 || this.resize.oneImgFile.length != 0 || this.resize.secondImgFile.length != 0 || this.resize.thirdImgFile.length != 0 || this.resize.fourImgFile.length != 0){
+                    this.doUpload().then(() => {
+                        this.onlySave(this.flag);
+                    })
+                }else{
                     this.onlySave(this.flag);
-                })
+                }
             },
-            doUpload (flag) {
+            doUpload () {
                 let flags =  {
                     main: 0,
                     one: 0,
@@ -334,9 +350,6 @@ import { Toast } from 'mint-ui';
                         imgUrl: this.urls.main[i]
                     })
                 }
-                // let oneImgContent = `<mt-cell></mt-cell><div class="mint_cell_img_title">茶韵展示</div><div class="mint_cell_img"><img src="${this.urls.one[0]}" /></div><p class="mint_cell_img_content">${this.resize.textMs1}</p></mt-cell>`;
-                // let twoImgContent = `<mt-cell><div class="mint_cell_img_title">茶韵展示</div><div class="mint_cell_img"><img src="${this.urls.two[0]}" /></div><p class="mint_cell_img_content">${this.resize.textMs2}</p></mt-cell>`;
-                // let threeImgContent = `<mt-cell><div class="mint_cell_img_title">茶韵展示</div><div class="mint_cell_img"><img src="${this.urls.third[0]}" /></div><p class="mint_cell_img_content">${this.resize.textMs3}</p></mt-cell>`;
                 let oneImgContent = {
                     imgUrl: [this.urls.one[0]],
                     content: this.resize.textMs1
@@ -349,36 +362,21 @@ import { Toast } from 'mint-ui';
                     imgUrl: [this.urls.third[0]],
                     content: this.resize.textMs3
                 }
-                // let fourImgContent = '';
                 let fourImgContent = {
                     imgUrl: [],
                     content: this.resize.textMs4
                 };
                 if(this.urls.four.length != 0){
-                    let fourStr = '';
                     for(let i=0;i<this.urls.four.length;i++){
-                        // fourStr += `<img src="${this.urls.four[i]}" />`
                         fourImgContent.imgUrl.push(this.urls.four[i])
                     }
-                    // fourImgContent = `<mt-cell><div class="mint_cell_img_title">茶韵展示</div><div class="mint_cell_img">${fourStr}</div><p class="mint_cell_img_content">${this.resize.textMs4}</p></mt-cell>`
-
                 }
-                // let allImgContent = oneImgContent + twoImgContent + threeImgContent + fourImgContent;
                 let allContent = {
                     oneImgContent: oneImgContent,
                     twoImgContent: twoImgContent,
                     threeImgContent: threeImgContent,
                     fourImgContent: fourImgContent
                 }
-                // let data = {
-                //     "catProps": [],
-                //     "productDetails": [
-                //         {
-                //             "content": allImgContent,
-                //         }
-                //     ],
-                //     "productImgs": mainImg
-                // }
                 let data = {
                     "catProps": [],
                     "productDetails": [
@@ -418,7 +416,7 @@ import { Toast } from 'mint-ui';
                         })
                     }
                 }
-                this.$api.post(`/oteao/product/updateProductInfo` +
+                this.$api.post(`/oteao/productInfo/updateProductInfo` +
                     `?frontOrgProInfoDetailVo.proId=${ encodeURI(this.resize.mainId) }`+
                     `&frontOrgProInfoDetailVo.catId=${ encodeURI(this.resize.twoClass) }` +
                     `&frontOrgProInfoDetailVo.brandId=${ encodeURI(this.resize.selId.pp) }` +
@@ -433,7 +431,7 @@ import { Toast } from 'mint-ui';
                     `&frontOrgProInfoDetailVo.isSaveOnShelf=${ encodeURI(stata) }`,JSON.stringify(data),res => {
                         this.sucFlag = true;
                         if(stata == 0){
-                            this.sussTips = '创建成功！';
+                            this.sussTips = '修改成功！';
                         }else{
                             this.sussTips = '成功上架！';
                         }
@@ -539,6 +537,19 @@ import { Toast } from 'mint-ui';
                         this.resize.fourImgFile.splice(arg,1);
                     }
                 }
+            }
+        },
+        beforeRouteEnter(to, from, next) {
+            if(store.state.member.member.id) {
+                next();
+            } else {
+                store.dispatch('getMemberData').then(res => {
+                    next();
+                }).catch(res =>{
+                    next(vm => {
+                        vm.router.push('/login')
+                    })
+                })
             }
         }
     }

@@ -30,7 +30,7 @@ export default {
     methods: {
         goRegist() {
             this.$router.push({
-                name: '茶帮通注册2'
+                name: '茶帮通注册4'
             });
         }
     }
