@@ -247,7 +247,7 @@ export default {
                     parentId: parentId
                 }
             return new Promise((resolve,reject) => {
-                this.$api.get('/oteaoProCat/queryCatChilds',data,res => {
+                this.$api.get('/oteao/proCat/queryCatChilds',data,res => {
                     resolve(res);
                 },res=>{
                     return Toast({
@@ -379,7 +379,7 @@ export default {
         getBrandList() {
             let data = {}
             return new Promise((resolve,reject) => {
-                this.$api.get('/OteaoProductBrand/findProductBrand',data,res => {
+                this.$api.get('/oteao/productBrand/findProductBrand',data,res => {
                     resolve(res);
                 },res=>{
                     return Toast({

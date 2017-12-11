@@ -6,7 +6,7 @@
                     <div class="hd">
                         <div class="had-head">
                             <div class="name">{{ item.recName }}</div>
-                            <div class="tel">18206062601</div>
+                            <div class="tel">{{ item.mobilePhone }}</div>
                         </div>
                         <div class="address-detail">
                             {{ item.provinceName + item.cityName + item.areaName + item.detailAddress }}

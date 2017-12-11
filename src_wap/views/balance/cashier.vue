@@ -83,7 +83,6 @@
                             // 余额不够了,还需配合在线支付
                             payUp.call(this)
 
-
                         } else {
                             // 交易成功
                             this.$router.push({name: '结算显示',query:{payId:this.payId}})
