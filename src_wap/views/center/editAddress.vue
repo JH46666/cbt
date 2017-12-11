@@ -128,7 +128,11 @@
                         data.id = this.myData.id
                     }
                     this.$api.post('/oteao/deliveryAddress/addOrUpdateDeliveryAddress',JSON.stringify(data),res => {
-                       this.$router.go(-1)
+                        let toast = this.$toast('保存成功')
+                        setTimeout(() => {
+                            toast.close();
+                            this.$router.go(-1)
+                        },200)
                     })
                 }
 
