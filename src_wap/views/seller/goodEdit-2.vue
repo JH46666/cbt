@@ -336,14 +336,24 @@ import { Toast } from 'mint-ui';
                 }
                 // let oneImgContent = `<mt-cell></mt-cell><div class="mint_cell_img_title">茶韵展示</div><div class="mint_cell_img"><img src="${this.urls.one[0]}" /></div><p class="mint_cell_img_content">${this.resize.textMs1}</p></mt-cell>`;
                 // let twoImgContent = `<mt-cell><div class="mint_cell_img_title">茶韵展示</div><div class="mint_cell_img"><img src="${this.urls.two[0]}" /></div><p class="mint_cell_img_content">${this.resize.textMs2}</p></mt-cell>`;
-                // let threeImgContent = `<mt-cell><div class="mint_cell_img_title">茶韵展示</div><div class="mint_cell_img"><img src="${this.urls.third[0]}" /></div><p class="mint_cell_img_content">${this.resize.textMs3}</p></mt-cell>`;
+                // let three
+                // ImgContent = `<mt-cell><div class="mint_cell_img_title">茶韵展示</div><div class="mint_cell_img"><img src="${this.urls.third[0]}" /></div><p class="mint_cell_img_content">${this.resize.textMs3}</p></mt-cell>`;
+                if(this.urls.one.length == 0){
+                    this.urls.one = [this.resize.imgs.detailImg1]
+                }
                 let oneImgContent = {
                     imgUrl: [this.urls.one[0]],
                     content: this.resize.textMs1
                 }
+                if(this.urls.two.length == 0){
+                    this.urls.two = [this.resize.imgs.detailImg2]
+                }
                 let twoImgContent = {
                     imgUrl: [this.urls.two[0]],
                     content: this.resize.textMs2
+                }
+                if(this.urls.third.length == 0){
+                    this.urls.third = [this.resize.imgs.detailImg3]
                 }
                 let threeImgContent = {
                     imgUrl: [this.urls.third[0]],
@@ -418,7 +428,7 @@ import { Toast } from 'mint-ui';
                         })
                     }
                 }
-                this.$api.post(`/oteao/productInfo/updateProductInfo` +
+                this.$api.post(`/oteao/product/updateProductInfo` +
                     `?frontOrgProInfoDetailVo.proId=${ encodeURI(this.resize.mainId) }`+
                     `&frontOrgProInfoDetailVo.catId=${ encodeURI(this.resize.twoClass) }` +
                     `&frontOrgProInfoDetailVo.brandId=${ encodeURI(this.resize.selId.pp) }` +
@@ -433,7 +443,7 @@ import { Toast } from 'mint-ui';
                     `&frontOrgProInfoDetailVo.isSaveOnShelf=${ encodeURI(stata) }`,JSON.stringify(data),res => {
                         this.sucFlag = true;
                         if(stata == 0){
-                            this.sussTips = '创建成功！';
+                            this.sussTips = '修改成功！';
                         }else{
                             this.sussTips = '成功上架！';
                         }
