@@ -150,7 +150,7 @@
                             if(status === 'INACTIVE') {
                                 this.$router.push({name: '茶帮通注册2'})
                             }
-                            this.$router.push({name: this.$store.state.address.from.name});
+                            this.$router.push(this.$store.state.address.from.fullPath);
                         },res=>{
                             if(res.code === 4064){
                                 this.illegalFlag = true;
