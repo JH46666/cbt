@@ -30,7 +30,7 @@
         </div>
         <div class="floor detail-imgs">
             <h3>商品详情展示图片</h3>
-            <p class="color_9"><span class="color_f33">1-3项必须上传，</span>建议尺寸保持一致,单张图片小于8M</p>
+            <p class="color_9"><span class="color_f33">1-3项必须上传，</span>建议尺寸保持一致，单张图片小于8M</p>
             <div class="upload-step">
                 <h4><span class="serial-num">1</span>高清实拍，清晰展示商品外形细节</h4>
                 <div class="flex example-box">
@@ -56,7 +56,7 @@
                 <textarea name="" id="" cols="30" rows="10" placeholder="请输入外形描述" v-model="resize.textMs1"></textarea>
             </div>
             <div class="upload-step">
-                <h4><span class="serial-num">2</span>拒绝盗图，清晰展示商品内在细节,如茶汤</h4>
+                <h4><span class="serial-num">2</span>拒绝盗图，清晰展示商品内在细节，如茶汤</h4>
                 <div class="flex example-box">
                     <div class="flex-1 upload-box">
                         <label class="camera-bg" v-show="resize.imgs.detailImg2==''">
@@ -80,7 +80,7 @@
                 <textarea name="" id="" cols="30" rows="10" placeholder="请输入内在细节描述1，如茶汤" v-model="resize.textMs2"></textarea>
             </div>
             <div class="upload-step">
-                <h4><span class="serial-num">3</span>拒绝盗图，清晰展示商品内在细节,如叶底</h4>
+                <h4><span class="serial-num">3</span>拒绝盗图，清晰展示商品内在细节，如叶底</h4>
                 <div class="flex example-box">
                     <div class="flex-1 upload-box">
                         <label class="camera-bg" v-show="resize.imgs.detailImg3==''">
@@ -131,7 +131,7 @@
                         </label>
                     </div>
                 </div>
-                <textarea name="" id="" cols="30" rows="10" placeholder="请输入内在细节描述2，如叶底" v-model="resize.textMs4"></textarea>
+                <textarea name="" id="" cols="30" rows="10" placeholder="请输入其他商品细节" v-model="resize.textMs4"></textarea>
             </div>
         </div>
         <div class="flex btns">
@@ -416,31 +416,58 @@ import $api from 'api';
                         })
                     }
                 }
-                this.$api.post(`/oteao/productInfo/updateProductInfo` +
-                    `?frontOrgProInfoDetailVo.proId=${ encodeURI(this.resize.mainId) }`+
-                    `&frontOrgProInfoDetailVo.catId=${ encodeURI(this.resize.twoClass) }` +
-                    `&frontOrgProInfoDetailVo.brandId=${ encodeURI(this.resize.selId.pp) }` +
-                    `&frontOrgProInfoDetailVo.proName=${ encodeURI(this.resize.form.goodsName) }` +
-                    `&frontOrgProInfoDetailVo.unint=${ encodeURI(this.resize.form.goodsDw) }` +
-                    `&frontOrgProInfoDetailVo.weight=${ encodeURI(this.resize.form.goodsMz) }` +
-                    `&frontOrgProInfoDetailVo.netWeight=${ encodeURI(this.resize.form.goodsJz) }` +
-                    `&frontOrgProInfoDetailVo.reason=${ encodeURI(this.resize.form.goodsSell) }` +
-                    `&frontOrgProInfoDetailVo.stockNum=${ encodeURI(this.resize.form.goodsKc) }` +
-                    `&frontOrgProInfoDetailVo.proPrice=${ encodeURI(this.resize.form.goodsSx) }` +
-                    `&frontOrgProInfoDetailVo.retailPrice=${encodeURI(this.resize.form.goodsPtsj) }` +
-                    `&frontOrgProInfoDetailVo.isSaveOnShelf=${ encodeURI(stata) }`,JSON.stringify(data),res => {
-                        this.sucFlag = true;
-                        if(stata == 0){
-                            this.sussTips = '修改成功！';
-                        }else{
-                            this.sussTips = '成功上架！';
-                        }
-                },res=>{
-                    return Toast({
-                        message: res.errorMsg,
-                        iconClass: 'icon icon-fail'
-                    });
-                })
+                if(this.resize.selId.pp){
+                    this.$api.post(`/oteao/productInfo/updateProductInfo` +
+                        `?frontOrgProInfoDetailVo.proId=${ encodeURI(this.resize.mainId) }`+
+                        `&frontOrgProInfoDetailVo.catId=${ encodeURI(this.resize.twoClass) }` +
+                        `&frontOrgProInfoDetailVo.brandId=${ encodeURI(this.resize.selId.pp) }` +
+                        `&frontOrgProInfoDetailVo.proName=${ encodeURI(this.resize.form.goodsName) }` +
+                        `&frontOrgProInfoDetailVo.unint=${ encodeURI(this.resize.form.goodsDw) }` +
+                        `&frontOrgProInfoDetailVo.weight=${ encodeURI(this.resize.form.goodsMz) }` +
+                        `&frontOrgProInfoDetailVo.netWeight=${ encodeURI(this.resize.form.goodsJz) }` +
+                        `&frontOrgProInfoDetailVo.reason=${ encodeURI(this.resize.form.goodsSell) }` +
+                        `&frontOrgProInfoDetailVo.stockNum=${ encodeURI(this.resize.form.goodsKc) }` +
+                        `&frontOrgProInfoDetailVo.proPrice=${ encodeURI(this.resize.form.goodsSx) }` +
+                        `&frontOrgProInfoDetailVo.retailPrice=${encodeURI(this.resize.form.goodsPtsj) }` +
+                        `&frontOrgProInfoDetailVo.isSaveOnShelf=${ encodeURI(stata) }`,JSON.stringify(data),res => {
+                            this.sucFlag = true;
+                            if(stata == 0){
+                                this.sussTips = '修改成功！';
+                            }else{
+                                this.sussTips = '成功上架！';
+                            }
+                    },res=>{
+                        return Toast({
+                            message: res.errorMsg,
+                            iconClass: 'icon icon-fail'
+                        });
+                    })
+                }else{
+                    this.$api.post(`/oteao/productInfo/updateProductInfo` +
+                        `?frontOrgProInfoDetailVo.proId=${ encodeURI(this.resize.mainId) }`+
+                        `&frontOrgProInfoDetailVo.catId=${ encodeURI(this.resize.twoClass) }` +
+                        `&frontOrgProInfoDetailVo.proName=${ encodeURI(this.resize.form.goodsName) }` +
+                        `&frontOrgProInfoDetailVo.unint=${ encodeURI(this.resize.form.goodsDw) }` +
+                        `&frontOrgProInfoDetailVo.weight=${ encodeURI(this.resize.form.goodsMz) }` +
+                        `&frontOrgProInfoDetailVo.netWeight=${ encodeURI(this.resize.form.goodsJz) }` +
+                        `&frontOrgProInfoDetailVo.reason=${ encodeURI(this.resize.form.goodsSell) }` +
+                        `&frontOrgProInfoDetailVo.stockNum=${ encodeURI(this.resize.form.goodsKc) }` +
+                        `&frontOrgProInfoDetailVo.proPrice=${ encodeURI(this.resize.form.goodsSx) }` +
+                        `&frontOrgProInfoDetailVo.retailPrice=${encodeURI(this.resize.form.goodsPtsj) }` +
+                        `&frontOrgProInfoDetailVo.isSaveOnShelf=${ encodeURI(stata) }`,JSON.stringify(data),res => {
+                            this.sucFlag = true;
+                            if(stata == 0){
+                                this.sussTips = '修改成功！';
+                            }else{
+                                this.sussTips = '成功上架！';
+                            }
+                    },res=>{
+                        return Toast({
+                            message: res.errorMsg,
+                            iconClass: 'icon icon-fail'
+                        });
+                    })
+                }
             },
             handleChangeThird(index) {
                 this.thirdIndex = index+1;

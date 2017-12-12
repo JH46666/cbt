@@ -30,7 +30,7 @@
         </div>
         <div class="floor detail-imgs">
             <h3>商品详情展示图片</h3>
-            <p class="color_9"><span class="color_f33">1-3项必须上传，</span>建议尺寸保持一致,单张图片小于8M</p>
+            <p class="color_9"><span class="color_f33">1-3项必须上传，</span>建议尺寸保持一致，单张图片小于8M</p>
             <div class="upload-step">
                 <h4><span class="serial-num">1</span>高清实拍，清晰展示商品外形细节</h4>
                 <div class="flex example-box">
@@ -56,7 +56,7 @@
                 <textarea name="" id="" cols="30" rows="10" placeholder="请输入外形描述" v-model="resize.textMs1"></textarea>
             </div>
             <div class="upload-step">
-                <h4><span class="serial-num">2</span>拒绝盗图，清晰展示商品内在细节,如茶汤</h4>
+                <h4><span class="serial-num">2</span>拒绝盗图，清晰展示商品内在细节，如茶汤</h4>
                 <div class="flex example-box">
                     <div class="flex-1 upload-box">
                         <label class="camera-bg" v-show="resize.imgs.detailImg2==''">
@@ -80,7 +80,7 @@
                 <textarea name="" id="" cols="30" rows="10" placeholder="请输入内在细节描述1，如茶汤" v-model="resize.textMs2"></textarea>
             </div>
             <div class="upload-step">
-                <h4><span class="serial-num">3</span>拒绝盗图，清晰展示商品内在细节,如叶底</h4>
+                <h4><span class="serial-num">3</span>拒绝盗图，清晰展示商品内在细节，如叶底</h4>
                 <div class="flex example-box">
                     <div class="flex-1 upload-box">
                         <label class="camera-bg" v-show="resize.imgs.detailImg3==''">
@@ -131,7 +131,7 @@
                         </label>
                     </div>
                 </div>
-                <textarea name="" id="" cols="30" rows="10" placeholder="请输入内在细节描述2，如叶底" v-model="resize.textMs4"></textarea>
+                <textarea name="" id="" cols="30" rows="10" placeholder="请输入其他商品细节" v-model="resize.textMs4"></textarea>
             </div>
         </div>
         <div class="flex btns">
@@ -337,9 +337,6 @@ import $api from 'api';
                         imgUrl: this.urls.main[i]
                     })
                 }
-                // let oneImgContent = `<mt-cell></mt-cell><div class="mint_cell_img_title">茶韵展示</div><div class="mint_cell_img"><img src="${this.urls.one[0]}" /></div><p class="mint_cell_img_content">${this.resize.textMs1}</p></mt-cell>`;
-                // let twoImgContent = `<mt-cell><div class="mint_cell_img_title">茶韵展示</div><div class="mint_cell_img"><img src="${this.urls.two[0]}" /></div><p class="mint_cell_img_content">${this.resize.textMs2}</p></mt-cell>`;
-                // let threeImgContent = `<mt-cell><div class="mint_cell_img_title">茶韵展示</div><div class="mint_cell_img"><img src="${this.urls.third[0]}" /></div><p class="mint_cell_img_content">${this.resize.textMs3}</p></mt-cell>`;
                 let oneImgContent = {
                     imgUrl: [this.urls.one[0]],
                     content: this.resize.textMs1
@@ -352,36 +349,21 @@ import $api from 'api';
                     imgUrl: [this.urls.third[0]],
                     content: this.resize.textMs3
                 }
-                // let fourImgContent = '';
                 let fourImgContent = {
                     imgUrl: [],
                     content: this.resize.textMs4
                 };
                 if(this.urls.four.length != 0){
-                    let fourStr = '';
                     for(let i=0;i<this.urls.four.length;i++){
-                        // fourStr += `<img src="${this.urls.four[i]}" />`
                         fourImgContent.imgUrl.push(this.urls.four[i])
                     }
-                    // fourImgContent = `<mt-cell><div class="mint_cell_img_title">茶韵展示</div><div class="mint_cell_img">${fourStr}</div><p class="mint_cell_img_content">${this.resize.textMs4}</p></mt-cell>`
-
                 }
-                // let allImgContent = oneImgContent + twoImgContent + threeImgContent + fourImgContent;
                 let allContent = {
                     oneImgContent: oneImgContent,
                     twoImgContent: twoImgContent,
                     threeImgContent: threeImgContent,
                     fourImgContent: fourImgContent
                 }
-                // let data = {
-                //     "catProps": [],
-                //     "productDetails": [
-                //         {
-                //             "content": allImgContent,
-                //         }
-                //     ],
-                //     "productImgs": mainImg
-                // }
                 let data = {
                     "catProps": [],
                     "productDetails": [
@@ -421,30 +403,56 @@ import $api from 'api';
                         })
                     }
                 }
-                this.$api.post(`/oteao/productInfo/createProductInfo` +
-                    `?frontOrgProInfoDetailVo.catId=${ encodeURI(this.resize.twoClass) }` +
-                    `&frontOrgProInfoDetailVo.brandId=${ encodeURI(this.resize.selId.pp) }` +
-                    `&frontOrgProInfoDetailVo.proName=${ encodeURI(this.resize.form.goodsName) }` +
-                    `&frontOrgProInfoDetailVo.unint=${ encodeURI(this.resize.form.goodsDw) }` +
-                    `&frontOrgProInfoDetailVo.weight=${ encodeURI(this.resize.form.goodsMz) }` +
-                    `&frontOrgProInfoDetailVo.netWeight=${ encodeURI(this.resize.form.goodsJz) }` +
-                    `&frontOrgProInfoDetailVo.reason=${ encodeURI(this.resize.form.goodsSell) }` +
-                    `&frontOrgProInfoDetailVo.stockNum=${ encodeURI(this.resize.form.goodsKc) }` +
-                    `&frontOrgProInfoDetailVo.proPrice=${ encodeURI(this.resize.form.goodsSx) }` +
-                    `&frontOrgProInfoDetailVo.retailPrice=${encodeURI(this.resize.form.goodsPtsj) }` +
-                    `&frontOrgProInfoDetailVo.isSaveOnShelf=${ encodeURI(stata) }`,JSON.stringify(data),res => {
-                        this.sucFlag = true;
-                        if(stata == 0){
-                            this.sussTips = '创建成功！';
-                        }else{
-                            this.sussTips = '成功上架！';
-                        }
-                },res=>{
-                    return Toast({
-                        message: res.errorMsg,
-                        iconClass: 'icon icon-fail'
-                    });
-                })
+                if(this.resize.selId.pp){
+                    this.$api.post(`/oteao/productInfo/createProductInfo` +
+                        `?frontOrgProInfoDetailVo.catId=${ encodeURI(this.resize.twoClass) }` +
+                        `&frontOrgProInfoDetailVo.brandId=${ encodeURI(this.resize.selId.pp) }` +
+                        `&frontOrgProInfoDetailVo.proName=${ encodeURI(this.resize.form.goodsName) }` +
+                        `&frontOrgProInfoDetailVo.unint=${ encodeURI(this.resize.form.goodsDw) }` +
+                        `&frontOrgProInfoDetailVo.weight=${ encodeURI(this.resize.form.goodsMz) }` +
+                        `&frontOrgProInfoDetailVo.netWeight=${ encodeURI(this.resize.form.goodsJz) }` +
+                        `&frontOrgProInfoDetailVo.reason=${ encodeURI(this.resize.form.goodsSell) }` +
+                        `&frontOrgProInfoDetailVo.stockNum=${ encodeURI(this.resize.form.goodsKc) }` +
+                        `&frontOrgProInfoDetailVo.proPrice=${ encodeURI(this.resize.form.goodsSx) }` +
+                        `&frontOrgProInfoDetailVo.retailPrice=${encodeURI(this.resize.form.goodsPtsj) }` +
+                        `&frontOrgProInfoDetailVo.isSaveOnShelf=${ encodeURI(stata) }`,JSON.stringify(data),res => {
+                            this.sucFlag = true;
+                            if(stata == 0){
+                                this.sussTips = '创建成功！';
+                            }else{
+                                this.sussTips = '成功上架！';
+                            }
+                    },res=>{
+                        return Toast({
+                            message: res.errorMsg,
+                            iconClass: 'icon icon-fail'
+                        });
+                    })
+                }else{
+                    this.$api.post(`/oteao/productInfo/createProductInfo` +
+                        `?frontOrgProInfoDetailVo.catId=${ encodeURI(this.resize.twoClass) }` +
+                        `&frontOrgProInfoDetailVo.proName=${ encodeURI(this.resize.form.goodsName) }` +
+                        `&frontOrgProInfoDetailVo.unint=${ encodeURI(this.resize.form.goodsDw) }` +
+                        `&frontOrgProInfoDetailVo.weight=${ encodeURI(this.resize.form.goodsMz) }` +
+                        `&frontOrgProInfoDetailVo.netWeight=${ encodeURI(this.resize.form.goodsJz) }` +
+                        `&frontOrgProInfoDetailVo.reason=${ encodeURI(this.resize.form.goodsSell) }` +
+                        `&frontOrgProInfoDetailVo.stockNum=${ encodeURI(this.resize.form.goodsKc) }` +
+                        `&frontOrgProInfoDetailVo.proPrice=${ encodeURI(this.resize.form.goodsSx) }` +
+                        `&frontOrgProInfoDetailVo.retailPrice=${encodeURI(this.resize.form.goodsPtsj) }` +
+                        `&frontOrgProInfoDetailVo.isSaveOnShelf=${ encodeURI(stata) }`,JSON.stringify(data),res => {
+                            this.sucFlag = true;
+                            if(stata == 0){
+                                this.sussTips = '创建成功！';
+                            }else{
+                                this.sussTips = '成功上架！';
+                            }
+                    },res=>{
+                        return Toast({
+                            message: res.errorMsg,
+                            iconClass: 'icon icon-fail'
+                        });
+                    })
+                }
             },
             handleChangeThird(index) {
                 this.thirdIndex = index+1;
@@ -454,6 +462,7 @@ import $api from 'api';
             },
             //继续创建
             goCreated(){
+                window.location.reload();
                 this.$router.push({
                     name: '新品上架-1'
                 });
@@ -517,7 +526,7 @@ import $api from 'api';
                 this.$router.push({
                     name: '商品管理',
                     query: {
-                        status: status
+                        state: status
                     }
                 })
             },

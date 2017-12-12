@@ -49,24 +49,6 @@
                             <i class="iconfont" @click="clickSel('pinpai')">&#xe744;</i>
                         </div>
                         <div class="item">
-                            <label class="item-left" for="5">
-                                香气：
-                            </label>
-                            <div class="item-right" @click="clickSel('xiangqi')">
-                                <input type="text" id="5" readonly placeholder="非必填项，请选择商品香气" v-model="resize.form.goodsXq" />
-                            </div>
-                            <i class="iconfont" @click="clickSel('xiangqi')">&#xe744;</i>
-                        </div>
-                        <div class="item">
-                            <label class="item-left" for="6">
-                                滋味：
-                            </label>
-                            <div class="item-right" @click="clickSel('ziwei')">
-                                <input type="text" id="6" readonly placeholder="非必填项，请选择商品滋味" v-model="resize.form.goodsZw" />
-                            </div>
-                            <i class="iconfont" @click="clickSel('ziwei')">&#xe744;</i>
-                        </div>
-                        <div class="item">
                             <label class="item-left" for="7">
                                 净重：
                             </label>
@@ -381,20 +363,6 @@ export default {
                 this.closeUp = false;
                 return;
             }
-            if(this.selList[this.selList.length-1].name === this.resize.xiangWei[this.resize.xiangWei.length-1].name){           // 香味选择
-                this.resize.form.goodsXq = this.selList[index].name;
-                this.resize.selId.xq = this.selList[index].id;
-                this.resize.selIndex.xq = index;
-                this.closeUp = false;
-                return;
-            }
-            if(this.selList[this.selList.length-1].name === this.resize.ziWei[this.resize.ziWei.length-1].name){              // 滋味选择
-                this.resize.form.goodsZw = this.selList[index].name;
-                this.resize.selId.zw = this.selList[index].id;
-                this.resize.selIndex.zw = index;
-                this.closeUp = false;
-                return;
-            }
             if(this.selList[this.selList.length-1].name === this.danWei[this.danWei.length-1].name){             // 单位选择
                 this.resize.form.goodsDw = this.selList[index].name;
                 this.resize.selId.dw = this.selList[index].id;
@@ -408,20 +376,6 @@ export default {
                 this.resize.form.goodsBrand = '';
                 this.resize.selIndex.pp = null;
                 this.resize.selId.pp = null;
-                this.closeUp = false;
-                return;
-            }
-            if(this.selList[this.selList.length-1].name === this.resize.xiangWei[this.resize.xiangWei.length-1].name){           // 香味选择
-                this.resize.form.goodsXq = '';
-                this.resize.selIndex.xq = null;
-                this.resize.selId.xq = null;
-                this.closeUp = false;
-                return;
-            }
-            if(this.selList[this.selList.length-1].name === this.resize.ziWei[this.resize.ziWei.length-1].name){              // 滋味选择
-                this.resize.form.goodsZw = '';
-                this.resize.selIndex.zw = null;
-                this.resize.selId.zw = null;
                 this.closeUp = false;
                 return;
             }
@@ -448,22 +402,6 @@ export default {
                 this.selectClass = null;
                 if(this.resize.selIndex.pp!=null){
                     this.selectClass = this.resize.selIndex.pp;
-                }
-                return;
-            }
-            if(val === 'xiangqi'){
-                this.selList = this.resize.xiangWei;
-                this.selectClass = null;
-                if(this.resize.selIndex.xq!=null){
-                    this.selectClass = this.resize.selIndex.xq;
-                }
-                return;
-            }
-            if(val === 'ziwei'){
-                this.selList = this.resize.ziWei;
-                this.selectClass = null;
-                if(this.resize.selIndex.zw!=null){
-                    this.selectClass = this.resize.selIndex.zw;
                 }
                 return;
             }

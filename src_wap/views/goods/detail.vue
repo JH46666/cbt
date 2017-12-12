@@ -91,20 +91,20 @@
                             <p class="detail_suggest_price">建议零售价：￥{{ detailData.productPrice[1].price | toFix2 }}</p>
                         </template>
                     </div>
-                    <!-- <template  v-if="detailData.productPrice.length != 0">
-                        <div class="detail_active" v-show="detailData.ProductExtInfo.isSales">
+                    <template  v-if="detailData.productExtInfo.isSales && detailData.productExtInfo.state === 'ON_SHELF'">
+                        <div class="detail_active">
                             <label>促销</label>
                             <div class="detail_active_list">
                                 <div class="detail_active_item">
                                     <span>直降</span>
-                                    <p>已优惠￥{{  (detailData.productPrice[0].price-detailData.ProductExtInfo.salesPrice)  | toFix2 }}</p>
+                                    <p>已优惠￥{{  (detailData.productPrice[0].price-detailData.productExtInfo.salesPrice)  | toFix2 }}</p>
                                 </div>
                             </div>
                         </div>
-                    </template> -->
+                    </template>
                     <div class="detail_describe_count">
                         <label class="label_text">采购量</label>
-                        <plusOreduce :maxNum="detailData.productInfo.stockNum" @countNum="goodsCounts"></plusOreduce>
+                        <plusOreduce :maxNum="detailData.productExtInfo.stockNum" @countNum="goodsCounts"></plusOreduce>
                     </div>
                 </div>
             </div>
@@ -131,33 +131,39 @@
                     </mt-tab-container-item>
                     <mt-tab-container-item id="2">
                         <div class="reguler_wrapper">
+                            <div class="reguler_item">
+                                <div>商品编号</div>
+                                <div>{{ detailData.productInfo.proSku }}</div>
+                            </div>
+                            <template v-for="(item,index) in attrImgDetail.propValList">
+                                <div class="reguler_item" v-if="item.propName === '香气'">
+                                    <div>{{ item.propName }}</div>
+                                    <div class="x_star">
+                                        <span class="x_grey" :class="{on: item.propertiesVal.propVal === '偏淡' || item.propertiesVal.propVal === '一般' || item.propertiesVal.propVal === '香' || item.propertiesVal.propVal === '高香' || item.propertiesVal.propVal === '极香'}">偏淡</span>
+                                        <span class="x_grey" :class="{on: item.propertiesVal.propVal === '一般' || item.propertiesVal.propVal === '香' || item.propertiesVal.propVal === '高香' || item.propertiesVal.propVal === '极香'}">一般</span>
+                                        <span class="x_grey" :class="{on: item.propertiesVal.propVal === '香' || item.propertiesVal.propVal === '高香' || item.propertiesVal.propVal === '极香'}">香</span>
+                                        <span class="x_grey" :class="{on: item.propertiesVal.propVal === '高香' || item.propertiesVal.propVal === '极香'}">高香</span>
+                                        <span class="x_grey" :class="{on: item.propertiesVal.propVal === '极香'}">极香</span>
+                                    </div>
+                                </div>
+                                <div class="reguler_item" v-if="item.propName === '滋味'">
+                                    <div>{{ item.propName }}</div>
+                                    <div class="x_star">
+                                        <span class="x_grey" :class="{on: item.propertiesVal.propVal === '偏淡' || item.propertiesVal.propVal === '一般' || item.propertiesVal.propVal === '浓' || item.propertiesVal.propVal === '很浓' || item.propertiesVal.propVal === '极浓'}">偏淡</span>
+                                        <span class="x_grey" :class="{on: item.propertiesVal.propVal === '一般' || item.propertiesVal.propVal === '浓' || item.propertiesVal.propVal === '很浓' || item.propertiesVal.propVal === '极浓'}">一般</span>
+                                        <span class="x_grey" :class="{on: item.propertiesVal.propVal === '浓' || item.propertiesVal.propVal === '很浓' || item.propertiesVal.propVal === '极浓'}">浓</span>
+                                        <span class="x_grey" :class="{on: item.propertiesVal.propVal === '很浓' || item.propertiesVal.propVal === '极浓'}">很浓</span>
+                                        <span class="x_grey" :class="{on: item.propertiesVal.propVal === '极浓'}">极浓</span>
+                                    </div>
+                                </div>
+                                <div class="reguler_item"v-if="item.propName != '香气' && item.propName != '滋味'" >
+                                    <div>{{ item.propName }}</div>
+                                    <div>{{ item.propertiesVal.propVal }}</div>
+                                </div>
+                            </template>
                             <div class="reguler_item" v-if="detailData.productExtInfo.reason!=''">
                                 <div>推荐理由</div>
                                 <div>{{ detailData.productExtInfo.reason }}</div>
-                            </div>
-                            <!-- <div class="reguler_item">
-                                <div>香气</div>
-                                <div class="x_star">
-                                    <span class="x_grey on">偏淡</span>
-                                    <span class="x_grey on">一般</span>
-                                    <span class="x_grey">香</span>
-                                    <span class="x_grey">高香</span>
-                                    <span class="x_grey">极香</span>
-                                </div>
-                            </div>
-                            <div class="reguler_item">
-                                <div>滋味</div>
-                                <div class="z_star">
-                                    <span class="z_grey on">偏淡</span>
-                                    <span class="z_grey on">一般</span>
-                                    <span class="z_grey on">浓</span>
-                                    <span class="z_grey">很浓</span>
-                                    <span class="z_grey">极浓</span>
-                                </div>
-                            </div> -->
-                            <div class="reguler_item" v-for="(item,index) in attrImgDetail.propValList">
-                                <div>{{ item.propName }}</div>
-                                <div>{{ item.propertiesVal.propVal }}</div>
                             </div>
                         </div>
                     </mt-tab-container-item>
@@ -213,7 +219,7 @@
             </mt-tab-item>
             <mt-tab-item id="3">
                 <mt-button type="default" disabled v-if="detailData.productExtInfostate === 'OFF_SHELF'">已下架</mt-button>
-                <mt-button type="default" v-else-if="detailData.productExtInfo.isSoldOut == 1">加入购物车</mt-button>
+                <mt-button type="default" v-else-if="detailData.productExtInfo.isSoldOut == 1" @click.native="addCartInfo">加入购物车</mt-button>
                 <mt-button type="default" disabled v-else>缺货</mt-button>
             </mt-tab-item>
         </mt-tabbar>
@@ -223,6 +229,7 @@
 <script>
 import plusOreduce from '@/components/plusOreduce.vue'
 import { Toast,Indicator } from 'mint-ui'
+import store from 'store';
 export default {
     components: {
         plusOreduce
@@ -231,8 +238,8 @@ export default {
         return {
             selected: null,
             imgIndex: 1,
-            goodsCount: 0,
-            tabSelected: '2',
+            goodsCount: 1,
+            tabSelected: '1',
             tabTop: 0,
             tabFixed: false,
             special: {
@@ -275,15 +282,21 @@ export default {
                 this.getCommentList(this.detailData.productExtInfo.id).then((res) => {
                     this.commentList = res.data.evaluations;
                     this.commentRecond = res.total_record;
-                    this.prectent = res.praiseRate == null ? 0 : res.praiseRate;
+                    this.prectent = res.data.praiseRate == null ? 0 : res.data.praiseRate;
                 })
             })
         })
     },
     methods: {
+        addCartInfo() {
+            this.$store.dispatch('addCart',{proId:this.detailData.productExtInfo.proId,buyNum:this.goodsCount}).then(res=>{
+                console.log(res);
+
+            },res=>{});
+        },
         getMoreComment() {
             this.page++;
-            this.getCommentList().then((res) => {
+            this.getCommentList(this.detailData.productExtInfo.id).then((res) => {
                 this.commentList = this.commentList.concat(res.data.evaluations);
                 this.$nextTick(()=>{
                     this.setLine();

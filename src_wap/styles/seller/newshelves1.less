@@ -113,6 +113,7 @@
     .mint-popup{
        .w(100%);
        overflow: hidden;
+       z-index: 3000;
    }
 // 关闭订单弹出层样式
    .close-wrap{
@@ -205,12 +206,10 @@
              .flex-1;
              overflow: hidden;
              .type_2_wrapper{
-                 .flex;
-                 .flex-dir(row);
-                 flex-flow: wrap;
                  height: 100%;
                  overflow-y: auto;
                  .type_item{
+                     float: left;
                      width: 2.02rem;
                      height: .8rem;
                      border: 1px solid #e5e5e5;
@@ -261,7 +260,7 @@
                 .bg(@mainCol);
                 .fontSize(.3rem);
             }
-            &.disabled{
+            &.is-disabled{
                 background-color: #e6e6e6;
                 color: #adadad;
             }
