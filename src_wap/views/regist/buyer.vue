@@ -24,7 +24,7 @@
             </form>
         </div>
         <!-- 验证码弹窗 -->
-        <msg-popup v-if="verifyFlag" @closePopup="closePopup" @getMsgCode="getMsgCode" :errorTxt="errorTips"></msg-popup>
+        <msg-popup v-if="verifyFlag" @closePopup="closePopup" @getMsgCode="getMsgCode" :errorTxt="errorTips" ref="imgCode"></msg-popup>
     </div>
 </template>
 <script>
@@ -82,6 +82,7 @@
             //关闭弹窗
             closePopup(){
                 this.verifyFlag = false;
+                this.errorTips = "";
             },
             //提交图片验证码获取短信验证码
             getMsgCode(val){
@@ -97,6 +98,7 @@
                     this.getCount++;
                     this.countTime();
                 },res=>{
+                    this.$refs.imgCode.reset();
                     this.errorTips = "您输入的图片验证码错误，请核对后重新输入";
                 });
             },
@@ -110,8 +112,8 @@
                         device: 'WAP'
                     }
                     this.$api.post('/oteao/login/doRegister',data,res=>{
-                        console.log(res);
-                        // this.$router.push('seller');
+                        // console.log(res);
+                        this.$router.push('/regist/examine')
                     },res=>{
                         Toast('您输入的短信验证码错误，请核实后重新输入');
                     });
