@@ -23,7 +23,7 @@
             </template>
         </div>
         <div class="add-address">
-            <mt-button type="default" @click="$router.push({name: '新增地址'})">添加地址</mt-button>
+            <mt-button type="default" @click="$router.push({name: '新增地址'})">新增地址</mt-button>
         </div>
     </div>
 </template>
@@ -52,10 +52,22 @@
             },
             // 删除地址
             delAddress(i) {
-                this.$api.delete('/oteao/deliveryAddress/deleteDeliveryAddress',{
-                    deliveryAddressId: this.value[i].id
-                },res => {
-                    this.getData();
+                this.$messageBox({
+                    title:'提示', 
+                    message:`确定要删除地址吗？`,
+                    showCancelButton: true,
+                    cancelButtonText: '取消',
+                    confirmButtonText: '确定'
+                }).then(res => {
+                    if(res === 'cancel') {
+                        return;
+                    } else {
+                        this.$api.delete('/oteao/deliveryAddress/deleteDeliveryAddress',{
+                            deliveryAddressId: this.value[i].id
+                        },res => {
+                            this.getData();
+                        })
+                    }
                 })
             },
             // 获取数据

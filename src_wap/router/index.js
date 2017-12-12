@@ -149,6 +149,14 @@ const router = new Router({
 					meta: {
 						hideFooter: true
 					}
+				},
+				{
+					path: 'seller',
+					name: '茶帮通注册4',
+					component: resolve => require(['@/views/regist/seller.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
 				}
 			]
 		},

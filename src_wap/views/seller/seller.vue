@@ -27,7 +27,7 @@
         <section class="count-entry">
             <router-link to="" tag="div" class="count-item">
                 <p class="num">{{ count.monthOrderSum | toFix2}}</p>
-                <p class="tips">当月收入</p>
+                <p class="tips">当月收入（元）</p>
             </router-link>
             <router-link to="" tag="div" class="count-item">
                 <p class="num">{{ count.monthOrderNum }}</p>
@@ -146,7 +146,7 @@
                 let g = this.sellerData.growth
                 let l = 0;
 
-                if(g >= 1 && g <= 10 || g >= 251 && g <= 500 || g >= 10001 && g <= 20000 || g >= 500001 && g <= 1000000 ) {
+                if(g >= 0 && g <= 10 || g >= 251 && g <= 500 || g >= 10001 && g <= 20000 || g >= 500001 && g <= 1000000 ) {
                     l = 1;
                 }
 

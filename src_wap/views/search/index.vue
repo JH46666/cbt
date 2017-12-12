@@ -25,7 +25,7 @@
                 </template>
             </ul>
             <div class="btn-wrap" v-if="history.length > 0">
-                <button @click="history = []">清空历史搜索</button>
+                <button @click="clearHistory">清空历史搜索</button>
             </div>
         </section>
         <!-- 搜索列表 -->
@@ -85,7 +85,7 @@
                 请检查您的输入是否有误
             </p>
             <p class="sorry-tip">
-                如果有任何意见或者建议，期待您反馈给我们
+                如有任何意见或者建议，期待您反馈给我们
             </p>
         </section>
     </div>
@@ -210,7 +210,7 @@
                     } else {
                         this.priceSort = !this.priceSort;
                         this.reset();
-                        this.$router.replace({name: '搜索',query: {q: this.$route.query,c: '3',sort: this.priceSort ? 'asc' : 'desc'}})
+                        this.$router.replace({name: '搜索',query: {q: this.$route.query.q,c: '3',sort: this.priceSort ? 'asc' : 'desc'}})
                     }
                 })
             },
@@ -228,6 +228,15 @@
                     })
                 }
             },
+            // 清空历史记录
+            clearHistory() {
+                this.$api.post('/oteao/searchProductRecord/clear',{
+                    sysId: 1,
+                    device: 'WAP'
+                },res =>{
+                    this.history = [];
+                })
+            },
             // 搜索
             search() {
                 if(this.text === '') return;
@@ -236,6 +245,7 @@
             // 搜索处理函数
             handle(page = 1) {
                 let query = this.$route.query;
+                console.log(query)
                 // 检查地址栏是否带参，没有的话返回
                 if(Object.keys(query).length === 0) return this.noSearch = true;
                 try {

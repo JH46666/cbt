@@ -1,95 +1,340 @@
-<template>
-    <div class="seller_wrapper">
-        <div class="t_txt"><p class="color_9">恭喜您成功注册，请填写以下资料等待审核，审核后才可以询价和下单，如需帮助，请拨打 400-996-3399</p></div>
-        <div class="seller_content">
-            <div class="shop_img">
-                <a class="camera_box" @click="exampleFlag = !exampleFlag">
-                    <img src="../../assets/images/camera_cirle.png" alt="">
-                    <p>上传门店照片</p>
-                </a>
-                <div class="uploaded_box" style="display:none;">
-                    <img class="shop" src="../../assets/images/shop_img.jpg" alt="">
-                    <a class="small_camera" href="javascript:void(0);"><img src="../../assets/images/camera.png" alt=""></a>
-                </div>
-            </div>
-            <div class="shop_info">
-                    <form>
-                        <div class="form_item">
-                            <div class="flex align_items_end">
-                                <label for="">登录账号</label>
-                                <input class="flex-1" type="text" name="" value="18720989159" disabled>
-                            </div>
-                            <p class="error_txt"></p>
-                        </div>
-                        <div class="form_item">
-                            <div class="flex align_items_end error_color">
-                                <label for="">店铺名称</label>
-                                <input class="flex-1" type="text" name="" value="" placeholder="请填写店铺名称">
-                            </div>
-                            <p class="error_txt">你错了你错了</p>
-                        </div>
-                        <div class="form_item">
-                            <div class="flex align_items_end">
-                                <label for="">联系人</label>
-                                <input class="flex-1" type="text" name="" value="" placeholder="请填写联系人姓名">
-                            </div>
-                            <p class="error_txt"></p>
-                        </div>
-                        <div class="form_item">
-                            <div class="flex align_items_end">
-                                <label for="">地区</label>
-                                <input class="flex-1" type="text" name="" value="" placeholder="请选择地区">
-                                <a href="javascript:void(0);"><i class="iconfont">&#xe619;</i></a>
-                            </div>
-                            <p class="error_txt"></p>
-                        </div>
-                        <div class="form_item">
-                            <div class="flex align_items_end">
-                                <label for="">店铺地址</label>
-                                <input class="flex-1" type="text" name="" value="" placeholder="请填写详细店铺地址">
-                            </div>
-                            <p class="error_txt"></p>
-                        </div>
-                    </form>
-            </div>
-            <mt-button size="large" type="primary">确定</mt-button>
-            <div class="go_index"><router-link to="/home">去首页</router-link></div>
+<template lang="html">
+    <div class="select">
+        <div class="select_tips">
+            请填写以下资料等待审核，审核后就可以发布商品啦，如需帮助，请拨打 400-996-3399
         </div>
-        <!-- 示例弹窗 -->
-        <div class="popup upload_popup" v-if="exampleFlag">
-            <div class="popup_inner">
-                <div class="see_here">
-                    <i class="b_t"></i>
-                    <i class="b_b"></i>
-                    <img src="../../assets/shop1.png" alt="">
+        <div class="select_center_wrapper">
+            <div class="select_item">
+                <div class="select_item_label">
+                    <label for="2">企业名称</label>
                 </div>
-                <div class="pd_35"><p class="eg_title">店铺门头照示例</p></div>
-                <div class="pd_35 desc_tips">
-                    <h4 class="color_3">照片须符合以下条件</h4>
-                    <p>1.请保证照片中店铺门店信息完整，无反光无遮挡</p>
-                    <p>2.照片为店铺正面照，需清晰可见</p>
-                    <p>3.门店信息需与注册店铺名称一致</p>
+                <div class="select_item_content">
+                    <textarea rows="2" id="2" v-model="formData.shopName" readonly placeholder="必填项，请填写店铺名称"></textarea>
                 </div>
-                <div class="btns_box flex">
-                    <a class="flex-1 cancel" @click="exampleFlag = false">取消</a>
-                    <a class="flex-1 upload" href="javascript:void(0);">上传</a>
+            </div>
+            <div class="select_item seller_type" v-if="registClass === 1" style="padding-bottom: .28rem;">
+                <div class="select_item_label">
+                    <label for="6">卖家类型</label>
                 </div>
+                <div class="select_item_content" id="6">
+                    <div class="mumber_type" v-for="(item,index) in sellerType" :key="index" :class="{on: index === sellerClass}" @click="selectSellerType(index)">{{ item }}</div>
+                </div>
+            </div>
+            <div class="select_item pay_item" v-if="registClass === 1" style="border-top: 1px solid #e5e5e5;">
+                <div class="select_item_label">
+                    <label for="7">支付宝</label>
+                </div>
+                <div class="select_item_content">
+                    <input type="text" id="7" v-model="formData.shopPayNumber" placeholder="必填项，请填写支付宝账号" maxlength="50" />
+                </div>
+            </div>
+        </div>
+        <div class="pay_wrapper" v-if="registClass === 1">后续的交易货款将转入此账号</div>
+        <div class="f5_2"></div>
+        <div v-if="registClass === 1">
+            <div class="select_upload_wrapper_2">
+                <div class="select_upload_2" :class="{on: sellerClass>1}">
+                    <label class="select_icon_2" v-if="licenseImg.length === 0">
+                        <img src="../../assets/images/upload.png" />
+                        {{ sellerText[sellerClass].first }}
+                        <input type="file" accept="image/*" hidden @change="onPreview('shop_lic',$event)" />
+                    </label>
+                    <div class="select_img_2" v-else>
+                        <img v-for="(item,index) in licenseImg" :src="item.imgUrl" :key="index" />
+                        <label class="reload_pic">
+                            <img src="../../assets/images/camera.png" />
+                            <input type="file" accept="image/*" hidden @change="onPreview('shop_lic',$event)" />
+                        </label>
+                    </div>
+                </div>
+                <div class="select_upload_2" v-if="sellerClass<2">
+                    <label class="select_icon_2" v-if="productImg.length === 0">
+                        <img src="../../assets/images/upload.png" />
+                        {{ sellerText[sellerClass].second }}
+                        <input type="file" accept="image/*" hidden @change="onPreview('shop_pro',$event)" />
+                    </label>
+                    <div class="select_img_2" v-else>
+                        <img v-for="(item,index) in productImg" :src="item.imgUrl" :key="index" />
+                        <label class="reload_pic">
+                            <img src="../../assets/images/camera.png" />
+                            <input type="file" accept="image/*" hidden @change="onPreview('shop_pro',$event)" />
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="f5_2"></div>
+        <div class="select_bottom_wrapper">
+            <div class="select_bottom_btn">
+                <mt-button type="primary" :disabled="iSubmit" @click="submitMethod" v-if="!eximain">{{ registText }}</mt-button>
+            </div>
+            <mt-button type="primary" class="to_index" @click="$router.push({name:'首页'})">去首页</mt-button>
+        </div>
+        <div class="dialog" :class="{on: eximain}">
+            <div class="dialog_wrapper">
+                <img src="../../assets/images/examine.png" />
+                <mt-button type="primary" @click="changeText">修改资料</mt-button>
             </div>
         </div>
     </div>
 </template>
+
 <script>
-    export default {
-        data(){
-            return {
-               exampleFlag: false,    //首次点传图出现弹窗
+import { mapState } from 'vuex'
+import store from 'store';
+import $api from 'api';
+export default {
+    data() {
+        return {
+            loginNumber: 17605062109,
+            registType: ['成为会员','成为卖家'],
+            sellerType: ['茶厂','合作社','茶企','批发商'],
+            registClass: 1,
+            formData: {
+                shopName: '',
+                shopTel: '',
+                shopArea: '',
+                shopAddress: '',
+                shopPayNumber: ''
+            },
+            shopImg: [],
+            licenseImg: [],
+            productImg: [],
+            shopImgUrl: [],
+            licenseImgUrl: [],
+            productImgUrl: [],
+            shopImgFile: [],
+            licenseImgFile: [],
+            productImgFile: [],
+            sellerClass: 0,
+            sellerText:[
+                {
+                    first: '上传营业执照（必传）',
+                    second: '上传生产许可证'
+                },
+                {
+                    first: '上传营业执照（必传）',
+                    second: '上传QS'
+                },
+                {
+                    first: '上传营业执照（必传）',
+                },
+                {
+                    first: '上传营业执照（必传）',
+                }
+            ],
+            exampleFlag: false,
+            addressShowOrHide: false,
+            addressObj: {},
+            region: 'oss-cn-hangzhou',
+            bucket: 'imgcbt',
+            path: 'test_path/',
+            eximain: false,
+            registText: '立即注册',
+        }
+    },
+    created() {
+        if(process.env.NODE_ENV != 'development'){
+            this.path = 'online_img/';
+        }
+        this.loginNumber = store.state.member.member.memberAccount;
+        this.formData.shopName = store.state.member.member.unitName;
+    },
+    computed: {
+        iSubmit() {
+            if(this.registClass === 1){
+                if(this.licenseImg.length === 1 && this.formData.shopPayNumber != ''){
+                    return false;
+                }else{
+                    return true;
+                }
+            }
+        }
+    },
+    methods: {
+        changeText() {
+            this.eximain = false;
+            this.registText = '提交资料';
+        },
+        selectSellerType(index) {
+            this.sellerClass = index;
+        },
+        onPreview(type,ev) {
+            if(ev.target.files[0].size > 8*1024*1024) return Toast({
+                message: '图片不能超出8M哦~',
+                iconClass: 'icon icon-info'
+            });
+            let reader = new FileReader();
+            reader.readAsDataURL(ev.target.files[0]);
+            if(type === 'shop_pic'){
+                reader.onload = (e)=>{
+                    this.shopImg =  [{'imgUrl': e.target.result}];
+                    this.exampleFlag = false;
+                }
+                this.shopImgFile = [ev.target.files[0]];
+            }else if(type === 'shop_lic'){
+                reader.onload = (e)=>{
+                    this.licenseImg =  [{'imgUrl': e.target.result}];
+                }
+                this.licenseImgFile = [ev.target.files[0]];
+            }else if(type === 'shop_pro'){
+                reader.onload = (e)=>{
+                    this.productImg =  [{'imgUrl': e.target.result}];
+                }
+                this.productImgFile = [ev.target.files[0]];
             }
         },
-        methods:{
+        random_string(len) {
+        　   　len = len || 32;
+        　　  var chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';
+        　　  var maxPos = chars.length;
+        　　  var pwd = '';
+        　　  for (let i = 0; i < len; i++) {
+        　   　pwd += chars.charAt(Math.floor(Math.random() * maxPos));
+            }
+            return pwd;
+        },
+        getToken() {
+            let data ={};
+            return new Promise((resolve,reject) => {
+                this.$api.post('/oteao/file/getSignature',data,res => {
+                    resolve(res);
+                },res=>{
+                    return Toast({
+                        message: res.errorMsg,
+                        iconClass: 'icon icon-fail'
+                    });
+                })
+            })
+        },
+        doUpload() {
+            let flag = {
+                shop: 0,
+                lic: 0,
+                pro: 0
+            };
+            let isFlag = (resolve,reject) => {
+                if( flag.shop != this.shopImgFile.length) return;
+                if( flag.lic != this.licenseImgFile.length) return;
+                if( flag.pro != this.productImgFile.length) return;
+                resolve()
+            }
+            return new Promise((resolve,reject) => {
+                this.getToken().then((res) => {
+                    let client = new OSS.Wrapper({
+                        region: this.region,
+                        accessKeyId: res.data.accessKeyId,
+                        accessKeySecret: res.data.accessKeySecret,
+                        stsToken: res.data.securityToken,
+                        bucket: this.bucket
+                    })
+                    console.log(client);
+                    for(let i=0; i<this.shopImgFile.length; i++){            // 主图
+                        console.log(this.shopImgFile[i]);
+                        let random_name =res.data.basePath + this.random_string(6) + '_' + new Date().getTime() + '.' + this.shopImgFile[i].name.split('.').pop()
+                        client.multipartUpload(random_name, this.shopImgFile[i]).then((results) => {
+                            const url = '//img0.oteao.com/'+ results.name;
+                            this.shopImgUrl = [url];
+                            flag.shop++;
+                            isFlag(resolve,reject);
+                        }).catch((err) => {
+                            flag.shop++;
+                            isFlag(resolve,reject);
+                        })
+                    }
+                    for(let i=0; i<this.licenseImgFile.length; i++){            // 主图
+                        let random_name =res.data.basePath + this.random_string(6) + '_' + new Date().getTime() + '.' + this.licenseImgFile[i].name.split('.').pop()
+                        client.multipartUpload(random_name, this.licenseImgFile[i]).then((results) => {
+                            const url = '//img0.oteao.com/'+ results.name;
+                            this.licenseImgUrl = [url];
+                            flag.lic++;
+                            isFlag(resolve,reject);
+                        }).catch((err) => {
+                            flag.lic++;
+                            isFlag(resolve,reject);
+                        })
+                    }
+                    for(let i=0; i<this.productImgFile.length; i++){            // 主图
+                        let random_name =res.data.basePath + this.random_string(6) + '_' + new Date().getTime() + '.' + this.productImgFile[i].name.split('.').pop()
+                        client.multipartUpload(random_name, this.productImgFile[i]).then((results) => {
+                            const url = '//img0.oteao.com/'+ results.name;
+                            this.productImgUrl = [url];
+                            flag.pro++;
+                            isFlag(resolve,reject);
+                        }).catch((err) => {
+                            flag.pro++;
+                            isFlag(resolve,reject);
+                        })
+                    }
+                })
+            })
+        },
+        submitMethod() {
+            this.doUpload().then(() => {
+                this.postMember();
+            })
+        },
+        postMember() {
+            let data = {
+                'alipayAccount': this.formData.shopPayNumber,
+                "areaCode": store.state.member.member.areaCode,
+                "cityCode": store.state.member.member.cityCode,
+                "contactor": store.state.member.member.contactName,
+                "detailAddress": store.state.member.orgDTO.address,
+                "device": 'WAP',
+                "orgName": store.state.member.orgDTO.orgName,
+                "provinceCode": store.state.member.member.provinceCode,
+                "shop": {}
+            }
+            if(this.sellerClass === 0){
+                data.shop = {
+                    "businessLicensePic": this.licenseImgUrl[0],
+                    "produceLicensePic": this.productImgUrl[0],
+                    "shopType": 1,
+                }
+            }else if(this.sellerClass === 1){
+                data.shop = {
+                    "businessLicensePic": this.licenseImgUrl[0],
+                    "qsLicensePic": this.productImgUrl[0],
+                    "shopType": 2,
+                }
+            }else if(this.sellerClass === 2){
+                data.shop = {
+                    "businessLicensePic": this.licenseImgUrl[0],
+                    "shopType": 3,
+                }
+            }else if(this.sellerClass === 3){
+                data.shop = {
+                    "businessLicensePic": this.licenseImgUrl[0],
+                    "shopType": 4,
+                }
+            }
+            this.$api.post('/oteao/login/fillShop',JSON.stringify(data),res => {
+                this.eximain = true;
+            },res=>{
+                return Toast({
+                    message: res.errorMsg,
+                    iconClass: 'icon icon-fail'
+                });
+            })
         }
-
+    },
+    beforeRouteEnter(to, from, next) {
+        if(store.state.member.member.id) {
+            next();
+        } else {
+            store.dispatch('getMemberData').then(res => {
+                next();
+            }).catch(res =>{
+                next(vm => {
+                    vm.router.push('/login')
+                })
+            })
+        }
     }
+}
 </script>
+
 <style lang="less">
-    @import '~@/styles/regist/seller.less';
+@import '~@/styles/regist/select.less';
 </style>

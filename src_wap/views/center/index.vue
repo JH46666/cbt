@@ -154,9 +154,11 @@
                         return;
                     } else {
                         this.$api.get('/oteao/login/logout',{},res => {
-                            this.$router.push('/')
+                            this.$router.push('/');
+                            this.$store.commit('SET_MEMBERDATA',{type:'member',val:{}})
                         },res => {
                             this.$router.push('/')
+                            this.$store.commit('SET_MEMBERDATA',{type:'member',val:{}})
                         })
                     }
                 })
@@ -186,7 +188,7 @@
                 if(status === 'WAIT_AUDIT') {
                     vm.$messageBox({
                         title:'提示', 
-                        message:`您的账号审核中,只有正式会员才可查看，若有疑问，请联系客服400-996-3399`,
+                        message:`您的账号审核中，只有正式会员才可查看，若有疑问，请联系客服400-996-3399`,
                         confirmButtonText: '我知道了'
                     });
                 }

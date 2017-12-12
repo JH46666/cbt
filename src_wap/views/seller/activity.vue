@@ -27,7 +27,7 @@
         </div>
         <div class="f5-2"></div>
         <div class="activity_name">
-            特价商品（{{ selProList.length }}）件
+            特价商品({{ selProList.length }})件
         </div>
         <div class="activity_pro">
             <div class="activity_pro_item" v-for="(item,index) in selProList" :key="index">
@@ -75,7 +75,7 @@
                                 <p class="item_price">￥ {{ item.proPrice }}</p>
                                 <div class="item_bottom">
                                     <div class="selled">
-                                        已售<span>{{ item.salesNum }}</span>
+                                        已售<span v-if="item.salesNum">{{ item.salesNum }}</span><span v-else> 0 </span>
                                     </div>
                                     <div class="totaled">
                                         库存<span>{{ item.stockNum }}</span>
@@ -105,6 +105,9 @@
 
 <script>
 import { MessageBox,Toast } from 'mint-ui';
+import { mapState } from 'vuex'
+import store from 'store';
+import $api from 'api';
 export default {
     data() {
         return {
@@ -303,6 +306,19 @@ export default {
             }else{
                 return true;
             }
+        }
+    },
+    beforeRouteEnter(to, from, next) {
+        if(store.state.member.member.id) {
+            next();
+        } else {
+            store.dispatch('getMemberData').then(res => {
+                next();
+            }).catch(res =>{
+                next(vm => {
+                    vm.router.push('/login')
+                })
+            })
         }
     }
 }

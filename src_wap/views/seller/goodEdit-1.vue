@@ -49,24 +49,6 @@
                             <i class="iconfont" @click="clickSel('pinpai')">&#xe744;</i>
                         </div>
                         <div class="item">
-                            <label class="item-left" for="5">
-                                香气：
-                            </label>
-                            <div class="item-right" @click="clickSel('xiangqi')">
-                                <input type="text" id="5" readonly placeholder="非必填项，请选择商品香气" v-model="resize.form.goodsXq" />
-                            </div>
-                            <i class="iconfont" @click="clickSel('xiangqi')">&#xe744;</i>
-                        </div>
-                        <div class="item">
-                            <label class="item-left" for="6">
-                                滋味：
-                            </label>
-                            <div class="item-right" @click="clickSel('ziwei')">
-                                <input type="text" id="6" readonly placeholder="非必填项，请选择商品滋味" v-model="resize.form.goodsZw" />
-                            </div>
-                            <i class="iconfont" @click="clickSel('ziwei')">&#xe744;</i>
-                        </div>
-                        <div class="item">
                             <label class="item-left" for="7">
                                 净重：
                             </label>
@@ -172,6 +154,9 @@
 <script>
 import {mapGetters} from 'vuex';
 import { Toast } from 'mint-ui';
+import { mapState } from 'vuex'
+import store from 'store';
+import $api from 'api';
 export default {
     data() {
         return {
@@ -217,7 +202,6 @@ export default {
                                         this.resize.proValList[i].proVal = this.getProvList[j].selval;
                                         for(let obj of this.resize.proValList[i].propValList){
                                             if(obj.id == this.getProvList[j].content){
-                                                console.log(this.getProvList[j].content);
                                                 obj.flag = true;
                                             }
                                         }
@@ -379,20 +363,6 @@ export default {
                 this.closeUp = false;
                 return;
             }
-            if(this.selList[this.selList.length-1].name === this.resize.xiangWei[this.resize.xiangWei.length-1].name){           // 香味选择
-                this.resize.form.goodsXq = this.selList[index].name;
-                this.resize.selId.xq = this.selList[index].id;
-                this.resize.selIndex.xq = index;
-                this.closeUp = false;
-                return;
-            }
-            if(this.selList[this.selList.length-1].name === this.resize.ziWei[this.resize.ziWei.length-1].name){              // 滋味选择
-                this.resize.form.goodsZw = this.selList[index].name;
-                this.resize.selId.zw = this.selList[index].id;
-                this.resize.selIndex.zw = index;
-                this.closeUp = false;
-                return;
-            }
             if(this.selList[this.selList.length-1].name === this.danWei[this.danWei.length-1].name){             // 单位选择
                 this.resize.form.goodsDw = this.selList[index].name;
                 this.resize.selId.dw = this.selList[index].id;
@@ -406,20 +376,6 @@ export default {
                 this.resize.form.goodsBrand = '';
                 this.resize.selIndex.pp = null;
                 this.resize.selId.pp = null;
-                this.closeUp = false;
-                return;
-            }
-            if(this.selList[this.selList.length-1].name === this.resize.xiangWei[this.resize.xiangWei.length-1].name){           // 香味选择
-                this.resize.form.goodsXq = '';
-                this.resize.selIndex.xq = null;
-                this.resize.selId.xq = null;
-                this.closeUp = false;
-                return;
-            }
-            if(this.selList[this.selList.length-1].name === this.resize.ziWei[this.resize.ziWei.length-1].name){              // 滋味选择
-                this.resize.form.goodsZw = '';
-                this.resize.selIndex.zw = null;
-                this.resize.selId.zw = null;
                 this.closeUp = false;
                 return;
             }
@@ -446,22 +402,6 @@ export default {
                 this.selectClass = null;
                 if(this.resize.selIndex.pp!=null){
                     this.selectClass = this.resize.selIndex.pp;
-                }
-                return;
-            }
-            if(val === 'xiangqi'){
-                this.selList = this.resize.xiangWei;
-                this.selectClass = null;
-                if(this.resize.selIndex.xq!=null){
-                    this.selectClass = this.resize.selIndex.xq;
-                }
-                return;
-            }
-            if(val === 'ziwei'){
-                this.selList = this.resize.ziWei;
-                this.selectClass = null;
-                if(this.resize.selIndex.zw!=null){
-                    this.selectClass = this.resize.selIndex.zw;
                 }
                 return;
             }
@@ -563,7 +503,8 @@ export default {
         this.wxFlag = this.$tool.isWx;
     },
     created() {
-        this.proSku = this.$route.query.edit;
+        this.proSku = this.$route.query.proSku;
+        this.resize.mainId = this.$route.query.edit;
         this.getDetail().then((res) => {
             this.detailObj = res.data;
             this.resize.form.goodsName = this.detailObj.productInfo.proName;
@@ -575,7 +516,6 @@ export default {
             this.resize.form.goodTypes = this.detailObj.productInfo.catName;
             this.resize.form.goodsPtsj = this.detailObj.productPrice[1].price;
             this.resize.form.goodsSell = this.detailObj.productExtInfo.reason;
-            this.resize.mainId = this.detailObj.productInfo.id;
             for(let obj of this.detailObj.productImgList){
                 this.resize.mainImg.push({
                     'imgSrc': obj.imgUrl
@@ -626,6 +566,18 @@ export default {
                 }
                 this.resize.textMs4 = content.fourImgContent.content;
             })
+            for(let i=0;i<this.brandList.length;i++){
+                if(this.brandList[i].name == this.resize.form.goodsBrand){
+                    this.resize.selIndex.pp = i;
+                    this.resize.selId.pp = this.brandList[i].id;
+                }
+            }
+            for(let i=0;i<this.danWei.length;i++){
+                if(this.danWei[i].name == this.resize.form.goodsDw){
+                    this.resize.selIndex.dw = i;
+                    this.resize.selId.dw = this.danWei[i].id;
+                }
+            }
         })
         this.getOneTypeList().then((res) => {
             let parentList = res.data;
@@ -644,12 +596,7 @@ export default {
                     name: obj.brandName
                 })
             }
-            for(let i=0;i<this.brandList.length;i++){
-                if(this.brandList[i].name == this.resize.form.goodsBrand){
-                    this.resize.selIndex.pp = i;
-                    this.resize.selId.pp = this.brandList[i].id;
-                }
-            }
+
         });
         this.getDwList().then((res) => {
             let parentList = res.data;
@@ -659,14 +606,22 @@ export default {
                     name: obj.dataName
                 })
             }
-            for(let i=0;i<this.danWei.length;i++){
-                if(this.danWei[i].name == this.resize.form.goodsDw){
-                    this.resize.selIndex.dw = i;
-                    this.resize.selId.dw = this.danWei[i].id;
-                }
-            }
+
         })
     },
+    beforeRouteEnter(to, from, next) {
+        if(store.state.member.member.id) {
+            next();
+        } else {
+            store.dispatch('getMemberData').then(res => {
+                next();
+            }).catch(res =>{
+                next(vm => {
+                    vm.router.push('/login')
+                })
+            })
+        }
+    }
 }
 </script>
 

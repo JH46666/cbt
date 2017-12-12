@@ -356,7 +356,7 @@
 
                     // 货到付款
                     if(!online && delivery) {
-                        if(this.totalAmount >= this.totalPrice) {
+                        if(this.totalAmount > 0) {
                             this.$router.push({name: '收银台',query: {payId: res.data.payId,type:'delivery'}});
                         } else {
                             this.$router.push({name: '货到付款结算',query: {payId: res.data.payId,type:'delivery'}});

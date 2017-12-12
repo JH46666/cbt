@@ -22,7 +22,7 @@
             </div>
             <div class="input-item">
                 <div class="flex input-inner">
-                    <span class="flex-1 color_6">续重（每增加1kg增加）</span>
+                    <span class="flex-1 color_6">续重(每增加1kg增加)</span>
                     <input class="algin_r" type="age" placeholder="请输入金额" v-model="item.xweight" />
                     <span>元</span>
                 </div>
@@ -101,7 +101,7 @@
             <div class="f-b">
                 <div class="flex">
                     <div class="flex-1 flex align_items_c">
-                        <label class="check-cir"></label>
+                        <label class="check-cir" :class="{checked: allCheckedFlag}" @click="selectAllCheck"></label>
                         <span class="color_6">已选<span class="color_f08">{{ checkedNum }}</span>款</span>
                     </div>
                     <div class="selected-btn">
@@ -114,6 +114,9 @@
 </template>
 <script>
 import { MessageBox,Toast } from 'mint-ui';
+import { mapState } from 'vuex'
+import store from 'store';
+import $api from 'api';
     export default{
         data(){
             return{
@@ -131,16 +134,11 @@ import { MessageBox,Toast } from 'mint-ui';
                 },
                 popupVisible: false,
                 postArray: [
-                    {
-                        area: [],
-                        areaText: '',
-                        sweight: '',
-                        xweight: '',
-                        buyer: ''
-                    }
+
                 ],
                 selectPro: [],
                 selectIndex: null,
+                flag: false,
             }
         },
         created(){
@@ -185,6 +183,36 @@ import { MessageBox,Toast } from 'mint-ui';
                     iconClass: 'icon icon-fail'
                 });
             })
+
+            this.getOldList().then((res) => {
+                let result = res.data;
+                if(result.length==0){
+                    this.postArray.push({
+                        area: [],
+                        areaText: '',
+                        sweight: '',
+                        xweight: '',
+                        buyer: ''
+                    })
+                }else{
+                    this.flag = true;
+                    for(let i=0;i<result.length;i++){
+                        this.postArray.push({
+                            area: [],
+                            areaText: '',
+                            sweight: result[i].firstHeavyCost,
+                            xweight: result[i].continuedHeavyCost,
+                            buyer: result[i].freeCost
+                        })
+                        let newArray = [];
+                        for(let j=0;j<result[i].baseRegionVoList.length;j++){
+                            this.postArray[i].area.push(result[i].baseRegionVoList[j].id);
+                            newArray.push(result[i].baseRegionVoList[j].regionName)
+                        }
+                        this.postArray[i].areaText = newArray.join(',');
+                    }
+                }
+            })
         },
         computed:{
             disabledBol() {
@@ -200,7 +228,7 @@ import { MessageBox,Toast } from 'mint-ui';
                 let arr = this.addressType.one.concat(this.addressType.two,this.addressType.three,this.addressType.four);
                 let num = 0;
                 for(let i=0;i<arr.length;i++){
-                    if(arr[i].flag){
+                    if(arr[i].flag && !arr[i].disabled){
                         num++;
                     }
                 }
@@ -208,7 +236,7 @@ import { MessageBox,Toast } from 'mint-ui';
             },
             saveDisable() {
                 for(let i=0;i<this.postArray.length;i++){
-                    if(this.postArray[i].area.length > 0 && this.postArray[i].sweight!='' && this.postArray[i].xweight != '' && this.postArray[i].buyer != ''){
+                    if(this.postArray[i].area.length > 0 && this.postArray[i].sweight!='' && this.postArray[i].xweight != ''){
                         return false;
                     }else if(this.postArray[i].area.length === 0){
                         return false;
@@ -216,21 +244,61 @@ import { MessageBox,Toast } from 'mint-ui';
                         return true;
                     }
                 }
+            },
+            allCheckedFlag() {
+                let arr = this.addressType.one.concat(this.addressType.two,this.addressType.three,this.addressType.four);
+                let isTrue = arr.every((item)=>{
+                    return item.flag === true;
+                })
+                if(isTrue){
+                    return true;
+                }else{
+                    return false;
+                }
             }
         },
         methods:{
-            savePost() {
-                this.addFreight().then((res) => {
-                    Toast({
-                        message: '运费配置成功',
-                        iconClass: 'icon icon-success'
-                    });
-                    setTimeout(()=>{
-                        this.$router.push({
-                            name: '卖家中心'
-                        })
-                    },500)
+            getOldList() {
+                let data = {};
+                return new Promise((resolve,reject) => {
+                    this.$api.post('/oteao/orgFreightTemplate/listOrgFreightTemplateVo',data,res => {
+                        resolve(res);
+                    },res=>{
+                        return Toast({
+                            message: res.errorMsg,
+                            iconClass: 'icon icon-fail'
+                        });
+                    })
                 })
+            },
+            selectAllCheck() {
+                let arr = this.addressType.one.concat(this.addressType.two,this.addressType.three,this.addressType.four);
+                if(this.allCheckedFlag){
+                    for(let obj of arr){
+                        obj.flag = false;
+                    }
+                }else{
+                    for(let obj of arr){
+                        obj.flag = true;
+                    }
+                }
+            },
+            savePost() {
+                if(this.flag){
+
+                }else{
+                    this.addFreight().then((res) => {
+                        Toast({
+                            message: '运费配置成功',
+                            iconClass: 'icon icon-success'
+                        });
+                        setTimeout(()=>{
+                            this.$router.push({
+                                name: '卖家中心'
+                            })
+                        },500)
+                    })
+                }
             },
             addFreight() {
                 let data = {
@@ -291,16 +359,30 @@ import { MessageBox,Toast } from 'mint-ui';
                 this.popupVisible = false;
             },
             showDialog(index) {
+                let selectAreaArray = [];
+                for(let obj of this.postArray){
+                    selectAreaArray = selectAreaArray.concat(obj.area);
+                }
                 this.selectIndex = index;
                 this.selectPro = [];
                 let arr = this.addressType.one.concat(this.addressType.two,this.addressType.three,this.addressType.four);
                 let selectCode = this.postArray[index].area;
                 for(let obj of arr){
                     obj.disabled = false;
-                    if(obj.flag && selectCode.indexOf(obj.code) == -1){
+                    if(selectAreaArray.indexOf(obj.code) != -1){
                         obj.disabled = true;
-                        this.selectPro.push(obj.code);
+                        if(selectCode.indexOf(obj.code) != -1){
+                            obj.disabled = false;
+                            obj.flag = true;
+                        }
                     }
+                    // if(obj.flag && selectCode.indexOf(obj.code) == -1){
+                    //     obj.disabled = true;
+                    //     this.selectPro.push(obj.code);
+                    // }
+                    // if(selectCode.indexOf(obj.code) != -1){
+                    //     obj.flag = true;
+                    // }
                 }
                 this.popupVisible = true;
             },
@@ -324,7 +406,6 @@ import { MessageBox,Toast } from 'mint-ui';
                             obj.flag = true;
                         }
                     }
-
                 }
                 if(type === 'two'){
                     if(this.checkedAll.two){
@@ -398,6 +479,19 @@ import { MessageBox,Toast } from 'mint-ui';
                     }
     　　　　　　　},
     　　　　　　　deep:true
+            }
+        },
+        beforeRouteEnter(to, from, next) {
+            if(store.state.member.member.id) {
+                next();
+            } else {
+                store.dispatch('getMemberData').then(res => {
+                    next();
+                }).catch(res =>{
+                    next(vm => {
+                        vm.router.push('/login')
+                    })
+                })
             }
         }
     }
