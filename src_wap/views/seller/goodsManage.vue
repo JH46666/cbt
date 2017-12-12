@@ -25,27 +25,27 @@
         <!-- 排序条件 -->
         <div class="sort-wrapper flex" :class="{'fixed-sort': fixedFlag,'wx-fixed':wxFixedFlag}" v-show="!isEmpty">
             <label class="flex-1 sort-item" :class="{on:sortCondition=='1'}">
-                创建时间
+                {{ selectText }}
                 <input type="radio" name="" value="1" hidden v-model="sortCondition" @click="descFlag = !descFlag">
                 <span class="sort-icons">
-                    <i class="iconfont sort-asce" :class="{on: !descFlag}">&#xe610;</i>
-                    <i class="iconfont sort-desc" :class="{on: descFlag}">&#xe950;</i>
+                    <i class="iconfont sort-asce" :class="{on: descFlag}">&#xe610;</i>
+                    <i class="iconfont sort-desc" :class="{on: !descFlag}">&#xe950;</i>
                 </span>
             </label>
             <label class="flex-1 sort-item" :class="{on:sortCondition=='2'}">
                 销量
                 <input type="radio" name="" value="2" hidden v-model="sortCondition" @click="descFlag = !descFlag">
                 <span class="sort-icons">
-                    <i class="iconfont sort-asce" :class="{on: !descFlag}">&#xe610;</i>
-                    <i class="iconfont sort-desc" :class="{on: descFlag}">&#xe950;</i>
+                    <i class="iconfont sort-asce" :class="{on: descFlag}">&#xe610;</i>
+                    <i class="iconfont sort-desc" :class="{on: !descFlag}">&#xe950;</i>
                 </span>
             </label>
             <label class="flex-1 sort-item" :class="{on:sortCondition=='3'}">
                 库存
                 <input type="radio" name="" value="3" hidden v-model="sortCondition" @click="descFlag = !descFlag">
                 <span class="sort-icons">
-                    <i class="iconfont sort-asce" :class="{on: !descFlag}">&#xe610;</i>
-                    <i class="iconfont sort-desc" :class="{on: descFlag}">&#xe950;</i>
+                    <i class="iconfont sort-asce" :class="{on: descFlag}">&#xe610;</i>
+                    <i class="iconfont sort-desc" :class="{on: !descFlag}">&#xe950;</i>
                 </span>
             </label>
         </div>
@@ -59,7 +59,7 @@
                             <span>创建 {{item.createTime}}</span>
                         </div>
                         <div class="cap-r algin_r">
-                            <span class="saled">已售<span class="number">{{item.salesNum}}</span></span>
+                            <span class="saled">已售<span class="number" v-if="item.salesNum">{{item.salesNum}}</span><span class="number" v-else>0</span></span>
                             <span class="stock">库存<span class="number">{{item.stockNum}}</span></span>
                         </div>
                     </div>
@@ -77,7 +77,7 @@
                     <!-- 商品操作按钮 -->
                     <div class="flex options">
                         <a href="javascript:void(0);" class="flex-1 algin_c" @click="$router.push({name: '商品详情',query: {proSku:item.proSku}})"><i class="iconfont">&#xe681;</i>预览</a>
-                        <a href="javascript:void(0);" class="flex-1 algin_c" @click="$router.push({name: '商品编辑-1',query: {edit:item.proId,proSku: item.proSku}})"><i class="iconfont">&#xe682;</i>编辑</a>
+                        <a href="javascript:void(0);" class="flex-1 algin_c" @click="$router.push({name: '商品编辑-1',query: {edit:item.proId,proSku: item.proSku,state: 'ON_SHELF'}})"><i class="iconfont">&#xe682;</i>编辑</a>
                         <a href="javascript:void(0);" class="flex-1 algin_c" @click="stateMethod(item.proExtId,'down')"><i class="iconfont">&#xe683;</i>下架</a>
                     </div>
                 </div>
@@ -100,7 +100,7 @@
                             <span>创建 {{item.createTime}}</span>
                         </div>
                         <div class="cap-r algin_r">
-                            <span class="saled">已售<span class="number">{{item.salesNum}}</span></span>
+                            <span class="saled">已售<span class="number" v-if="item.salesNum">{{item.salesNum}}</span><span class="number" v-else>0</span></span>
                             <span class="stock">库存<span class="number">{{item.stockNum}}</span></span>
                         </div>
                     </div>
@@ -118,7 +118,7 @@
                     <!-- 商品操作按钮 -->
                     <div class="flex options">
                         <a href="javascript:void(0);" class="flex-1 algin_c" @click="$router.push({name: '商品详情',query: {proSku:item.proSku}})"><i class="iconfont">&#xe681;</i>预览</a>
-                        <a href="javascript:void(0);" class="flex-1 algin_c" @click="$router.push({name: '商品编辑-1',query: {edit:item.proId,proSku:item.proSku}})"><i class="iconfont">&#xe682;</i>编辑</a>
+                        <a href="javascript:void(0);" class="flex-1 algin_c" @click="$router.push({name: '商品编辑-1',query: {edit:item.proId,proSku:item.proSku,state: 'OFF_SHELF'}})"><i class="iconfont">&#xe682;</i>编辑</a>
                         <a href="javascript:void(0);" class="flex-1 algin_c" @click="stateMethod(item.proExtId,'up')"><i class="iconfont">&#xe683;</i>上架</a>
                     </div>
                 </div>
@@ -199,6 +199,7 @@ import $api from 'api';
                     sorts: 1,
                     orderBy: 'desc'
                 },
+                selectText: '上架时间',
             }
         },
         created(){
@@ -217,6 +218,7 @@ import $api from 'api';
                 this.tabId = 'yes';
             }else{
                 this.tabId = 'no';
+                this.selectText = '创建时间';
             }
         },
         computed:{
@@ -413,6 +415,7 @@ import $api from 'api';
                         }
                     })
                 }else{
+                    this.selectText = '创建时间';
                     this.$router.replace({
                         name: '商品管理',
                         query: {

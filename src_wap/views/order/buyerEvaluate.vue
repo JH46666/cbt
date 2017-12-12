@@ -2,7 +2,7 @@
     <div class="evaluate">
         <div class="evaluate_head" :class="{ 'on': !wxFlag }">
             <div class="count">
-                共<span>{{ imgUrlList.length }}</span>件商品，<span>请至少对一件商品进行评价~</span>
+                共<span>{{ imgUrlList.length }}</span>件商品，<span>请至少对1件商品进行评价~</span>
             </div>
             <div class="submit">
                 <mt-button type="primary" @click="postEvel" :disabled="postDisAble">提交</mt-button>
@@ -33,6 +33,9 @@
 
 <script>
 import { MessageBox,Toast } from 'mint-ui';
+import { mapState } from 'vuex'
+import store from 'store';
+import $api from 'api';
 export default {
     data() {
         return {
@@ -84,10 +87,18 @@ export default {
 
             return new Promise((resolve,reject) => {
                 this.$api.post('/oteao/evaluation/saveEvaluation',JSON.stringify(data),res => {
-                    return Toast({
+                    Toast({
                         message: res.message,
                         iconClass: 'icon icon-success'
                     });
+                    setTimeout(() =>{
+                        this.$router.push({
+                            name: '订单详情',
+                            query: {
+                                orderId: this.orderId
+                            }
+                        })
+                    })
                 },res=>{
                     if(res.code == 1001){
                         return Toast({
@@ -166,6 +177,19 @@ export default {
             console.log(cancel);
         },);
     },
+    beforeRouteEnter(to, from, next) {
+        if(store.state.member.member.id) {
+            next();
+        } else {
+            store.dispatch('getMemberData').then(res => {
+                next();
+            }).catch(res =>{
+                next(vm => {
+                    vm.router.push('/login')
+                })
+            })
+        }
+    }
 }
 </script>
 
