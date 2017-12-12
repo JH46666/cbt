@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { MessageBox } from 'mint-ui';
+import { MessageBox,Toast } from 'mint-ui';
 export default {
     data() {
         return {
@@ -81,6 +81,7 @@ export default {
                     })
                 }
             }
+
             return new Promise((resolve,reject) => {
                 this.$api.post('/oteao/evaluation/saveEvaluation',JSON.stringify(data),res => {
                     return Toast({
@@ -88,10 +89,17 @@ export default {
                         iconClass: 'icon icon-success'
                     });
                 },res=>{
-                    return Toast({
-                        message: res.errorMsg,
-                        iconClass: 'icon icon-fail'
-                    });
+                    if(res.code == 1001){
+                        return Toast({
+                            message: '请至少填写5个字以上的评价',
+                            iconClass: 'icon icon-fail'
+                        });
+                    }else{
+                        return Toast({
+                            message: res.errorMsg,
+                            iconClass: 'icon icon-fail'
+                        });
+                    }
                 })
             })
         },

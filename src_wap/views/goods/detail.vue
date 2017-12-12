@@ -135,30 +135,32 @@
                                 <div>推荐理由</div>
                                 <div>{{ detailData.productExtInfo.reason }}</div>
                             </div>
-                            <!-- <div class="reguler_item">
-                                <div>香气</div>
-                                <div class="x_star">
-                                    <span class="x_grey on">偏淡</span>
-                                    <span class="x_grey on">一般</span>
-                                    <span class="x_grey">香</span>
-                                    <span class="x_grey">高香</span>
-                                    <span class="x_grey">极香</span>
+                            <template v-for="(item,index) in attrImgDetail.propValList">
+                                <div class="reguler_item"v-if="item.propName != '香气' && item.propName != '滋味'" >
+                                    <div>{{ item.propName }}</div>
+                                    <div>{{ item.propertiesVal.propVal }}</div>
                                 </div>
-                            </div>
-                            <div class="reguler_item">
-                                <div>滋味</div>
-                                <div class="z_star">
-                                    <span class="z_grey on">偏淡</span>
-                                    <span class="z_grey on">一般</span>
-                                    <span class="z_grey on">浓</span>
-                                    <span class="z_grey">很浓</span>
-                                    <span class="z_grey">极浓</span>
+                                <div class="reguler_item" v-if="item.propName === '香气'">
+                                    <div>{{ item.propName }}</div>
+                                    <div class="x_star">
+                                        <span class="x_grey" :class="{on: item.propertiesVal.propVal === '偏淡' || item.propertiesVal.propVal === '一般' || item.propertiesVal.propVal === '香' || item.propertiesVal.propVal === '高香' || item.propertiesVal.propVal === '极香'}">偏淡</span>
+                                        <span class="x_grey" :class="{on: item.propertiesVal.propVal === '一般' || item.propertiesVal.propVal === '香' || item.propertiesVal.propVal === '高香' || item.propertiesVal.propVal === '极香'}">一般</span>
+                                        <span class="x_grey" :class="{on: item.propertiesVal.propVal === '香' || item.propertiesVal.propVal === '高香' || item.propertiesVal.propVal === '极香'}">香</span>
+                                        <span class="x_grey" :class="{on: item.propertiesVal.propVal === '高香' || item.propertiesVal.propVal === '极香'}">高香</span>
+                                        <span class="x_grey" :class="{on: item.propertiesVal.propVal === '极香'}">极香</span>
+                                    </div>
                                 </div>
-                            </div> -->
-                            <div class="reguler_item" v-for="(item,index) in attrImgDetail.propValList">
-                                <div>{{ item.propName }}</div>
-                                <div>{{ item.propertiesVal.propVal }}</div>
-                            </div>
+                                <div class="reguler_item" v-if="item.propName === '滋味'">
+                                    <div>{{ item.propName }}</div>
+                                    <div class="x_star">
+                                        <span class="x_grey" :class="{on: item.propertiesVal.propVal === '偏淡' || item.propertiesVal.propVal === '一般' || item.propertiesVal.propVal === '浓' || item.propertiesVal.propVal === '很浓' || item.propertiesVal.propVal === '极浓'}">偏淡</span>
+                                        <span class="x_grey" :class="{on: item.propertiesVal.propVal === '一般' || item.propertiesVal.propVal === '浓' || item.propertiesVal.propVal === '很浓' || item.propertiesVal.propVal === '极浓'}">一般</span>
+                                        <span class="x_grey" :class="{on: item.propertiesVal.propVal === '浓' || item.propertiesVal.propVal === '很浓' || item.propertiesVal.propVal === '极浓'}">浓</span>
+                                        <span class="x_grey" :class="{on: item.propertiesVal.propVal === '很浓' || item.propertiesVal.propVal === '极浓'}">很浓</span>
+                                        <span class="x_grey" :class="{on: item.propertiesVal.propVal === '极浓'}">极浓</span>
+                                    </div>
+                                </div>
+                            </template>
                         </div>
                     </mt-tab-container-item>
                     <mt-tab-container-item id="3">
@@ -275,7 +277,7 @@ export default {
                 this.getCommentList(this.detailData.productExtInfo.id).then((res) => {
                     this.commentList = res.data.evaluations;
                     this.commentRecond = res.total_record;
-                    this.prectent = res.praiseRate == null ? 0 : res.praiseRate;
+                    this.prectent = res.data.praiseRate == null ? 0 : res.data.praiseRate;
                 })
             })
         })
@@ -283,7 +285,7 @@ export default {
     methods: {
         getMoreComment() {
             this.page++;
-            this.getCommentList().then((res) => {
+            this.getCommentList(this.detailData.productExtInfo.id).then((res) => {
                 this.commentList = this.commentList.concat(res.data.evaluations);
                 this.$nextTick(()=>{
                     this.setLine();
@@ -339,7 +341,7 @@ export default {
                 productSku: this.proSku
             }
             return new Promise((resolve,reject) => {
-                this.$api.get('/oteao/productInfo/getProExtInfo',data,res => {
+                this.$api.get('/oteao/productInfo/getOrderProExtInfo',data,res => {
                     resolve(res);
                 },res=>{
                     return Toast({
