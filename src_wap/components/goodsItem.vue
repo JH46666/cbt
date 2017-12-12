@@ -63,7 +63,7 @@
                     询价
                 </template>
                 </div>
-                <div class="goods-type self">
+                <div class="goods-type" :class="{self: businessType > 4}">
                     {{ businessName[businessType - 1] || businessName[4] }}
                 </div>
             </div>

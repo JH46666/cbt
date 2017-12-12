@@ -41,17 +41,17 @@
                     {
                         icon: 'icon-fenlei',
                         name: '分类',
-                        path: '/category',
+                        path: '/category/',
                     },
                     {
                         icon: 'icon-shopcar',
                         name: '购物车',
-                        path: '/cart',
+                        path: '/cart/',
                     },
                     {
                         icon: 'icon-wode',
                         name: '我的',
-                        path: '/center',
+                        path: '/center/',
                     }
                 ],
             }
