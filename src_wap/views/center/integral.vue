@@ -50,7 +50,7 @@
         methods: {
             getData(page = 1) {
                 return new Promise((resolve,reject) => {
-                    this.$api.get('/member/integralRecord/search',{
+                    this.$api.get('/oteao/member/integralRecord/search',{
                         'page.pageNumber': page,
                         'page.pageSize': 10,
                         'memberId': this.id,

@@ -118,7 +118,7 @@
         },
         created(){
             this.$store.commit('SET_TITLE','分类');
-            this.$api.get('/proCat/queryCatTree',{sysId: 2},res=>{
+            this.$api.get('/oteao/proCat/queryCatTree',{sysId: 2},res=>{
                 console.log(res);
                 this.catTree = res.data[0].children;
                 this.subCat = this.catTree[0].children;

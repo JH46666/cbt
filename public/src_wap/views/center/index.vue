@@ -129,7 +129,7 @@
         methods: {
             // 签到
             signTo() {
-                this.$api.post('/member/memberRecord/createSignInLog',{
+                this.$api.post('/oteao/member/memberRecord/createSignInLog',{
                     memberId: this.member.id,
                     sysId: 1
                 },res => {

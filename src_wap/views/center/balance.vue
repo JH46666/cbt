@@ -58,7 +58,7 @@
         methods: {
             getData(page = 1) {
                 return new Promise((resolve,reject) => {
-                    this.$api.get('/member/balanceRecord/searchBalanceRecord',{
+                    this.$api.get('/oteao/member/balanceRecord/searchBalanceRecord',{
                         'page.pageNumber': page,
                         'page.pageSize': 10,
                         'memberId': this.id,

@@ -394,7 +394,7 @@ export default {
                     dictionaryId: 14
                 }
             return new Promise((resolve,reject) => {
-                this.$api.get('/data/getDataByType',data,res => {
+                this.$api.get('/oteao/data/getDataByType',data,res => {
                     resolve(res);
                 },res=>{
                     return Toast({

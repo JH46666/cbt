@@ -144,7 +144,7 @@ import { MessageBox,Toast } from 'mint-ui';
             }
         },
         created(){
-            this.$api.get('baseRegion/getRegionTree',{},res => {
+            this.$api.get('oteao/baseRegion/getRegionTree',{},res => {
                 for(let i=0;i<res.data.length-3;i++){
                     if(res.data[i].regionName === '江苏省' || res.data[i].regionName === '上海市' || res.data[i].regionName === '浙江省'){
                         this.addressType.one.push({

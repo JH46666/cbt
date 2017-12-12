@@ -131,7 +131,7 @@
         methods: {
             // 签到
             signTo() {
-                this.$api.post('/member/memberRecord/createSignInLog',{
+                this.$api.post('/oteao/member/memberRecord/createSignInLog',{
                     memberId: this.member.id,
                     sysId: 1
                 },res => {
@@ -175,7 +175,7 @@
                 if(status === 'ACTIVE') {
                     vm.$store.dispatch('viewSign')
                     vm.$store.dispatch('getRedTotal')
-                    vm.$api.get('/member/memberLevel/findNextLevelByMemberIdAndSysId',{
+                    vm.$api.get('/oteao/member/memberLevel/findNextLevelByMemberIdAndSysId',{
                         memberId: store.state.member.member.id,
                         sysId:1
                     },res =>{
