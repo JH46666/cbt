@@ -140,7 +140,17 @@
                         }
                         this.$api.post('/oteao/login/doLoginByPwd',data,
                         res=>{
-                            this.$router.push('/');
+                            for (let attr in res.data) {
+                                this.$store.commit('SET_MEMBERDATA',{type:attr,val:res.data[attr]})
+                            }
+                            let status = this.$store.state.member.memberAccount.status;
+                            if(status === 'WAIT_AUDIT' || status === 'AUDIT_NO_PASS') {
+                                this.$router.push({name: '茶帮通注册3'})
+                            }
+                            if(status === 'INACTIVE') {
+                                this.$router.push({name: '茶帮通注册2'})
+                            }
+                            this.$router.push(this.$store.state.address.from.fullPath);
                         },res=>{
                             if(res.code === 4064){
                                 this.illegalFlag = true;

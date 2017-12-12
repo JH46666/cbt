@@ -22,7 +22,7 @@
                         </div>
                         <div v-if="list.orgId" class="other"><img src="../../assets/images/shop_icon.png" alt=""></div>
                         <div v-else class="self"><img src="../../assets/images/logo_2.png" alt=""></div>
-                        <p>{{list.shopName}}</p>
+                        <p class="title" :class="{third: !list.orgId}">{{list.shopName}}</p>
                     </div>
                     <!-- 正常商品 -->
                     <div class="pro_item" v-for="item in list.cartList"  :class="{'no_border':item.tipsFlag}" :key="item.proId">
@@ -427,7 +427,7 @@
                 if(status === 'WAIT_AUDIT') {
                     vm.$messageBox({
                         title:'提示', 
-                        message:`您的账号审核中,只有正式会员才可买买买，若有疑问，请联系客服400-996-3399`,
+                        message:`您的账号审核中，只有正式会员才可买买买，若有疑问，请联系客服400-996-3399`,
                         confirmButtonText: '我知道了'
                     });
                 }
