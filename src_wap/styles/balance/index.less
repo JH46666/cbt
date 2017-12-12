@@ -16,8 +16,9 @@
         background-size: .32rem .12rem;
         margin-bottom: .2rem;
         .paddingT(.5rem);
+        .paddingB(.4rem);
         .paddingRow(.35rem);
-        .h(1.66rem);
+        // .h(1.66rem);
         .flex;
         .left{
             .w(.556rem);
@@ -32,8 +33,11 @@
             p{
                 .fontSize(.28rem);
                 .line(1.5);
-                .oneLine;
+                // .oneLine;
                 .color(@b-6);
+                &:nth-of-type(2) {
+                    .moreLine(2);
+                }
             }
         }
         .right{

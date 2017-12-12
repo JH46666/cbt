@@ -31,6 +31,7 @@
     export default {
         data(){
             return{
+                type: '',               // 支付方式
                 payId: '',              // 付款单id
                 isUse: false,           // 是否使用余额
                 payMethod: 'ALIPAY',    // 支付方式
@@ -90,10 +91,7 @@
                             this.$router.push({name: '结算显示',query:{payId:this.payId}})
                         }
                     })
-
-
-
-
+                
                 } else {
                     payUp.call(this)
                 }
@@ -128,21 +126,35 @@
                                 ip: '192.168.1.1',
                                 tradeType: 'JSAPI'
                             },res => {
+                                // 调试专用，通过地址栏传值
+                                /*let data = {
+                                    "appId":this.$route.query.appId,     //公众号名称，由商户传入     
+                                    "timeStamp":this.$route.query.timeStamp,         //时间戳，自1970年以来的秒数     
+                                    "nonceStr":this.$route.query.nonceStr, //随机串  
+                                    "package": `prepay_id=${this.$route.query.package}`,
+                                    "signType":this.$route.query.signType,         //微信签名方式：     
+                                    "paySign":this.$route.query.paySign //微信签名 
+                                }*/
+                                // return alert(JSON.stringify(res.data.h5pay));
+                                let data = JSON.parse(res.data.h5pay);
+                                let self = this;
+
                                 function onBridgeReady(){
                                     WeixinJSBridge.invoke(
                                         'getBrandWCPayRequest', {
-                                            "appId":res.data.appid,     //公众号名称，由商户传入     
-                                            "timeStamp":res.data.timeStamp,         //时间戳，自1970年以来的秒数     
-                                            "nonceStr":res.data.nonce_str, //随机串  
-                                            "package": `prepay_id=${res.data.prepay_id}`,
-                                            "signType":"HMACSHA256",         //微信签名方式：     
-                                            "paySign":res.data.sign //微信签名 
+                                            "appId": data.appid,     //公众号名称，由商户传入     
+                                            "timeStamp": data.timeStamp,         //时间戳，自1970年以来的秒数     
+                                            "nonceStr": data.nonceStr, //随机串  
+                                            "package":  data.packageWithPrepayId,
+                                            "signType":  data.signType, //微信签名方式：     
+                                            "paySign": data.paySign //微信签名 
                                         },
+                                        /*'getBrandWCPayRequest', data,*/
                                         function(res){     
                                             if(res.err_msg == "get_brand_wcpay_request:ok" ) {
-                                                return alert('支付成功')
+                                                return self.$router.push({name: '结算显示',query:{payId: self.payId}})
                                             }     // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。 
-                                            alert(JSON.stringify(res))
+                                            return self.$router.push({name: '结算显示',query:{payId: self.payId,fail:true,type: self.$route.query.type}})
                                         }
                                     ); 
                                 }
@@ -157,7 +169,8 @@
                                     onBridgeReady();
                                 }
                             },res => {
-                                alert(JSON.stringify(res))
+                                this.$router.push({name: '结算显示',query:{payId: self.payId,fail:true,type: self.$route.query.type}})
+                                // alert(JSON.stringify(res))
                                 // window.location = res.data.mweb_url;
                             })
 
@@ -205,6 +218,8 @@
             if(this.totalAmount > 0) {
                 this.isUse = true;
             }
+            this.type = this.$route.query.type;
+            alert(this.payId)
         },
         beforeRouteEnter(to, from, next) {
             if(store.state.member.member.id) {
