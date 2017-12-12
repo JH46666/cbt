@@ -443,7 +443,7 @@ export default {
                     productSku: this.proSku
                 }
             return new Promise((resolve,reject) => {
-                this.$api.get('/oteao/productInfo/getOrderProExtInfo',data,res => {
+                this.$api.get('/oteao/productInfo/getProExtInfo',data,res => {
                     resolve(res);
                 },res=>{
                     return Toast({

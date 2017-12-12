@@ -87,10 +87,18 @@ export default {
 
             return new Promise((resolve,reject) => {
                 this.$api.post('/oteao/evaluation/saveEvaluation',JSON.stringify(data),res => {
-                    return Toast({
+                    Toast({
                         message: res.message,
                         iconClass: 'icon icon-success'
                     });
+                    setTimeout(() =>{
+                        this.$router.push({
+                            name: '订单详情',
+                            query: {
+                                orderId: this.orderId
+                            }
+                        })
+                    })
                 },res=>{
                     if(res.code == 1001){
                         return Toast({

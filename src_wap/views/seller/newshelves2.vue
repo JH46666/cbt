@@ -462,7 +462,7 @@ import $api from 'api';
             },
             //继续创建
             goCreated(){
-                this.resize = {};
+                window.location.reload();
                 this.$router.push({
                     name: '新品上架-1'
                 });

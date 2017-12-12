@@ -1,4 +1,5 @@
 import $api from '../../api';
+import { Toast,Indicator } from 'mint-ui'
 const cart = {
     state:{
         cartData:[],
@@ -18,6 +19,25 @@ const cart = {
                     resolve(res);
                 },res=>{
                     reject(res);
+                });
+            })
+        },
+        addCart({rootState},{proId,buyNum}){
+            return new Promise((resolve,reject)=>{
+                $api.post('/oteao/shoppingCart/addBuyNum',{
+                    device: rootState.device,
+                    proId: proId,
+                    buyNum: buyNum
+                },res=>{
+                    return Toast({
+                        message: res.message,
+                        iconClass: 'icon icon-success'
+                    });
+                },res=>{
+                    return Toast({
+                        message: res.message,
+                        iconClass: 'icon icon-fail'
+                    });
                 });
             })
         }

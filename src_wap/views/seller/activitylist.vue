@@ -9,36 +9,45 @@
         <mt-tab-container v-model="selected">
             <mt-tab-container-item :id="selected" class="on">
                 <!-- <div class="mt_cell_wrapper" v-if="orderNum != 0" v-infinite-scroll="loadMore" infinite-scroll-disabled="noInfinity" infinite-scroll-distance="10"> -->
+                <template v-if="actiiveList.length == 0">
+                    <div class="f5-2"></div>
+                    <div class="active_empty">
+                        <img src="../../assets/images/empty_activily.png" />
+                        <span>没有任何特价活动哟~</span>
+                    </div>
+                </template>
+                <template v-else>
                     <mt-cell v-for="(item,index) in actiiveList" :key="index">
                         <div class="f5-2"></div>
-                        <div class="active_head">
-                            <div class="head_left">
-                                <img src="../../assets/images/%.png" />
-                                <span>{{ item.showName }}</span>
+                            <div class="active_head">
+                                <div class="head_left">
+                                    <img src="../../assets/images/%.png" />
+                                    <span>{{ item.showName }}</span>
+                                </div>
+                                <div class="head_right on" v-if="new Date(item.startTime) < new Date() && new Date(item.endTime) > new Date()">进行中</div>
+                                <div class="head_right" v-else-if="new Date(item.endTime) < new Date()">已结束</div>
+                                <div class="head_right" v-else>未开始</div>
                             </div>
-                            <div class="head_right on" v-if="new Date(item.startTime) < new Date() && new Date(item.endTime) > new Date()">进行中</div>
-                            <div class="head_right" v-else-if="new Date(item.endTime) < new Date()">已结束</div>
-                            <div class="head_right" v-else>未开始</div>
-                        </div>
-                        <div class="active_section" @click="goEdit(item.id)">
-                            <div class="section_left">
-                                <template v-for="(img,num) in item.specialPriceList">
-                                    <div class="section_img" :key="num" v-if="num < 4">
-                                        <img :src="img.mainImgUrl" />
-                                    </div>
-                                </template>
-                                <div class="white_wrapper"></div>
+                            <div class="active_section" @click="goEdit(item.id)">
+                                <div class="section_left">
+                                    <template v-for="(img,num) in item.specialPriceList">
+                                        <div class="section_img" :key="num" v-if="num < 4">
+                                            <img :src="img.mainImgUrl" />
+                                        </div>
+                                    </template>
+                                    <div class="white_wrapper"></div>
+                                </div>
+                                <div class="section_right">
+                                    <i class="iconfont">&#xe744;</i>
+                                    共{{ item.specialPriceList.length }}件
+                                </div>
                             </div>
-                            <div class="section_right">
-                                <i class="iconfont">&#xe744;</i>
-                                共{{ item.specialPriceList.length }}件
+                            <div class="active_foot">
+                                {{ item.startTime }}至{{ item.endTime }}
+                                <i class="iconfont" @click="deleteActive(item)">&#xe60d;</i>
                             </div>
-                        </div>
-                        <div class="active_foot">
-                            {{ item.startTime }}至{{ item.endTime }}
-                            <i class="iconfont" @click="deleteActive(item)">&#xe60d;</i>
-                        </div>
-                    </mt-cell>
+                        </mt-cell>
+                    </template>
                     <!-- <div class="goods-loading" v-if="!noInfinity && orderList.length < orderNum">
                         <mt-spinner type="fading-circle" color="#f08200"></mt-spinner>
                         <span class="loading-text">正在努力加载中~</span>
