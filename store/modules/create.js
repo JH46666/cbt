@@ -6,9 +6,7 @@ const create = {
                 goodsName: '',
                 goodsSell: '',
                 goodsDw: '',
-                goodsBrand: '',
-                goodsXq: '',
-                goodsZw: '',
+                goodsBrand: '其他品牌',
                 goodsJz: '',
                 goodsMz: '',
                 goodsKc: '',
@@ -18,60 +16,12 @@ const create = {
             },
             selIndex: {
                 dw: null,
-                pp: null,
-                xq: null,
-                zw: null
+                pp: null
             },
             selId: {
                 dw: null,
-                pp: null,
-                xq: null,
-                zw: null
+                pp: null
             },
-            xiangWei: [
-                {
-                    id: 0,
-                    name: '偏淡'
-                },
-                {
-                    id: 1,
-                    name: '一般'
-                },
-                {
-                    id: 2,
-                    name: '香'
-                },
-                {
-                    id: 3,
-                    name: '高香'
-                },
-                {
-                    id: 4,
-                    name: '极香'
-                }
-            ],
-            ziWei: [
-                {
-                    id: 0,
-                    name: '偏淡'
-                },
-                {
-                    id: 1,
-                    name: '一般'
-                },
-                {
-                    id: 2,
-                    name: '浓'
-                },
-                {
-                    id: 3,
-                    name: '很浓'
-                },
-                {
-                    id: 4,
-                    name: '极浓'
-                }
-            ],
             twoClass: null,
             oneClass: null,
             twoIndex: null,
