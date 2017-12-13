@@ -150,7 +150,7 @@ export default {
                 "device": 'WAP',
                 "endTime": this.activeEndDate,
                 "isLimitBuyNum": this.activeLimit == '' ? 0 : 1,
-                "numTop": this.activeLimit == '' ? null : Number(this.activeLimit),
+                "numTop": this.activeLimit == '' ? null : Math.floor(this.activeLimit),
                 "proRuleList": [],
                 "showName": this.activeName,
                 "startTime": this.activeStartDate,
@@ -161,7 +161,7 @@ export default {
                     obj.discount = (parseFloat(obj.discountPrice)*10/parseFloat(obj.proPrice)).toFixed(2);
                 }else if(obj.discountPrice == '' && obj.discount != ''){
                     obj.discountPrice = ((parseFloat(obj.discount)/10)*obj.proPrice).toFixed(2);
-                }else if(obj.discountPrice != '' && obj.discount != ''){
+                }else if(obj.discountPrice == '' && obj.discount == ''){
                     return Toast ({
                         message:`请填写特价商品的折扣折或折扣`,
                         iconClass: 'icon icon-fail'

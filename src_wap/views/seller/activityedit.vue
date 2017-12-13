@@ -41,19 +41,19 @@
                     </div>
                 </div>
                 <div class="activity_pro_item_bottom">
-                    <div><label>折扣：</label><input type="number" v-model="item.discount" @blur="toFixedTwo(item,'discount')" /></div>
-                    <div><label>折扣价：</label><input type="number" v-model="item.specialPrice" @blur="toFixedTwo(item,'specialPrice')" /></div>
+                    <div><label>折扣：</label><input type="number" v-model="item.discount"  @change="getPriceOrDiscount(index,'discount')" /></div>
+                    <div><label>折扣价：</label><input type="number" v-model="item.specialPrice" @change="getPriceOrDiscount(index,'specialPrice')" /></div>
                     <i class="iconfont" @click="deteledPro(index)">&#xe60d;</i>
                 </div>
             </div>
         </div>
         <div class="f5-2"></div>
-        <div class="activity_name" @click="selectPro = true">
+        <div class="activity_name" @click="addProMethod">
             <div class="plus_icon">+</div>
             <div class="add_text">添加商品</div>
         </div>
         <mt-button type="primary" :disabled="isSave" @click.native="saveActive">保存</mt-button>
-        <div class="dialog" :class="{on: selectPro}">
+        <mt-popup v-model="selectPro" position="bottom">
             <div class="dialog_wrapper">
                 <div class="dialog_search">
                     <div class="search_wrapper">
@@ -93,7 +93,7 @@
                     <mt-button type="primary" :disabled="selDisable" @click.native="selProMethod">选好了</mt-button>
                 </div>
             </div>
-        </div>
+        </mt-popup>
         <template>
             <mt-datetime-picker ref="picker1" type="datetime" @confirm="handleConfirm1"></mt-datetime-picker>
         </template>
@@ -139,6 +139,26 @@ export default {
         })
     },
     methods: {
+        addProMethod() {
+            this.getSearchList(this.searchKeyWord).then((res) => {
+                this.proList = res.data;
+                for(let obj of this.proList){
+                    this.$set(obj,'checked',false);
+                }
+            })
+            this.selectPro = true
+        },
+        getPriceOrDiscount(index,type) {
+            if(type === 'discount'){
+                this.selProList[index].discount = parseFloat(this.selProList[index].discount).toFixed(2);
+                this.selProList[index].specialPrice = ((parseFloat(this.selProList[index].discount)/10)*this.selProList[index].price).toFixed(2);
+                return ;
+            }else if(type === 'specialPrice'){
+                this.selProList[index].specialPrice = parseFloat(this.selProList[index].specialPrice).toFixed(2);
+                this.selProList[index].discount = (parseFloat(this.selProList[index].specialPrice)*10/parseFloat(this.selProList[index].price)).toFixed(2);
+                return ;
+            }
+        },
         longInt() {
             this.activeLimit = Math.floor(this.activeLimit);
         },
@@ -163,7 +183,7 @@ export default {
                 "device": 'WAP',
                 "endTime": this.activeEndDate,
                 "isLimitBuyNum": this.activeLimit == '' ? 0 : 1,
-                "numTop": this.activeLimit == '' ? null : Number(this.activeLimit),
+                "numTop": this.activeLimit == '' ? null : Math.floor(this.activeLimit),
                 "proRuleList": [],
                 "showName": this.activeName,
                 "startTime": this.activeStartDate,
@@ -171,6 +191,16 @@ export default {
                 'id':  this.id
             }
             for(let obj of this.selProList){
+                if(obj.discount == '' && obj.specialPrice != ''){
+                    obj.discount = (parseFloat(obj.specialPrice)*10/parseFloat(obj.proPrice)).toFixed(2);
+                }else if(obj.specialPrice == '' && obj.discount != ''){
+                    obj.specialPrice = ((parseFloat(obj.discount)/10)*obj.proPrice).toFixed(2);
+                }else if(obj.specialPrice == '' && obj.discount == ''){
+                    return Toast ({
+                        message:`请填写特价商品的折扣折或折扣`,
+                        iconClass: 'icon icon-fail'
+                    })
+                }
                 data.proRuleList.push({
                     'id': obj.id,
                     "discount": obj.discount,
@@ -197,39 +227,6 @@ export default {
                     iconClass: 'icon icon-fail'
                 });
             })
-        },
-        toFixedTwo(item,str) {
-            if(str === 'discount'){
-                item.specialPrice = (parseFloat(item.price)*parseFloat(item.discount)).toFixed(2)
-                if(item[str] == ''){
-                    item[str] = '0.00'
-                }else{
-                    if(parseFloat(item[str])>10 || parseFloat(item[str]) <= 0){
-                        Toast({
-                            message: '请输入小于10的两位小数',
-                            iconClass: 'icon icon-fail'
-                        });
-                        item[str] = '0.00'
-                    }else{
-                        item[str] = parseFloat(item[str]).toFixed(2);
-                    }
-                }
-            }else{
-                item.discount = (parseFloat(item.specialPrice)/parseFloat(item.price)).toFixed(2)
-                if(item[str] == ''){
-                    item[str] = '0.00'
-                }else{
-                    if(item[str] >= item.price || item[str] < 0){
-                        Toast({
-                            message: '请输入小于该商品价格的数字',
-                            iconClass: 'icon icon-fail'
-                        });
-                        item[str] = '0.00'
-                    }else{
-                        item[str] = parseFloat(item[str]).toFixed(2);
-                    }
-                }
-            }
         },
         deteledPro(index) {
             this.selProList.splice(index,1)
@@ -344,7 +341,7 @@ export default {
             return true;
         },
         isSave() {
-            if(this.activeName != '' && this.activeStartDate != '' && this.activeEndDate != '' && this.selProList.length > 0){
+            if(this.activeName.length >= 2 && this.activeStartDate != '' && this.activeEndDate != '' && this.selProList.length > 0){
                 return false;
             }else{
                 return true;

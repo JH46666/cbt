@@ -28,7 +28,7 @@
                                 <div class="head_right" v-else-if="new Date(item.endTime) < new Date()">已结束</div>
                                 <div class="head_right" v-else>未开始</div>
                             </div>
-                            <div class="active_section" @click="goEdit(item.id)">
+                            <div class="active_section" @click="goEdit(item)">
                                 <div class="section_left">
                                     <template v-for="(img,num) in item.specialPriceList">
                                         <div class="section_img" :key="num" v-if="num < 4">
@@ -229,13 +229,21 @@ export default {
                 name: '添加活动'
             });
         },
-        goEdit(id) {
-            this.$router.push({
-                name: '编辑活动',
-                query: {
-                    edit: id
-                }
-            });
+        goEdit(item) {
+            const nowDate = new Date();
+            if(new Date(item.endTime)>nowDate || new Date(item.startTime)>nowDate){
+                return this.$router.push({
+                    name: '编辑活动',
+                    query: {
+                        edit: item.id
+                    }
+                });
+            }else{
+                return Toast({
+                    message: '只有进行中和未开始的可以编辑',
+                    iconClass: 'icon icon-fail'
+                });
+            }
         }
     },
     mounted () {
