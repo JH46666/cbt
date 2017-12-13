@@ -33,7 +33,7 @@
             <div class="activity_pro_item" v-for="(item,index) in selProList" :key="index">
                 <div class="activity_pro_item_top">
                     <div class="activity_pro_item_top_left">
-                        <img :src="item.proImg" />
+                        <img :src="item.mainImgUrl" />
                     </div>
                     <div class="activity_pro_item_top_right">
                         <p>{{ item.proName }}</p>

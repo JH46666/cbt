@@ -338,18 +338,22 @@ import $api from 'api';
                     })
                 }
                 let oneImgContent = {
+                    title: '外形细节展示',
                     imgUrl: [this.urls.one[0]],
                     content: this.resize.textMs1
                 }
                 let twoImgContent = {
+                    title: '汤色细节展示',
                     imgUrl: [this.urls.two[0]],
                     content: this.resize.textMs2
                 }
                 let threeImgContent = {
+                    title: '叶底细节展示',
                     imgUrl: [this.urls.third[0]],
                     content: this.resize.textMs3
                 }
                 let fourImgContent = {
+                    title: '其它细节展示',
                     imgUrl: [],
                     content: this.resize.textMs4
                 };
@@ -373,20 +377,20 @@ import $api from 'api';
                     ],
                     "productImgs": mainImg
                 }
-                if(this.resize.form.goodsXq != ''){
-                    data.catProps.push({
-                        propType: 2,
-                        propName: '香气',
-                        propertyVal: this.resize.form.goodsXq
-                    })
-                }
-                if(this.resize.form.goodsZw != ''){
-                    data.catProps.push({
-                        propType: 2,
-                        propName: '滋味',
-                        propertyVal: this.resize.form.goodsZw
-                    })
-                }
+                // if(this.resize.form.goodsXq != ''){
+                //     data.catProps.push({
+                //         propType: 2,
+                //         propName: '香气',
+                //         propertyVal: this.resize.form.goodsXq
+                //     })
+                // }
+                // if(this.resize.form.goodsZw != ''){
+                //     data.catProps.push({
+                //         propType: 2,
+                //         propName: '滋味',
+                //         propertyVal: this.resize.form.goodsZw
+                //     })
+                // }
                 for(let i=0;i<this.resize.proValList.length;i++){
                     if(this.resize.proValList[i].propValList.length === 0){
                         data.catProps.push({
