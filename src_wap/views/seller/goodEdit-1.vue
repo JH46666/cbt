@@ -53,7 +53,7 @@
                                 净重：
                             </label>
                             <div class="item-right">
-                                <input type="age" id="7" placeholder="必填项，请输入商品净重展示使用（g）" v-model="resize.form.goodsJz" />
+                                <input type="number" id="7" placeholder="必填项，请输入商品净重展示使用（g）" v-model="resize.form.goodsJz" />
                             </div>
                         </div>
                         <div class="item">
@@ -61,7 +61,7 @@
                                 毛重：
                             </label>
                             <div class="item-right">
-                                <input type="age" id="8" placeholder="必填项，运费计算使用（g）" v-model="resize.form.goodsMz" @blur="toFixedZero(resize.form.goodsMz,'goodsMz')" />
+                                <input type="number" id="8" placeholder="必填项，运费计算使用（g）" v-model="resize.form.goodsMz" @blur="toFixedZero(resize.form.goodsMz,'goodsMz')" />
                             </div>
                         </div>
                         <div class="item">
@@ -69,7 +69,7 @@
                                 库存：
                             </label>
                             <div class="item-right">
-                                <input type="age" id="9" placeholder="必填项，请填写商品库存" v-model="resize.form.goodsKc" @blur="toFixedZero(resize.form.goodsKc,'goodsKc')" />
+                                <input type="number" id="9" placeholder="必填项，请填写商品库存" v-model="resize.form.goodsKc" @blur="toFixedZero(resize.form.goodsKc,'goodsKc')" />
                             </div>
                         </div>
                         <div class="item">
@@ -77,7 +77,7 @@
                                 平台售价：
                             </label>
                             <div class="item-right">
-                                <input type="age" id="10" placeholder="必填项，请填写平台售价" v-model="resize.form.goodsSx" @blur="toFixedTwo(resize.form.goodsSx,'goodsSx')" />
+                                <input type="number" id="10" placeholder="必填项，请填写平台售价" v-model="resize.form.goodsSx" @blur="toFixedTwo(resize.form.goodsSx,'goodsSx')" />
                             </div>
                         </div>
                         <div class="item">
@@ -85,7 +85,7 @@
                                 建议零售价：
                             </label>
                             <div class="item-right">
-                                <input type="age" id="16" placeholder="必填项，请填写建议零售价" v-model="resize.form.goodsPtsj" @blur="toFixedTwo(resize.form.goodsPtsj,'goodsPtsj')" />
+                                <input type="number" id="16" placeholder="必填项，请填写建议零售价" v-model="resize.form.goodsPtsj" @blur="toFixedTwo(resize.form.goodsPtsj,'goodsPtsj')" />
                             </div>
                         </div>
                     </div>

@@ -193,7 +193,7 @@
             // 设置title
             this.$store.commit('SET_TITLE','分类');
 
-            this.$api.get('/proCat/queryCatTree',{sysId: 2},res=>{
+            this.$api.get('/proCat/queryCatTree',{sysId: 1},res=>{
                 this.catTree = res.data[0].children;
                 this.subCat = this.catTree[0].children;
                 for(let item of this.catTree){

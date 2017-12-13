@@ -4,28 +4,28 @@
             <div class="dialog_wrapper_2" v-if="detailData.productInfo.businessType == 'ORG_SALES'">
                 <div class="dialog_title">
                     <i class="iconfont icon-dianpu"></i>
-                    <span>什么店铺名称呢</span>
+                    <span>{{ detailData.orgShopCenterVo.shopName }}</span>
                 </div>
                 <div class="dialog_content">
                     <div class="item_1">
                         <span>类型</span>
                         <span>
-                            <span>合作社</span>
+                            <span>{{ shopType[detailData.orgShopCenterVo.shopType] }}</span>
                         </span>
                     </div>
                     <div class="item_1">
                         <span>信誉</span>
                         <span>
-                            <i class="star blur" v-for="n in 5" :key="n"></i>
+                            <i class="star" :class="isLevelType(detailData.orgShopCenterVo.growth)" v-for="n in $tool.levelNum(detailData.orgShopCenterVo.growth)" :key="n"></i>
                         </span>
                     </div>
                     <div class="item_1">
                         <span>地址</span>
-                        <span>福建省厦门思明区会展南路7号109醉品集团福建省厦门思明区会展南路7号109醉品集团</span>
+                        <span>{{ detailData.orgShopCenterVo.address }}</span>
                     </div>
                     <div class="item_1">
                         <span>电话</span>
-                        <a href="tel://17656565656">17656565656</a>
+                        <a :href="shopTel">{{ detailData.orgShopCenterVo.businessTelephone }}</a>
                     </div>
                 </div>
             </div>
@@ -46,7 +46,7 @@
         </mt-popup>
         <div class="detail_wrapper" @scroll="docScroll" ref="wrapper">
             <div class="goIndex" v-if="!(tabFixed || wxFixed)" @click="$router.push({name: '首页'})">
-                <span>去首页</span>
+                <span>回首页</span>
                 <i class="iconfont">&#xe61b;</i>
             </div>
             <div class="top" :class="{on: tabFixed || wxFixed}" @click="topMethod">
@@ -86,6 +86,11 @@
                 <div class="detail_describe_wrapper">
                     <div class="detail_describe_text">
                         <p class="detail_text">{{ detailData.productInfo.proName }}</p>
+                        <template  v-if="detailData.productExtInfo.state === 'OFF_SHELF'">
+                            <div class="off_shelf_tips">
+                                暂无报价
+                            </div>
+                        </template>
                         <template v-if="detailData.productPrice.length != 0 && detailData.productExtInfo.state === 'ON_SHELF'">
                             <p class="detail_now_price" v-if="!detailData.productExtInfo.isSales">￥{{ detailData.productPrice[0].price | toFix2 }}</p>
                             <p class="detail_suggest_price">建议零售价：￥{{ detailData.productPrice[1].price | toFix2 }}</p>
@@ -203,6 +208,9 @@
                 </mt-tab-container>
             </div>
         </div>
+        <div class="off_shelf" v-if="detailData.productExtInfo.state === 'OFF_SHELF'">
+            该商品已下架哦~
+        </div>
         <mt-tabbar v-model="selected" class="cbt-footer detail_footer" :isZiYing="isThird" ref="footers">
             <mt-tab-item id="1" @click.native="openDialog" v-if="detailData.productInfo.businessType != 'ORG_SALES'">
                 <i class="icon-kefu1" slot="icon"></i>
@@ -218,7 +226,7 @@
                 <mt-badge type="error" size="small">99+</mt-badge>
             </mt-tab-item>
             <mt-tab-item id="3">
-                <mt-button type="default" disabled v-if="detailData.productExtInfostate === 'OFF_SHELF'">已下架</mt-button>
+                <mt-button type="default" disabled v-if="detailData.productExtInfo.state === 'OFF_SHELF'">已下架</mt-button>
                 <mt-button type="default" v-else-if="detailData.productExtInfo.isSoldOut == 1" @click.native="addCartInfo">加入购物车</mt-button>
                 <mt-button type="default" disabled v-else>缺货</mt-button>
             </mt-tab-item>
@@ -270,12 +278,21 @@ export default {
             proSku: '',
             prectent: 0,
             imgDetail: {},
+            shopTel: null,
+            shopType: {
+                1: '茶厂',
+                2: '合作社',
+                3: '茶企',
+                4: '批发商'
+            },
+            starNum: 0,
         }
     },
     created() {
         this.proSku = this.$route.query.proSku;
         this.getDetail().then((res) =>{
             this.detailData = res.data;
+            this.shopTel = `tel://${res.data.orgShopCenterVo.businessTelephone}`;
             this.getAttrOrImg().then((res) => {
                 this.attrImgDetail = res.data;
                 this.imgDetail =  JSON.parse(res.data.content)
@@ -288,6 +305,18 @@ export default {
         })
     },
     methods: {
+        isLevelType(val) {
+            let g = Number(val)
+            if(g <= 250) {
+                return 'red'
+            } else if(g <= 10000) {
+                return 'cap'
+            } else if(g <= 500000) {
+                return 'crown'
+            } else {
+                return 'blur'
+            }
+        },
         addCartInfo() {
             this.$store.dispatch('addCart',{proId:this.detailData.productExtInfo.proId,buyNum:this.goodsCount}).then(res=>{
                 console.log(res);

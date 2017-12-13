@@ -16,21 +16,21 @@
             <div class="input-item">
                 <div class="flex input-inner">
                     <span class="flex-1 color_6">首重(1kg)</span>
-                    <input class="algin_r" type="age" placeholder="请输入首重运费" v-model="item.sweight" @blur="toFixedTwo(item.sweight,'sweight',index)" />
+                    <input class="algin_r" type="number" placeholder="请输入首重运费" v-model="item.sweight" @blur="toFixedTwo(item.sweight,'sweight',index)" />
                     <span>元</span>
                 </div>
             </div>
             <div class="input-item">
                 <div class="flex input-inner">
                     <span class="flex-1 color_6">续重(每增加1kg增加)</span>
-                    <input class="algin_r" type="age" placeholder="请输入金额" v-model="item.xweight" />
+                    <input class="algin_r" type="number" placeholder="请输入金额" v-model="item.xweight" />
                     <span>元</span>
                 </div>
             </div>
             <div class="input-item">
                 <div class="flex input-inner no-border">
                     <span class="flex-1 color_6">购满包邮</span>
-                    <input class="algin_r" type="age" placeholder="不填默认不包邮"  v-model="item.buyer" />
+                    <input class="algin_r" type="number" placeholder="不填默认不包邮"  v-model="item.buyer" />
                     <span>元</span>
                 </div>
             </div>
