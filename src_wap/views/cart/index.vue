@@ -63,52 +63,54 @@
                                 <div class="pro-delete"><a href="##"><i class="iconfont">&#xe60d;</i></a></div>
                             </div>
                             <!-- 提示信息 -->
-                            <div class="tips_div" v-if="item.tipsFlag">
-                                <p>{{item.tips}}</p>
+                            <div class="tips_div" v-if="!!item.buyUpperLimit && item.buyNum > item.buyUpperLimit">
+                                <p>每单限购{{item.buyUpperLimit}}，您超出最高购买数量啦~</p>
                             </div>
-                            <div class="del-block" v-if="$tool.isiOS">
+                            <div class="del-block" v-if="$tool.isiOS" @click="delItem(item,true)">
                                 <i class="iconfont">&#xe60d;</i>
                             </div>
                         </div>
                         <!-- 活动&赠品 -->
-                        <div class="pro_item" v-for="item in list.giftList" :key="item.proId">
-                            <!-- 活动&赠品caption -->
-                            <div class="pro_free_caption">
-                                <span class="full_free">{{item.ruleName}}</span>
-                                <span>{{item.ruleName}}</span>
-                            </div>
-                            <div class="flex">
-                                <!-- 复选按钮 -->
-                                <div class="left_check flex justify_content_c visi_h" @click="selectOne(item)">
-                                    <p class="flex align_items_c pro_label">
-                                        <input type="checkbox" name="" :id="item.proId" v-model="selectIds" hidden>
-                                        <span class="check_cir"></span>
-                                    </p>
+                        <template v-if="list.giftList ? list.giftList.length > 0 : false">
+                            <div class="pro_item"  v-for="todo in arrayGift(list.giftList)" :key="todo.proId">
+                                <!-- 活动&赠品caption -->
+                                <div class="pro_free_caption">
+                                    <span class="full_free">{{todo.title}}</span>
+                                    <span class="ruletitle">{{todo.title}}</span>
                                 </div>
-                                <div class="right_info flex-1">
-                                    <div class="pro_info flex">
-                                        <div class="pro_img">
-                                            <a href="javascript:void(0);" @click="goDetail(item.proSku)"><img :src="item.imageUrl" alt=""></a>
-                                        </div>
-                                        <div class="flex-1 pro_detail">
-                                            <div class="flex flex_col detail_inner">
-                                                <a href="javascript:void(0);" @click="goDetail(item.proSku)">
-                                                    <h4>{{item.proName}}</h4>
-                                                </a>
-                                                <!-- 赠品 -->
-                                                <div class="flex-1 flex align_items_end">
-                                                    <div class="pro_price"><span class="money">￥0.00</span><span class="market_price">￥<del>{{ item.formerPrice | toFix2}}</del></span></div>
-                                                    <div class="pro_number clearfix">
-                                                        <p>× {{item.giftNum}}</p>
+                                <div class="flex" v-for="item in todo.list">
+                                    <!-- 复选按钮 -->
+                                    <div class="left_check flex justify_content_c visi_h" @click="selectOne(item)">
+                                        <p class="flex align_items_c pro_label">
+                                            <input type="checkbox" name="" :id="item.proId" v-model="selectIds" hidden>
+                                            <span class="check_cir"></span>
+                                        </p>
+                                    </div>
+                                    <div class="right_info flex-1">
+                                        <div class="pro_info flex">
+                                            <div class="pro_img">
+                                                <a href="javascript:void(0);" @click="goDetail(item.proSku)"><img :src="item.imageUrl" alt=""></a>
+                                            </div>
+                                            <div class="flex-1 pro_detail">
+                                                <div class="flex flex_col detail_inner">
+                                                    <a href="javascript:void(0);" @click="goDetail(item.proSku)">
+                                                        <h4>{{item.proName}}</h4>
+                                                    </a>
+                                                    <!-- 赠品 -->
+                                                    <div class="flex-1 flex align_items_end">
+                                                        <div class="pro_price"><span class="money">￥0.00</span><span class="market_price">￥<del>{{ item.formerPrice | toFix2}}</del></span></div>
+                                                        <div class="pro_number clearfix">
+                                                            <p>× {{item.giftNum}}</p>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="pro-delete"><a href="##"><i class="iconfont">&#xe60d;</i></a></div>
                                 </div>
-                                <div class="pro-delete"><a href="##"><i class="iconfont">&#xe60d;</i></a></div>
                             </div>
-                        </div>
+                        </template>
                     </div>
                 </div>
             </template>
@@ -139,7 +141,7 @@
                                         <div class="flex-1 flex align_items_end">
                                             <div class="pro_price"><span class="money">￥{{ item.priorityPrice | toFix2 }}</span></div>
                                             <div class="pro_number clearfix">
-                                                <p>× 1</p>
+                                                <p>× {{ item.buyNum }}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -147,7 +149,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="del-block" v-if="$tool.isiOS">
+                    <div class="del-block" v-if="$tool.isiOS" @click="delItem(item)">
                         <i class="iconfont">&#xe60d;</i>
                     </div>
                 </div>
@@ -163,7 +165,7 @@
                     <input type="checkbox" name="" hidden>
                     <span class="check_cir"></span>
                 </p>
-                <p>已选(<span class="selectProductNum">{{ edit ? selectAllIds.length : selectIds.length }}</span>)</p>
+                <p>已选(<span class="selectProductNum">{{ totalBuyNum }}</span>)</p>
             </div>
             <div class="flex-1 money_total" v-show="!edit">
                 <p class="color_f08">￥<span>{{ totalMoney | toFix2 }}</span></p>
@@ -176,7 +178,7 @@
             </div>
             <div class="go_pay" :class="{'disabled': edit ? selectAllIds.length === 0 : selectIds.length === 0 }">
                 <a v-if="!edit" href="javascript:void(0);" id="toCheckout" @click="gotoBalance">去结算</a>
-                <a v-else href="javascript:void(0);" @click="deletePro">删除</a>
+                <a v-else href="javascript:void(0);" @click="deleteSelect">删除</a>
             </div>
         </div>
     </div>
@@ -235,18 +237,70 @@
                 let sum = 0;
                 this.selectIds.forEach(val => sum = math.add(sum,val.priorityPrice * val.buyNum));
                 return sum;
+            },
+            // 购买数量合计
+            totalBuyNum() {
+                let sum = 0;
+                let math = this.$tool.math;
+                if(this.edit) {
+                    this.selectAllIds.forEach(val => sum = math.add(sum,val.buyNum));
+                } else {
+                    this.selectIds.forEach(val => sum = math.add(sum,val.buyNum));
+                }
+                return sum;
             }
         },
         methods: {
+            // 赠品分组函数
+            arrayGift(list) {
+                let data = [];
+
+                list.forEach(val => {
+                    // 初始化data
+                    if(data.length === 0) {
+                        data.push({
+                            title: val.ruleName,
+                            id: val.ruleSetId,
+                            list: []
+                        })
+                    }
+                    if(data.some(v => v.id === val.ruleSetId)) {
+                        data.forEach(v => {
+                            if(v.id === val.ruleSetId) {
+                                v.list.push(val);
+                            }
+                        })
+                    } else {
+                        data.push({
+                            title: val.ruleName,
+                            id: val.ruleSetId,
+                            list: [val]
+                        })
+                    }
+                    
+                })
+                return data;
+            },
+            // 删除选中
+            deleteSelect() {
+                if(this.selectAllIds.length === 0) return;
+                this.$messagebox({
+                    title: '提示',
+                    message: '确定删除所选商品?',
+                    showCancelButton: true
+                }).then(res => {
+                    if(res === 'cancel') return;
+                    this.deletePro(this.selectAllIds.map(val => val.id).join(','));
+                })
+            },
             //删除商品
-            deletePro(){
-                if(this.selectAllIds.length>0){
-                    this.$api.post('/oteao/shoppingCart/del',{ids:idStr},res=>{
+            deletePro(ids){
+                return new Promise((resolve,reject) => {
+                    this.$api.post('/oteao/shoppingCart/del',{ids},res => {
                         this.getData();
-                    },res=>{
-                        this.$toast(res.cnMessage)
+                        resolve(res);
                     })
-                }
+                })
             },
             // 清空失效商品
             clearDisabled() {
@@ -286,6 +340,21 @@
                     if(item.endX - item.startX > 70) {
                         item.swiper = false;
                     }
+                }
+            },
+            // 按下滑动出现的删除按钮
+            delItem(item,normal) {
+                if(normal) {
+                    this.$messagebox({
+                        title: '提示',
+                        message: '确定删除所选商品?',
+                        showCancelButton: true
+                    }).then(res => {
+                        if(res === 'cancel') return;
+                        this.deletePro(item.id)
+                    })
+                } else {
+                    this.deletePro(item.id)
                 }
             },
             //更新选中的数量
@@ -377,6 +446,7 @@
                     })
 
                 }else{
+                    Toast('请输入正确的数值')
                     item.buyNum = item.buyLowLimit || 1;
                 }
             },
@@ -414,7 +484,7 @@
                     // 编辑状态
                     if(this.disabledList.every(val => val.checked) && this.listPannel.every(val => this.checkAll(val))) {
                         this.listPannel.forEach(val => val.cartList.forEach(h => h.checked = false));
-                        this.disabledList.forEach(val = val.checked = false);
+                        this.disabledList.forEach(val => val.checked = false);
                     } else {
                         this.listPannel.forEach(val => val.cartList.forEach(h => h.checked = true));
                         this.disabledList.forEach(val => val.checked = true);
