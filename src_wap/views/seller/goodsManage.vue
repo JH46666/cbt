@@ -258,14 +258,10 @@ import $api from 'api';
         },
         methods:{
             goCreate() {
-                window.location.reload(
-                    ()=>{
-                        this.$router.push({
-                            name: '新品上架-1'
-                        })
-                    }
-                );
-
+                this.$store.commit('SET_RESIZE');
+                this.$router.push({
+                    name: '新品上架-1'
+                })
             },
             goBrect() {
                 if(this.tabId === 'yes'){

@@ -435,7 +435,7 @@ export default {
                     name: obj.dataName
                 })
             }
-        })
+        });
     },
     beforeRouteEnter(to, from, next) {
         if(store.state.member.member.id) {

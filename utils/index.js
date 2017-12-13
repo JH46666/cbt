@@ -1,7 +1,7 @@
 import store from '../store'
 import math from 'mathjs' ;
- 
- 
+
+
  //判断是否是微信
 let isWx = (function () {
     let ua = navigator.userAgent.toLowerCase();
@@ -26,6 +26,27 @@ let formatDate = (date) => {
     return `${year}-${month}-${day} ${hours}:${min}:${second}`
 }
 
+let levelNum = (val) => {
+    let g = Number(val);
+    let l = 0;
+    if(g >= 0 && g <= 10 || g >= 251 && g <= 500 || g >= 10001 && g <= 20000 || g >= 500001 && g <= 1000000 ) {
+        l = 1;
+    }
+    if(g >= 11 && g <= 40 || g >= 501 && g <= 1000 || g >= 20001 && g <= 50000 || g >= 1000001 && g <= 2000000) {
+        l = 2;
+    }
+    if(g >= 41 && g <= 90 || g >= 1001 && g <= 2000 || g >= 50001 && g <= 100000 || g >= 2000001 && g <= 5000000) {
+        l = 3;
+    }
+    if(g >= 91 && g <= 150 || g >= 2001 && g <= 5000 || g >= 100001 && g <= 200000 || g >= 5000001 && g <= 10000000) {
+        l = 4;
+    }
+    if(g >= 151 && g <= 250 || g >= 5001 && g <= 10000 || g >= 200001 && g <= 500000 || g > 10000000) {
+        l = 5;
+    }
+    return l;
+}
+
 
 // 判断设备
 var u = navigator.userAgent;
@@ -44,7 +65,7 @@ var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
 
 export {isWx}
 
-export {math} 
+export {math}
 
 export {isLogin}
 
@@ -53,3 +74,5 @@ export {formatDate}
 export {isAndroid}
 
 export {isiOS}
+
+export {levelNum}
