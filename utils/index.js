@@ -13,7 +13,7 @@ let isLogin = () => {
     return Boolean(store.state.member.member.id)
 }
 
-
+// 格式化日期
 let formatDate = (date) => {
     let d = new Date(date);
     let year = d.getFullYear();
@@ -27,6 +27,20 @@ let formatDate = (date) => {
 }
 
 
+// 判断设备
+var u = navigator.userAgent;
+var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+
+
+
+
+
+
+
+
+
+
 
 export {isWx}
 
@@ -35,3 +49,7 @@ export {math}
 export {isLogin}
 
 export {formatDate}
+
+export {isAndroid}
+
+export {isiOS}
