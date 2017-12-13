@@ -259,6 +259,7 @@
                         if(res.code === 4065) {
                             this.$toast(res.message);
                         }
+                        this.$toast(res.message);
                         this.$router.go(-1)
                     })
                 })
