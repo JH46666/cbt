@@ -118,10 +118,10 @@
                 <!-- tab-container -->
                 <mt-tab-container v-model="tabSelected" :swipeable="true">
                     <mt-tab-container-item id="1">
-                        <div class="detail_img_title" :class="{'on': tabFixed,'wxon': wxFixed}" ref="imgHeight">图片详情</div>
+                        <!-- <div class="detail_img_title" :class="{'on': tabFixed,'wxon': wxFixed}" ref="imgHeight">图片详情</div> -->
                         <div class="mint_cell_wrapper mint_cell_img_wrapper">
                             <mt-cell v-for="(item,index) in imgDetail" :key="index">
-                                <div class="mint_cell_img_title">茶韵展示</div>
+                                <div class="mint_cell_img_title">{{ item.title }}</div>
                                 <div class="mint_cell_img">
                                     <img :src="ur" v-for="(ur,k) in item.imgUrl" :key="k" />
                                 </div>
@@ -148,12 +148,12 @@
                                 </div>
                                 <div class="reguler_item" v-if="item.propName === '滋味'">
                                     <div>{{ item.propName }}</div>
-                                    <div class="x_star">
-                                        <span class="x_grey" :class="{on: item.propertiesVal.propVal === '偏淡' || item.propertiesVal.propVal === '一般' || item.propertiesVal.propVal === '浓' || item.propertiesVal.propVal === '很浓' || item.propertiesVal.propVal === '极浓'}">偏淡</span>
-                                        <span class="x_grey" :class="{on: item.propertiesVal.propVal === '一般' || item.propertiesVal.propVal === '浓' || item.propertiesVal.propVal === '很浓' || item.propertiesVal.propVal === '极浓'}">一般</span>
-                                        <span class="x_grey" :class="{on: item.propertiesVal.propVal === '浓' || item.propertiesVal.propVal === '很浓' || item.propertiesVal.propVal === '极浓'}">浓</span>
-                                        <span class="x_grey" :class="{on: item.propertiesVal.propVal === '很浓' || item.propertiesVal.propVal === '极浓'}">很浓</span>
-                                        <span class="x_grey" :class="{on: item.propertiesVal.propVal === '极浓'}">极浓</span>
+                                    <div class="z_star">
+                                        <span class="z_grey" :class="{on: item.propertiesVal.propVal === '偏淡' || item.propertiesVal.propVal === '一般' || item.propertiesVal.propVal === '浓' || item.propertiesVal.propVal === '很浓' || item.propertiesVal.propVal === '极浓'}">偏淡</span>
+                                        <span class="z_grey" :class="{on: item.propertiesVal.propVal === '一般' || item.propertiesVal.propVal === '浓' || item.propertiesVal.propVal === '很浓' || item.propertiesVal.propVal === '极浓'}">一般</span>
+                                        <span class="z_grey" :class="{on: item.propertiesVal.propVal === '浓' || item.propertiesVal.propVal === '很浓' || item.propertiesVal.propVal === '极浓'}">浓</span>
+                                        <span class="z_grey" :class="{on: item.propertiesVal.propVal === '很浓' || item.propertiesVal.propVal === '极浓'}">很浓</span>
+                                        <span class="z_grey" :class="{on: item.propertiesVal.propVal === '极浓'}">极浓</span>
                                     </div>
                                 </div>
                                 <div class="reguler_item"v-if="item.propName != '香气' && item.propName != '滋味'" >
