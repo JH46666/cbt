@@ -9,21 +9,21 @@
         <div class="activityt_date">
             <div class="activityt_date_wrapper">
                 <label for="activeStartDate">开始时间</label>
-                <input type="text" id="activeStartDate" placeholder="请选择" v-model="activeStartDate" @click="openPicker('start')" />
+                <input type="text" id="activeStartDate" readonly placeholder="请选择" v-model="activeStartDate" @click="openPicker('start')" />
                 <i class="iconfont">&#xe744;</i>
             </div>
         </div>
         <div class="activityt_date">
             <div class="activityt_date_wrapper border_none">
                 <label for="activeEndDate">结束时间</label>
-                <input type="text" id="activeEndDate" placeholder="请选择" v-model="activeEndDate"  @click="openPicker('end')" />
+                <input type="text" id="activeEndDate" readonly placeholder="请选择" v-model="activeEndDate"  @click="openPicker('end')" />
                 <i class="iconfont">&#xe744;</i>
             </div>
         </div>
         <div class="f5-2"></div>
         <div class="activity_name">
             <label for="activeLimit">每人限购</label>
-            <input type="age" id="activeLimit" placeholder="不填表示不限制" v-model="activeLimit" />
+            <input type="number" id="activeLimit" placeholder="不填表示不限制" v-model="activeLimit" @blur="longInt" />
         </div>
         <div class="f5-2"></div>
         <div class="activity_name">
@@ -41,8 +41,8 @@
                     </div>
                 </div>
                 <div class="activity_pro_item_bottom">
-                    <div><label>折扣：</label><input type="age" v-model="item.discount" @blur="toFixedTwo(item,'discount')" /></div>
-                    <div><label>折扣价：</label><input type="age" v-model="item.specialPrice" @blur="toFixedTwo(item,'specialPrice')" /></div>
+                    <div><label>折扣：</label><input type="number" v-model="item.discount" @blur="toFixedTwo(item,'discount')" /></div>
+                    <div><label>折扣价：</label><input type="number" v-model="item.specialPrice" @blur="toFixedTwo(item,'specialPrice')" /></div>
                     <i class="iconfont" @click="deteledPro(index)">&#xe60d;</i>
                 </div>
             </div>
@@ -74,11 +74,11 @@
                                 <p class="item_text">{{ item.proName }}</p>
                                 <p class="item_price">￥ {{ item.proPrice }}</p>
                                 <div class="item_bottom">
-                                    <div class="selled">
-                                        已售<span v-if="item.salesNum">{{ item.salesNum }}</span><span v-else> 0 </span>
-                                    </div>
                                     <div class="totaled">
                                         库存<span>{{ item.stockNum }}</span>
+                                    </div>
+                                    <div class="selled">
+                                        已售<span v-if="item.salesNum">{{ item.salesNum }}</span><span v-else> 0 </span>
                                     </div>
                                 </div>
                             </div>
@@ -139,6 +139,9 @@ export default {
         })
     },
     methods: {
+        longInt() {
+            this.activeLimit = Math.floor(this.activeLimit);
+        },
         getDetail(ruleid) {
             let data = {
                     sysId: 1,

@@ -46,7 +46,7 @@
         </mt-popup>
         <div class="detail_wrapper" @scroll="docScroll" ref="wrapper">
             <div class="goIndex" v-if="!(tabFixed || wxFixed)" @click="$router.push({name: '首页'})">
-                <span>去首页</span>
+                <span>回首页</span>
                 <i class="iconfont">&#xe61b;</i>
             </div>
             <div class="top" :class="{on: tabFixed || wxFixed}" @click="topMethod">
