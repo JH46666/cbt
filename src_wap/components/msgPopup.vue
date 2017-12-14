@@ -55,14 +55,14 @@
         },
         methods:{
             close(){
-                this.$refs.imgcode.innerHTML = `<img src="api/recaptcha/getReCaptha?v=${Math.random()*100}" alt="">`;
+                this.$refs.imgcode.innerHTML = `<img src="api/oteao/recaptcha/getReCaptha?v=${Math.random()*100}" alt="">`;
                 this.codes = [{code:''},{code:''},{code:''},{code:''}];
                 this.curIndex = 0;
                 this.$emit('closePopup');
             },
             //获取图片验证码
             getCode(){
-                let str = `<img src="api/recaptcha/getReCaptha?v=${Math.random()*100}" alt="">`;
+                let str = `<img src="api/oteao/recaptcha/getReCaptha?v=${Math.random()*100}" alt="">`;
                 this.$refs.imgcode.innerHTML = str;
                 this.$nextTick(() => {
                     this.$refs.forms.childNodes[this.curIndex].focus();
