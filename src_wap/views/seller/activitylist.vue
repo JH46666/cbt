@@ -225,7 +225,14 @@ export default {
     },
     mounted () {
        this.wxFlag = this.$tool.isWx;
-  　}
+  　},
+    head: {
+      title() {
+          return {
+              inner : '活动列表'
+          }
+      }
+    }
 }
 </script>
 

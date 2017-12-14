@@ -8,11 +8,11 @@
                     <div class="item-caption flex">
                         <div class="cap-l flex flex-1 align_items_c">
                             <label class="check-cir" :class="{'checked':item.checked}" @click="item.checked = !item.checked"></label>
-                            <span>创建 {{item.createTime}}</span>
+                            <span>上架 {{item.createTime}}</span>
                         </div>
                         <div class="cap-r algin_r">
-                            <span class="saled">已售<span class="number">{{item.salesNum}}</span></span>
-                            <span class="stock">库存<span class="number">{{item.stockNum}}</span></span>
+                            <span class="saled">已售<span class="number" v-if="item.salesNum"> {{item.salesNum}} </span><span class="number" v-else> 0 </span></span>
+                            <span class="stock">库存<span class="number"> {{item.stockNum}} </span></span>
                         </div>
                     </div>
                     <!-- 中间商品 -->
@@ -36,7 +36,7 @@
         <div class="flex fix-bottom align_items_c">
             <div class="flex-1 flex align_items_c" style="padding-left: .3rem;">
                 <label class="check-cir" :class="{checked: isAll}" @click="checkedAll"></label>
-                <span>已选（<span>{{ checkedNum }}</span>）</span>
+                <span>已选 (<span>{{ checkedNum }}</span>)</span>
             </div>
             <a class="delete-btn" href="javascript:void(0);" @click="deleteMethod" v-if="state === 'OFF_SHELF'">删除</a>
             <a class="rackup-btn" href="javascript:void(0);" @click="downMethod" v-if="state === 'ON_SHELF'">下架</a>
@@ -246,6 +246,13 @@ import { Toast } from 'mint-ui';
                     return Number(num).toFixed(2);
                 }
             },
+        },
+        head: {
+            title() {
+                return {
+                    inner : '批量处理'
+                }
+            }
         }
     }
 </script>

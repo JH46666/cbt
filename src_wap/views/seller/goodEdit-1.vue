@@ -172,10 +172,11 @@ export default {
             twoTypeList: [],
             clickSure: true,
             device: 'WAP',
-            proSku: 0,
+            proSku: null,
             detailObj: {},
             parentCatId: 0,
             getProvList: [],
+            state: '',
         }
     },
     watch: {
@@ -197,7 +198,7 @@ export default {
                             for(let i=0;i<this.resize.proValList.length;i++){
                                 for(let j=0;j<this.getProvList.length;j++){
                                     if(this.resize.proValList[i].id == this.getProvList[j].id){
-                                        this.resize.proValList[i].proValId = this.getProvList[j].id;
+                                        this.resize.proValList[i].proValId = this.getProvList[j].content;
                                         this.resize.proValList[i].proIndex = i;
                                         this.resize.proValList[i].proVal = this.getProvList[j].selval;
                                         for(let obj of this.resize.proValList[i].propValList){
@@ -351,7 +352,10 @@ export default {
         },
         goStep3() {
             this.$router.push({
-                name: '商品编辑-2'
+                name: '商品编辑-2',
+                query: {
+                    state: this.state
+                }
             })
         },
         selectRightList(index) {
@@ -503,82 +507,98 @@ export default {
         this.wxFlag = this.$tool.isWx;
     },
     created() {
-        this.proSku = this.$route.query.proSku;
-        this.resize.mainId = this.$route.query.edit;
-        this.getDetail().then((res) => {
-            this.detailObj = res.data;
-            this.resize.form.goodsName = this.detailObj.productInfo.proName;
-            this.resize.form.goodsDw = this.detailObj.productInfo.unint;
-            this.resize.form.goodsBrand = this.detailObj.productInfo.brandName;
-            this.resize.form.goodsJz = this.detailObj.productInfo.netWeight;
-            this.resize.form.goodsMz = this.detailObj.productInfo.weight;
-            this.resize.form.goodsSx = this.detailObj.productPrice[0].price;
-            this.resize.form.goodTypes = this.detailObj.productInfo.catName;
-            this.resize.form.goodsPtsj = this.detailObj.productPrice[1].price;
-            this.resize.form.goodsSell = this.detailObj.productExtInfo.reason;
-            for(let obj of this.detailObj.productImgList){
-                this.resize.mainImg.push({
-                    'imgSrc': obj.imgUrl
-                })
-            }
-            this.getCatDetail(this.detailObj.productInfo.catId).then((reses) =>{
-                 this.parentCatId = reses.data.parentId;
-                 this.resize.form.goodTypes = reses.data.parentName+'-'+this.detailObj.productInfo.catName;
-                 for(let i=0;i<this.oneTypeList.length;i++){
-                     if(this.oneTypeList[i].id == this.parentCatId){
-                         this.resize.oneIndex = i;
-                         this.resize.oneClass = this.oneTypeList[i].id;
-                         this.selectOneType(this.resize.oneClass,this.resize.oneIndex);
-                         this.getTypeList(3).then((ress) => {
-                             let parentList = ress.data;
-                             for(let obj of parentList){
-                                 this.twoTypeList.push({
-                                     id: obj.id,
-                                     name: obj.catName
-                                 })
-                             }
+        if(!this.resize.mainId){
+            this.proSku = this.$route.query.proSku;
+            this.resize.mainId = this.$route.query.edit;
+            this.state = this.$route.query.state;
+            this.getDetail().then((res) => {
+                this.detailObj = res.data;
+                this.resize.form.goodsName = this.detailObj.productInfo.proName;
+                this.resize.form.goodsDw = this.detailObj.productInfo.unint;
+                this.resize.form.goodsBrand = this.detailObj.productInfo.brandName ? this.detailObj.productInfo.brandName : '其它品牌';
+                this.resize.form.goodsJz = this.detailObj.productInfo.netWeight;
+                this.resize.form.goodsMz = this.detailObj.productInfo.weight;
+                this.resize.form.goodsSx = this.detailObj.productPrice[0].price;
+                this.resize.form.goodTypes = this.detailObj.productInfo.catName;
+                this.resize.form.goodsPtsj = this.detailObj.productPrice[1].price;
+                this.resize.form.goodsSell = this.detailObj.productExtInfo.reason;
+                this.resize.form.goodsKc = this.detailObj.productExtInfo.stockNum;
+                this.resize.oneImgFile = [null];
+                this.resize.secondImgFile = [null];
+                this.resize.thirdImgFile = [null];
+                for(let obj of this.detailObj.productImgList){
+                    this.resize.mainImg.push({
+                        'imgSrc': obj.imgUrl
+                    })
+                    this.resize.mainImgFile.push(null);
+                }
+                this.getCatDetail(this.detailObj.productInfo.catId).then((reses) =>{
+                     this.parentCatId = reses.data.parentId;
+                     this.resize.form.goodTypes = reses.data.parentName+'-'+this.detailObj.productInfo.catName;
+                     for(let i=0;i<this.oneTypeList.length;i++){
+                         if(this.oneTypeList[i].id == this.parentCatId){
+                             this.resize.oneIndex = i;
+                             this.resize.oneClass = this.oneTypeList[i].id;
+                             this.selectOneType(this.resize.oneClass,this.resize.oneIndex);
+                             this.getTypeList(3).then((ress) => {
+                                 let parentList = ress.data;
+                                 for(let obj of parentList){
+                                     this.twoTypeList.push({
+                                         id: obj.id,
+                                         name: obj.catName
+                                     })
+                                 }
 
-                         })
+                             })
+                         }
                      }
-                 }
-                 this.resize.twoClass = this.detailObj.productInfo.catId;
+                     this.resize.twoClass = this.detailObj.productInfo.catId;
+                })
+                this.getAttrOrImg().then((rs) => {
+                    let proArr = rs.data.propValList;
+                    for(let obj of proArr){
+                        this.getProvList.push({
+                            id: obj.propertiesVal.catPropId,
+                            content:  obj.propertiesVal.id,
+                            selval: obj.propertiesVal.propVal
+                        })
+                    }
+                    // for(let i=0;i<this.getProvList.length;i++){
+                    //     for(let j=0;j<this.resize.proValList.length;j++){
+                    //         if(this.getProvList[i].id == this.resize.proValList[j].id){
+                    //             console.log(this.getProvList[i].content,this.getProvList[i].selval);
+                    //             this.resize.proValList[j].proValId = this.getProvList[i].content;
+                    //             this.resize.proValList[j].proVal = this.getProvList[i].selval;
+                    //         }
+                    //     }
+                    // }
+                    let content = JSON.parse(rs.data.content);
+                    this.resize.imgs.detailImg1 = content.oneImgContent.imgUrl[0];
+                    this.resize.textMs1 = content.oneImgContent.content;
+                    this.resize.imgs.detailImg2 = content.twoImgContent.imgUrl[0];
+                    this.resize.textMs2 = content.twoImgContent.content;
+                    this.resize.imgs.detailImg3 = content.threeImgContent.imgUrl[0];
+                    this.resize.textMs3 = content.threeImgContent.content;
+                    for(let obj of content.fourImgContent.imgUrl){
+                        this.resize.imgsStep4.push(obj)
+                        this.resize.fourImgFile.push(null);
+                    }
+                    this.resize.textMs4 = content.fourImgContent.content;
+                })
+                for(let i=0;i<this.brandList.length;i++){
+                    if(this.brandList[i].name == this.resize.form.goodsBrand){
+                        this.resize.selIndex.pp = i;
+                        this.resize.selId.pp = this.brandList[i].id;
+                    }
+                }
+                for(let i=0;i<this.danWei.length;i++){
+                    if(this.danWei[i].name == this.resize.form.goodsDw){
+                        this.resize.selIndex.dw = i;
+                        this.resize.selId.dw = this.danWei[i].id;
+                    }
+                }
             })
-            this.getAttrOrImg().then((rs) => {
-                let proArr = rs.data.propValList;
-                for(let obj of proArr){
-                    this.getProvList.push({
-                        id: obj.propertiesVal.catPropId,
-                        content:  obj.propertiesVal.id,
-                        selval: obj.propertiesVal.propVal
-                    })
-                }
-                let content = JSON.parse(rs.data.content);
-                this.resize.imgs.detailImg1 = content.oneImgContent.imgUrl[0];
-                this.resize.textMs1 = content.oneImgContent.content;
-                this.resize.imgs.detailImg2 = content.twoImgContent.imgUrl[0];
-                this.resize.textMs2 = content.twoImgContent.content;
-                this.resize.imgs.detailImg3 = content.threeImgContent.imgUrl[0];
-                this.resize.textMs3 = content.threeImgContent.content;
-                for(let obj of content.fourImgContent.imgUrl){
-                    this.resize.imgsStep4.push({
-                        imgSrc: obj
-                    })
-                }
-                this.resize.textMs4 = content.fourImgContent.content;
-            })
-            for(let i=0;i<this.brandList.length;i++){
-                if(this.brandList[i].name == this.resize.form.goodsBrand){
-                    this.resize.selIndex.pp = i;
-                    this.resize.selId.pp = this.brandList[i].id;
-                }
-            }
-            for(let i=0;i<this.danWei.length;i++){
-                if(this.danWei[i].name == this.resize.form.goodsDw){
-                    this.resize.selIndex.dw = i;
-                    this.resize.selId.dw = this.danWei[i].id;
-                }
-            }
-        })
+        }
         this.getOneTypeList().then((res) => {
             let parentList = res.data;
             for(let obj of parentList){
@@ -620,6 +640,13 @@ export default {
                     vm.router.push('/login')
                 })
             })
+        }
+    },
+    head: {
+        title() {
+            return {
+                inner : '商品修改'
+            }
         }
     }
 }

@@ -50,18 +50,18 @@
                         </div>
                         <div class="item">
                             <label class="item-left" for="7">
-                                净重：
+                                净重(g)：
                             </label>
                             <div class="item-right">
-                                <input type="number" id="7" placeholder="必填项，请输入商品净重展示使用（g）" v-model="resize.form.goodsJz" />
+                                <input type="number" id="7" placeholder="必填项，商品展示使用" v-model="resize.form.goodsJz" />
                             </div>
                         </div>
                         <div class="item">
                             <label class="item-left" for="8">
-                                毛重：
+                                毛重(g)：
                             </label>
                             <div class="item-right">
-                                <input type="number" id="8" placeholder="必填项，运费计算使用（g）" v-model="resize.form.goodsMz" @blur="toFixedZero(resize.form.goodsMz,'goodsMz')" />
+                                <input type="number" id="8" placeholder="必填项，运费计算使用" v-model="resize.form.goodsMz" @blur="toFixedZero(resize.form.goodsMz,'goodsMz')" />
                             </div>
                         </div>
                         <div class="item">
@@ -448,6 +448,13 @@ export default {
                     vm.router.push('/login')
                 })
             })
+        }
+    },
+    head: {
+        title() {
+            return {
+                inner : '新品上架'
+            }
         }
     }
 }

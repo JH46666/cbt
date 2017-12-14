@@ -18,15 +18,15 @@
         <!-- tab按钮 -->
         <div class="tab-btn-wrapper" ref="tabs">
             <div class="flex">
-                <a class="flex-1" :class="{on: tabId == 'yes'}" @click="selTab('yes')" href="javascript:void(0);">出售中（{{ onShelf.totalPage }}）</a>
-                <a class="flex-1" :class="{on: tabId == 'no'}" @click="selTab('no')" href="javascript:void(0);">未上架（{{ offShelf.totalPage }}）</a>
+                <a class="flex-1" :class="{on: tabId == 'yes'}" @click="selTab('yes')" href="javascript:void(0);">已上架({{ onShelf.totalPage }})</a>
+                <a class="flex-1" :class="{on: tabId == 'no'}" @click="selTab('no')" href="javascript:void(0);">未上架({{ offShelf.totalPage }})</a>
             </div>
         </div>
         <!-- 排序条件 -->
         <div class="sort-wrapper flex" :class="{'fixed-sort': fixedFlag,'wx-fixed':wxFixedFlag}" v-show="!isEmpty">
             <label class="flex-1 sort-item" :class="{on:sortCondition=='1'}">
                 {{ selectText }}
-                <input type="radio" name="" value="1" hidden v-model="sortCondition" @click="descFlag = !descFlag">
+                <input type="radio" name="" value="1" hidden v-model="sortCondition" @click="resMethod('1')">
                 <span class="sort-icons">
                     <i class="iconfont sort-asce" :class="{on: descFlag}">&#xe610;</i>
                     <i class="iconfont sort-desc" :class="{on: !descFlag}">&#xe950;</i>
@@ -34,7 +34,7 @@
             </label>
             <label class="flex-1 sort-item" :class="{on:sortCondition=='2'}">
                 销量
-                <input type="radio" name="" value="2" hidden v-model="sortCondition" @click="descFlag = !descFlag">
+                <input type="radio" name="" value="2" hidden v-model="sortCondition" @click="resMethod('2')">
                 <span class="sort-icons">
                     <i class="iconfont sort-asce" :class="{on: descFlag}">&#xe610;</i>
                     <i class="iconfont sort-desc" :class="{on: !descFlag}">&#xe950;</i>
@@ -42,7 +42,7 @@
             </label>
             <label class="flex-1 sort-item" :class="{on:sortCondition=='3'}">
                 库存
-                <input type="radio" name="" value="3" hidden v-model="sortCondition" @click="descFlag = !descFlag">
+                <input type="radio" name="" value="3" hidden v-model="sortCondition" @click="resMethod('3')">
                 <span class="sort-icons">
                     <i class="iconfont sort-asce" :class="{on: descFlag}">&#xe610;</i>
                     <i class="iconfont sort-desc" :class="{on: !descFlag}">&#xe950;</i>
@@ -52,15 +52,15 @@
         <!-- 商品 -->
         <div class="tab-content-wrapper">
             <div v-show="tabId == 'yes'" class="rack-up">
-                <div class="good-item" v-if="onShelf.listData.length>0" v-for="item in onShelf.listData">
+                <div class="good-item" v-if="onShelf.listData.length>0" v-for="(item,index) in onShelf.listData" :key="index">
                     <!-- 头部 caption -->
                     <div class="item-caption flex">
                         <div class="cap-l flex flex-1 align_items_c">
-                            <span>创建 {{item.createTime}}</span>
+                            <span>上架 {{item.createTime}}</span>
                         </div>
                         <div class="cap-r algin_r">
-                            <span class="saled">已售<span class="number" v-if="item.salesNum">{{item.salesNum}}</span><span class="number" v-else>0</span></span>
-                            <span class="stock">库存<span class="number">{{item.stockNum}}</span></span>
+                            <span class="saled">已售<span class="number" v-if="item.salesNum"> {{item.salesNum}} </span><span class="number" v-else> 0 </span></span>
+                            <span class="stock">库存<span class="number"> {{item.stockNum}} </span></span>
                         </div>
                     </div>
                     <!-- 中间商品 -->
@@ -77,7 +77,7 @@
                     <!-- 商品操作按钮 -->
                     <div class="flex options">
                         <a href="javascript:void(0);" class="flex-1 algin_c" @click="$router.push({name: '商品详情',query: {proSku:item.proSku}})"><i class="iconfont">&#xe681;</i>预览</a>
-                        <a href="javascript:void(0);" class="flex-1 algin_c" @click="$router.push({name: '商品编辑-1',query: {edit:item.proId,proSku: item.proSku,state: 'ON_SHELF'}})"><i class="iconfont">&#xe682;</i>编辑</a>
+                        <a href="javascript:void(0);" class="flex-1 algin_c" @click="goEditPage(item,'ON_SHELF')"><i class="iconfont">&#xe682;</i>编辑</a>
                         <a href="javascript:void(0);" class="flex-1 algin_c" @click="stateMethod(item.proExtId,'down')"><i class="iconfont">&#xe683;</i>下架</a>
                     </div>
                 </div>
@@ -92,16 +92,16 @@
                 </div>
             </div>
             <div v-show="tabId == 'no'" class="no-shelves">
-                <div class="good-item" v-for="item in offShelf.listData" v-if="offShelf.listData.length>0">
+                <div class="good-item" v-for="(item,index) in offShelf.listData" v-if="offShelf.listData.length>0" :key="index">
                     <!-- 头部 caption -->
                     <div class="item-caption flex">
                         <div class="cap-l flex flex-1 align_items_c">
-                            <!-- <label class="check-cir" :class="{'checked':item.checked}" @click="item.checked = !item.checked"></label> -->
+                            <label class="check-cir" :class="{'checked':item.checked}" @click="item.checked = !item.checked"></label>
                             <span>创建 {{item.createTime}}</span>
                         </div>
                         <div class="cap-r algin_r">
-                            <span class="saled">已售<span class="number" v-if="item.salesNum">{{item.salesNum}}</span><span class="number" v-else>0</span></span>
-                            <span class="stock">库存<span class="number">{{item.stockNum}}</span></span>
+                            <span class="saled">已售<span class="number" v-if="item.salesNum"> {{item.salesNum}} </span><span class="number" v-else> 0 </span></span>
+                            <span class="stock">库存<span class="number"> {{item.stockNum}} </span></span>
                         </div>
                     </div>
                     <!-- 中间商品 -->
@@ -118,7 +118,7 @@
                     <!-- 商品操作按钮 -->
                     <div class="flex options">
                         <a href="javascript:void(0);" class="flex-1 algin_c" @click="$router.push({name: '商品详情',query: {proSku:item.proSku}})"><i class="iconfont">&#xe681;</i>预览</a>
-                        <a href="javascript:void(0);" class="flex-1 algin_c" @click="$router.push({name: '商品编辑-1',query: {edit:item.proId,proSku:item.proSku,state: 'OFF_SHELF'}})"><i class="iconfont">&#xe682;</i>编辑</a>
+                        <a href="javascript:void(0);" class="flex-1 algin_c" @click="goEditPage(item,'OFF_SHELF')"><i class="iconfont">&#xe682;</i>编辑</a>
                         <a href="javascript:void(0);" class="flex-1 algin_c" @click="stateMethod(item.proExtId,'up')"><i class="iconfont">&#xe683;</i>上架</a>
                     </div>
                 </div>
@@ -134,7 +134,7 @@
             </div>
         </div>
         <!-- 底部fixed栏 -->
-        <div class="flex fix-bottom align_items_c">
+        <div class="flex fix-bottom align_items_c" v-show="tabId === 'yes'">
             <div class="seller-center" @click="$router.push({name: '卖家中心'})">
                 <i class="iconfont">&#xe676;</i>
                 <p>卖家中心</p>
@@ -142,24 +142,25 @@
             <a v-show="!isEmpty" class="flex-1 noshelves-btn batch-btn" href="javascript:void(0);" @click="goBrect">批量处理</a>
             <a class="flex-1 noshelves-btn created-btn" href="javascript:void(0);" @click="goCreate">创建商品</a>
         </div>
-        <!-- 底部fixed栏 -->
-        <!-- <div class="fix-bottom">
-            <div v-if="isEmpty" class="flex align_items_c">
-                <div class="seller-center">
-                    <i class="iconfont">&#xe676;</i>
-                    <p>卖家中心</p>
-                </div>
-                <a class="flex-1 noshelves-btn created-btn" href="javascript:void(0);" @click="$router.push({name: '新品上架-1'})">创建商品</a>
-            </div>
-            <div v-else class="flex align_items_c pd_36">
-                <div class="flex-1 flex align_items_c">
-                    <label class="check-cir" @click="checkedAll" :class="{'checked': isAll}"></label>
-                    <span>已选（<span>{{ checkedNum }}</span>）</span>
-                </div>
-                <a class="delete-btn" href="javascript:void(0);" @click="deleteMethod">删除</a>
-                <a class="rackup-btn" href="javascript:void(0);" @click="plusMethod">上架</a>
-            </div>
-        </div> -->
+         <!-- 底部fixed栏 -->
+         <div class="fix-bottom" v-show="tabId == 'no'">
+             <div v-if="isEmpty" class="flex align_items_c">
+                 <div class="seller-center">
+                     <i class="iconfont">&#xe676;</i>
+                     <p>卖家中心</p>
+                 </div>
+                 <a class="flex-1 noshelves-btn created-btn" href="javascript:void(0);">创建商品</a>
+             </div>
+             <div v-else class="flex align_items_c pd_36">
+                 <div class="flex-1 flex align_items_c">
+                     <label class="check-cir" @click="checkedAll" :class="{checked: isAll}"></label>
+                     <span>已选(<span>{{ checkedNum }}</span>)</span>
+                 </div>
+                 <a class="delete-btn" href="javascript:void(0);" @click="deleteMethod">删除</a>
+                 <a class="rackup-btn" href="javascript:void(0);" @click="plusMethod">上架</a>
+             </div>
+         </div>
+
     </div>
 </template>
 <script>
@@ -180,7 +181,7 @@ import $api from 'api';
                 pageSize: 20,
                 totalSize: 0,
                 currentPage: 1,
-                status: {
+                state: {
                     0: 'ON_SHELF',
                     1: 'OFF_SHELF'
                 },
@@ -216,6 +217,12 @@ import $api from 'api';
             })
             if(this.$route.query.state == undefined || this.$route.query.state === 'ON_SHELF'){
                 this.tabId = 'yes';
+                this.$router.replace({
+                    name: '商品管理',
+                    query: {
+                        state: 'ON_SHELF'
+                    }
+                })
             }else{
                 this.tabId = 'no';
                 this.selectText = '创建时间';
@@ -257,6 +264,67 @@ import $api from 'api';
             }
         },
         methods:{
+            resMethod(num) {
+                if(this.descFlag){
+                    this.descFlag = false;
+                }else{
+                    this.descFlag = true;
+                }
+                if(this.descFlag){
+                    if(this.$route.query.state == undefined || this.$route.query.state === 'ON_SHELF'){
+                        let state = 'ON_SHELF';
+                        this.onShelf.orderBy = 'asc';
+                        this.onShelf.currentPage = 1;
+                        this.getList(this.onShelf.orderBy,Number(num),this.onShelf.currentPage,state).then((res) => {
+                            this.onShelf.listData = res.data;
+                            this.onShelf.totalPage = res.total_record;
+                        })
+                    }else{
+                        let state = 'OFF_SHELF';
+                        this.offShelf.orderBy = 'asc';
+                        this.offShelf.currentPage = 1;
+                        this.getList(this.offShelf.orderBy,Number(num),this.offShelf.currentPage,state).then((res) => {
+                            this.offShelf.listData = res.data;
+                            this.offShelf.totalPage = res.total_record;
+                            for(let obj of this.offShelf.listData){
+                                this.$set(obj,'checked',false)
+                            }
+                        })
+                    }
+                }else{
+                    if(this.$route.query.state == undefined || this.$route.query.state === 'ON_SHELF'){
+                        let state = 'ON_SHELF';
+                        this.onShelf.orderBy = 'desc';
+                        this.onShelf.currentPage = 1;
+                        this.getList(this.onShelf.orderBy,Number(num),this.onShelf.currentPage,state).then((res) => {
+                            this.onShelf.listData = res.data;
+                            this.onShelf.totalPage = res.total_record;
+                        })
+                    }else{
+                        let state = 'OFF_SHELF';
+                        this.offShelf.orderBy = 'desc';
+                        this.offShelf.currentPage = 1;
+                        this.getList(this.offShelf.orderBy,Number(num),this.offShelf.currentPage,state).then((res) => {
+                            this.offShelf.listData = res.data;
+                            this.offShelf.totalPage = res.total_record;
+                            for(let obj of this.offShelf.listData){
+                                this.$set(obj,'checked',false)
+                            }
+                        })
+                    }
+                }
+            },
+            goEditPage(item,type) {
+                this.$store.commit('SET_RESIZE');
+                this.$router.push({
+                    name: '商品编辑-1',
+                    query: {
+                        edit:item.proId,
+                        proSku: item.proSku,
+                        state: type
+                    }
+                })
+            },
             goCreate() {
                 this.$store.commit('SET_RESIZE');
                 this.$router.push({
@@ -456,10 +524,6 @@ import $api from 'api';
             clearTxt(){
                 this.searchTxt = "";
             },
-            //升序或降序
-            ascOrDes(){
-
-            },
             //保留两位小数
             toFixed(num) {
                 if(isNaN(num)) {
@@ -486,50 +550,6 @@ import $api from 'api';
                 }
             }
         },
-        watch:{
-            sortCondition(val) {
-                this.descFlag = false;
-            },
-            descFlag(val) {
-                if(val){
-                    if(this.$route.query.state != undefined || this.$route.query.state === 'ON_SHELF'){
-                        let state = 'ON_SHELF';
-                        this.onShelf.orderBy = 'desc';
-                        this.onShelf.currentPage = 1;
-                        this.getList(this.onShelf.orderBy,Number(this.sortCondition),this.onShelf.currentPage,'ON_SHELF').then((res) => {
-                            this.onShelf.listData = res.data;
-                            this.onShelf.totalPage = res.total_record;
-                        })
-                    }else{
-                        let state = 'OFF_SHELF';
-                        this.offShelf.orderBy = 'desc';
-                        this.offShelf.currentPage = 1;
-                        this.getList(this.offShelf.orderBy,Number(this.sortCondition),this.offShelf.currentPage,'ON_SHELF').then((res) => {
-                            this.offShelf.listData = res.data;
-                            this.offShelf.totalPage = res.total_record;
-                        })
-                    }
-                }else{
-                    if(this.$route.query.state != undefined || this.$route.query.state === 'ON_SHELF'){
-                        let state = 'ON_SHELF';
-                        this.onShelf.orderBy = 'asc';
-                        this.onShelf.currentPage = 1;
-                        this.getList(this.onShelf.orderBy,Number(this.sortCondition),this.onShelf.currentPage,'ON_SHELF').then((res) => {
-                            this.onShelf.listData = res.data;
-                            this.onShelf.totalPage = res.total_record;
-                        })
-                    }else{
-                        let state = 'OFF_SHELF';
-                        this.offShelf.orderBy = 'asc';
-                        this.offShelf.currentPage = 1;
-                        this.getList(this.offShelf.orderBy,Number(this.sortCondition),this.offShelf.currentPage,'ON_SHELF').then((res) => {
-                            this.offShelf.listData = res.data;
-                            this.offShelf.totalPage = res.total_record;
-                        })
-                    }
-                }
-            }
-        },
         beforeRouteEnter(to, from, next) {
             if(store.state.member.member.id) {
                 next();
@@ -541,6 +561,13 @@ import $api from 'api';
                         vm.router.push('/login')
                     })
                 })
+            }
+        },
+        head: {
+            title() {
+                return {
+                    inner : '商品管理'
+                }
             }
         }
     }

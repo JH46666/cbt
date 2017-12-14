@@ -138,7 +138,7 @@
             <mt-button type="primary" @click="$router.go(-1)">上一步</mt-button>
             <mt-button type="primary" :disabled="disabledBol" @click="saveMethod('0')">保存</mt-button>
         </div>
-        <div class="save-rackup">
+        <div class="save-rackup" v-if="onlySaveBtn">
             <mt-button type="primary" :disabled="disabledBol" @click="saveMethod('1')">保存并上架</mt-button>
         </div>
         <!-- 成功上架弹窗 -->
@@ -182,6 +182,7 @@ import $api from 'api';
                 path: 'test_path/',
                 flag: 0,
                 sussTips: '成功上架！',
+                onlySaveBtn: false,
             }
         },
         computed:{
@@ -210,11 +211,9 @@ import $api from 'api';
             this.urls.one = [this.resize.imgs.detailImg1];
             this.urls.two = [this.resize.imgs.detailImg2];
             this.urls.third = [this.resize.imgs.detailImg3];
-            for(let obj of this.resize.imgsStep4){
-                this.urls.four.push(obj.imgSrc)
-            }
-            for(let obj of this.resize.mainImg){
-                this.urls.main.push(obj.imgSrc)
+            let state = this.$route.query.state;
+            if(state != 'ON_SHELF'){
+                this.onlySaveBtn = true;
             }
         },
         methods:{
@@ -263,6 +262,7 @@ import $api from 'api';
                     third: 0,
                     four: 0
                 }
+                console.log(flags);
                 let isFlag = (resolve,reject) => {
                     if( flags.main != this.resize.mainImgFile.length) return;
                     if( flags.one != this.resize.oneImgFile.length) return;
@@ -281,64 +281,91 @@ import $api from 'api';
                             bucket: this.bucket
                         })
                         for(let i=0; i<this.resize.mainImgFile.length; i++){            // 主图
-                            let random_name =res.data.basePath + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.mainImgFile[i].name.split('.').pop()
-                            client.multipartUpload(random_name, this.resize.mainImgFile[i]).then((results) => {
-                                const url = '//img0.oteao.com/'+ results.name;
-                                this.urls.main.push(url);
+                            if(this.resize.mainImgFile[i]){
+                                let random_name =res.data.basePath + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.mainImgFile[i].name.split('.').pop()
+                                client.multipartUpload(random_name, this.resize.mainImgFile[i]).then((results) => {
+                                    const url = '//img0.oteao.com/'+ results.name;
+                                    this.urls.main.push(url);
+                                    flags.main++;
+                                    isFlag(resolve,reject);
+                                }).catch((err) => {
+                                    flags.main++;
+                                    isFlag(resolve,reject);
+                                })
+                            }else{
+                                this.urls.main.push(this.resize.mainImg[i].imgSrc);
                                 flags.main++;
                                 isFlag(resolve,reject);
-                            }).catch((err) => {
-                                flags.main++;
-                                isFlag(resolve,reject);
-                            })
+                            }
                         }
                         for(let i=0; i<this.resize.oneImgFile.length; i++){            // 1图
-                            let random_name = res.data.basePath + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.oneImgFile[i].name.split('.').pop()
-                            client.multipartUpload(random_name, this.resize.oneImgFile[i]).then((results) => {
-                                const url = '//img0.oteao.com/'+ results.name;
-                                this.urls.one.push(url);
+                            if(this.resize.oneImgFile[i]){
+                                let random_name = res.data.basePath + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.oneImgFile[i].name.split('.').pop()
+                                client.multipartUpload(random_name, this.resize.oneImgFile[i]).then((results) => {
+                                    const url = '//img1.oteao.com/'+ results.name;
+                                    this.urls.one = [url];
+                                    flags.one++;
+                                    isFlag(resolve,reject);
+                                }).catch((err) => {
+                                    flags.one++;
+                                    isFlag(resolve,reject);
+                                })
+                            }else{
                                 flags.one++;
                                 isFlag(resolve,reject);
-                            }).catch((err) => {
-                                flags.one++;
-                                isFlag(resolve,reject);
-                            })
+                            }
                         }
                         for(let i=0; i<this.resize.secondImgFile.length; i++){            // 2图
-                            let random_name = res.data.basePath + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.secondImgFile[i].name.split('.').pop()
-                            client.multipartUpload(random_name, this.resize.secondImgFile[i]).then((results) => {
-                                const url = '//img0.oteao.com/'+ results.name;
-                                this.urls.two.push(url);
+                            if(this.resize.secondImgFile[i]){
+                                let random_name = res.data.basePath + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.secondImgFile[i].name.split('.').pop()
+                                client.multipartUpload(random_name, this.resize.secondImgFile[i]).then((results) => {
+                                    const url = '//img2.oteao.com/'+ results.name;
+                                    this.urls.two = [url];
+                                    flags.two++;
+                                    isFlag(resolve,reject);
+                                }).catch((err) => {
+                                    flags.two++;
+                                    isFlag(resolve,reject);
+                                })
+                            }else{
                                 flags.two++;
                                 isFlag(resolve,reject);
-                            }).catch((err) => {
-                                flags.two++;
-                                isFlag(resolve,reject);
-                            })
+                            }
                         }
                         for(let i=0; i<this.resize.thirdImgFile.length; i++){            // 3图
-                            let random_name = res.data.basePath + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.thirdImgFile[i].name.split('.').pop()
-                            client.multipartUpload(random_name, this.resize.thirdImgFile[i]).then((results) => {
-                                const url = '//img0.oteao.com/'+ results.name;
-                                this.urls.third.push(url);
+                            if(this.resize.thirdImgFile[i]){
+                                let random_name = res.data.basePath + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.thirdImgFile[i].name.split('.').pop()
+                                client.multipartUpload(random_name, this.resize.thirdImgFile[i]).then((results) => {
+                                    const url = '//img3.oteao.com/'+ results.name;
+                                    this.urls.third = [url];
+                                    flags.third++;
+                                    isFlag(resolve,reject);
+                                }).catch((err) => {
+                                    flags.third++;
+                                    isFlag(resolve,reject);
+                                })
+                            }else{
                                 flags.third++;
                                 isFlag(resolve,reject);
-                            }).catch((err) => {
-                                flags.third++;
-                                isFlag(resolve,reject);
-                            })
+                            }
                         }
                         for(let i=0; i<this.resize.fourImgFile.length; i++){            // 4图
-                            let random_name = res.data.basePath + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.fourImgFile[i].name.split('.').pop()
-                            client.multipartUpload(random_name, this.resize.fourImgFile[i]).then((results) => {
-                                const url = '//img0.oteao.com/'+ results.name;
-                                this.urls.four.push(url);
+                            if(this.resize.fourImgFile[i]){
+                                let random_name = res.data.basePath + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.fourImgFile[i].name.split('.').pop()
+                                client.multipartUpload(random_name, this.resize.fourImgFile[i]).then((results) => {
+                                    const url = '//img4.oteao.com/'+ results.name;
+                                    this.urls.four.push(url);
+                                    flags.four++;
+                                    isFlag(resolve,reject);
+                                }).catch((err) => {
+                                    flags.four++;
+                                    isFlag(resolve,reject);
+                                })
+                            }else{
+                                this.urls.four.push(this.resize.imgsStep4[i])
                                 flags.four++;
                                 isFlag(resolve,reject);
-                            }).catch((err) => {
-                                flags.four++;
-                                isFlag(resolve,reject);
-                            })
+                            }
                         }
                     })
                 })
@@ -385,20 +412,6 @@ import $api from 'api';
                         }
                     ],
                     "productImgs": mainImg
-                }
-                if(this.resize.form.goodsXq != ''){
-                    data.catProps.push({
-                        propType: 2,
-                        propName: '香气',
-                        propertyVal: this.resize.form.goodsXq
-                    })
-                }
-                if(this.resize.form.goodsZw != ''){
-                    data.catProps.push({
-                        propType: 2,
-                        propName: '滋味',
-                        propertyVal: this.resize.form.goodsZw
-                    })
                 }
                 for(let i=0;i<this.resize.proValList.length;i++){
                     if(this.resize.proValList[i].propValList.length === 0){
@@ -477,12 +490,14 @@ import $api from 'api';
             },
             //继续创建
             goCreated(){
+                this.$store.commit('SET_RESIZE');
                 this.$router.push({
                     name: '新品上架-1'
                 });
             },
             //预览图片
             onPreview(str,e,ismain){
+                console.log(str);
                 if(e.target.files[0].size > 8*1024*1024) return Toast({
                     message: '图片不能超出8M哦~',
                     iconClass: 'icon icon-info'
@@ -531,16 +546,18 @@ import $api from 'api';
                 }
             },
             goShopMange() {
-                let  status = '';
-                if(this.sussTips === '创建成功！') {
-                    status = 'OFF_SHELF';
-                }else{
-                    status = 'ON_SHELF';
+                let state = this.$route.query.state;
+                if(state == 'OFF_SHELF' && this.sussTips === '成功上架！'){
+                    state == 'ON_SHELF';
+                }else if(state == 'ON_SHELF' && this.sussTips === '修改成功！'){
+                    state == 'ON_SHELF';
+                }else if(state == 'OFF_SHELF' && this.sussTips === '修改成功！'){
+                    state == 'OFF_SHELF';
                 }
                 this.$router.push({
                     name: '商品管理',
                     query: {
-                        status: status
+                        state: state
                     }
                 })
             },
@@ -577,6 +594,13 @@ import $api from 'api';
                         vm.router.push('/login')
                     })
                 })
+            }
+        },
+        head: {
+            title() {
+                return {
+                    inner : '商品修改'
+                }
             }
         }
     }

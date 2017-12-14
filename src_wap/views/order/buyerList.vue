@@ -263,8 +263,10 @@ export default {
         }
     },
     head: {
-        title: {
-          inner: '订单列表'
+        title() {
+            return {
+                inner : '订单列表'
+            }
         }
     },
     mounted () {
