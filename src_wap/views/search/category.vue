@@ -410,7 +410,7 @@
         head: {
             title() {
                 return {
-                    inner : '分类'
+                    inner : '商品分类'
                 }
             }
         }

@@ -95,10 +95,10 @@
             </div>
         </mt-popup>
         <template>
-            <mt-datetime-picker ref="picker1" type="datetime" @confirm="handleConfirm1"></mt-datetime-picker>
+            <mt-datetime-picker ref="picker1" type="datetime" @confirm="handleConfirm1" :startDate="new Date('2017/01/01 00:00:00')"></mt-datetime-picker>
         </template>
         <template>
-            <mt-datetime-picker ref="picker2" type="datetime" @confirm="handleConfirm2"></mt-datetime-picker>
+            <mt-datetime-picker ref="picker2" type="datetime" @confirm="handleConfirm2" :startDate="new Date('2017/01/01 00:00:00')"></mt-datetime-picker>
         </template>
     </div>
 </template>
@@ -319,6 +319,13 @@ export default {
                     vm.router.push('/login')
                 })
             })
+        }
+    },
+    head: {
+        title() {
+            return {
+                inner : '添加活动'
+            }
         }
     }
 }

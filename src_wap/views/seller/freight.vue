@@ -4,7 +4,7 @@
             <p>全国包邮，除以下省份</p>
         </div>
         <div class="f5-2"></div>
-        <div class="input-box" v-for="(item,index) in postArray" :key="index">
+        <div class="input-box" v-for="(item,index) in postArray" :key="index" v-if="!item.delFlag">
             <div class="input-item">
                 <div class="input-inner no-free clearfix">
                     <span class="color_6 lab" style="float:left;">不包邮省份</span>
@@ -48,11 +48,10 @@
         </div>
         <!-- 选择省份弹窗 -->
         <mt-popup v-model="popupVisible" position="right" class="popup-city">
-            <mt-header title="选择省份" class="cbt-header">
-                <mt-button icon="back" slot="left" @click="popupVisible=false">返回</mt-button>
-                <mt-button icon="more" slot="right"></mt-button>
+            <mt-header title="选择省份" class="cbt-header" v-if="!$tool.isWx">
+                <mt-button slot="left" @click="popupVisible=false">关闭</mt-button>
             </mt-header>
-            <div class="pop-content">
+            <div class="pop-content" :class="{on: !$tool.isWx}">
                 <div class="city-box often-box">
                     <h4 class="city-caption flex align_items_c">
                         <label class="check-cir" :class="{'checked': checkedAll.one}" @click="selectAll('one')"></label>
@@ -102,7 +101,8 @@
                 <div class="flex">
                     <div class="flex-1 flex align_items_c">
                         <label class="check-cir" :class="{checked: allCheckedFlag}" @click="selectAllCheck"></label>
-                        <span class="color_6">已选<span class="color_f08"> {{ checkedNum }} </span>款</span>
+                        <span class="color_6">已选<span class="color_f08"> {{ checkedNum }} </span>省</span>
+                        <span class="cancel_link" v-if="$tool.isWx" @click="popupVisible=false">取消</span>
                     </div>
                     <div class="selected-btn">
                         <mt-button type="primary" :disabled="disabledBol" @click.native="selectOk">选好了</mt-button>
@@ -133,9 +133,7 @@ import $api from 'api';
                     'four': false
                 },
                 popupVisible: false,
-                postArray: [
-
-                ],
+                postArray: [],
                 selectPro: [],
                 selectIndex: null,
                 flag: false,
@@ -183,7 +181,6 @@ import $api from 'api';
                     iconClass: 'icon icon-fail'
                 });
             })
-
             this.getOldList().then((res) => {
                 let result = res.data;
                 for(let i=0;i<result.length;i++){
@@ -199,6 +196,7 @@ import $api from 'api';
                         sweight: '',
                         xweight: '',
                         buyer: '',
+                        delFlag: 0,
                         templateId: null
                     })
                 }else{
@@ -207,6 +205,7 @@ import $api from 'api';
                         this.postArray.push({
                             area: [],
                             areaText: '',
+                            delFlag: 0,
                             sweight: result[i].firstHeavyCost,
                             xweight: result[i].continuedHeavyCost,
                             buyer: result[i].freeCost,
@@ -314,7 +313,8 @@ import $api from 'api';
                         "continuedHeavyCost": this.postArray[i].sweight,
                         "firstHeavyCost": this.postArray[i].xweight,
                         "freeCost": this.postArray[i].buyer,
-                        "templateId": this.postArray[i].templateId
+                        "templateId": this.postArray[i].templateId,
+                        "delFlag": this.postArray[i].delFlag
                     })
                     let areaArray = this.postArray[i].area,
                         areaNameArray = this.postArray[i].areaText.split(',');
@@ -348,7 +348,8 @@ import $api from 'api';
                 }
             },
             delectMethod(index) {
-                this.postArray.splice(index,1);
+                // this.postArray.splice(index,1);
+                this.postArray[index].delFlag = 1;
             },
             selectOk() {
                 this.postArray[this.selectIndex].area = [];
@@ -381,13 +382,6 @@ import $api from 'api';
                             obj.flag = true;
                         }
                     }
-                    // if(obj.flag && selectCode.indexOf(obj.code) == -1){
-                    //     obj.disabled = true;
-                    //     this.selectPro.push(obj.code);
-                    // }
-                    // if(selectCode.indexOf(obj.code) != -1){
-                    //     obj.flag = true;
-                    // }
                 }
                 this.popupVisible = true;
             },
@@ -497,6 +491,13 @@ import $api from 'api';
                         vm.router.push('/login')
                     })
                 })
+            }
+        },
+        head: {
+            title() {
+                return {
+                    inner : '运费配置'
+                }
             }
         }
     }

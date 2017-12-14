@@ -53,8 +53,10 @@ export default {
         }
     },
     head: {
-        title: {
-          inner: '订单评论'
+        title() {
+            return {
+                inner : '订单评论'
+            }
         }
     },
     computed: {

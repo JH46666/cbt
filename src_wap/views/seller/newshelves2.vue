@@ -282,7 +282,7 @@ import $api from 'api';
                         for(let i=0; i<this.resize.oneImgFile.length; i++){            // 1图
                             let random_name = res.data.basePath + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.oneImgFile[i].name.split('.').pop()
                             client.multipartUpload(random_name, this.resize.oneImgFile[i]).then((results) => {
-                                const url = '//img0.oteao.com/'+ results.name;
+                                const url = '//img1.oteao.com/'+ results.name;
                                 this.urls.one.push(url);
                                 flags.one++;
                                 isFlag(resolve,reject);
@@ -294,7 +294,7 @@ import $api from 'api';
                         for(let i=0; i<this.resize.secondImgFile.length; i++){            // 2图
                             let random_name = res.data.basePath + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.secondImgFile[i].name.split('.').pop()
                             client.multipartUpload(random_name, this.resize.secondImgFile[i]).then((results) => {
-                                const url = '//img0.oteao.com/'+ results.name;
+                                const url = '//img2.oteao.com/'+ results.name;
                                 this.urls.two.push(url);
                                 flags.two++;
                                 isFlag(resolve,reject);
@@ -306,7 +306,7 @@ import $api from 'api';
                         for(let i=0; i<this.resize.thirdImgFile.length; i++){            // 3图
                             let random_name = res.data.basePath + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.thirdImgFile[i].name.split('.').pop()
                             client.multipartUpload(random_name, this.resize.thirdImgFile[i]).then((results) => {
-                                const url = '//img0.oteao.com/'+ results.name;
+                                const url = '//img3.oteao.com/'+ results.name;
                                 this.urls.third.push(url);
                                 flags.third++;
                                 isFlag(resolve,reject);
@@ -318,7 +318,7 @@ import $api from 'api';
                         for(let i=0; i<this.resize.fourImgFile.length; i++){            // 4图
                             let random_name = res.data.basePath + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.fourImgFile[i].name.split('.').pop()
                             client.multipartUpload(random_name, this.resize.fourImgFile[i]).then((results) => {
-                                const url = '//img0.oteao.com/'+ results.name;
+                                const url = '//img4.oteao.com/'+ results.name;
                                 this.urls.four.push(url);
                                 flags.four++;
                                 isFlag(resolve,reject);
@@ -377,20 +377,6 @@ import $api from 'api';
                     ],
                     "productImgs": mainImg
                 }
-                // if(this.resize.form.goodsXq != ''){
-                //     data.catProps.push({
-                //         propType: 2,
-                //         propName: '香气',
-                //         propertyVal: this.resize.form.goodsXq
-                //     })
-                // }
-                // if(this.resize.form.goodsZw != ''){
-                //     data.catProps.push({
-                //         propType: 2,
-                //         propName: '滋味',
-                //         propertyVal: this.resize.form.goodsZw
-                //     })
-                // }
                 for(let i=0;i<this.resize.proValList.length;i++){
                     if(this.resize.proValList[i].propValList.length === 0){
                         data.catProps.push({
@@ -567,6 +553,13 @@ import $api from 'api';
                         vm.router.push('/login')
                     })
                 })
+            }
+        },
+        head: {
+            title() {
+                return {
+                    inner : '新品上架'
+                }
             }
         }
     }

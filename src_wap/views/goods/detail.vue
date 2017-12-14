@@ -45,7 +45,7 @@
             </div>
         </mt-popup>
         <div class="detail_wrapper" @scroll="docScroll" ref="wrapper">
-            <div class="goIndex" v-if="!(tabFixed || wxFixed)" @click="$router.push({name: '首页'})">
+            <div class="goIndex" v-if="!(tabFixed || wxFixed)" @click="$router.push({name: '首页'})" :class="{on: wxFixed}">
                 <span>回首页</span>
                 <i class="iconfont">&#xe61b;</i>
             </div>
@@ -103,6 +103,16 @@
                                 <div class="detail_active_item">
                                     <span>直降</span>
                                     <p>已优惠￥{{  (detailData.productPrice[0].price-detailData.productExtInfo.salesPrice)  | toFix2 }}</p>
+                                </div>
+                                <div class="detail_active_item">
+                                    <span>包邮</span>
+                                    <template v-if="detailData.productInfo.businessType == 'ORG_SALES'">
+                                        <p v-if="!detailData.orgFreightTemplateVoList || detailData.orgFreightTemplateVoList.length == 0">运费，本店商品全国包邮</p>
+                                        <p v-else-if="detailData.orgFreightTemplateVoList && detailData.orgFreightTemplateVoList.length > 0">运费，邮费依实际重量计算运费</p>
+                                    </template>
+                                    <template v-else>
+                                        <p>运费，全场在线支付满500免运费</p>
+                                    </template>
                                 </div>
                             </div>
                         </div>
@@ -499,12 +509,15 @@ export default {
        }
     },
     watch: {
-        'commentList':{
-            handler(curVal,oldVal){
-                this.setLine();
-            },
-            deep:true
-        },
+        // 'commentList':{
+        //     handler(curVal,oldVal){
+        //         this.setLine();
+        //     },
+        //     deep:true
+        // },
+        // commentList(val){
+        //     this.setLine();
+        // },
         flag(val) {
             if(val){
                 clearInterval(this.time)

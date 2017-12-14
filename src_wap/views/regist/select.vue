@@ -36,7 +36,7 @@
                     <label for="2">企业名称</label>
                 </div>
                 <div class="select_item_content">
-                    <input type="text" id="2" v-model="formData.shopName" placeholder="必填项，请填写店铺名称" maxlength="30" />
+                    <input type="text" id="2" v-model="formData.shopName" placeholder="必填项，请填写企业名称" maxlength="30" />
                 </div>
             </div>
             <div class="select_item">
@@ -458,6 +458,13 @@ export default {
                     vm.router.push('/login')
                 })
             })
+        }
+    },
+    head: {
+        title() {
+            return {
+                inner : '完善资料'
+            }
         }
     }
 }

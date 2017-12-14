@@ -43,7 +43,7 @@ const create = {
             thirdImgFile: [],
             fourImgFile: [],
             proValList: [],
-            mainId: 0,
+            mainId: null,
         }
     },
     mutations: {
@@ -91,7 +91,7 @@ const create = {
                 thirdImgFile: [],
                 fourImgFile: [],
                 proValList: [],
-                mainId: 0,
+                mainId: null,
             };
         }
     },

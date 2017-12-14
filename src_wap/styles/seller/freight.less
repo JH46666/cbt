@@ -106,7 +106,10 @@
         .w(100%);
         .h(100%);
         .pop-content{
-            padding: .88rem 0 .98rem;
+            padding-bottom: .98rem;
+            &.on{
+                padding-top: .88rem;
+            }
             height: 100%;
             overflow-y: auto;
             .city-box{
@@ -117,7 +120,7 @@
                 .city-item{
                     border-radius: 0;
                     background-color: #fff;
-                    font-size: .2rem;
+                    font-size: .26rem;
                     float: left;
                     .w(2.04rem);
                     .h(.7rem);
@@ -150,7 +153,9 @@
                 .fontSize(.3rem);
                 font-weight: normal;
                 .color(#8f8881);
-
+                span{
+                    .fontSize(.28rem);
+                }
             }
         }
         .check-cir{
@@ -187,6 +192,14 @@
                     .color(#adadad);
                 }
             }
+            .cancel_link{
+                margin-left: .8rem;
+                .color(@mainCol);
+                .fontSize(.3rem);
+            }
         }
+    }
+    .mint-header-button.is-left {
+        padding-left: .2rem;
     }
 }
