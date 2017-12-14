@@ -140,7 +140,7 @@
                 <p>卖家中心</p>
             </div>
             <a v-show="!isEmpty" class="flex-1 noshelves-btn batch-btn" href="javascript:void(0);" @click="goBrect">批量处理</a>
-            <a class="flex-1 noshelves-btn created-btn" href="javascript:void(0);" @click="$router.push({name: '新品上架-1'})">创建商品</a>
+            <a class="flex-1 noshelves-btn created-btn" href="javascript:void(0);" @click="goCreate">创建商品</a>
         </div>
         <!-- 底部fixed栏 -->
         <!-- <div class="fix-bottom">
@@ -257,6 +257,12 @@ import $api from 'api';
             }
         },
         methods:{
+            goCreate() {
+                this.$store.commit('SET_RESIZE');
+                this.$router.push({
+                    name: '新品上架-1'
+                })
+            },
             goBrect() {
                 if(this.tabId === 'yes'){
                     this.$router.push({

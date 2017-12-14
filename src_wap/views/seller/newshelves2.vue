@@ -466,7 +466,7 @@ import $api from 'api';
             },
             //继续创建
             goCreated(){
-                window.location.reload();
+                this.$store.commit('SET_RESIZE');
                 this.$router.push({
                     name: '新品上架-1'
                 });

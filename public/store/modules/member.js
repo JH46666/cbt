@@ -41,7 +41,7 @@ const actions = {
     },
     // 查看会员是否签到
     viewSign({state,commit}) {
-        $api.get('/member/memberRecord/searchIsSignIn',{
+        $api.get('/oteao/member/memberRecord/searchIsSignIn',{
             memberId: state.member.id,
             sysId: 1
         },res => {
@@ -50,7 +50,7 @@ const actions = {
     },
     // 获取红包个数
     getRedTotal({state,commit}) {
-        $api.get('/member/redPacket/countRedPack',{
+        $api.get('/oteao/member/redPacket/countRedPack',{
             memberId: state.member.id,
             sysId: 1
         },res => {
@@ -62,7 +62,7 @@ const actions = {
 
         let getData = (resolve,reject) => {
             obj.id = state.member.id;
-            $api.get('/member/redPacket/searchRedPacketByStatus',{
+            $api.get('/oteao/member/redPacket/searchRedPacketByStatus',{
                 'page.pageNumber': obj.page || 1,
                 'page.pageSize': 10,
                 'memberId': obj.id,

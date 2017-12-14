@@ -150,7 +150,7 @@
             // 激活红包
             activeRed() {
                 this.$redActive().then(data => {
-                    this.$api.post('/member/redPacket/doActivateBySerialNumber',{
+                    this.$api.post('/oteao/member/redPacket/doActivateBySerialNumber',{
                         memberId: this.id,
                         sysId:1,
                         serialNumber: data.redCode

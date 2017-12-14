@@ -13,7 +13,7 @@ const mutations = {
 
 const actions = {
     getAddress({commit}) {
-        $api.get('baseRegion/getRegionTree',{},res => {
+        $api.get('/oteao/baseRegion/getRegionTree',{},res => {
             commit('SET_ADDRESS',res.data);
         })
     }

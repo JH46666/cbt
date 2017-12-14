@@ -18,7 +18,7 @@
             <p class="error_tips" v-show="errorTxt != ''"><i class="iconfont">&#xe667;</i>{{errorTxt}}</p>
             <div class="flex img_box">
                 <div class="img_code" ref="imgcode">
-                    <img src="api/recaptcha/getReCaptha" alt="">
+                    <img src="api/oteao/recaptcha/getReCaptha" alt="">
                 </div>
                 <a class="refresh" @click="getCode"><i class="iconfont">&#xe665;</i></a>
             </div>
@@ -55,14 +55,14 @@
         },
         methods:{
             close(){
-                this.$refs.imgcode.innerHTML = `<img src="api/recaptcha/getReCaptha?v=${Math.random()*100}" alt="">`;
+                this.$refs.imgcode.innerHTML = `<img src="api/oteao/recaptcha/getReCaptha?v=${Math.random()*100}" alt="">`;
                 this.codes = [{code:''},{code:''},{code:''},{code:''}];
                 this.curIndex = 0;
                 this.$emit('closePopup');
             },
             //获取图片验证码
             getCode(){
-                let str = `<img src="api/recaptcha/getReCaptha?v=${Math.random()*100}" alt="">`;
+                let str = `<img src="api/oteao/recaptcha/getReCaptha?v=${Math.random()*100}" alt="">`;
                 this.$refs.imgcode.innerHTML = str;
                 this.$refs.forms.childNodes[this.curIndex].focus();
             },
