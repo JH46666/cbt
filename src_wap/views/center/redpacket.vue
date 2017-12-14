@@ -151,6 +151,7 @@
             activeRed() {
                 this.$redActive().then(data => {
                     this.$api.post('/oteao/member/redPacket/doActivateBySerialNumber',{
+                        device: 'WAP',
                         memberId: this.id,
                         sysId:1,
                         serialNumber: data.redCode
