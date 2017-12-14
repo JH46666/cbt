@@ -114,7 +114,7 @@
                         <div class="right_info flex-1">
                             <div class="pro_info flex">
                                 <div class="pro_img">
-                                    <a href="javascript:void(0);"><img :src="item.proImg" alt=""></a>
+                                    <a href="javascript:void(0);"><img :src="item.imageUrl" alt=""></a>
                                     <div class="expired_txt">
                                         <p>失效</p>
                                     </div>

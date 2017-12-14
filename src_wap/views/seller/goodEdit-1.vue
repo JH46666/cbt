@@ -256,7 +256,7 @@ export default {
                     position: 0
                 }
             return new Promise((resolve,reject) => {
-                this.$api.get('/propInfo/queryPropVal',data,res => {
+                this.$api.get('/oteao/propInfo/queryPropVal',data,res => {
                     resolve(res);
                 },res=>{
                     return Toast({
@@ -430,7 +430,7 @@ export default {
                     dictionaryId: 14
                 }
             return new Promise((resolve,reject) => {
-                this.$api.get('/data/getDataByType',data,res => {
+                this.$api.get('/oteao/data/getDataByType',data,res => {
                     resolve(res);
                 },res=>{
                     return Toast({

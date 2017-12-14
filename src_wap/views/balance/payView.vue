@@ -26,7 +26,7 @@
                 <div class="delivery-text">
                     <i class="icon-zhifuchenggong"></i>货到付款订单提交成功
                 </div>
-                <p class="wait">还需支付<span class="gold">￥{{ order.orderSum | toFix2 }}</span></p>
+                <p class="wait">还需支付<span class="gold">￥{{ order.orderSum - order.cashDeliverySum | toFix2 }}</span></p>
                 <div class="delivery-btn-wrap">
                     <mt-button type="default" @click="$router.push('/order/buyerlist?orderStatus=null')">查看订单</mt-button>
                     <mt-button type="default" @click="$router.push({name: '收银台',query: {payId: $route.query.payId,type:$route.query.type}})">立即支付</mt-button>
@@ -41,11 +41,11 @@
             <div class="text-item">
                 <p>{{ address.address }}</p>
             </div>
-            <div class="text-item">
+            <div class="text-item" v-if="$route.name === '货到付款结算'">
                 <div class="left">待付金额：</div>
-                <div class="right"><span class="gold">￥{{ order.orderSum | toFix2 }}</span></div>
+                <div class="right"><span class="gold">￥{{ order.orderSum - order.cashDeliverySum | toFix2 }}</span></div>
             </div>
-            <div class="text-item" v-if="$route.name !== '货到付款结算'">
+            <div class="text-item" v-if="$route.name === '结算显示' && !$route.query.fail">
                 <div class="left">已付金额：</div>
                 <div class="right"><span class="gold">￥{{ order.orderSum | toFix2 }}</span></div>
             </div>
@@ -86,6 +86,17 @@
                 this.myData = data;
             }
         },
+        created() {
+            if(this.$route.query.wx === 'wxpaycallback') {
+                this.$api.post('/payOrder/queryWxPay',{
+                    payId: this.$route.query.payId
+                },res => {
+                    if(res.data.trade_state_desc === '订单未支付') {
+                        this.$router.replace({name: '结算显示',query: {payId: this.$route.query.payId,type: this.$route.query.type,fail: true}})
+                    }
+                })
+            }
+        },
         beforeRouteEnter(to, from, next) {
 
             // 判断付款单
@@ -116,7 +127,7 @@
                     getData();
                 }).catch(res =>{
                     next(vm => {
-                        vm.router.push('/login')
+                        vm.$router.push('/login')
                     })
                 })
             }

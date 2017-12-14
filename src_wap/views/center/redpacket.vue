@@ -17,7 +17,7 @@
                 <p>没有红包呀~</p>
             </div>
             <template v-else>
-                <div class="redpacket-item" v-for="(item,index) in list" :class="{disabled: selected === 'EXPIRED'}">
+                <div class="redpacket-item" v-for="(item,index) in list" :class="{disabled: selected === 'EXPIRED' || selected === 'USED'}">
                     <div class="hd">
                         <div class="left">
                             <p>
@@ -150,7 +150,8 @@
             // 激活红包
             activeRed() {
                 this.$redActive().then(data => {
-                    this.$api.post('/member/redPacket/doActivateBySerialNumber',{
+                    this.$api.post('/oteao/member/redPacket/doActivateBySerialNumber',{
+                        device: 'WAP',
                         memberId: this.id,
                         sysId:1,
                         serialNumber: data.redCode

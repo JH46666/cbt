@@ -14,7 +14,11 @@
             </div>
             <div class="item-wrap" v-else>
                 <div class="item" v-for="(item,i) in list">
-                    <div class="left">{{ item.remark }}</div>
+                    <div class="left">
+                        <div class="title">
+                            {{ item.remark }}
+                        </div> 
+                    </div>
                     <div class="right">
                         <div class="count">{{ item.afterPoint > item.beforePoint ? '+' : '' }}{{ item.alterPoint }}</div>
                         <div class="date">{{ item.updateTime }}</div>
@@ -50,7 +54,7 @@
         methods: {
             getData(page = 1) {
                 return new Promise((resolve,reject) => {
-                    this.$api.get('/member/integralRecord/search',{
+                    this.$api.get('/oteao/member/integralRecord/search',{
                         'page.pageNumber': page,
                         'page.pageSize': 10,
                         'memberId': this.id,

@@ -3,7 +3,7 @@
         <div class="logo_img"><img src="../../assets/images/logo.png" alt=""></div>
         <div>
             <!-- 表单 -->
-            <form action="" class="form_wrapper com_wrapper">
+            <div action="" class="form_wrapper com_wrapper">
                 <div class="form_item">
                     <input type="tel" placeholder="手机号码" v-model="regInfo.phone" maxlength="11">
                 </div>
@@ -21,7 +21,7 @@
                 </div>
                 <mt-button size="large" type="primary" :class="{'is-disabled':disabledFlag}" :title="activeFlag" @click="submit">立即注册</mt-button>
                 <p class="color_9 xy-txt">点击 立即注册 即表示您同意遵守茶帮通 <a href="javascript:void(0);" class="color_f08">用户协议</a> 和 <a href="javascript:void(0);" class="color_f08">隐私政策</a></p>
-            </form>
+            </div>
         </div>
         <!-- 验证码弹窗 -->
         <msg-popup v-if="verifyFlag" @closePopup="closePopup" @getMsgCode="getMsgCode" :errorTxt="errorTips" ref="imgCode"></msg-popup>
@@ -112,10 +112,16 @@
                         device: 'WAP'
                     }
                     this.$api.post('/oteao/login/doRegister',data,res=>{
-                        // console.log(res);
-                        this.$router.push('/regist/examine')
+                        this.$router.push('/regist/select')
                     },res=>{
-                        Toast('您输入的短信验证码错误，请核实后重新输入');
+                        if(res.code === 3005) {
+                            return Toast('您输入的手机号己注册，请重新输入');
+                        }
+                        if(res.code === 1001) {
+                            return Toast('您输入的短信验证码错误，请核对后重新输入');
+                        }
+
+                        Toast(res.errorMsg);
                     });
                 }
             },

@@ -2,7 +2,7 @@
     <div class="cashier_wrapper">
         <div class="flex cashier-caption">
             <p class="flex-1 color_6">应付</p>
-            <p class="flex-1 algin_r color_f08">￥{{ myData.orderSum | toFix2 }}</p>
+            <p class="flex-1 algin_r color_f08">￥{{ $route.query.type === 'onlineanddelivery' ? myData.orderSum - myData.cashDeliverySum : myData.orderSum | toFix2 }}</p>
         </div>
         <div class="floor1" v-if="totalAmount > 0">
             <p class="remaining color_6">余额 <span class="color_9">￥{{ totalAmount | toFix2 }}</span></p>
@@ -19,7 +19,7 @@
                 :options="options">
             </mt-radio>
         </div>
-        <div class="floor3"><button class="confirm-pay" @click="pay" :disabled="disabled">确定支付 <span>￥{{ myData.orderSum | toFix2 }}</span></button></div>
+        <div class="floor3"><button class="confirm-pay" @click="pay" :disabled="disabled">确定支付 <span>￥{{ comfirnPrice | toFix2 }}</span></button></div>
         <div id="form" v-html="form"></div>
         <a :href="wxhost" ref="wxhost"></a>
     </div>
@@ -56,7 +56,24 @@
                 // id: state => state.member.member.id,
                 totalAmount: state => state.member.memberAccount.totalAmount,
                 id: state => state.member.member.id
-            })
+            }),
+            comfirnPrice() {
+                try {
+                    let orderSum = this.$route.query.type === 'onlineanddelivery' ? this.myData.orderSum - this.myData.cashDeliverySum : this.myData.orderSum;
+
+                    if(this.isUse) {
+                        if(this.totalAmount > orderSum) {
+                            return orderSum
+                        } else {
+                            return orderSum - this.totalAmount
+                        }
+                    } else {
+                        return orderSum
+                    }
+                } catch (error) {
+                    return 0
+                }
+            }
         },
         methods:{
             // 获取数据
@@ -81,7 +98,7 @@
                     this.$api.post('/oteao/payOrder/modityOrderStoreValue',{
                         payOrderId: this.payId,
                     },res => {
-
+                        this.$store.dispatch('getMemberData');
                         if(res.data.orderSum > 0) {
                             // 余额不够了,还需配合在线支付
                             payUp.call(this)
@@ -182,17 +199,18 @@
                                 ip: '192.168.1.1',
                                 tradeType: 'MWEB'
                             },res => {
-                                let src = res.data.mweb_url + `&redirect_url=` + encodeURI(location.origin + `/?wxpaycallback=${this.payId}`);
+
+
+                                // 某些浏览器重定向问题，这个地方需要写入session，用来唤醒弹框
+                                // sessionStorage.h5wxpay = true;
+                                // sessionStorage.payId = this.payId;
+                                let src = res.data.mweb_url + `&redirect_url=` + encodeURI(location.origin + `/?wxpaycallback=${this.payId}+${this.$route.query.type}`);
                                 this.wxhost = src;
                                 this.$nextTick(() =>{
                                     this.$refs.wxhost.click();
                                 })
                             },res => {
-                                let src = res.data.mweb_url + `&redirect_url=` + encodeURI(location.origin + `/?wxpaycallback=${this.payId}`);
-                                this.wxhost = src;
-                                this.$nextTick(() =>{
-                                    this.$refs.wxhost.click();
-                                })
+                                this.$toast(res.message)
                             })
                         }
 

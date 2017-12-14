@@ -30,7 +30,7 @@
                 </div>
             </div>
             <div class="bd">
-                <p class="bd-text">累积消费￥{{ memberAccount.growthValue || 0 }}，还差￥{{ level.cumulativeConsume - memberAccount.growthValue }}晋升{{ level.lever + level.memberLevelName  }}</p>
+                <p class="bd-text">累积消费￥{{ memberAccount.cumulativeConsume || 0 | toFix2 }}，还差￥{{ level.cumulativeConsume - memberAccount.cumulativeConsume | toFix2 }}晋升{{ level.lever + level.memberLevelName  }}</p>
             </div>
         </section>
         <section class="count-entry">
@@ -87,7 +87,7 @@
                 <div class="left"><i class="icon-maijiadizhiguanli"></i>地址管理</div>
                 <div class="right"><i class="icon-icon07"></i></div>
             </router-link>
-            <router-link :to="{name: '忘记密码'}" class="tools-entry">
+            <router-link :to="{name: '修改密码'}" class="tools-entry">
                 <div class="left"><i class="icon-xiugaimima"></i>修改密码</div>
                 <div class="right"><i class="icon-icon07"></i></div>
             </router-link>
@@ -131,7 +131,7 @@
         methods: {
             // 签到
             signTo() {
-                this.$api.post('/member/memberRecord/createSignInLog',{
+                this.$api.post('/oteao/member/memberRecord/createSignInLog',{
                     memberId: this.member.id,
                     sysId: 1
                 },res => {
@@ -177,7 +177,7 @@
                 if(status === 'ACTIVE') {
                     vm.$store.dispatch('viewSign')
                     vm.$store.dispatch('getRedTotal')
-                    vm.$api.get('/member/memberLevel/findNextLevelByMemberIdAndSysId',{
+                    vm.$api.get('/oteao/member/memberLevel/findNextLevelByMemberIdAndSysId',{
                         memberId: store.state.member.member.id,
                         sysId:1
                     },res =>{

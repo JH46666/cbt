@@ -13,7 +13,7 @@
             <template v-for="(item,index) in pannel">
                 <section class="goods-pannel">
                     <div class="title">
-                        <img src="../../assets/images/logo.png" alt="" v-if="item.selfSupport === true">
+                        <img src="../../assets/images/small_logo.png" alt="" v-if="item.selfSupport === true">
                         {{ item.shopName }}
                     </div>
                     <template v-for="(todo,i) in item.cartList">
@@ -29,20 +29,22 @@
                         </div>
                     </template>
                     <template v-if="item.giftList && item.giftList.length > 0">
-                        <div class="pro_free_caption">
-                            <span class="full_free">满赠</span>
-                            <span>满358元送金骏眉</span>
-                        </div>
-                        <div class="goods-item" v-for="(todo,i) in item.giftList">
-                            <goods-img style="width:1.6rem;height:1.6rem;" :imgUrl="todo.imageUrl"></goods-img>
-                            <div class="right">
-                                <p class="goods-title">{{ todo.proName }}</p>
-                                <p class="goods-bd">
-                                    <span class="price">￥{{ todo.actualPayPrice | toFix2  }}</span>
-                                    <span class="num">×{{ todo.buyNum }}</span>
-                                </p>
+                        <template v-for="list in arrayGift(item.giftList)">
+                            <div class="pro_free_caption">
+                                <span class="full_free">{{ list.title }}</span>
+                                <span>{{ list.title }}</span>
                             </div>
-                        </div>
+                            <div class="goods-item" v-for="(todo,i) in list.list">
+                                <goods-img style="width:1.6rem;height:1.6rem;" :imgUrl="todo.imageUrl"></goods-img>
+                                <div class="right">
+                                    <p class="goods-title">{{ todo.proName }}</p>
+                                    <p class="goods-bd">
+                                        <span class="price">￥{{ todo.actualPayPrice | toFix2  }}</span>
+                                        <span class="num">×{{ todo.giftNum }}</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </template>
                     </template>
                     <div class="sum">
                         商品总额: <span class="gold">{{ item.totalProductAmount | toFix2 }}</span>
@@ -83,8 +85,10 @@
                     </div>
                     <div class="redpacket-list-wrap" v-if="item.selfSupport === true">
                         <div class="redpacket-list" v-for="(todo,i) in item.canUseRuleSetList">
-                            <div class="left">{{ todo.showName }}</div>
-                            <div class="right">- {{ todo.giveNum | toFix2 }}</div>
+                            <template v-if="todo.showType === 'SUB_AMOUNT'">
+                                <div class="left">{{ todo.showName }}</div>
+                                <div class="right">- {{ todo.giveNum | toFix2 }}</div>
+                            </template>
                         </div>
                     </div>
                     <div class="remark">
@@ -203,6 +207,36 @@
             })
         },
         methods: {
+            // 赠品分组函数
+            arrayGift(list) {
+                let data = [];
+
+                list.forEach(val => {
+                    // 初始化data
+                    if(data.length === 0) {
+                        data.push({
+                            title: val.ruleName,
+                            id: val.ruleSetId,
+                            list: []
+                        })
+                    }
+                    if(data.some(v => v.id === val.ruleSetId)) {
+                        data.forEach(v => {
+                            if(v.id === val.ruleSetId) {
+                                v.list.push(val);
+                            }
+                        })
+                    } else {
+                        data.push({
+                            title: val.ruleName,
+                            id: val.ruleSetId,
+                            list: [val]
+                        })
+                    }
+                    
+                })
+                return data;
+            },
             // 弹出付款方式弹窗
             upPayType(index) {
                 this.activePannel = this.pannel[index];
@@ -305,6 +339,10 @@
             },
             // 提交订单
             upOrder() {
+                // 先判断是否选择地址
+                if(!this.address.id) {
+                    this.$toast('请选择一个地址')
+                }
                 let orgSettleRequestList = [];
 
                 // 表示货到付款还是在线支付
@@ -360,7 +398,7 @@
                         if(this.totalAmount > 0) {
                             this.$router.push({name: '收银台',query: {payId: res.data.payId,type:'delivery'}});
                         } else {
-                            this.$router.push({name: '货到付款结算',query: {payId: res.data.payId,type:'delivery'}});
+                            this.$router.push({name: '货到付款成功',query: {payId: res.data.payId,type:'delivery'}});
                         }
                     }
 
@@ -442,7 +480,7 @@
                     this.recoveryData();
                     this.upDate();
                 } else {
-                    this.address = this.myData.receiveAddrList.filter(val => val.isDefault)[0]
+                    this.address = this.myData.receiveAddrList.filter(val => val.isDefault)[0] ? this.myData.receiveAddrList.filter(val => val.isDefault)[0] : {}
                 }
             })
         },
