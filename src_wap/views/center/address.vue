@@ -48,6 +48,7 @@
                             this.value[j].isDefault = 0;
                         }
                     }
+                    this.$toast('设置成功');
                 })
             },
             // 删除地址
