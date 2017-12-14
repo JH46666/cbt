@@ -296,11 +296,11 @@ import $api from 'api';
                         message: '运费配置成功',
                         iconClass: 'icon icon-success'
                     });
-                    // setTimeout(()=>{
-                    //     this.$router.push({
-                    //         name: '卖家中心'
-                    //     })
-                    // },500)
+                    setTimeout(()=>{
+                        this.$router.push({
+                            name: '卖家中心'
+                        })
+                    },500)
                 })
             },
             addFreight() {

@@ -54,7 +54,7 @@
                     </div>
                     <div class="no-more" v-if="actiiveList.length == orderNum">没有更多了呦~</div>
                 </div>
-                <div class="add_activily" @click="goAdd" v-if="selected == '0' || selected == '2'">
+                <div class="add_activily" @click="goAdd">
                     <div class="plus_icon">+</div>
                     添加活动
                 </div>
