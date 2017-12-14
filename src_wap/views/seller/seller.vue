@@ -12,7 +12,7 @@
                 </p>
                 <div class="level-wrap">
                     <div class="level-left">
-                        <span class="level" :class="level" v-for="n in levelNum"></span>
+                        <span class="level" :class="level" v-for="n in $tool.levelNum(sellerData.growth)"></span>
                     </div>
                     <div class="level-right">{{ sellerData.growth }}分</div>
                 </div>
@@ -96,7 +96,7 @@
             </div>
         </section>
         <div class="new-up">
-            <mt-button type="default" @click="$router.push({name: '新品上架-1'})"><span class="add"><i class="icon-xinzeng"></i></span>创建商品</mt-button>
+            <mt-button type="default" @click="goCreate"><span class="add"><i class="icon-xinzeng"></i></span>创建商品</mt-button>
         </div>
     </div>
 </template>
@@ -104,11 +104,20 @@
 
 <script>
     import { mapState } from 'vuex'
+    import store from 'store';
     export default {
         data() {
             return {
                 count: {},
                 sellerData: {}
+            }
+        },
+        methods: {
+            goCreate() {
+                this.$store.commit('SET_RESIZE');
+                this.$router.push({
+                    name: '新品上架-1'
+                })
             }
         },
         computed: {
@@ -141,33 +150,6 @@
                     return 'level-4'
                 }
             },
-            // 等级数量
-            levelNum() {
-                let g = this.sellerData.growth
-                let l = 0;
-
-                if(g >= 0 && g <= 10 || g >= 251 && g <= 500 || g >= 10001 && g <= 20000 || g >= 500001 && g <= 1000000 ) {
-                    l = 1;
-                }
-
-                if(g >= 11 && g <= 40 || g >= 501 && g <= 1000 || g >= 20001 && g <= 50000 || g >= 1000001 && g <= 2000000) {
-                    l = 2;
-                }
-
-                if(g >= 41 && g <= 90 || g >= 1001 && g <= 2000 || g >= 50001 && g <= 100000 || g >= 2000001 && g <= 5000000) {
-                    l = 3;
-                }
-
-                if(g >= 91 && g <= 150 || g >= 2001 && g <= 5000 || g >= 100001 && g <= 200000 || g >= 5000001 && g <= 10000000) {
-                    l = 4;
-                }
-
-                if(g >= 151 && g <= 250 || g >= 5001 && g <= 10000 || g >= 200001 && g <= 500000 || g > 10000000) {
-                    l = 5;
-                }
-
-                return l;
-            }
         },
         created() {
             this.$api.post('/oteao/order/countOrderNumBySeller',{},res => {

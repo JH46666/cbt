@@ -16,21 +16,21 @@
             <div class="input-item">
                 <div class="flex input-inner">
                     <span class="flex-1 color_6">首重(1kg)</span>
-                    <input class="algin_r" type="age" placeholder="请输入首重运费" v-model="item.sweight" @blur="toFixedTwo(item.sweight,'sweight',index)" />
+                    <input class="algin_r" type="number" placeholder="请输入首重运费" v-model="item.sweight" @blur="toFixedTwo(item.sweight,'sweight',index)" />
                     <span>元</span>
                 </div>
             </div>
             <div class="input-item">
                 <div class="flex input-inner">
                     <span class="flex-1 color_6">续重(每增加1kg增加)</span>
-                    <input class="algin_r" type="age" placeholder="请输入金额" v-model="item.xweight" />
+                    <input class="algin_r" type="number" placeholder="请输入金额" v-model="item.xweight" />
                     <span>元</span>
                 </div>
             </div>
             <div class="input-item">
                 <div class="flex input-inner no-border">
                     <span class="flex-1 color_6">购满包邮</span>
-                    <input class="algin_r" type="age" placeholder="不填默认不包邮"  v-model="item.buyer" />
+                    <input class="algin_r" type="number" placeholder="不填默认不包邮"  v-model="item.buyer" />
                     <span>元</span>
                 </div>
             </div>
@@ -102,7 +102,7 @@
                 <div class="flex">
                     <div class="flex-1 flex align_items_c">
                         <label class="check-cir" :class="{checked: allCheckedFlag}" @click="selectAllCheck"></label>
-                        <span class="color_6">已选<span class="color_f08">{{ checkedNum }}</span>款</span>
+                        <span class="color_6">已选<span class="color_f08"> {{ checkedNum }} </span>款</span>
                     </div>
                     <div class="selected-btn">
                         <mt-button type="primary" :disabled="disabledBol" @click.native="selectOk">选好了</mt-button>
@@ -186,13 +186,20 @@ import $api from 'api';
 
             this.getOldList().then((res) => {
                 let result = res.data;
+                for(let i=0;i<result.length;i++){
+                    if(result[i] == null){
+                        result.splice(i,1);
+                        i--;
+                    }
+                }
                 if(result.length==0){
                     this.postArray.push({
                         area: [],
                         areaText: '',
                         sweight: '',
                         xweight: '',
-                        buyer: ''
+                        buyer: '',
+                        templateId: null
                     })
                 }else{
                     this.flag = true;
@@ -202,7 +209,8 @@ import $api from 'api';
                             areaText: '',
                             sweight: result[i].firstHeavyCost,
                             xweight: result[i].continuedHeavyCost,
-                            buyer: result[i].freeCost
+                            buyer: result[i].freeCost,
+                            templateId: result[i].templateId
                         })
                         let newArray = [];
                         for(let j=0;j<result[i].baseRegionVoList.length;j++){
@@ -284,21 +292,17 @@ import $api from 'api';
                 }
             },
             savePost() {
-                if(this.flag){
-
-                }else{
-                    this.addFreight().then((res) => {
-                        Toast({
-                            message: '运费配置成功',
-                            iconClass: 'icon icon-success'
-                        });
-                        setTimeout(()=>{
-                            this.$router.push({
-                                name: '卖家中心'
-                            })
-                        },500)
-                    })
-                }
+                this.addFreight().then((res) => {
+                    Toast({
+                        message: '运费配置成功',
+                        iconClass: 'icon icon-success'
+                    });
+                    // setTimeout(()=>{
+                    //     this.$router.push({
+                    //         name: '卖家中心'
+                    //     })
+                    // },500)
+                })
             },
             addFreight() {
                 let data = {
@@ -309,7 +313,8 @@ import $api from 'api';
                         "baseRegionVoList": [],
                         "continuedHeavyCost": this.postArray[i].sweight,
                         "firstHeavyCost": this.postArray[i].xweight,
-                        "freeCost": this.postArray[i].buyer
+                        "freeCost": this.postArray[i].buyer,
+                        "templateId": this.postArray[i].templateId
                     })
                     let areaArray = this.postArray[i].area,
                         areaNameArray = this.postArray[i].areaText.split(',');
@@ -324,7 +329,7 @@ import $api from 'api';
                     }
                 }
                 return new Promise((resolve,reject) => {
-                    this.$api.post('/oteao/orgFreightTemplate/insertOrgFreightTemplateVo',JSON.stringify(data),res => {
+                    this.$api.post('/oteao/orgFreightTemplate/createOrUpdateOrgFreightTemplate',JSON.stringify(data),res => {
                         resolve(res);
                     },res=>{
                         return Toast({
@@ -446,7 +451,7 @@ import $api from 'api';
             'addressType': {
                 handler(curVal,oldVal){
                     let isTrue1 = curVal.one.every((item) => {
-                        return item.flag === true
+                        return item.flag === true && item.disabled === false
                     })
                     if(isTrue1){
                         this.checkedAll.one = true;
@@ -454,7 +459,7 @@ import $api from 'api';
                         this.checkedAll.one = false;
                     }
                     let isTrue2 = curVal.two.every((item) => {
-                        return item.flag === true
+                        return item.flag === true && item.disabled === false
                     })
                     if(isTrue2){
                         this.checkedAll.two = true;
@@ -462,7 +467,7 @@ import $api from 'api';
                         this.checkedAll.two = false;
                     }
                     let isTrue3 = curVal.three.every((item) => {
-                        return item.flag === true
+                        return item.flag === true && item.disabled === false
                     })
                     if(isTrue3){
                         this.checkedAll.three = true;
@@ -470,7 +475,7 @@ import $api from 'api';
                         this.checkedAll.three = false;
                     }
                     let isTrue4 = curVal.four.every((item) => {
-                        return item.flag === true
+                        return item.flag === true && item.disabled === false
                     })
                     if(isTrue4){
                         this.checkedAll.four = true;

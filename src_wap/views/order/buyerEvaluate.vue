@@ -49,6 +49,7 @@ export default {
             imgList: [],
             orderId: '',
             imgUrlList: [],
+            flag: false,
         }
     },
     head: {
@@ -84,22 +85,15 @@ export default {
                     })
                 }
             }
-
             return new Promise((resolve,reject) => {
                 this.$api.post('/oteao/evaluation/saveEvaluation',JSON.stringify(data),res => {
-                    Toast({
+                    this.flag = true;
+                    return Toast({
                         message: res.message,
                         iconClass: 'icon icon-success'
                     });
-                    setTimeout(() =>{
-                        this.$router.push({
-                            name: '订单详情',
-                            query: {
-                                orderId: this.orderId
-                            }
-                        })
-                    })
                 },res=>{
+                    this.flag = true;
                     if(res.code == 1001){
                         return Toast({
                             message: '请至少填写5个字以上的评价',
@@ -159,23 +153,27 @@ export default {
        this.wxFlag = this.$tool.isWx;
   　},
     beforeRouteLeave(next) {
-        MessageBox({
-            title: '提示',
-            message: '确定放弃评价?',
-            confirmButtonText: '确认放弃',
-            showCancelButton: true
-        })
-        MessageBox.confirm('确认放弃评价?').then(action => {
-            this.$router.push({
-                name: '订单详情',
-                query: {
-                    orderId: this.orderId
-                }
+        if(!this.flag){
+            MessageBox({
+                title: '提示',
+                message: '确定放弃评价?',
+                confirmButtonText: '确认放弃',
+                showCancelButton: true
             })
+            MessageBox.confirm('确认放弃评价?').then(action => {
+                this.$router.push({
+                    name: '订单详情',
+                    query: {
+                        orderId: this.orderId
+                    }
+                })
+                location.reload();
+            },action => {
+                console.log(cancel);
+            },);
+        }else{
             location.reload();
-        },action => {
-            console.log(cancel);
-        },);
+        }
     },
     beforeRouteEnter(to, from, next) {
         if(store.state.member.member.id) {

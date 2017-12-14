@@ -82,6 +82,7 @@
         
         .pro_item{
             .position(r);
+            transition: .3s;
             border-bottom: 1px solid #e6e6e6;
             &.no_border{
                 border: none;
@@ -98,11 +99,17 @@
                 padding-top: .3rem;
                 padding-left: .87rem;
                 .full_free{
+                    display: inline-block;
                     .fontSize(.24rem);
                     padding: .05rem .1rem;
                     border: 1px solid #f08200;
                     .color(#f08200);
                     margin-right: .1rem;
+                }
+                .ruletitle{
+                    display: inline-block;
+                    max-width: 50%;
+                    .oneLine;
                 }
             }
             .right_info{
@@ -200,6 +207,22 @@
                     }
                 }
             }
+            // 向左滑动
+            &.left{
+                transform: translateX(-1.4rem);
+            }
+            // ios 左划
+            .del-block{
+                .position(a);
+                .w(1.4rem);
+                .h(100%);
+                .algin(c);
+                .line(2.3rem);
+                .color(#fff);
+                right: -1.4rem;
+                background: #ff3600;
+                top: 0;
+            }
         }
         .tips_div{
             .bg(#fff5f5);
@@ -226,7 +249,6 @@
     // 失效产品
     .expired_product{
         .pro_item{
-            padding-left: .87rem;
             .bg(#e8e8e8);
             .expired_txt{
                 .position(a);
@@ -238,6 +260,9 @@
                 .fontSize(.24rem);
                 .bg(#535a61);
                 .color(#fff);
+            }
+            &.haspadding{
+                padding-left: .87rem;
             }
         }
         .clear_expired{
