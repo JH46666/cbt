@@ -126,7 +126,15 @@
                     res=>{
                         this.successFlag = true;
                     },res=>{
-                        Toast('您输入的短信验证码错误，请核实后重新输入');
+                        if(res.code === 3001) {
+                            Toast('新密码不能等于旧密码');
+                        }
+                        if(res.code === 1000) {
+                            Toast('短信验证码过期，请重新获取');
+                        }
+                        if(res.code === 1001) {
+                            Toast('短信验证码错误');
+                        }
                     });
                 }
             },

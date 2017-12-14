@@ -68,7 +68,6 @@
             .paddingRow(.35rem);
             img{
                 .position(r);
-                top: .14rem;
                 max-width: 1.74rem;
                 margin-right: .1rem;
             }
@@ -393,6 +392,10 @@
                 .bg(@mainCol);
             }
         }
+        .tip-third{
+            .position(r);
+            top: .2rem;
+        }
         // 门店自提
         .indoor-wrap{
             .bg(#fafafa);
@@ -402,6 +405,10 @@
                 .fontSize(.28rem);
                 .line(1.5);
                 .color(@error);
+                &.border{
+                    border-top: 1px solid #e5e5e5;
+                    padding-top: .1rem;
+                }
             }
             .contack{
                 .paddingRow(.35rem);

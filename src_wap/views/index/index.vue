@@ -22,8 +22,10 @@ import cbtDate from '../../components/datePicker.vue'
             },2000)
             if(location.href.indexOf('?wxpaycallback=') !== -1 ){
                 // 表示微信支付回调
-                let src = location.href.split('?')[1].split('#')[0].split('=')[1];
-                location.replace(location.origin + `/#/balance/payview?payId=${src}`);
+                // let src = location.href.split('?')[1].split('#')[0].split('=')[1];
+                let src = location.href.split('?')[1].split('#')[0].split('%20');
+                let payId = src[0].split('=')[1];
+                location.replace(location.origin + `/#/balance/payview?payId=${payId}&wx=wxpaycallback&type=${src[1]}`);
             }
         },
         head: {

@@ -10,11 +10,11 @@
             <div class="income_head_center">
                 <div>
                     <span>{{ myData.finshSum | toFix2 }}</span>
-                    <span>已结算（元）</span>
+                    <span>已结算(元)</span>
                 </div>
                 <div>
                     <span>{{ myData.unFinshSum | toFix2 }}</span>
-                    <span>未结算（元）</span>
+                    <span>未结算(元)</span>
                 </div>
             </div>
             <div class="income_head_bottom">订单状态为完成时，订单收入才会转到您的账上呦~</div>
