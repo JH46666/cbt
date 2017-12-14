@@ -5,11 +5,11 @@
                 <h4 class="title">激活红包</h4>
                 <div class="input-wrap">
                     <div class="input-row">
-                        <label><input type="text" v-model="redCode" placeholder="请输入红包激活序号" /></label>
+                        <label><input type="text" v-model="redCode" placeholder="请输入红包激活码" /></label>
                     </div>
                 </div>
                 <div class="btnwrap">
-                    <mt-button type="default" @click="close('cancel')">取消</mt-button><mt-button type="default"@click="close('confirm')">确定</mt-button>
+                    <mt-button type="default" @click="close('cancel')">取消</mt-button><mt-button type="default"@click="close('confirm')">立即激活</mt-button>
                 </div>
             </div>
         </transition>

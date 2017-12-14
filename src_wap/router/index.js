@@ -118,6 +118,14 @@ const router = new Router({
 					meta: {
 						hideFooter: true
 					}
+				},
+				{
+					path: 'changepassword',
+					name: '修改密码',
+					component: resolve => require(['@/views/center/changePassword.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
 				}
 			]
 		},
@@ -181,24 +189,16 @@ const router = new Router({
 					}
 				},
 				{
-					path: 'success',
-					name: '结算成功',
-					component: resolve => require(['@/views/balance/payView.vue'],resolve),
-					meta: {
-						hideFooter: true
-					}
-				},
-				{
-					path: 'fail',
-					name: '结算失败',
-					component: resolve => require(['@/views/balance/payView.vue'],resolve),
-					meta: {
-						hideFooter: true
-					}
-				},
-				{
 					path: 'delivery',
 					name: '货到付款结算',
+					component: resolve => require(['@/views/balance/payView.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+				{
+					path: 'deliverysuccess',
+					name: '货到付款成功',
 					component: resolve => require(['@/views/balance/payView.vue'],resolve),
 					meta: {
 						hideFooter: true

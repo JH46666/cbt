@@ -72,7 +72,7 @@ const actions = {
                 'sysId': 1
             },res => {
                 resolve(res)
-            })
+            },res => {})
         }
 
         return new Promise((resolve,reject) => {

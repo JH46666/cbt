@@ -27,7 +27,7 @@
         <section class="count-entry">
             <router-link to="" tag="div" class="count-item">
                 <p class="num">{{ count.monthOrderSum | toFix2}}</p>
-                <p class="tips">当月收入（元）</p>
+                <p class="tips">当月收入(元)</p>
             </router-link>
             <router-link to="" tag="div" class="count-item">
                 <p class="num">{{ count.monthOrderNum }}</p>

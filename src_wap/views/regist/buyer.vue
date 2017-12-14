@@ -115,7 +115,8 @@
                         // console.log(res);
                         this.$router.push('/regist/examine')
                     },res=>{
-                        Toast('您输入的短信验证码错误，请核实后重新输入');
+                        console.l(res)
+                        // Toast('您输入的短信验证码错误，请核实后重新输入');
                     });
                 }
             },

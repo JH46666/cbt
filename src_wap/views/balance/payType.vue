@@ -72,7 +72,7 @@
                     </template>
                     <template v-else>
                         <div class="check-item">
-                            <div class="left"><span class="icon"><img src="../../assets/images/stkd.png" alt=""></span> 快递配送 </div>
+                            <div class="left"><span class="tip-third">快递配送</span></div>
                             <div class="center">
                                 <span class="gold">￥{{ active.shopExpress | toFix2}}</span>
                             </div>
@@ -85,7 +85,8 @@
                     </template>
                     <div class="indoor-wrap" v-if="(active.canPickUpBySelf && active.selfSupport === true) || active.selfSupport !== true">
                         <div class="check-item delivery">
-                            <div class="left"><i class="icon-jifenshangcheng"></i> 门店自提 </div>
+                            <div class="left" v-if="active.selfSupport === true"><i class="icon-jifenshangcheng"></i> 门店自提 </div>
+                            <div class="left" v-else><span class="tip-third">门店自提</span></div>
                             <div class="center">
                                 <span class="gold">￥0.00</span>
                             </div>
@@ -95,7 +96,7 @@
                                 </label>
                             </div>
                         </div>
-                        <p class="tips">请与门店联系确认存货量以及门店营业时间</p>
+                        <p class="tips" :class="{border: active.selfSupport !== true}">请与门店联系确认存货量以及门店营业时间</p>
                         <p class="contack">提货地址：{{ active.shopAddress }}--联系电话：{{ active.contactMobile }}</p>
                     </div>
                 </div>

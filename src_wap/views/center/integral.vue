@@ -14,7 +14,11 @@
             </div>
             <div class="item-wrap" v-else>
                 <div class="item" v-for="(item,i) in list">
-                    <div class="left">{{ item.remark }}</div>
+                    <div class="left">
+                        <div class="title">
+                            {{ item.remark }}
+                        </div> 
+                    </div>
                     <div class="right">
                         <div class="count">{{ item.afterPoint > item.beforePoint ? '+' : '' }}{{ item.alterPoint }}</div>
                         <div class="date">{{ item.updateTime }}</div>

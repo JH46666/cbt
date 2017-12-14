@@ -17,7 +17,7 @@
                 <p>没有红包呀~</p>
             </div>
             <template v-else>
-                <div class="redpacket-item" v-for="(item,index) in list" :class="{disabled: selected === 'EXPIRED'}">
+                <div class="redpacket-item" v-for="(item,index) in list" :class="{disabled: selected === 'EXPIRED' || selected === 'USED'}">
                     <div class="hd">
                         <div class="left">
                             <p>
