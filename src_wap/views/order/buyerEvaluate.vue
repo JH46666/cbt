@@ -147,7 +147,19 @@ export default {
                 }
                 this.imgUrlList = postList;
             }else{
-                this.imgList = res.data.subOrder.products;
+                let postList = [];
+                for(let i=0;i < res.data.subOrder.length; i++){
+                    for(let j=0; j< res.data.subOrder[i].products.length; j++){
+                        postList.push({
+                            imgUrl: res.data.subOrder[i].products[j].imageUrl,
+                            content: '',
+                            stars: 0,
+                            sku: res.data.subOrder[i].products[j].proSku,
+                            extendId: res.data.subOrder[i].products[j].proExtId
+                        })
+                    }
+                }
+                this.imgUrlList = postList;
             }
         })
     },

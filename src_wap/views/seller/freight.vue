@@ -105,7 +105,7 @@
                         <span class="cancel_link" v-if="$tool.isWx" @click="popupVisible=false">取消</span>
                     </div>
                     <div class="selected-btn">
-                        <mt-button type="primary" :disabled="disabledBol" @click.native="selectOk">选好了</mt-button>
+                        <mt-button type="primary" @click.native="selectOk">选好了</mt-button>
                     </div>
                 </div>
             </div>
@@ -222,15 +222,15 @@ import $api from 'api';
             })
         },
         computed:{
-            disabledBol() {
-                let arr = this.addressType.one.concat(this.addressType.two,this.addressType.three,this.addressType.four);
-                for(let i=0;i<arr.length;i++){
-                    if(arr[i].flag){
-                        return false;
-                    }
-                }
-                return true;
-            },
+            // disabledBol() {
+            //     let arr = this.addressType.one.concat(this.addressType.two,this.addressType.three,this.addressType.four);
+            //     for(let i=0;i<arr.length;i++){
+            //         if(arr[i].flag){
+            //             return false;
+            //         }
+            //     }
+            //     return true;
+            // },
             checkedNum() {
                 let arr = this.addressType.one.concat(this.addressType.two,this.addressType.three,this.addressType.four);
                 let num = 0;
@@ -300,7 +300,7 @@ import $api from 'api';
                         this.$router.push({
                             name: '卖家中心'
                         })
-                    },500)
+                    },200)
                 })
             },
             addFreight() {
@@ -308,24 +308,32 @@ import $api from 'api';
                     "orgFreightTemplateVoList": []
                 }
                 for(let i=0;i<this.postArray.length;i++){
-                    data.orgFreightTemplateVoList.push({
-                        "baseRegionVoList": [],
-                        "continuedHeavyCost": this.postArray[i].sweight,
-                        "firstHeavyCost": this.postArray[i].xweight,
-                        "freeCost": this.postArray[i].buyer,
-                        "templateId": this.postArray[i].templateId,
-                        "delFlag": this.postArray[i].delFlag
-                    })
-                    let areaArray = this.postArray[i].area,
-                        areaNameArray = this.postArray[i].areaText.split(',');
-                    for(let obj of areaArray){
-                        data.orgFreightTemplateVoList[i].baseRegionVoList.push({
-                            "id": obj,
-                            "regionName": ''
+                    if(this.postArray[i].sweight !='' && this.postArray[i].xweight != '' && this.postArray[i].buyer != '' && this.postArray[i].area.length > 0){
+                        data.orgFreightTemplateVoList.push({
+                            "baseRegionVoList": [],
+                            "continuedHeavyCost": this.postArray[i].sweight,
+                            "firstHeavyCost": this.postArray[i].xweight,
+                            "freeCost": this.postArray[i].buyer,
+                            "templateId": this.postArray[i].templateId,
+                            "delFlag": this.postArray[i].delFlag
                         })
-                    }
-                    for(let obj of areaNameArray){
-                        data.orgFreightTemplateVoList[i].baseRegionVoList.regionName = obj;
+                        let areaArray = this.postArray[i].area,
+                            areaNameArray = this.postArray[i].areaText.split(',');
+                        if(areaArray.length==0){
+                            return Toast({
+                                message: '请先选择省份',
+                                iconClass: 'icon icon-fail'
+                            });
+                        }
+                        for(let obj of areaArray){
+                            data.orgFreightTemplateVoList[i].baseRegionVoList.push({
+                                "id": obj,
+                                "regionName": ''
+                            })
+                        }
+                        for(let obj of areaNameArray){
+                            data.orgFreightTemplateVoList[i].baseRegionVoList.regionName = obj;
+                        }
                     }
                 }
                 return new Promise((resolve,reject) => {
@@ -341,11 +349,7 @@ import $api from 'api';
             },
             toFixedTwo(val,str,index) {
                 let delTrim = String(val).trim();
-                if(delTrim == ''){
-                    this.postArray[index].sweight = '0.00'
-                }else{
-                    this.postArray[index].sweight = parseFloat(delTrim).toFixed(2);
-                }
+                this.postArray[index].sweight = parseFloat(delTrim).toFixed(2);
             },
             delectMethod(index) {
                 // this.postArray.splice(index,1);
@@ -391,7 +395,8 @@ import $api from 'api';
                     areaText: '',
                     sweight: '',
                     xweight: '',
-                    buyer: ''
+                    buyer: '',
+                    delFlag: 0
                 })
             },
             selectAll(type) {

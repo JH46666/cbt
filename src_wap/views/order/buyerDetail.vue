@@ -28,7 +28,7 @@
                         <span>{{ regStar(orderDetailData.receiptPhone) }}</span>
                     </template>
                 </div>
-                <div class="line_2">{{ orderDetailData.detailAddress }} {{ orderDetailData.streetAddress }}</div>
+                <div class="line_2">{{ orderDetailData.detailAddress }}</div>
             </div>
             <!-- <div class="invoice">
                 <div class="line_1">
@@ -63,9 +63,13 @@
             <!-- 订单列表 -->
             <div class="order_wrapper">
                 <template v-if="orderListDetail.subOrder!=null && orderListDetail.mainOrder == null">
-                    <div class="order_item">
+                    <div class="order_item" v-for="(order,num) in orderListDetail.subOrder" :key="num">
+                        <div class="order_state">
+                            <span>{{ orderStatus[order.subOrderStatus] }}</span>
+                            <span>{{ order.subOrderNo }}</span>
+                        </div>
                         <div class="list_wrapper">
-                            <div class="list_item" v-for="(item,index) in orderListDetail.subOrder.products">
+                            <div class="list_item" v-for="(item,index) in order.products" :key="index">
                                 <div class="list_img">
                                     <img :src="item.imageUrl" />
                                 </div>
@@ -80,15 +84,15 @@
                         </div>
                         <div class="order_head order_white">
                             <div class="order_express">
-                                <img :src="express[orderListDetail.subOrder.expressName]" /> {{ orderListDetail.subOrder.expressName }}
-                                <span>{{ orderListDetail.subOrder.expressNo }}</span>
+                                <img :src="express[order.expressCode]" /> {{ order.expressName }}
+                                <span>{{ order.expressNo }}</span>
                             </div>
-                            <!-- <div class="order_num">
-                                <mt-button plain v-if="orderListDetail.subOrder.subOrderStatus === 'FINISH' && orderListDetail.subOrder.isComment === false" class="pay_now" @click.native="commentMethod(item.orderId)">评价</mt-button>
-                                <mt-button plain v-if="orderListDetail.subOrder.subOrderStatus === 'WAIT_PAY' || orderListDetail.subOrder.subOrderStatus === 'WAIT_CHECK'" @click.native="cancelMethod">取消订单</mt-button>
-                                <mt-button plain v-if="orderListDetail.subOrder.subOrderStatus === 'WAIT_PAY'" class="pay_now" @click.native="payMethod">立即支付</mt-button>
-                                <mt-button plain v-if="orderListDetail.subOrder.subOrderStatus === 'DELIVERED' || orderListDetail.subOrder.subOrderStatus === 'CBT_BUYER'" class="pay_now" @click.native="confrimMethod">确认收货</mt-button>
-                            </div> -->
+                            <div class="order_num">
+                                <!-- <mt-button plain v-if="order.subOrderStatus === 'FINISH' && order.isComment === false" class="pay_now" @click.native="commentMethod(item.orderId)">评价</mt-button> -->
+                                <!-- <mt-button plain v-if="order.subOrderStatus === 'WAIT_PAY' || order.subOrderStatus === 'WAIT_CHECK'" @click.native="cancelMethod">取消订单</mt-button>
+                                <mt-button plain v-if="order.subOrderStatus === 'WAIT_PAY'" class="pay_now" @click.native="payMethod">立即支付</mt-button> -->
+                                <mt-button plain v-if="order.subOrderStatus === 'DELIVERED' || order.subOrderStatus === 'CBT_BUYER'" class="pay_now" @click.native="confrimMethod(order.subOrderNo)">确认收货</mt-button>
+                            </div>
                         </div>
                     </div>
                 </template>
@@ -110,7 +114,7 @@
                         </div>
                         <div class="order_head"  v-if="orderDetailData.expressDeliveryName != '客户自提'">
                             <div class="order_express">
-                                <img :src="express[orderListDetail.mainOrder.expressName]" /> {{ orderListDetail.mainOrder.expressName }}
+                                <img :src="express[orderListDetail.mainOrder.expressCode]" /> {{ orderListDetail.mainOrder.expressName }}
                                 <span>{{ orderListDetail.mainOrder.expressNo }}</span>
                             </div>
                         </div>
@@ -145,12 +149,13 @@
                 </div>
                 <div class="price_detail_item" v-if="orderDetailData.redPacketName">
                     <span>红包抵扣</span>
-                    <span>-￥{{ orderDetailData.redPacketSum | toFix2 }}</span>
+                    <span v-if="orderDetailData.redPacketSum === 0">￥0</span>
+                    <span v-else>-￥{{ orderDetailData.redPacketSum | toFix2 }}</span>
                 </div>
                 <div class="price_detail_item">
                     <span>积分抵扣</span>
                     <span v-if="orderDetailData.useJfSum === 0">0积分</span>
-                    <span v-if="orderDetailData.useJfSum != 0">-{{ orderDetailData.useJfSum }}积分</span>
+                    <span v-else>-{{ orderDetailData.useJfSum }}积分</span>
                 </div>
                 <div class="price_detail_item">
                     <span>运费</span>
@@ -203,8 +208,14 @@
             <!-- <mt-button plain v-if="status === '待审核' || status === '待评价' || status === '待发货'" @click.native="confrimMethod">再次购买</mt-button> -->
             <mt-button plain v-if="orderDetailData.orderStatus === 'FINISH' && orderDetailData.isComment === false" class="pay_now" @click.native="commentMethod(orderDetailData.orderId)">评价</mt-button>
             <mt-button plain v-if="orderDetailData.orderStatus === 'WAIT_PAY' || orderDetailData.orderStatus === 'WAIT_CHECK'" @click.native="cancelMethod">取消订单</mt-button>
-            <mt-button plain v-if="orderDetailData.orderStatus === 'WAIT_PAY'" class="pay_now" @click.native="payMethod">立即支付</mt-button>
-            <mt-button plain v-if="orderDetailData.orderStatus === 'DELIVERED' || orderDetailData.orderStatus === 'CBT_BUYER'" class="pay_now" @click.native="confrimMethod">确认收货</mt-button>
+            <mt-button plain v-if="orderDetailData.orderStatus === 'WAIT_PAY'" class="pay_now" @click.native="payMethod(orderDetailData.payId)">立即支付</mt-button>
+            <mt-button plain v-if="orderDetailData.orderStatus === 'DELIVERED' || orderDetailData.orderStatus === 'CBT_BUYER'" class="pay_now" @click.native="confrimMethod(orderDetailData.orderNo)">确认收货</mt-button>
+        </div>
+        <!-- 按钮 -->
+        <div class="order_btn"  v-if="orderListDetail.subOrder != null && orderListDetail.mainOrder == null">
+            <!-- <mt-button plain v-if="status === '待审核' || status === '待评价' || status === '待发货'" @click.native="confrimMethod">再次购买</mt-button> -->
+            <!-- <mt-button plain v-if="orderDetailData.orderStatus === 'WAIT_PAY'" class="pay_now" @click.native="payMethod">立即支付</mt-button> -->
+            <mt-button plain v-if="orderDetailData.orderStatus === 'FINISH' && orderDetailData.isComment === false" class="pay_now" @click.native="commentMethod(orderDetailData.orderId)">评价</mt-button>
         </div>
         <mt-popup v-model="closeUp" position="bottom">
             <div class="close-wrap">
@@ -225,9 +236,9 @@ export default {
             shopLogo: '../src_wap/assets/images/list_logo.png',
             isThird: true,
             express: {
-                '顺丰快递': '../src_wap/assets/images/sfkd.png',
-                '申通E物流': '../src_wap/assets/images/stkd.png',
-                'EMS快递': '../src_wap/assets/images/emskd.png'
+                'ship_sf': '../src_wap/assets/images/sfkd.png',
+                'ship_sto': '../src_wap/assets/images/stkd.png',
+                'ship_ems': '../src_wap/assets/images/emskd.png'
             },
             titleText: '订单详情',
             orderDetailData: {},
@@ -301,8 +312,14 @@ export default {
         cancelMethod() {
             this.closeUp = true;
         },
-        payMethod() {
-
+        payMethod(payNumber) {
+            this.$router.push({
+                name: '收银台',
+                query: {
+                    payId: payNumber,
+                    type: 'online'
+                }
+            })
         },
         pullOrDown() {
             this.pullOrDownFlag = !this.pullOrDownFlag;
@@ -310,9 +327,9 @@ export default {
         pullOrDownShopMethod() {
             this.pullOrDownShop = !this.pullOrDownShop;
         },
-        confrimMethod() {
+        confrimMethod(orderNumber) {
             let data = {
-                orderNo: this.orderDetailData.orderNo
+                orderNo: orderNumber
             }
             MessageBox.confirm('确定确认收货?').then(action => {
                 this.$api.post('/oteao/order/confimReceipt',data,res => {
