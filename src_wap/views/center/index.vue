@@ -197,9 +197,11 @@
                         title:'提示', 
                         message:`您的账号因违规操作而被冻结无法进入~若有疑问，请联系客服400-996-3399`,
                         confirmButtonText: '我知道了'
-                    });
+                    }).then(res => {
+                        vm.$api.get('/oteao/login/logout',{},res => {})
+                    })
                 }
-                if(status === 'AUDIT_NO_PASS' || status === 'INACTIVE') {
+                if(status === 'INACTIVE') {
                     vm.$messageBox({
                         title:'提示', 
                         message:`您的账号审核未通过，只有正式会员才可查看，若有疑问，请联系客服400-996-3399`,
@@ -216,7 +218,21 @@
                 }
                 return vm.$router.go(-1);
             }
-
+            if(status === 'AUDIT_NO_PASS') {
+                vm.$messageBox({
+                    title:'提示', 
+                    message:`您的账号审核未通过，只有正式会员才可买买买，若有疑问，请联系客服400-996-3399`,
+                    showCancelButton: true,
+                    cancelButtonText: '取消',
+                    confirmButtonText: '完善资料'
+                }).then(res => {
+                    if(res === 'cancel') {
+                        return;
+                    } else {
+                        vm.$router.push({name: '茶帮通注册3'})
+                    }
+                })
+            }
 
             if(!store.state.member.member.id) {
                 store.dispatch('getMemberData').then((res) => {
