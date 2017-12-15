@@ -74,7 +74,7 @@
                         <div class="check-item">
                             <div class="left"><span class="tip-third">快递配送</span></div>
                             <div class="center">
-                                <span class="gold">￥{{ active.shopExpress | toFix2}}</span>
+                                <span class="gold">￥{{ active.payAndDeliveryAndfreightMap.ONLINE['ship_express'] | toFix2}}</span>
                             </div>
                             <div class="right">
                                 <label :class="{checked:active.currentDeliveryMethod === 'ship_express'}">
