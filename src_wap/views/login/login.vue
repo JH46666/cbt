@@ -3,8 +3,8 @@
         <div class="logo_img"><img src="../../assets/images/logo.png" alt=""></div>
         <div>
             <mt-navbar v-model="selected">
-                <mt-tab-item id="1">短信登录</mt-tab-item>
                 <mt-tab-item id="2">密码登录</mt-tab-item>
+                <mt-tab-item id="1">短信登录</mt-tab-item>
             </mt-navbar>
             <!-- tab-container -->
             <mt-tab-container v-model="selected">
@@ -58,18 +58,18 @@
             return {
                 selected: '2',                      //tab切换
                 regInfo: {                          //表单
-                    phone: "",              
+                    phone: "",
                     mesCode:"",
                     password:"",
                 },
                 visFlag: false,                     //密码是否可见
                 illegalFlag: false,                 //是否违规操作
                 verifyFlag: false,                  //验证码弹窗是否可见
-                phoneFlag: false,                   //手机验证是否通过            
+                phoneFlag: false,                   //手机验证是否通过
                 passwordFlag: false,                //密码验证是否通过
                 mescodeFlag: false,                 //短信验证是否
                 getFlag: false,                     //获取短信验证码按钮是否可点击
-                getCount: 0,                        //获取短信的次数          
+                getCount: 0,                        //获取短信的次数
                 errorTips: '',                    //错误提示
                 timeCount: 60,                    //倒计时
             }

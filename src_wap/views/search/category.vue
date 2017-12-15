@@ -41,8 +41,8 @@
                     <div class="content-inner ipScroll">
                         <div class="condition-box">
                             <ul class="flex">
-                                <li @click="filterVisible = true"><i class="iconfont">&#xe674;</i>筛选</li>
-                                <li @click="sortVisible = true"><i class="iconfont">&#xe673;</i>排序</li>
+                                <li @click="filterVisible = true" :class="{on: filterVisible}"><i class="iconfont">&#xe674;</i>筛选</li>
+                                <li @click="sortVisible = true" :class="{on: sortVisible}"><i class="iconfont">&#xe673;</i>排序</li>
                             </ul>
                         </div>
                         <div v-infinite-scroll="loadMore" infinite-scroll-disabled="true" infinite-scroll-distance="10">
@@ -262,7 +262,6 @@
                 for(let item in this.propertiesValList){
                     this.propertiesValList[item].propValId = 'all';
                 }
-                this.filterVisible = false;
             },
             //重置排序
             resetSort(){

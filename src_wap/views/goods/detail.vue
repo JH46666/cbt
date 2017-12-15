@@ -98,7 +98,7 @@
                     </div>
                     <template  v-if="detailData.productExtInfo.isSales && detailData.productExtInfo.state === 'ON_SHELF'">
                         <div class="detail_active">
-                            <label>促销</label>
+                            <!-- <label>促销</label> -->
                             <div class="detail_active_list">
                                 <div class="detail_active_item">
                                     <span>直降</span>
@@ -146,12 +146,12 @@
                     </mt-tab-container-item>
                     <mt-tab-container-item id="2">
                         <div class="reguler_wrapper">
-                            <div class="reguler_item">
+                            <div class="reguler_item" style="height: .98rem; padding: 0;">
                                 <div>商品编号</div>
                                 <div>{{ detailData.productInfo.proSku }}</div>
                             </div>
                             <template v-for="(item,index) in attrImgDetail.propValList">
-                                <div class="reguler_item" v-if="item.propName === '香气'">
+                                <div class="reguler_item" v-if="item.propName === '香气'" style="height: 1.5rem; padding: 0;">
                                     <div>{{ item.propName }}</div>
                                     <div class="x_star">
                                         <span class="x_grey" :class="{on: item.propertiesVal.propVal === '偏淡' || item.propertiesVal.propVal === '一般' || item.propertiesVal.propVal === '香' || item.propertiesVal.propVal === '高香' || item.propertiesVal.propVal === '极香'}">偏淡</span>
@@ -161,7 +161,7 @@
                                         <span class="x_grey" :class="{on: item.propertiesVal.propVal === '极香'}">极香</span>
                                     </div>
                                 </div>
-                                <div class="reguler_item" v-if="item.propName === '滋味'">
+                                <div class="reguler_item" v-if="item.propName === '滋味'" style="height: 1.5rem; padding: 0;">
                                     <div>{{ item.propName }}</div>
                                     <div class="z_star">
                                         <span class="z_grey" :class="{on: item.propertiesVal.propVal === '偏淡' || item.propertiesVal.propVal === '一般' || item.propertiesVal.propVal === '浓' || item.propertiesVal.propVal === '很浓' || item.propertiesVal.propVal === '极浓'}">偏淡</span>
@@ -171,12 +171,12 @@
                                         <span class="z_grey" :class="{on: item.propertiesVal.propVal === '极浓'}">极浓</span>
                                     </div>
                                 </div>
-                                <div class="reguler_item"v-if="item.propName != '香气' && item.propName != '滋味'" >
+                                <div class="reguler_item"v-if="item.propName != '香气' && item.propName != '滋味'" style="height: .98rem; padding: 0;">
                                     <div>{{ item.propName }}</div>
                                     <div>{{ item.propertiesVal.propVal }}</div>
                                 </div>
                             </template>
-                            <div class="reguler_item" v-if="detailData.productExtInfo.reason!=''">
+                            <div class="reguler_item" v-if="detailData.productExtInfo.reason!=''" style="height: 1.5rem; padding: 0;">
                                 <div>推荐理由</div>
                                 <div>{{ detailData.productExtInfo.reason }}</div>
                             </div>

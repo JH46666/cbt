@@ -10,7 +10,7 @@
                     <mt-cell v-for="(item,index) in orderList" :key="index">
                         <div class="order_head">
                             <div class="order_logo" v-if="item.sellerOrgId == null">
-                                <img :src="shopLogo" />自营
+                                <img src="../../assets/images/list_logo.png" />自营
                             </div>
                             <div class="order_icon" v-else>
                                 <i class="iconfont">&#xe66d;</i>
@@ -79,7 +79,6 @@ export default {
     data() {
         return {
             orderList: [],
-            shopLogo: '../src_wap/assets/images/list_logo.png',
             wxFlag: false,
             currentNum: 1,
             pageNume: 20,
