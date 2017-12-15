@@ -233,18 +233,13 @@
                     }
                 })
             }
-
-            if(!store.state.member.member.id) {
-                store.dispatch('getMemberData').then((res) => {
-                    next(vm);
-                }).catch(res => {
-                    next(vm => {
-                        vm.$router.push('/login');
-                    })
-                })
-            } else {
+            store.dispatch('getMemberData').then((res) => {
                 next(vm);
-            }
+            }).catch(res => {
+                next(vm => {
+                    vm.$router.push('/login');
+                })
+            })
         }
     }
 </script>
