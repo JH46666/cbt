@@ -1,5 +1,5 @@
 <template>
-    <div class="empty" v-if="listPannel.length === 0">
+    <div class="empty" v-if="listPannel.length === 0 && disabledList.length === 0">
         <div class="img-wrap">
             <img src="../../assets/images/empty.jpg" alt="">
         </div>
@@ -38,16 +38,13 @@
                                 <div class="right_info flex-1">
                                     <div class="pro_info flex">
                                         <div class="pro_img">
-                                            <!-- <div class="tag_img" v-if="item.tagImg">
-                                                <img :src="item.tagImg" alt="">
-                                            </div> -->
-                                            <a href="javascript:void(0);" @click="goDetail(item.proSku)"><img :src="item.imageUrl" alt=""></a>
+                                            <router-link :to="{name: '商品详情',query:{proSku: item.proSku}}"><goods-img imgWidth="1.6rem" :tagUrl="item.tagImage" :imgUrl="item.imageUrl"></goods-img></router-link>
                                         </div>
                                         <div class="flex-1 pro_detail">
                                             <div class="flex flex_col detail_inner">
-                                                <a href="javascript:void(0);" @click="goDetail(item.proSku)">
+                                                <router-link :to="{name: '商品详情',query:{proSku: item.proSku}}">
                                                     <h4>{{item.proName}}</h4>
-                                                </a>
+                                                </router-link>
                                                 <div class="flex-1 flex align_items_end">
                                                     <div class="pro_price"><span class="money">{{item.priorityPrice}}</span>元/{{item.unit}}</div>
                                                     <div class="pro_number clearfix">
@@ -89,13 +86,13 @@
                                     <div class="right_info flex-1">
                                         <div class="pro_info flex">
                                             <div class="pro_img">
-                                                <a href="javascript:void(0);" @click="goDetail(item.proSku)"><img :src="item.imageUrl" alt=""></a>
+                                                <router-link :to="{name: '商品详情',query:{proSku: item.proSku}}"><goods-img imgWidth="1.6rem" :tagUrl="item.tagImage" :imgUrl="item.imageUrl"></goods-img></router-link>
                                             </div>
                                             <div class="flex-1 pro_detail">
                                                 <div class="flex flex_col detail_inner">
-                                                    <a href="javascript:void(0);" @click="goDetail(item.proSku)">
+                                                    <router-link :to="{name: '商品详情',query:{proSku: item.proSku}}">
                                                         <h4>{{item.proName}}</h4>
-                                                    </a>
+                                                    </router-link>
                                                     <!-- 赠品 -->
                                                     <div class="flex-1 flex align_items_end">
                                                         <div class="pro_price"><span class="money">￥0.00</span><span class="market_price">￥<del>{{ item.formerPrice | toFix2}}</del></span></div>
@@ -128,7 +125,7 @@
                         <div class="right_info flex-1">
                             <div class="pro_info flex">
                                 <div class="pro_img">
-                                    <a href="javascript:void(0);"><img :src="item.proImg" alt=""></a>
+                                    <a href="javascript:void(0);"><goods-img imgWidth="1.6rem" :imgUrl="item.imageUrl"></goods-img></a>
                                     <div class="expired_txt">
                                         <p>失效</p>
                                     </div>
@@ -160,7 +157,7 @@
         <may-like></may-like>
         <!-- 底部结算 -->
         <div class="cart_bottom flex">
-            <div class="select_all left_check flex" :class="{'flex-1':edit,'checked': edit ? disabledList.every(val => val.checked) && listPannel.every(val => checkAll(val)) : listPannel.every(val => checkAll(val)) }">
+            <div class="select_all left_check flex" :class="{'flex-1':edit,'checked': edit ? disabledList.every(val => val.checked) && listPannel.every(val => checkAll(val)) : listPannel.every(val => checkAll(val)) &&  listPannel.length !== 0 }">
                 <p class="flex align_items_c" @click="selectAll">
                     <input type="checkbox" name="" hidden>
                     <span class="check_cir"></span>
@@ -314,12 +311,12 @@
                 }
             },
             //去详情
-            goDetail(val){
-                this.$router.push({
-                    path: '/detail',
-                    query: {proSku:val}
-                });
-            },
+            // goDetail(val){
+            //     this.$router.push({
+            //         path: '/detail',
+            //         query: {proSku:val}
+            //     });
+            // },
             // ios向左,手指按下
             touchstart(ev,item) {
                 if(this.$tool.isiOS) {
@@ -534,14 +531,6 @@
             let vm = vm => {
                 let status = store.state.member.memberAccount.status;
                 if(status === 'ACTIVE') {
-                    vm.$store.dispatch('viewSign')
-                    vm.$store.dispatch('getRedTotal')
-                    vm.$api.get('/oteao/member/memberLevel/findNextLevelByMemberIdAndSysId',{
-                        memberId: store.state.member.member.id,
-                        sysId:1
-                    },res =>{
-                        vm.level = res.data;
-                    })
                     return;
                 };
                 if(status === 'WAIT_AUDIT') {
@@ -558,7 +547,7 @@
                         confirmButtonText: '我知道了'
                     });
                 }
-                if(status === 'AUDIT_NO_PASS' || status === 'INACTIVE') {
+                if(status === 'INACTIVE') {
                     vm.$messageBox({
                         title:'提示', 
                         message:`您的账号审核未通过，只有正式会员才可买买买，若有疑问，请联系客服400-996-3399`,
@@ -573,21 +562,31 @@
                         }
                     })
                 }
+                if(status === 'AUDIT_NO_PASS') {
+                    vm.$messageBox({
+                        title:'提示', 
+                        message:`您的账号审核未通过，只有正式会员才可买买买，若有疑问，请联系客服400-996-3399`,
+                        showCancelButton: true,
+                        cancelButtonText: '取消',
+                        confirmButtonText: '完善资料'
+                    }).then(res => {
+                        if(res === 'cancel') {
+                            return;
+                        } else {
+                            vm.$router.push({name: '茶帮通注册3'})
+                        }
+                    })
+                }
                 return vm.$router.go(-1);
             }
 
-
-            if(!store.state.member.member.id) {
-                store.dispatch('getMemberData').then((res) => {
-                    next(vm);
-                }).catch(res => {
-                    next(vm => {
-                        vm.$router.push('/login');
-                    })
-                })
-            } else {
+            store.dispatch('getMemberData').then((res) => {
                 next(vm);
-            }
+            }).catch(res => {
+                next(vm => {
+                    vm.$router.push('/login');
+                })
+            })
         }
     }
 </script>

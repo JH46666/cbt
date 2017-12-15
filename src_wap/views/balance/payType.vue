@@ -91,8 +91,8 @@
                                 <span class="gold">￥0.00</span>
                             </div>
                             <div class="right">
-                                <label :class="{checked:active.currentDeliveryMethod === 'ship_self_pickup'}">
-                                    <input type="radio" value="ship_self_pickup" v-model="active.currentDeliveryMethod">
+                                <label :class="{checked:active.currentDeliveryMethod === 'get_self'}">
+                                    <input type="radio" value="get_self" v-model="active.currentDeliveryMethod">
                                 </label>
                             </div>
                         </div>
