@@ -11,7 +11,7 @@
                 <li class="flex-1" @click="isUse = false" :class="{'on': !isUse}">不使用</li>
             </ul>
         </div>
-        <div class="floor2" :class="{iswx: $tool.isWx}" v-if="totalAmount < myData.orderSum || isUse === false">
+        <div class="floor2" :class="{iswx: $tool.isWx}" v-if="(totalAmount < myData.orderSum || isUse === false) && $route.query.type !== 'delivery'">
             <mt-radio
                 align="right"
                 title="选择支付方式"
@@ -101,8 +101,12 @@
                         this.$store.dispatch('getMemberData');
                         if(res.data.orderSum > 0) {
                             // 余额不够了,还需配合在线支付
-                            payUp.call(this)
-
+                            // 需要判断是不是纯货到付款，如果是，就不需要在线支付了
+                            if(this.$route.query.type === 'delivery') {
+                                this.$router.push({name: '货到付款成功',query: {payId:this.payId,type:'delivery'}});
+                            } else {
+                                payUp.call(this)
+                            }
                         } else {
                             // 交易成功
                             this.$router.push({name: '结算显示',query:{payId:this.payId}})
@@ -110,7 +114,13 @@
                     })
                 
                 } else {
-                    payUp.call(this)
+
+                    if(this.$route.query.type === 'delivery') {
+                        this.$router.push({name: '货到付款成功',query: {payId:this.payId,type:'delivery'}});
+                    } else {
+                        payUp.call(this)
+                    }
+
                 }
 
                 // 在线支付，支付宝or微信

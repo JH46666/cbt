@@ -3,7 +3,7 @@
         <div class="logo_img"><img src="../../assets/images/logo.png" alt=""></div>
         <div>
             <!-- 表单 -->
-            <form action="" class="form_wrapper com_wrapper" v-show="!successFlag">
+            <div class="form_wrapper com_wrapper" v-show="!successFlag">
                 <div class="form_item">
                     <input type="tel" placeholder="手机号码" v-model="regInfo.phone" maxlength="11">
                 </div>
@@ -21,14 +21,14 @@
                 </div>
                 <mt-button size="large" type="primary" :class="{'is-disabled':disabledFlag}" :title="activeFlag" @click="submit">确定</mt-button>
 
-            </form>
+            </div>
             <!-- 成功找回密码 -->
             <div class="success_wrapper" v-show="successFlag">
                 <div class="icon_img"><img src="../../assets/images/forget_gou.png" alt=""></div>
                 <h3 class="color_3">成功找回密码</h3>
                 <p class="color_9">客官，牢记登录密码下次登录不麻烦~</p>
-                <p class="tips"><span>5s</span>后将返回登录</p>
-                <a class="go_login" href="/login">立即去登录</a>
+                <p class="tips"><span>{{ n }}s</span>后将返回登录</p>
+                <a class="go_login" href="javascript:" @click="$router.go(-1)">立即去登录</a>
             </div>
         </div>
         <!-- 验证码弹窗 -->
@@ -58,6 +58,7 @@
                 errorTips: '',                    //错误提示
                 timeCount: 60,                    //倒计时
                 successFlag: false,               //是否修改成功
+                n: 5
             }
         },
         computed:{
@@ -125,8 +126,18 @@
                     this.$api.post('/oteao/memberAccount/findPwd',data,
                     res=>{
                         this.successFlag = true;
+                        this.$nextTick(() => {
+                            let timer = setInterval(() => {
+                                console.log(this)
+                                this.n--;
+                                if(this.n === 0) {
+                                    clearInterval(timer);
+                                    this.$router.go(-1);
+                                }
+                            },1000)
+                        })
                     },res=>{
-                        if(res.code === 3001) {
+                        if(res.code === 3011) {
                             Toast('新密码不能等于旧密码');
                         }
                         if(res.code === 1000) {

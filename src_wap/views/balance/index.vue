@@ -173,7 +173,7 @@
                     ship_sf: '顺丰快递',
                     ship_sto: '申通快递',
                     ship_express: '快递配送',
-                    ship_self_pickup: '门店自提'
+                    get_self: '门店自提'
                 },
                 activePannel: {},           // 当前激活的店铺
             }
@@ -395,7 +395,7 @@
 
                     // 货到付款
                     if(!online && delivery) {
-                        if(this.totalAmount > 0) {
+                        if(this.totalAmount > 0 && this.pannel[0].currentDeliveryMethod !== 'get_self') {
                             this.$router.push({name: '收银台',query: {payId: res.data.payId,type:'delivery'}});
                         } else {
                             this.$router.push({name: '货到付款成功',query: {payId: res.data.payId,type:'delivery'}});

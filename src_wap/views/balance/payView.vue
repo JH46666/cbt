@@ -32,6 +32,17 @@
                     <mt-button type="default" @click="$router.push({name: '收银台',query: {payId: $route.query.payId,type:$route.query.type}})">立即支付</mt-button>
                 </div>
             </template>
+            <!-- 货到付款成功 -->
+            <template v-if="$route.name === '货到付款成功'">
+                <div class="delivery-text">
+                    <i class="icon-zhifuchenggong"></i>货到付款订单提交成功
+                </div>
+                <p class="wait">还需支付<span class="gold">￥{{ order.orderSum | toFix2 }}</span></p>
+                <div class="delivery-btn-wrap">
+                    <mt-button type="default" @click="$router.push('/order/buyerlist?orderStatus=null')">查看订单</mt-button>
+                    <mt-button type="default" @click="$router.push('/')">返回首页</mt-button>
+                </div>
+            </template>
         </div>
         <div class="bd">
             <div class="text-item">
@@ -49,13 +60,17 @@
                 <div class="left">已付金额：</div>
                 <div class="right"><span class="gold">￥{{ order.orderSum | toFix2 }}</span></div>
             </div>
+            <div class="text-item" v-if="$route.name === '货到付款成功'">
+                <div class="left">待付金额：</div>
+                <div class="right"><span class="gold">￥{{ order.orderSum | toFix2 }}</span></div>
+            </div>
             <div class="text-item">
                 <div class="left">支付方式：</div>
                 <div class="right">{{ payType[order.payType] }}</div>
             </div>
         </div>
         <!-- 猜你喜欢 -->
-        <may-like v-if="$route.name === '结算显示' && !$route.query.fail"></may-like>
+        <may-like v-if="$route.name === '结算显示' && !$route.query.fail || $route.name === '货到付款成功'"></may-like>
     </div>
 </template>
 
@@ -68,7 +83,8 @@
             return {
                 myData: {},
                 payType: {
-                    ONLINE: '在线支付'
+                    ONLINE: '在线支付',
+                    CASH_DELIVERY: '货到付款'
                 }
             }
         },
