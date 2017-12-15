@@ -79,6 +79,7 @@ html,body,#app,#container{
     overflow: hidden;
     height: 100%;
     .position(r);
+    .ipScroll;
     &.no_header{
         padding:0 0 .98rem;
     }
@@ -161,6 +162,8 @@ html,body,#app,#container{
             right: 0;
             padding: .25rem .4rem;
             top: 0;
+            .fontSize(.4rem);
+            .color(#ccc);
         }
         .mes_code{
             .flex_num(6);
@@ -311,12 +314,14 @@ html,body,#app,#container{
 }
 .mint-msgbox-message{
     .color(#333);
-    .line(1.5); 
+    .line(1.5);
 }
 .mint-msgbox{
     .w(75%);
 }
-
+.mint-header-title{
+    font-size: .28rem;
+}
 
 
 // 无限滚动

@@ -55,7 +55,7 @@
         <div class="order">
             <!-- 店铺名称 是否自营 -->
             <div class="order_shop" v-if="orderDetailData.sellerOrgId == null">
-                <img :src="shopLogo" /> 自营
+                <img src="../../assets/images/list_logo.png" /> 自营
             </div>
             <div class="order_shop" v-if="orderDetailData.sellerOrgId == 1">
                 <i class="iconfont">&#xe66d;</i> {{ orderDetailData.shopName }}
@@ -84,13 +84,12 @@
                         </div>
                         <div class="order_head order_white">
                             <div class="order_express">
-                                <img :src="express[order.expressCode]" /> {{ order.expressName }}
+                                <img src="../../assets/images/sfkd.png" v-if="order.expressCode == 'ship_sf'" />
+                                <img src="../../assets/images/stkd.png" v-if="order.expressCode == 'ship_sto'" />
+                                <img src="../../assets/images/emskd.png" v-if="order.expressCode == 'ship_ems'" /> {{ order.expressName }}
                                 <span>{{ order.expressNo }}</span>
                             </div>
                             <div class="order_num">
-                                <!-- <mt-button plain v-if="order.subOrderStatus === 'FINISH' && order.isComment === false" class="pay_now" @click.native="commentMethod(item.orderId)">评价</mt-button> -->
-                                <!-- <mt-button plain v-if="order.subOrderStatus === 'WAIT_PAY' || order.subOrderStatus === 'WAIT_CHECK'" @click.native="cancelMethod">取消订单</mt-button>
-                                <mt-button plain v-if="order.subOrderStatus === 'WAIT_PAY'" class="pay_now" @click.native="payMethod">立即支付</mt-button> -->
                                 <mt-button plain v-if="order.subOrderStatus === 'DELIVERED' || order.subOrderStatus === 'CBT_BUYER'" class="pay_now" @click.native="confrimMethod(order.subOrderNo)">确认收货</mt-button>
                             </div>
                         </div>
@@ -114,7 +113,9 @@
                         </div>
                         <div class="order_head"  v-if="orderDetailData.expressDeliveryName != '客户自提'">
                             <div class="order_express">
-                                <img :src="express[orderListDetail.mainOrder.expressCode]" /> {{ orderListDetail.mainOrder.expressName }}
+                                <img src="../../assets/images/sfkd.png" v-if="orderListDetail.expressDeliveryCode == 'ship_sf'" />
+                                <img src="../../assets/images/stkd.png" v-if="orderListDetail.expressDeliveryCode == 'ship_sto'" />
+                                <img src="../../assets/images/emskd.png" v-if="orderListDetail.expressDeliveryCode == 'ship_ems'" /> {{ orderListDetail.mainOrder.expressName }}
                                 <span>{{ orderListDetail.mainOrder.expressNo }}</span>
                             </div>
                         </div>
@@ -233,13 +234,7 @@ export default {
         return {
             pullOrDownFlag: false,
             pullOrDownShop: false,
-            shopLogo: '../src_wap/assets/images/list_logo.png',
             isThird: true,
-            express: {
-                'ship_sf': '../src_wap/assets/images/sfkd.png',
-                'ship_sto': '../src_wap/assets/images/stkd.png',
-                'ship_ems': '../src_wap/assets/images/emskd.png'
-            },
             titleText: '订单详情',
             orderDetailData: {},
             closeUp: false,
