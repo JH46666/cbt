@@ -96,8 +96,8 @@
                                 </label>
                             </div>
                         </div>
-                        <p class="tips" :class="{border: active.selfSupport !== true}">请与门店联系确认存货量以及门店营业时间</p>
-                        <p class="contack">提货地址：{{ active.shopAddress }}--联系电话：{{ active.contactMobile }}</p>
+                        <p class="tips" :class="{border: active.selfSupport !== true}" v-if="active.currentDeliveryMethod === 'get_self'">请与门店联系确认存货量以及门店营业时间</p>
+                        <p class="contack" v-if="active.currentDeliveryMethod === 'get_self'">提货地址：{{ active.shopAddress }}--联系电话：{{ active.contactMobile }}</p>
                     </div>
                 </div>
             </div>

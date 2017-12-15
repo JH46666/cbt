@@ -401,6 +401,14 @@ const router = new Router({
 						hideFooter: true
 					}
 				},
+				{
+					path: 'shopdetail',
+					name: '店铺详情',
+					component: resolve => require(['@/views/seller/shopDetail.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
 			]
 		}
 	]
