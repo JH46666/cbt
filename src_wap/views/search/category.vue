@@ -398,9 +398,7 @@
                 store.dispatch('getMemberData').then((res) => {
                     next();
                 }).catch(res => {
-                    next(vm => {
-                        vm.$router.push('/');
-                    })
+                    next();
                 })
             } else {
                 next();

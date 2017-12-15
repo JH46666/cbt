@@ -74,7 +74,7 @@
                         <div class="check-item">
                             <div class="left"><span class="tip-third">快递配送</span></div>
                             <div class="center">
-                                <span class="gold">￥{{ active.shopExpress | toFix2}}</span>
+                                <span class="gold">￥{{ active.payAndDeliveryAndfreightMap.ONLINE['ship_express'] | toFix2}}</span>
                             </div>
                             <div class="right">
                                 <label :class="{checked:active.currentDeliveryMethod === 'ship_express'}">
@@ -91,13 +91,13 @@
                                 <span class="gold">￥0.00</span>
                             </div>
                             <div class="right">
-                                <label :class="{checked:active.currentDeliveryMethod === 'ship_self_pickup'}">
-                                    <input type="radio" value="ship_self_pickup" v-model="active.currentDeliveryMethod">
+                                <label :class="{checked:active.currentDeliveryMethod === 'get_self'}">
+                                    <input type="radio" value="get_self" v-model="active.currentDeliveryMethod">
                                 </label>
                             </div>
                         </div>
-                        <p class="tips" :class="{border: active.selfSupport !== true}">请与门店联系确认存货量以及门店营业时间</p>
-                        <p class="contack">提货地址：{{ active.shopAddress }}--联系电话：{{ active.contactMobile }}</p>
+                        <p class="tips" :class="{border: active.selfSupport !== true}" v-if="active.currentDeliveryMethod === 'get_self'">请与门店联系确认存货量以及门店营业时间</p>
+                        <p class="contack" v-if="active.currentDeliveryMethod === 'get_self'">提货地址：{{ active.shopAddress }}--联系电话：{{ active.contactMobile }}</p>
                     </div>
                 </div>
             </div>

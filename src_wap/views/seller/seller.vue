@@ -89,7 +89,7 @@
                 </router-link>
             </div>
             <div class="tools-row">
-                <router-link :to="{name: '商品管理'}" class="item">
+                <router-link :to="{name: '店铺详情'}" class="item">
                     <span><i class="icon-xiaoxi blue small"></i></span>
                     <p>店铺信息</p>
                 </router-link>
