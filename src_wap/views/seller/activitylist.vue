@@ -97,6 +97,7 @@ export default {
                     }
                 })
                 this.getList(0).then(res => {
+                    this.orderNum = res.total_record;
                     this.actiiveList = res.data;
                 })
             }else if(val === '1'){
@@ -107,6 +108,7 @@ export default {
                     }
                 })
                 this.getList(1).then(res => {
+                    this.orderNum = res.total_record;
                     this.actiiveList = res.data;
                 })
             }else if(val === '2'){
@@ -118,6 +120,7 @@ export default {
                 })
                 this.getList(2).then(res => {
                     this.actiiveList = res.data;
+                    this.orderNum = res.total_record;
                 })
             }else if(val === '3'){
                 this.$router.replace({
@@ -127,6 +130,7 @@ export default {
                     }
                 })
                 this.getList(3).then(res => {
+                    this.orderNum = res.total_record;
                     this.actiiveList = res.data;
                 })
             }
