@@ -243,6 +243,7 @@ export default {
                         ruleSetId: this.id,
                         specialPrice: '',
                         subAmount: '',
+                        mainImgUrl: obj.proImg
                     })
                 }
             }
