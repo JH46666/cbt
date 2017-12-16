@@ -150,7 +150,11 @@
                             if(status === 'INACTIVE') {
                                 this.$router.push({name: '茶帮通注册2'})
                             }
-                            this.$router.push(this.$store.state.address.from.fullPath);
+                            if(this.$store.state.address.from.name === '忘记密码') {
+                                this.$router.push('/')
+                            } else {
+                                this.$router.push(this.$store.state.address.from.fullPath);
+                            }
                         },res=>{
                             if(res.code === 4064){
                                 this.illegalFlag = true;
@@ -226,7 +230,7 @@
         },
         created() {
             // 设置title
-            this.$store.commit('SET_TITLE','账户登陆');
+            this.$store.commit('SET_TITLE','账户登录');
             
         },
         watch:{
