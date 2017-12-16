@@ -22,7 +22,7 @@
         <router-link v-for="(item,index) in footerData" :class="{on: item.path === classIndex}" :to="item.path" :key="index">
             <i class="iconfont" :class="item.icon"></i>
             {{ item.name }}
-            <mt-badge type="error" size="small" v-if="index === 2">{{ cartTotal | ninenineAdd }}</mt-badge>
+            <mt-badge type="error" size="small" v-if="index === 2 && id">{{ cartTotal | ninenineAdd }}</mt-badge>
         </router-link>
     </div>
 </template>
@@ -62,7 +62,8 @@
                 return this.$route.path
             },
             ...mapState({
-                cartTotal: state => state.cart.cartTotal
+                cartTotal: state => state.cart.cartTotal,
+                id: state => state.member.member.id
             })
         },
         created() {

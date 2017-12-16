@@ -31,13 +31,13 @@
                     <template v-if="item.giftList && item.giftList.length > 0">
                         <template v-for="list in arrayGift(item.giftList)">
                             <div class="pro_free_caption">
-                                <span class="full_free">{{ list.title }}</span>
-                                <span>{{ list.title }}</span>
+                                <span class="full_free" v-if="ruleTypeList[list.id] === 'GIVE_PRO'">满赠</span>
+                                <span class="ruletitle">{{ list.title }}</span>
                             </div>
                             <div class="goods-item" v-for="(todo,i) in list.list">
                                 <goods-img style="width:1.6rem;height:1.6rem;" :imgUrl="todo.imageUrl"></goods-img>
                                 <div class="right">
-                                    <p class="goods-title">{{ todo.proName }}</p>
+                                    <p class="goods-title"><span class="gold">赠品</span>&nbsp;&nbsp;{{ todo.proName }}</p>
                                     <p class="goods-bd">
                                         <span class="price">￥{{ todo.actualPayPrice | toFix2  }}</span>
                                         <span class="num">×{{ todo.giftNum }}</span>
@@ -200,6 +200,13 @@
                     }
                 })
                 return sum;
+            },
+            // 购物车规则类型
+            ruleTypeList() {
+                let data = this.myData.useRuleSetList || [];
+                let obj = {};
+                data.forEach(val => obj[val.ruleSetId] = val.showType)
+                return obj;
             },
             ...mapState({
                 id: state => state.member.member.id,

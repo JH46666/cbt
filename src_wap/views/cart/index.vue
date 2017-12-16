@@ -72,7 +72,7 @@
                             <div class="pro_item"  v-for="todo in arrayGift(list.giftList)" :key="todo.proId">
                                 <!-- 活动&赠品caption -->
                                 <div class="pro_free_caption">
-                                    <span class="full_free">{{todo.title}}</span>
+                                    <span class="full_free" v-if="ruleTypeList[todo.id] === 'GIVE_PRO'">满赠</span>
                                     <span class="ruletitle">{{todo.title}}</span>
                                 </div>
                                 <div class="flex" v-for="item in todo.list">
@@ -91,7 +91,7 @@
                                             <div class="flex-1 pro_detail">
                                                 <div class="flex flex_col detail_inner">
                                                     <router-link :to="{name: '商品详情',query:{proSku: item.proSku}}">
-                                                        <h4>{{item.proName}}</h4>
+                                                        <h4><span class="gold">赠品</span>&nbsp;&nbsp;{{item.proName}}</h4>
                                                     </router-link>
                                                     <!-- 赠品 -->
                                                     <div class="flex-1 flex align_items_end">
@@ -245,6 +245,13 @@
                     this.selectIds.forEach(val => sum = math.add(sum,val.buyNum));
                 }
                 return sum;
+            },
+            // 购物车规则类型
+            ruleTypeList() {
+                let data = this.cartData.useRuleSetList || [];
+                let obj = {};
+                data.forEach(val => obj[val.ruleSetId] = val.showType)
+                return obj;
             }
         },
         methods: {
@@ -430,8 +437,8 @@
 
                     if(!!item.buyUpperLimit) {
                         if(item.buyNum > item.buyUpperLimit) {
-                            item.buyNum = item.oldBuy;
-                            return Toast('超过最高购买量')
+                            // item.buyNum = item.oldBuy;
+                            Toast('超过最高购买量')
                         }
                     }
                     this.updateSeleNum(item,item.buyNum).then(res => {
@@ -528,7 +535,7 @@
         created(){
             // 设置title
             this.$store.commit('SET_TITLE','购物车');
-            
+
             this.getData();
         },
         // 判断会员状态
