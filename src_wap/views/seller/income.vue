@@ -56,7 +56,7 @@ export default {
     },
     created() {
         // 设置title
-        this.$store.commit('SET_TITLE','订单明细');
+        this.$store.commit('SET_TITLE','我的收入');
         
         this.$api.post('/oteao/order/preSellerOrderList',{
             'orderStatus': 'nowRevenue',
