@@ -195,19 +195,3 @@
 <style lang="less" scoped>
     @import url('~@/styles/balance/index.less');
 </style>
-<style>
-    .mint-navbar .mint-tab-item-label{
-        font-size: .3rem;
-        border-right: 1px solid #e5e5e5;
-    }
-    .mint-navbar .mint-tab-item:nth-last-child(1) .mint-tab-item-label{
-        border: none;
-    }
-    .mint-msgbox-wrapper .mint-msgbox-header{
-        display: none;
-    }
-    .mint-msgbox-confirm{
-        color: #fff;
-        background: #f08200;
-    }
-</style>

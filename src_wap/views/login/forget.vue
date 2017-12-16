@@ -28,7 +28,7 @@
                 <h3 class="color_3">成功找回密码</h3>
                 <p class="color_9">客官，牢记登录密码下次登录不麻烦~</p>
                 <p class="tips"><span>{{ n }}s</span>后将返回登录</p>
-                <a class="go_login" href="javascript:" @click="$router.go(-1)">立即去登录</a>
+                <a class="go_login" href="javascript:" @click="nowLogin">立即去登录</a>
             </div>
         </div>
         <!-- 验证码弹窗 -->
@@ -58,7 +58,8 @@
                 errorTips: '',                    //错误提示
                 timeCount: 60,                    //倒计时
                 successFlag: false,               //是否修改成功
-                n: 5
+                n: 5,
+                timer: null,                        // 定时器
             }
         },
         computed:{
@@ -127,11 +128,11 @@
                     res=>{
                         this.successFlag = true;
                         this.$nextTick(() => {
-                            let timer = setInterval(() => {
+                            this.timer = setInterval(() => {
                                 console.log(this)
                                 this.n--;
                                 if(this.n === 0) {
-                                    clearInterval(timer);
+                                    clearInterval(this.timer);
                                     this.$router.go(-1);
                                 }
                             },1000)
@@ -148,6 +149,10 @@
                         }
                     });
                 }
+            },
+            nowLogin() {
+                clearInterval(this.timer);
+                this.$router.go(-1);
             },
             //手机号验证
             checkPhone(val){
