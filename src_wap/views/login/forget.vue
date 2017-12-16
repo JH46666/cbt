@@ -206,6 +206,12 @@
                         this.timeCount--;
                     }
                 },1000);
+            },
+            created() {
+                
+                // 设置title
+                this.$store.commit('SET_TITLE','忘记密码');
+                
             }
         },
     }

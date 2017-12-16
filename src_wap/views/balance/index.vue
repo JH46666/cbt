@@ -465,6 +465,9 @@
             }
         },
         created() {
+            // 设置title
+            this.$store.commit('SET_TITLE','结算中心');
+            
             this.cartList = this.$route.query.cart;
             sessionStorage.setItem('edit',false);
             this.initData().then(res => {

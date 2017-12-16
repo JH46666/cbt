@@ -233,7 +233,7 @@
             <mt-tab-item id="2">
                 <i class="icon-shopcar" slot="icon"></i>
                 购物车
-                <mt-badge type="error" size="small">99+</mt-badge>
+                <mt-badge type="error" size="small">{{ cartTotal | ninenineAdd }}</mt-badge>
             </mt-tab-item>
             <mt-tab-item id="3">
                 <mt-button type="default" disabled v-if="detailData.productExtInfo.state === 'OFF_SHELF'">已下架</mt-button>
@@ -248,6 +248,7 @@
 import plusOreduce from '@/components/plusOreduce.vue'
 import { Toast,Indicator } from 'mint-ui'
 import store from 'store';
+import { mapState } from 'vuex'
 export default {
     components: {
         plusOreduce
@@ -298,7 +299,18 @@ export default {
             starNum: 0,
         }
     },
+    computed:{
+        ...mapState({
+            cartTotal: state => state.cart.cartTotal
+        })
+    },
     created() {
+        // 设置title
+        this.$store.commit('SET_TITLE','商品详情');
+        
+        // 获取购物车数量
+        this.$store.dispatch('queryCartTotal');
+
         this.proSku = this.$route.query.proSku;
         this.getDetail().then((res) =>{
             this.detailData = res.data;

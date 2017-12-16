@@ -22,12 +22,13 @@
         <router-link v-for="(item,index) in footerData" :class="{on: item.path === classIndex}" :to="item.path" :key="index">
             <i class="iconfont" :class="item.icon"></i>
             {{ item.name }}
-            <mt-badge type="error" size="small" v-if="index === 2">99+</mt-badge>
+            <mt-badge type="error" size="small" v-if="index === 2">{{ cartTotal | ninenineAdd }}</mt-badge>
         </router-link>
     </div>
 </template>
 
 <script>
+    import { mapState } from 'vuex'
     export default {
         data() {
             return {
@@ -59,7 +60,14 @@
         computed:{
             classIndex() {
                 return this.$route.path
-            }
+            },
+            ...mapState({
+                cartTotal: state => state.cart.cartTotal
+            })
+        },
+        created() {
+            // 更新购物车数量
+            this.$store.dispatch('queryCartTotal');
         }
     }
 </script>

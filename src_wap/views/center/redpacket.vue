@@ -186,6 +186,9 @@
             }
         },
         created() {
+            // 设置title
+            this.$store.commit('SET_TITLE','我的红包');
+            
             this.$store.dispatch('getRedList',{type: this.selected}).then(res => {
                 
                 for (let i = 0; i < res.data.length; i++) {

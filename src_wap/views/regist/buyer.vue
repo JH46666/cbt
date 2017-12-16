@@ -180,7 +180,11 @@
                 },1000);
             }
         },
-
+        created(){
+            // 设置title
+            this.$store.commit('SET_TITLE','茶帮通注册');
+                
+        }
     }
 </script>
 <style lang="less">

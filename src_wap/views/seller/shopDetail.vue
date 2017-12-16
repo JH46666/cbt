@@ -71,6 +71,12 @@
                 editTel: false,
                 editAlipay: false
             }
+        },
+        created() {
+            
+            // 设置title
+            this.$store.commit('SET_TITLE','卖家详情');
+                
         }
     }    
 </script>

@@ -137,6 +137,9 @@ export default {
         },
     },
     created() {
+        // 设置title
+        this.$store.commit('SET_TITLE','活动列表');
+            
         if(this.$route.query.sort != undefined){
             this.getList(this.$route.query.sort).then(res => {
                 this.actiiveList = res.data;
@@ -229,14 +232,7 @@ export default {
     },
     mounted () {
        this.wxFlag = this.$tool.isWx;
-  　},
-    head: {
-      title() {
-          return {
-              inner : '活动列表'
-          }
-      }
-    }
+  　}
 }
 </script>
 

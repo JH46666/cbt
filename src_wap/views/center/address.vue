@@ -88,6 +88,9 @@
             }
         },
         created() {
+            // 设置title
+            this.$store.commit('SET_TITLE','地址管理');
+            
             this.getData();
         }
     }

@@ -205,6 +205,9 @@ import $api from 'api';
             }
         },
         created() {
+            // 设置title
+            this.$store.commit('SET_TITLE','商品修改');
+        
             if(process.env.NODE_ENV != 'development'){
                 this.path = 'online_img/';
             }
@@ -596,13 +599,6 @@ import $api from 'api';
                 })
             }
         },
-        head: {
-            title() {
-                return {
-                    inner : '商品修改'
-                }
-            }
-        }
     }
 </script>
 <style lang="less">

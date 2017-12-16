@@ -378,8 +378,9 @@ export default {
         }
     },
     created() {
-        this.titleText = '订单详情'
-        this.$emit('updateHead',this.titleText);
+        // 设置title
+        this.$store.commit('SET_TITLE','订单详情');
+            
         this.getListDetail().then((res) =>{
             this.orderDetailData = res.data;
             // this.proAllSum = this.$tool.math.eval(`${this.orderDetailData..orderSum} - ${this.orderDetailData..freightSum}`);

@@ -404,13 +404,6 @@
                 next();
             }
         },
-        head: {
-            title() {
-                return {
-                    inner : '商品分类'
-                }
-            }
-        }
     }
 </script>
 <style lang="less">

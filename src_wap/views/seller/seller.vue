@@ -152,6 +152,9 @@
             },
         },
         created() {
+            // 设置title
+            this.$store.commit('SET_TITLE','卖家中心');
+                
             this.$api.post('/oteao/order/countOrderNumBySeller',{},res => {
                 this.count = res.data;
             })

@@ -332,6 +332,9 @@
             },
         },
         created() {
+            // 设置title
+            this.$store.commit('SET_TITLE','搜索');
+                
             // 根据地址栏获取条件
             try {
                 this.handle().then(res => {

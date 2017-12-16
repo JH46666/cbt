@@ -131,6 +131,9 @@ export default {
         },
     },
     created() {
+        // 设置title
+        this.$store.commit('SET_TITLE','订单评价');
+            
         this.orderId = this.$route.query.orderId;
         this.getOrderProList(this.orderId).then((res) => {
             if(res.data.mainOrder!=null){

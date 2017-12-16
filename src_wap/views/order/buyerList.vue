@@ -269,17 +269,13 @@ export default {
             })
         }
     },
-    head: {
-        title() {
-            return {
-                inner : '订单列表'
-            }
-        }
-    },
     mounted () {
        this.wxFlag = this.$tool.isWx;
   　},
     created() {
+        // 设置title
+        this.$store.commit('SET_TITLE','订单列表');
+            
         this.getList().then((res) =>{
             this.orderList = res.data.order;
             this.orderNum = res.data.orderNum;

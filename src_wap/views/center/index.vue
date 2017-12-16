@@ -165,6 +165,9 @@
             }
         },
         created() {
+            // 设置title
+            this.$store.commit('SET_TITLE','我的中心');
+            
             // 获取订单数量
             this.$api.post('/oteao/order/countOrderNum',{},res => {
                 this.count = res.data;

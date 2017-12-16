@@ -141,6 +141,9 @@
         created() {
             // 判断时哪个路由进来的
             if(this.$route.name === '卖家修改地址') {
+                // 设置title
+                this.$store.commit('SET_TITLE','修改地址');
+                
                 let orderNo = this.$route.query.orderNo
                 this.$api.post('/oteao/order/findSellerOrderByNo',{
                     orderNo
@@ -158,11 +161,17 @@
                     this.detail.areaCode = data.countyCode
                 })
             } else if(this.$route.name === '新增地址') {
+                // 设置title
+                this.$store.commit('SET_TITLE','新增地址');
+                
                 // 判断默认地址
                 this.$api.get('/oteao/deliveryAddress/searchDefauleAddress',{},res => {
                     this.defaultAddress = ! res.data;
                 })
             } else if (this.$route.name === '编辑地址') {
+                // 设置title
+                this.$store.commit('SET_TITLE','编辑地址');
+                
                 let id = this.$route.query.id
                 this.$api.get('/oteao/deliveryAddress/findById',{deliveryAddressId: id},res => {
                     this.myData = res.data

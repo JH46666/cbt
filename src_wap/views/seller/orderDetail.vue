@@ -229,6 +229,9 @@
             }
         },
         created() {
+            // 设置title
+            this.$store.commit('SET_TITLE','卖家订单详情');
+            
             this.getData();
         }
     }

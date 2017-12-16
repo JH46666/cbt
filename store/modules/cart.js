@@ -3,10 +3,15 @@ import { Toast,Indicator } from 'mint-ui'
 const cart = {
     state:{
         cartData:[],
+        cartTotal: 0
     },
     mutations:{
         SET_CART_LIST(state,data){
             state.cartData = data;
+        },
+        // 更新购物车数量
+        UPDATETOTAL(state,data) {
+            state.cartTotal = data;
         }
     },
     actions:{
@@ -22,13 +27,15 @@ const cart = {
                 });
             })
         },
-        addCart({rootState},{proId,buyNum}){
+        addCart({dispatch,rootState},{proId,buyNum}){
             return new Promise((resolve,reject)=>{
                 $api.post('/oteao/shoppingCart/addBuyNum',{
                     device: rootState.device,
                     proId: proId,
                     buyNum: buyNum
                 },res=>{
+                    // 更新购物车数量
+                    dispatch('queryCartTotal');
                     return Toast({
                         message: res.message,
                         iconClass: 'icon icon-success'
@@ -39,6 +46,11 @@ const cart = {
                         iconClass: 'icon icon-fail'
                     });
                 });
+            })
+        },
+        queryCartTotal({commit}) {
+            $api.get('/oteao/shoppingCart/getCartTotalCount',{sysId:1},res => {
+                commit('UPDATETOTAL',res.data);
             })
         }
     }

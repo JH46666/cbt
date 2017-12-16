@@ -409,6 +409,9 @@ export default {
         this.wxFlag = this.$tool.isWx;
     },
     created() {
+        // 设置title
+        this.$store.commit('SET_TITLE','新品上架');
+        
         this.getOneTypeList().then((res) => {
             let parentList = res.data;
             for(let obj of parentList){
@@ -450,13 +453,6 @@ export default {
             })
         }
     },
-    head: {
-        title() {
-            return {
-                inner : '新品上架'
-            }
-        }
-    }
 }
 </script>
 

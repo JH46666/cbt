@@ -140,6 +140,9 @@ import $api from 'api';
             }
         },
         created(){
+            // 设置title
+            this.$store.commit('SET_TITLE','运费配置');
+            
             this.$api.get('oteao/baseRegion/getRegionTree',{},res => {
                 for(let i=0;i<res.data.length-3;i++){
                     if(res.data[i].regionName === '江苏省' || res.data[i].regionName === '上海市' || res.data[i].regionName === '浙江省'){
@@ -498,13 +501,6 @@ import $api from 'api';
                 })
             }
         },
-        head: {
-            title() {
-                return {
-                    inner : '运费配置'
-                }
-            }
-        }
     }
 </script>
 <style lang="less">
