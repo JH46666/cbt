@@ -85,6 +85,9 @@
             }
         },
         created() {
+            // 设置title
+            this.$store.commit('SET_TITLE','余额记录');
+            
             // 判断是否刷新导致会员信息丢失
             if(this.id === undefined) {
                 this.$store.dispatch('getMemberData').then(res => {

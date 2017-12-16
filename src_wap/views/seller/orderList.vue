@@ -222,6 +222,9 @@
             },
         },
         created() {
+            // 设置title
+            this.$store.commit('SET_TITLE','卖家订单列表');
+            
             // 进入页面拉取数据
             this.$store.dispatch('getSellerOrder',{type: this.selected}).then(res => {
                 this.$store.commit('SET_ORDERLIST',{type:this.selected,data: res.data})

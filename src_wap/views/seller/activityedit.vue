@@ -124,6 +124,9 @@ export default {
         }
     },
     created() {
+        // 设置title
+        this.$store.commit('SET_TITLE','修改活动');
+        
         this.id = this.$route.query.edit;
         this.getDetail(this.id).then(res => {
             this.ruleDetail = res.data;
@@ -362,13 +365,6 @@ export default {
             })
         }
     },
-    head: {
-        title() {
-            return {
-                inner : '修改活动'
-            }
-        }
-    }
 }
 </script>
 

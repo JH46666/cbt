@@ -231,6 +231,9 @@
 
         },
         created(){
+            // 设置title
+            this.$store.commit('SET_TITLE','收银台');
+            
             this.payId = this.$route.query.payId;
             if(this.$tool.isWx) {
                 this.payMethod = 'WECHAT';

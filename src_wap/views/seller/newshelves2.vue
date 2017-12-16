@@ -204,6 +204,9 @@ import $api from 'api';
             }
         },
         created() {
+            // 设置title
+            this.$store.commit('SET_TITLE','新品上架');
+            
             if(process.env.NODE_ENV != 'development'){
                 this.path = 'online_img/';
             }

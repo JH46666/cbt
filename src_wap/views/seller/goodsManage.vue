@@ -204,6 +204,9 @@ import $api from 'api';
             }
         },
         created(){
+            // 设置title
+            this.$store.commit('SET_TITLE','商品管理');
+            
             this.getList(this.onShelf.orderBy,this.onShelf.sorts,this.onShelf.currentPage,'ON_SHELF').then((res) => {
                 this.onShelf.listData = res.data;
                 this.onShelf.totalPage = res.total_record;
@@ -563,13 +566,6 @@ import $api from 'api';
                 })
             }
         },
-        head: {
-            title() {
-                return {
-                    inner : '商品管理'
-                }
-            }
-        }
     }
 </script>
 <style lang="less">

@@ -66,6 +66,9 @@
             }
         },
         created() {
+            // 设置title
+            this.$store.commit('SET_TITLE','修改快递');
+            
             let orderNo = this.$route.query.orderNo;
             this.$api.post('/oteao/order/findSellerOrderByNo',{
                 orderNo,

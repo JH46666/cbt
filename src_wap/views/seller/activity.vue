@@ -321,12 +321,10 @@ export default {
             })
         }
     },
-    head: {
-        title() {
-            return {
-                inner : '添加活动'
-            }
-        }
+    created() {
+        // 设置title
+        this.$store.commit('SET_TITLE','添加活动');
+        
     }
 }
 </script>

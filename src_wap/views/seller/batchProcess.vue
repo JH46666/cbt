@@ -85,6 +85,9 @@ import { Toast } from 'mint-ui';
             },
         },
         created() {
+            // 设置title
+            this.$store.commit('SET_TITLE','批量处理');
+            
             this.state = this.$route.query.state;
             this.keyWord = this.$route.query.keyWord;
             if(this.state === 'ON_SHELF'){
@@ -247,13 +250,6 @@ import { Toast } from 'mint-ui';
                 }
             },
         },
-        head: {
-            title() {
-                return {
-                    inner : '批量处理'
-                }
-            }
-        }
     }
 </script>
 <style lang="less">

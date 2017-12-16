@@ -507,6 +507,9 @@ export default {
         this.wxFlag = this.$tool.isWx;
     },
     created() {
+        // 设置title
+        this.$store.commit('SET_TITLE','商品修改');
+        
         if(!this.resize.mainId){
             this.proSku = this.$route.query.proSku;
             this.resize.mainId = this.$route.query.edit;
@@ -642,13 +645,6 @@ export default {
             })
         }
     },
-    head: {
-        title() {
-            return {
-                inner : '商品修改'
-            }
-        }
-    }
 }
 </script>
 

@@ -22,10 +22,10 @@ export default {
 
         }
     },
-    head: {
-        title: {
-          inner: '卖家招募'
-        }
+    created() {
+        // 设置title
+        this.$store.commit('SET_TITLE','卖家招募');
+            
     },
     methods: {
         goRegist() {

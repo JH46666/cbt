@@ -365,6 +365,8 @@
                     },res => {
                         item.buyLowLimit = res.data.buyLowLimit;
                         item.buyUpperLimit = res.data.buyUpperLimit;
+                        // 更新购物车数量
+                        this.$store.dispatch('queryCartTotal'); 
                         resolve(res);
                     },res => {
                         reject(res);
@@ -516,15 +518,18 @@
                         list.swiper = false;
                     }
                     this.$store.commit('SET_CART_LIST',res.data);
+                    // 更新购物车数量
+                    this.$store.dispatch('queryCartTotal'); 
                 },res=>{
                     this.$store.commit('SET_CART_LIST',{});
                 });
             }
         },
         created(){
-            if(this.from.name !== '结算中心') {
-                this.getData();
-            }
+            // 设置title
+            this.$store.commit('SET_TITLE','购物车');
+            
+            this.getData();
         },
         // 判断会员状态
         beforeRouteEnter (to, from, next) {

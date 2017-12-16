@@ -74,6 +74,10 @@
                 })
             }
         },
+        created(){
+            // 设置title
+            this.$store.commit('SET_TITLE','修改密码');
+        },
         // 进来先判断登陆与否
         beforeRouteEnter(to, from, next) {
             if(!store.state.member.member.id) {

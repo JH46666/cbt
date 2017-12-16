@@ -134,6 +134,9 @@ export default {
         }
     },
     created() {
+        // 设置title
+        this.$store.commit('SET_TITLE','茶帮通注册');
+            
         if(process.env.NODE_ENV != 'development'){
             this.path = 'online_img/';
         }

@@ -299,6 +299,7 @@
         created() {
             // 设置title
             this.$store.commit('SET_TITLE','订单明细');
+            
             this.endTime = new Date();
             // 进入页面拉取数据
             this.handle();
