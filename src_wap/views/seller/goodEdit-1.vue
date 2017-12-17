@@ -53,7 +53,7 @@
                                 净重：
                             </label>
                             <div class="item-right">
-                                <input type="number" id="7" placeholder="必填项，请输入商品净重展示使用（g）" v-model="resize.form.goodsJz" />
+                                <input type="number" id="7" placeholder="必填项，请输入商品净重展示使用（g）" v-model="resize.form.goodsJz" @blur="toFixedZero(resize.form.goodsJz,'goodsJz')" />
                             </div>
                         </div>
                         <div class="item">
@@ -509,7 +509,7 @@ export default {
     created() {
         // 设置title
         this.$store.commit('SET_TITLE','商品修改');
-        
+
         if(!this.resize.mainId){
             this.proSku = this.$route.query.proSku;
             this.resize.mainId = this.$route.query.edit;

@@ -22,7 +22,7 @@
         .color(#666);
         .count{
             span{
-                .color(#ff3333);
+                .color(@mainCol);
             }
         }
         .submit{
@@ -90,6 +90,11 @@
                                 background-image: url('../../assets/images/star.png');
                             }
                         }
+                    }
+                    .star_head_text{
+                        .color(@mainCol);
+                        .fontSize(.26rem);
+                        margin-left: .4rem;
                     }
                 }
                 .text_content{

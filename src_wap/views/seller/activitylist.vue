@@ -8,17 +8,17 @@
         </mt-navbar>
         <mt-tab-container v-model="selected">
             <mt-tab-container-item :id="selected" class="on">
-                <div class="mt_cell_wrapper" v-infinite-scroll="loadMore" infinite-scroll-disabled="noInfinity" infinite-scroll-distance="5">
-                <template v-if="actiiveList.length == 0">
-                    <div class="f5-2"></div>
-                    <div class="active_empty">
-                        <img src="../../assets/images/empty_activily.png" />
-                        <span>没有任何特价活动哟~</span>
-                    </div>
-                </template>
-                <template v-else>
-                    <mt-cell v-for="(item,index) in actiiveList" :key="index">
+                <div class="mt_cell_wrapper" v-infinite-scroll="loadMore" infinite-scroll-disabled="noInfinity" infinite-scroll-distance="10">
+                    <template v-if="actiiveList.length == 0">
                         <div class="f5-2"></div>
+                        <div class="active_empty">
+                            <img src="../../assets/images/empty_activily.png" />
+                            <span>没有任何特价活动哟~</span>
+                        </div>
+                    </template>
+                    <template v-else>
+                        <mt-cell v-for="(item,index) in actiiveList" :key="index">
+                            <div class="f5-2"></div>
                             <div class="active_head">
                                 <div class="head_left">
                                     <img src="../../assets/images/%.png" />
@@ -139,7 +139,7 @@ export default {
     created() {
         // 设置title
         this.$store.commit('SET_TITLE','活动列表');
-            
+
         if(this.$route.query.sort != undefined){
             this.getList(this.$route.query.sort).then(res => {
                 this.actiiveList = res.data;
@@ -156,17 +156,19 @@ export default {
     },
     methods: {
         loadMore() {
-            try {
-                if(this.actiiveList.length >= this.orderNum) return this.noInfinity = true;
-                this.pageSize++;
-                this.getList().then((res) =>{
-                    let timeData = res.data.order;
-                    this.actiiveList = this.actiiveList.concat(timeData);
-                    this.noInfinity = false;
-                })
-            } catch (e) {
+            setTimeout(() => {
+                try {
+                    if(this.actiiveList.length >= this.orderNum) return this.noInfinity = true;
+                    this.pageSize++;
+                    this.getList(Number(this.selected)).then((res) =>{
+                        let timeData = res.data.order;
+                        this.actiiveList = this.actiiveList.concat(timeData);
+                        this.noInfinity = false;
+                    })
+                } catch (e) {
 
-            }
+                }
+            },500)
         },
         deleteActive(obj) {
             let data = {

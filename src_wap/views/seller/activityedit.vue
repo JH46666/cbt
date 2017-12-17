@@ -126,7 +126,7 @@ export default {
     created() {
         // 设置title
         this.$store.commit('SET_TITLE','修改活动');
-        
+
         this.id = this.$route.query.edit;
         this.getDetail(this.id).then(res => {
             this.ruleDetail = res.data;
@@ -142,6 +142,10 @@ export default {
         })
     },
     methods: {
+        toFixed(val) {
+            return parseFloat(val).toFixed(2);
+
+        },
         addProMethod() {
             this.getSearchList(this.searchKeyWord).then((res) => {
                 this.proList = res.data;
@@ -216,7 +220,7 @@ export default {
             }
             this.$api.post('/oteao/ruleSet/special/addOrModityRule',JSON.stringify(data),res => {
                 Toast ({
-                    message:`活动已修改成功`,
+                    message:`活动修改成功`,
                     iconClass: 'icon icon-success'
                 })
                 setTimeout(() => {

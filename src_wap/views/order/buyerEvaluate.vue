@@ -2,7 +2,7 @@
     <div class="evaluate">
         <div class="evaluate_head" :class="{ 'on': !wxFlag }">
             <div class="count">
-                共<span>{{ imgUrlList.length }}</span>件商品，<span>请至少对1件商品进行评价~</span>
+                共<span>{{ imgUrlList.length }}</span>件商品<span v-if="imgUrlList.length > 1">，请至少对1件商品进行评价~</span>
             </div>
             <div class="submit">
                 <mt-button type="primary" @click="postEvel" :disabled="postDisAble">提交</mt-button>
@@ -17,6 +17,9 @@
                         </div>
                         <div class="star_head_icon">
                             <span class="star" v-for="index in 5" :class="{on: index <= item.stars}" @click="hasStar(index,item)" :key="index"></span>
+                        </div>
+                        <div class="star_head_text">
+                            {{ textMs[starIndex] }}
                         </div>
                     </div>
                     <div class="text_content">
@@ -50,6 +53,14 @@ export default {
             orderId: '',
             imgUrlList: [],
             flag: false,
+            textMs: {
+                1: '非常差',
+                2: '差',
+                3: '一般',
+                4: '好',
+                5: '非常好'
+            },
+            starIndex: null,
         }
     },
     head: {
@@ -98,7 +109,7 @@ export default {
                     this.flag = true;
                     if(res.code == 1001){
                         return Toast({
-                            message: '请至少填写5个字以上的评价',
+                            message: '请至少填写5个字的评价',
                             iconClass: 'icon icon-fail'
                         });
                     }else{
@@ -111,6 +122,7 @@ export default {
             })
         },
         hasStar(index,obj) {
+            this.starIndex = index;
             obj.stars = index;
         },
         getOrderProList(orderId) {
@@ -133,7 +145,7 @@ export default {
     created() {
         // 设置title
         this.$store.commit('SET_TITLE','订单评价');
-            
+
         this.orderId = this.$route.query.orderId;
         this.getOrderProList(this.orderId).then((res) => {
             if(res.data.mainOrder!=null){
@@ -189,6 +201,9 @@ export default {
                 console.log(cancel);
             },);
         }else{
+            this.$router.push({
+                name: '订单列表'
+            })
             location.reload();
         }
     },

@@ -119,7 +119,7 @@
                     <div class="flex options">
                         <a href="javascript:void(0);" class="flex-1 algin_c" @click="$router.push({name: '商品详情',query: {proSku:item.proSku}})"><i class="iconfont">&#xe681;</i>预览</a>
                         <a href="javascript:void(0);" class="flex-1 algin_c" @click="goEditPage(item,'OFF_SHELF')"><i class="iconfont">&#xe682;</i>编辑</a>
-                        <a href="javascript:void(0);" class="flex-1 algin_c" @click="stateMethod(item.proExtId,'up')"><i class="iconfont">&#xe683;</i>上架</a>
+                        <a href="javascript:void(0);" class="flex-1 algin_c" @click="stateMethod(item.proExtId,'up')"><i class="iconfont">&#xe680;</i>上架</a>
                     </div>
                 </div>
                 <div class="get_more" @click="getMore('down')" v-if="offShelf.listData.length < offShelf.totalPage">
@@ -128,7 +128,7 @@
                 <div v-if="offShelf.listData.length==0">
                     <div class="no-item">
                         <img src="../../assets/images/wusousoushuju.jpg" alt="">
-                        <p>暂无未上架的商品~</p>
+                        <p>暂无未下架的商品~</p>
                     </div>
                 </div>
             </div>
@@ -164,7 +164,7 @@
     </div>
 </template>
 <script>
-import { Toast } from 'mint-ui';
+import { Toast,MessageBox } from 'mint-ui';
 import { mapState } from 'vuex'
 import store from 'store';
 import $api from 'api';
@@ -201,12 +201,13 @@ import $api from 'api';
                     orderBy: 'desc'
                 },
                 selectText: '上架时间',
+                flag: false,
             }
         },
         created(){
             // 设置title
             this.$store.commit('SET_TITLE','商品管理');
-            
+
             this.getList(this.onShelf.orderBy,this.onShelf.sorts,this.onShelf.currentPage,'ON_SHELF').then((res) => {
                 this.onShelf.listData = res.data;
                 this.onShelf.totalPage = res.total_record;
@@ -229,6 +230,12 @@ import $api from 'api';
             }else{
                 this.tabId = 'no';
                 this.selectText = '创建时间';
+            }
+        },
+        watch: {
+            sortCondition(val) {
+                this.descFlag = false;
+                this.flag = true;
             }
         },
         computed:{
@@ -268,11 +275,7 @@ import $api from 'api';
         },
         methods:{
             resMethod(num) {
-                if(this.descFlag){
-                    this.descFlag = false;
-                }else{
-                    this.descFlag = true;
-                }
+                this.descFlag = !this.descFlag;
                 if(this.descFlag){
                     if(this.$route.query.state == undefined || this.$route.query.state === 'ON_SHELF'){
                         let state = 'ON_SHELF';
@@ -294,6 +297,7 @@ import $api from 'api';
                             }
                         })
                     }
+
                 }else{
                     if(this.$route.query.state == undefined || this.$route.query.state === 'ON_SHELF'){
                         let state = 'ON_SHELF';
@@ -388,10 +392,7 @@ import $api from 'api';
                         window.location.reload();
                     },500)
                 },res=>{
-                    return Toast({
-                        message: res.errorMsg,
-                        iconClass: 'icon icon-fail'
-                    });
+                    return MessageBox('提示', res.errorMsg);
                 })
             },
             getMore(type) {

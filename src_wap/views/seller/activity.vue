@@ -178,7 +178,7 @@ export default {
             }
             this.$api.post('/oteao/ruleSet/special/addOrModityRule',JSON.stringify(data),res => {
                 Toast ({
-                    message:`活动${res.data.id}已保存成功`,
+                    message:`活动保存成功`,
                     iconClass: 'icon icon-success'
                 })
                 setTimeout(() => {
@@ -324,7 +324,7 @@ export default {
     created() {
         // 设置title
         this.$store.commit('SET_TITLE','添加活动');
-        
+
     }
 }
 </script>

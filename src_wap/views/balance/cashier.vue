@@ -92,7 +92,7 @@
                 if(this.isUse) {
                     // 使用余额
 
-                    
+
                     // 使用余额支付的话需要判断当前的余额是否够用，需要配合在线支付
 
                     this.$api.post('/oteao/payOrder/modityOrderStoreValue',{
@@ -112,7 +112,7 @@
                             this.$router.push({name: '结算显示',query:{payId:this.payId}})
                         }
                     })
-                
+
                 } else {
 
                     if(this.$route.query.type === 'delivery') {
@@ -155,12 +155,12 @@
                             },res => {
                                 // 调试专用，通过地址栏传值
                                 /*let data = {
-                                    "appId":this.$route.query.appId,     //公众号名称，由商户传入     
-                                    "timeStamp":this.$route.query.timeStamp,         //时间戳，自1970年以来的秒数     
-                                    "nonceStr":this.$route.query.nonceStr, //随机串  
+                                    "appId":this.$route.query.appId,     //公众号名称，由商户传入
+                                    "timeStamp":this.$route.query.timeStamp,         //时间戳，自1970年以来的秒数
+                                    "nonceStr":this.$route.query.nonceStr, //随机串
                                     "package": `prepay_id=${this.$route.query.package}`,
-                                    "signType":this.$route.query.signType,         //微信签名方式：     
-                                    "paySign":this.$route.query.paySign //微信签名 
+                                    "signType":this.$route.query.signType,         //微信签名方式：
+                                    "paySign":this.$route.query.paySign //微信签名
                                 }*/
                                 // return alert(JSON.stringify(res.data.h5pay));
                                 let data = JSON.parse(res.data.h5pay);
@@ -169,27 +169,27 @@
                                 function onBridgeReady(){
                                     WeixinJSBridge.invoke(
                                         'getBrandWCPayRequest', {
-                                            "appId": data.appid,     //公众号名称，由商户传入     
-                                            "timeStamp": data.timeStamp,         //时间戳，自1970年以来的秒数     
-                                            "nonceStr": data.nonceStr, //随机串  
+                                            "appId": data.appid,     //公众号名称，由商户传入
+                                            "timeStamp": data.timeStamp,         //时间戳，自1970年以来的秒数
+                                            "nonceStr": data.nonceStr, //随机串
                                             "package":  data.packageWithPrepayId,
-                                            "signType":  data.signType, //微信签名方式：     
-                                            "paySign": data.paySign //微信签名 
+                                            "signType":  data.signType, //微信签名方式：
+                                            "paySign": data.paySign //微信签名
                                         },
                                         /*'getBrandWCPayRequest', data,*/
-                                        function(res){     
+                                        function(res){
                                             if(res.err_msg == "get_brand_wcpay_request:ok" ) {
                                                 return self.$router.push({name: '结算显示',query:{payId: self.payId}})
-                                            }     // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。 
+                                            }     // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
                                             return self.$router.push({name: '结算显示',query:{payId: self.payId,fail:true,type: self.$route.query.type}})
                                         }
-                                    ); 
+                                    );
                                 }
                                 if (typeof WeixinJSBridge == "undefined"){
                                     if( document.addEventListener ){
                                         document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
                                     }else if (document.attachEvent){
-                                        document.attachEvent('WeixinJSBridgeReady', onBridgeReady); 
+                                        document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
                                         document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
                                     }
                                 }else{
@@ -233,7 +233,7 @@
         created(){
             // 设置title
             this.$store.commit('SET_TITLE','收银台');
-            
+
             this.payId = this.$route.query.payId;
             if(this.$tool.isWx) {
                 this.payMethod = 'WECHAT';
@@ -250,7 +250,7 @@
                 this.isUse = true;
             }
             this.type = this.$route.query.type;
-            alert(this.payId)
+            // alert(this.payId)
         },
         beforeRouteEnter(to, from, next) {
             if(store.state.member.member.id) {
