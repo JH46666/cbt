@@ -9,9 +9,8 @@
                 <!-- 待付款 -->
                 <div v-else-if="orderDetailData.orderStatus === 'WAIT_PAY'"><img src="../../assets/images/order_4.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                 <!-- 已评价 -->
-                <div v-else-if="orderDetailData.orderStatus === 'FINISH' && orderDetailData.isComment === false"><img src="../../assets/images/order_1.png" />{{ orderStatus[orderDetailData.orderStatus] }}，待评价</div>
+                <div v-else-if="orderDetailData.orderStatus === 'FINISH'"><img src="../../assets/images/order_1.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                 <!-- 已评价 -->
-                <div v-else-if="orderDetailData.orderStatus === 'FINISH' && orderDetailData.isComment === true"><img src="../../assets/images/order_5.png" />{{ orderStatus[orderDetailData.orderStatus] }}，已评价</div>
                 <!-- 其他 -->
                 <div v-else><img src="../../assets/images/order_6.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
             </div>
@@ -57,7 +56,7 @@
             <div class="order_shop" v-if="orderDetailData.sellerOrgId == null">
                 <img src="../../assets/images/list_logo.png" /> 自营
             </div>
-            <div class="order_shop" v-if="orderDetailData.sellerOrgId == 1">
+            <div class="order_shop" v-else>
                 <i class="iconfont">&#xe66d;</i> {{ orderDetailData.shopName }}
             </div>
             <!-- 订单列表 -->
@@ -90,7 +89,7 @@
                                 <span>{{ order.expressNo }}</span>
                             </div>
                             <div class="order_num">
-                                <mt-button plain v-if="order.subOrderStatus === 'DELIVERED' || order.subOrderStatus === 'CBT_BUYER'" class="pay_now" @click.native="confrimMethod(order.subOrderNo)">确认收货</mt-button>
+                                <mt-button plain v-if="order.subOrderStatus === 'DELIVERED' || order.subOrderStatus === 'CBT_BUYER'" class="pay_now" @click.native="confrimMethodsMoreChild(order.subOrderNo,orderDetailData.orderNo)">确认收货</mt-button>
                             </div>
                         </div>
                     </div>
@@ -113,10 +112,10 @@
                         </div>
                         <div class="order_head"  v-if="orderDetailData.expressDeliveryName != '客户自提'">
                             <div class="order_express">
-                                <img src="../../assets/images/sfkd.png" v-if="orderListDetail.expressDeliveryCode == 'ship_sf'" />
-                                <img src="../../assets/images/stkd.png" v-if="orderListDetail.expressDeliveryCode == 'ship_sto'" />
-                                <img src="../../assets/images/emskd.png" v-if="orderListDetail.expressDeliveryCode == 'ship_ems'" /> {{ orderListDetail.mainOrder.expressName }}
-                                <span>{{ orderListDetail.mainOrder.expressNo }}</span>
+                                <img src="../../assets/images/sfkd.png" v-if="orderDetailData.expressDeliveryCode == 'ship_sf'" />
+                                <img src="../../assets/images/stkd.png" v-if="orderDetailData.expressDeliveryCode == 'ship_sto'" />
+                                <img src="../../assets/images/emskd.png" v-if="orderDetailData.expressDeliveryCode == 'ship_ems'" /> {{ orderDetailData.expressDeliveryName }}
+                                <span>{{ orderDetailData.expressNo }}</span>
                             </div>
                         </div>
                     </div>
@@ -256,6 +255,28 @@ export default {
         }
     },
     methods: {
+        confrimMethodsMoreChild(child,parent) {
+            let data = {
+                subOrderNo: parent,
+                orderNo: child
+            }
+            MessageBox.confirm('确定确认收货?').then(action => {
+                this.$api.post('/oteao/order/subOrderConfimReceipt',data,res => {
+                    Toast({
+                        message: `订单【${orderNo}】已确认收货`,
+                        iconClass: 'icon icon-success'
+                    });
+                    return window.location.reload();
+                },res=>{
+                    return Toast({
+                        message: res.errorMsg,
+                        iconClass: 'icon icon-fail'
+                    });
+                })
+            },action => {
+                console.log('cancel!');
+            });
+        },
         getOrderList(orderId) {
             let data = {
                     orderId: orderId,
@@ -380,7 +401,7 @@ export default {
     created() {
         // 设置title
         this.$store.commit('SET_TITLE','订单详情');
-            
+
         this.getListDetail().then((res) =>{
             this.orderDetailData = res.data;
             // this.proAllSum = this.$tool.math.eval(`${this.orderDetailData..orderSum} - ${this.orderDetailData..freightSum}`);

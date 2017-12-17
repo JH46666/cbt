@@ -24,7 +24,9 @@
                     <span>{{cat.catName}}</span>
                 </li>
             </ul>
-            <div class="half-bg"></div>
+            <div class="half-bg">
+                <i class="iconfont">&#xe68b;</i>
+            </div>
         </div>
         <!-- 分类 -->
         <div class="main-floor">
@@ -309,15 +311,15 @@
                         for(let prop of item.proInfoPropertyVos){
                             if(prop.propName === '香气'){
                                 let star = 0;
-                                if(prop.propertyVal === '偏淡'){
+                                if(prop.propVal === '偏淡'){
                                     star = 1;
-                                }else if(prop.propertyVal === '一般'){
+                                }else if(prop.propVal === '一般'){
                                     star = 2;
-                                }else if(prop.propertyVal === '香'){
+                                }else if(prop.propVal === '香'){
                                     star = 3;
-                                }else if(prop.propertyVal === '高香'){
+                                }else if(prop.propVal === '高香'){
                                     star = 4;
-                                }else if(prop.propertyVal === '极香'){
+                                }else if(prop.propVal === '极香'){
                                     star = 5;
                                 }else {
                                     star = 0;
@@ -326,15 +328,15 @@
                                 this.$set(item,'aromaStar',star);
                             }else if(prop.propName === '滋味'){
                                 let star = 0;
-                                if(prop.propertyVal === '偏淡'){
+                                if(prop.propVal === '偏淡'){
                                     star = 1;
-                                }else if(prop.propertyVal === '一般'){
+                                }else if(prop.propVal === '一般'){
                                     star = 2;
-                                }else if(prop.propertyVal === '浓'){
+                                }else if(prop.propVal === '浓'){
                                     star = 3;
-                                }else if(prop.propertyVal === '很浓'){
+                                }else if(prop.propVal === '很浓'){
                                     star = 4;
-                                }else if(prop.propertyVal === '极浓'){
+                                }else if(prop.propVal === '极浓'){
                                     star = 5;
                                 }else {
                                     star = 0;

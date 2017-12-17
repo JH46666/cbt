@@ -44,7 +44,8 @@
                                 <mt-button plain v-if="item.isComment === false && item.orderStatus === 'FINISH'" class="pay_now" @click.native="commentMethod(item)">评价</mt-button>
                                 <mt-button plain v-if="item.orderStatus === 'WAIT_PAY' || item.orderStatus === 'WAIT_CHECK'" @click.native="cancelMethod(item)">取消订单</mt-button>
                                 <mt-button plain v-if="item.orderStatus === 'WAIT_PAY'" class="pay_now" @click.native="payMethod(item.payId)">立即支付</mt-button>
-                                <mt-button plain v-if="item.orderStatus === 'DELIVERED' || item.orderStatus === 'CBT_BUYER'" class="pay_now" @click.native="confrimMethod(item.orderNo)">确认收货</mt-button>
+                                <mt-button plain v-if="(item.orderStatus === 'DELIVERED' || item.orderStatus === 'CBT_BUYER') && !item.subOrderSize" class="pay_now" @click.native="confrimMethod(item.orderNo)">确认收货</mt-button>
+                                <mt-button plain v-if="(item.orderStatus === 'DELIVERED' || item.orderStatus === 'CBT_BUYER') && item.subOrderSize == 1" class="pay_now" @click.native="confrimMethodsMoreChild(item.subOrderNo,item.orderNo)">确认收货</mt-button>
                             </div>
                         </div>
                     </mt-cell>
@@ -174,6 +175,28 @@ export default {
                 console.log('cancel!');
             });
         },
+        confrimMethodsMoreChild(child,parent) {
+            let data = {
+                subOrderNo: parent,
+                orderNo: child
+            }
+            MessageBox.confirm('确定确认收货?').then(action => {
+                this.$api.post('/oteao/order/subOrderConfimReceipt',data,res => {
+                    Toast({
+                        message: `订单【${orderNo}】已确认收货`,
+                        iconClass: 'icon icon-success'
+                    });
+                    return window.location.reload();
+                },res=>{
+                    return Toast({
+                        message: res.errorMsg,
+                        iconClass: 'icon icon-fail'
+                    });
+                })
+            },action => {
+                console.log('cancel!');
+            });
+        },
         toIndex() {
             this.$router.push({
                 name: '首页'
@@ -275,7 +298,7 @@ export default {
     created() {
         // 设置title
         this.$store.commit('SET_TITLE','订单列表');
-            
+
         this.getList().then((res) =>{
             this.orderList = res.data.order;
             this.orderNum = res.data.orderNum;

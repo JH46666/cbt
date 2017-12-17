@@ -158,7 +158,7 @@
 
 <script>
 import {mapGetters} from 'vuex';
-import { Toast } from 'mint-ui';
+import { Toast,MessageBox } from 'mint-ui';
 import { mapState } from 'vuex'
 import store from 'store';
 import $api from 'api';
@@ -206,7 +206,7 @@ import $api from 'api';
         created() {
             // 设置title
             this.$store.commit('SET_TITLE','新品上架');
-            
+
             if(process.env.NODE_ENV != 'development'){
                 this.path = 'online_img/';
             }
@@ -440,10 +440,7 @@ import $api from 'api';
                                 this.sussTips = '成功上架！';
                             }
                     },res=>{
-                        return Toast({
-                            message: res.errorMsg,
-                            iconClass: 'icon icon-fail'
-                        });
+                        return MessageBox('提示', res.errorMsg);
                     })
                 }
             },

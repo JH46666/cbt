@@ -96,11 +96,11 @@
                             <p class="detail_suggest_price">建议零售价：￥{{ detailData.productPrice[1].price | toFix2 }}</p>
                         </template>
                     </div>
-                    <template  v-if="detailData.productExtInfo.isSales && detailData.productExtInfo.state === 'ON_SHELF'">
+                    <template  v-if="detailData.productExtInfo.state === 'ON_SHELF'">
                         <div class="detail_active">
                             <!-- <label>促销</label> -->
                             <div class="detail_active_list">
-                                <div class="detail_active_item">
+                                <div class="detail_active_item" v-if="detailData.productExtInfo.isSales">
                                     <span>直降</span>
                                     <p>已优惠￥{{  (detailData.productPrice[0].price-detailData.productExtInfo.salesPrice)  | toFix2 }}</p>
                                 </div>
@@ -246,7 +246,7 @@
 
 <script>
 import plusOreduce from '@/components/plusOreduce.vue'
-import { Toast,Indicator } from 'mint-ui'
+import { Toast,Indicator,MessageBox  } from 'mint-ui'
 import store from 'store';
 import { mapState } from 'vuex'
 export default {
@@ -307,7 +307,7 @@ export default {
     created() {
         // 设置title
         this.$store.commit('SET_TITLE','商品详情');
-        
+
         // 获取购物车数量
         this.$store.dispatch('queryCartTotal');
 
@@ -517,6 +517,41 @@ export default {
            }
        },
        openDialog() {
+           if(this.detailData.productInfo.businessType == 'ORG_SALES'){
+               let status = store.state.member.memberAccount.status;
+               if(status === 'WAIT_AUDIT') {
+                   this.$messageBox({
+                       title:'提示',
+                       message:`您的账号审核中，只有正式会员才可查看，若有疑问，请联系客服400-996-3399`,
+                       confirmButtonText: '我知道了'
+                   });
+               }
+               if(status === 'FREEZE') {
+                   this.$messageBox({
+                       title:'提示',
+                       message:`您的账号因违规操作而被冻结无法进入~若有疑问，请联系客服400-996-3399`,
+                       confirmButtonText: '我知道了'
+                   }).then(res => {
+                       this.$api.get('/oteao/login/logout',{},res => {})
+                   })
+               }
+               if(status === 'INACTIVE') {
+                   this.$messageBox({
+                       title:'提示',
+                       message:`您的账号审核未通过，只有正式会员才可查看，若有疑问，请联系客服400-996-3399`,
+                       showCancelButton: true,
+                       cancelButtonText: '取消',
+                       confirmButtonText: '完善资料'
+                   }).then(res => {
+                       if(res === 'cancel') {
+                           return;
+                       } else {
+                           this.$router.push({name: '茶帮通注册2'})
+                       }
+                   })
+               }
+               return this.$router.go(-1);
+           }
            this.showOrHide = true;
        }
     },

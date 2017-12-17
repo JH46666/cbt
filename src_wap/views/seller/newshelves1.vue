@@ -53,7 +53,7 @@
                                 净重(g)：
                             </label>
                             <div class="item-right">
-                                <input type="number" id="7" placeholder="必填项，商品展示使用" v-model="resize.form.goodsJz" />
+                                <input type="number" id="7" placeholder="必填项，商品展示使用" v-model="resize.form.goodsJz" @blur="toFixedZero(resize.form.goodsJz,'goodsJz')" />
                             </div>
                         </div>
                         <div class="item">
@@ -411,7 +411,7 @@ export default {
     created() {
         // 设置title
         this.$store.commit('SET_TITLE','新品上架');
-        
+
         this.getOneTypeList().then((res) => {
             let parentList = res.data;
             for(let obj of parentList){
