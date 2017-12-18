@@ -250,7 +250,7 @@
                 this.isUse = true;
             }
             this.type = this.$route.query.type;
-            // alert(this.payId)
+            alert(this.payId)
         },
         beforeRouteEnter(to, from, next) {
             if(store.state.member.member.id) {
