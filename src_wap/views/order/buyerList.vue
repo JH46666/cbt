@@ -177,8 +177,8 @@ export default {
         },
         confrimMethodsMoreChild(child,parent) {
             let data = {
-                subOrderNo: parent,
-                orderNo: child
+                subOrderNo: child,
+                orderNo: parent
             }
             MessageBox.confirm('确定确认收货?').then(action => {
                 this.$api.post('/oteao/order/subOrderConfimReceipt',data,res => {
