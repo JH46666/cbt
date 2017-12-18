@@ -6,7 +6,7 @@
         <div class="select_top_wrapper">
             <div class="select_item">
                 <div class="select_item_label">
-                    <label for="1">登陆账号</label>
+                    <label for="1">登录账号</label>
                 </div>
                 <div class="select_item_content">
                     <input type="text" readonly v-model="loginNumber" />
@@ -221,7 +221,6 @@ export default {
     created() {
         // 设置title
         this.$store.commit('SET_TITLE','茶帮通注册');
-            
         if(process.env.NODE_ENV != 'development'){
             this.path = 'online_img/';
         }

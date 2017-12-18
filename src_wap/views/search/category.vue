@@ -24,9 +24,7 @@
                     <span>{{cat.catName}}</span>
                 </li>
             </ul>
-            <div class="half-bg">
-                <i class="iconfont">&#xe68b;</i>
-            </div>
+            <div class="half-bg"></div>
         </div>
         <!-- 分类 -->
         <div class="main-floor">

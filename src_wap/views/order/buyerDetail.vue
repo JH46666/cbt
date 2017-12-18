@@ -257,8 +257,8 @@ export default {
     methods: {
         confrimMethodsMoreChild(child,parent) {
             let data = {
-                subOrderNo: parent,
-                orderNo: child
+                subOrderNo: child,
+                orderNo: parent
             }
             MessageBox.confirm('确定确认收货?').then(action => {
                 this.$api.post('/oteao/order/subOrderConfimReceipt',data,res => {
@@ -373,10 +373,10 @@ export default {
                     val = val.substr(0,valLen-1) + '*';
                 }else{
                     let star = '';
-                    for(let i=0; i<valLen-5; i++){
+                    for(let i=0; i<valLen-7; i++){
                         star+='*';
                     }
-                    val = val.substr(0,3) + star + val.substr(valLen-2,valLen+1);
+                    val = val.substr(0,3) + star + val.substr(valLen-4,valLen+1);
                 }
             }
             return val;
