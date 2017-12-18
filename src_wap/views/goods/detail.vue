@@ -91,6 +91,11 @@
                                 暂无报价
                             </div>
                         </template>
+                        <template  v-if="!$tool.isLogin">
+                            <div class="off_shelf_tips">
+                                询价
+                            </div>
+                        </template>
                         <template v-if="detailData.productPrice.length != 0 && detailData.productExtInfo.state === 'ON_SHELF'">
                             <p class="detail_now_price" v-if="!detailData.productExtInfo.isSales">￥{{ detailData.productPrice[0].price | toFix2 }}</p>
                             <p class="detail_suggest_price">建议零售价：￥{{ detailData.productPrice[1].price | toFix2 }}</p>
@@ -105,13 +110,13 @@
                                     <p>已优惠￥{{  (detailData.productPrice[0].price-detailData.productExtInfo.salesPrice)  | toFix2 }}</p>
                                 </div>
                                 <div class="detail_active_item">
-                                    <span>包邮</span>
+                                    <span>运费</span>
                                     <template v-if="detailData.productInfo.businessType == 'ORG_SALES'">
                                         <p v-if="!detailData.orgFreightTemplateVoList || detailData.orgFreightTemplateVoList.length == 0">运费，本店商品全国包邮</p>
                                         <p v-else-if="detailData.orgFreightTemplateVoList && detailData.orgFreightTemplateVoList.length > 0">运费，邮费依实际重量计算运费</p>
                                     </template>
                                     <template v-else>
-                                        <p>运费，全场在线支付满500免运费</p>
+                                        <p>全场在线支付满500免运费</p>
                                     </template>
                                 </div>
                             </div>
@@ -230,7 +235,7 @@
                 <i class="icon-dianpu" slot="icon"></i>
                 店铺
             </mt-tab-item>
-            <mt-tab-item id="2">
+            <mt-tab-item id="2" @click.native="openCart">
                 <i class="icon-shopcar" slot="icon"></i>
                 购物车
                 <mt-badge type="error" size="small">{{ cartTotal | ninenineAdd }}</mt-badge>
@@ -516,41 +521,75 @@ export default {
                this.special.sec = s;
            }
        },
+       openCart() {
+           let status = store.state.member.memberAccount.status;
+           if(status === 'WAIT_AUDIT') {
+               return this.$messageBox({
+                   title:'提示',
+                   message:`您的账号审核中，只有正式会员才可查看，若有疑问，请联系客服400-996-3399`,
+                   confirmButtonText: '我知道了'
+               });
+           }
+           if(status === 'FREEZE') {
+               return this.$messageBox({
+                   title:'提示',
+                   message:`您的账号因违规操作而被冻结无法进入~若有疑问，请联系客服400-996-3399`,
+                   confirmButtonText: '我知道了'
+               }).then(res => {
+                   this.$api.get('/oteao/login/logout',{},res => {})
+               })
+           }
+           if(status === 'INACTIVE') {
+               return this.$messageBox({
+                   title:'提示',
+                   message:`您的账号审核未通过，只有正式会员才可查看，若有疑问，请联系客服400-996-3399`,
+                   showCancelButton: true,
+                   cancelButtonText: '取消',
+                   confirmButtonText: '完善资料'
+               }).then(res => {
+                   if(res === 'cancel') {
+                       return;
+                   } else {
+                       this.$router.push({name: '茶帮通注册2'})
+                   }
+               })
+           }
+           return this.$router.push({
+               name: '购物车'
+           })
+       },
        openDialog() {
-           if(this.detailData.productInfo.businessType == 'ORG_SALES'){
-               let status = store.state.member.memberAccount.status;
-               if(status === 'WAIT_AUDIT') {
-                   this.$messageBox({
-                       title:'提示',
-                       message:`您的账号审核中，只有正式会员才可查看，若有疑问，请联系客服400-996-3399`,
-                       confirmButtonText: '我知道了'
-                   });
-               }
-               if(status === 'FREEZE') {
-                   this.$messageBox({
-                       title:'提示',
-                       message:`您的账号因违规操作而被冻结无法进入~若有疑问，请联系客服400-996-3399`,
-                       confirmButtonText: '我知道了'
-                   }).then(res => {
-                       this.$api.get('/oteao/login/logout',{},res => {})
-                   })
-               }
-               if(status === 'INACTIVE') {
-                   this.$messageBox({
-                       title:'提示',
-                       message:`您的账号审核未通过，只有正式会员才可查看，若有疑问，请联系客服400-996-3399`,
-                       showCancelButton: true,
-                       cancelButtonText: '取消',
-                       confirmButtonText: '完善资料'
-                   }).then(res => {
-                       if(res === 'cancel') {
-                           return;
-                       } else {
-                           this.$router.push({name: '茶帮通注册2'})
-                       }
-                   })
-               }
-               return this.$router.go(-1);
+           let status = store.state.member.memberAccount.status;
+           if(status === 'WAIT_AUDIT') {
+               return this.$messageBox({
+                   title:'提示',
+                   message:`您的账号审核中，只有正式会员才可查看，若有疑问，请联系客服400-996-3399`,
+                   confirmButtonText: '我知道了'
+               });
+           }
+           if(status === 'FREEZE') {
+               return this.$messageBox({
+                   title:'提示',
+                   message:`您的账号因违规操作而被冻结无法进入~若有疑问，请联系客服400-996-3399`,
+                   confirmButtonText: '我知道了'
+               }).then(res => {
+                   this.$api.get('/oteao/login/logout',{},res => {})
+               })
+           }
+           if(status === 'INACTIVE') {
+               return this.$messageBox({
+                   title:'提示',
+                   message:`您的账号审核未通过，只有正式会员才可查看，若有疑问，请联系客服400-996-3399`,
+                   showCancelButton: true,
+                   cancelButtonText: '取消',
+                   confirmButtonText: '完善资料'
+               }).then(res => {
+                   if(res === 'cancel') {
+                       return;
+                   } else {
+                       this.$router.push({name: '茶帮通注册2'})
+                   }
+               })
            }
            this.showOrHide = true;
        }
