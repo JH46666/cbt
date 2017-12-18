@@ -123,6 +123,7 @@
                 if(type === 'tel') {
                     
                     if((/\d+/g).test(this.cloneTel)) {
+                        if(this.cloneTel.length < 8) return this.$toast('电话号码最小长度为8')
                         this.$api.post('/orgShop/updateBusinessTelephone',{
                             businessTelephone: this.cloneTel
                         },res => {
@@ -137,6 +138,7 @@
 
 
                 } else if(type === 'pay') {
+                    if(this.clonePay === '') return this.$toast('支付宝不能为空')
                     this.$api.post('/orgShop/updateAlipayAccount',{
                         alipayAccount: this.clonePay
                     },res => {
