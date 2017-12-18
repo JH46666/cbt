@@ -68,7 +68,7 @@
         },
         created() {
             // 更新购物车数量
-            // this.$store.dispatch('queryCartTotal');
+            this.$store.dispatch('queryCartTotal');
         }
     }
 </script>

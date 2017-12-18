@@ -25,7 +25,7 @@ let formatDate = (date) => {
 
     return `${year}-${month}-${day} ${hours}:${min}:${second}`
 }
-
+// 等级
 let levelNum = (val) => {
     let g = Number(val);
     let l = 0;
@@ -56,6 +56,7 @@ var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
 
 
 
+let shopType = ['茶厂','合作社','茶企','批发商','自营','联营']
 
 
 
@@ -76,3 +77,6 @@ export {isAndroid}
 export {isiOS}
 
 export {levelNum}
+
+
+export {shopType}
