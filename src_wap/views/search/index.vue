@@ -245,7 +245,6 @@
             // 搜索处理函数
             handle(page = 1) {
                 let query = this.$route.query;
-                console.log(query)
                 // 检查地址栏是否带参，没有的话返回
                 if(Object.keys(query).length === 0) return this.noSearch = true;
                 try {
