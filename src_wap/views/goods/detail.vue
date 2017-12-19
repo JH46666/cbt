@@ -330,8 +330,17 @@ export default {
                 })
             })
         })
+        this.addLike();
     },
     methods: {
+        // 添加商品到猜你喜欢
+        addLike() {
+            this.$api.post('/oteao/productInterestingRecord/insert',{
+                'productInterestingRecord.sysId': 1,
+                'productInterestingRecord.sku': this.proSku,
+                'productInterestingRecord.device': 'WAP'
+            },res => {})
+        },
         isLevelType(val) {
             let g = Number(val)
             if(g <= 250) {

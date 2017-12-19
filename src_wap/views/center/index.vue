@@ -95,7 +95,11 @@
                 <div class="left"><i class="icon-zhongxindianpu"></i>申请为卖家</div>
                 <div class="right"><i class="icon-icon07"></i></div>
             </router-link>
-            <router-link :to="{name: '卖家中心'}" class="tools-entry" v-else>
+            <router-link :to="{name: '茶帮通注册4'}" class="tools-entry" v-if="shop ? shop.shopStatus === 1 || shop.shopStatus === 3 : false ">
+                <div class="left"><i class="icon-zhongxindianpu"></i>卖家中心</div>
+                <div class="right"><i class="icon-icon07"></i></div>
+            </router-link>
+            <router-link :to="{name: '卖家中心'}" class="tools-entry" v-if="shop ? shop.shopStatus === 2 || shop.shopStatus === -2 : false ">
                 <div class="left"><i class="icon-zhongxindianpu"></i>卖家中心</div>
                 <div class="right"><i class="icon-icon07"></i></div>
             </router-link>
@@ -222,7 +226,7 @@
                 if(status === 'AUDIT_NO_PASS') {
                     vm.$messageBox({
                         title:'提示', 
-                        message:`您的账号审核未通过，只有正式会员才可买买买，若有疑问，请联系客服400-996-3399`,
+                        message:`您的账号审核未通过，只有正式会员才可查看，若有疑问，请联系客服400-996-3399`,
                         showCancelButton: true,
                         cancelButtonText: '取消',
                         confirmButtonText: '完善资料'

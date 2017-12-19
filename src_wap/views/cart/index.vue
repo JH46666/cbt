@@ -66,6 +66,9 @@
                             <div class="tips_div" v-if="!!item.buyLowLimit && item.buyNum < item.buyLowLimit">
                                 <p>每单最低购{{item.buyLowLimit}}，您低于最低购买数量啦~</p>
                             </div>
+                            <div class="tips_div" v-if="!!item.limitMsg">
+                                <p>{{ limitMsg }}</p>
+                            </div>
                             <div class="del-block" v-if="$tool.isiOS" @click="delItem(item,true)">
                                 <i class="iconfont">&#xe60d;</i>
                             </div>
@@ -157,7 +160,7 @@
             </div>
         </div>
         <!-- 猜你喜欢 -->
-        <may-like></may-like>
+        <may-like @addCart="likeAdd" ref="mayLike"></may-like>
         <!-- 底部结算 -->
         <div class="cart_bottom flex">
             <div class="select_all left_check flex" :class="{'flex-1':edit,'checked': edit ? disabledList.every(val => val.checked) && listPannel.every(val => checkAll(val)) : listPannel.every(val => checkAll(val)) &&  listPannel.length !== 0 }">
@@ -509,30 +512,39 @@
 
                 
             },
+            // 猜你喜欢加入购物车
+            likeAdd() {
+                this.getData().then(res => {
+                    this.$refs.mayLike.getData();
+                })
+            },
             // 查询购物车
             getData() {
-                this.$store.dispatch('queryCart',{}).then(res=>{
-                    let list = res.data.oteaoCart;
-                    for ( let todo of list) {
-                        for ( let i = 0; i < todo.cartList.length; i++) {
-                            // 勾选
-                            todo.cartList[i].checked = false;
-                            // 设置旧的购买量
-                            todo.cartList[i].oldBuy = todo.cartList[i].buyNum;
-                            // 左划
-                            todo.cartList[i].swiper = false;
+                return new Promise((resolve,reject) => {
+                    this.$store.dispatch('queryCart',{}).then(res=>{
+                        let list = res.data.oteaoCart;
+                        for ( let todo of list) {
+                            for ( let i = 0; i < todo.cartList.length; i++) {
+                                // 勾选
+                                todo.cartList[i].checked = false;
+                                // 设置旧的购买量
+                                todo.cartList[i].oldBuy = todo.cartList[i].buyNum;
+                                // 左划
+                                todo.cartList[i].swiper = false;
+                            }
                         }
-                    }
-                    for (let list of res.data.disableList) {
-                        list.checked = false;
-                        list.swiper = false;
-                    }
-                    this.$store.commit('SET_CART_LIST',res.data);
-                    // 更新购物车数量
-                    this.$store.dispatch('queryCartTotal'); 
-                },res=>{
-                    this.$store.commit('SET_CART_LIST',{});
-                });
+                        for (let list of res.data.disableList) {
+                            list.checked = false;
+                            list.swiper = false;
+                        }
+                        this.$store.commit('SET_CART_LIST',res.data);
+                        // 更新购物车数量
+                        this.$store.dispatch('queryCartTotal'); 
+                        resolve(res);
+                    },res=>{
+                        this.$store.commit('SET_CART_LIST',{});
+                    });
+                })
             }
         },
         created(){
