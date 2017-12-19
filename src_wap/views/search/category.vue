@@ -41,8 +41,8 @@
                     <div class="content-inner ipScroll">
                         <div class="condition-box">
                             <ul class="flex">
-                                <li @click="filterVisible = true" :class="{on: filterVisible}"><i class="iconfont">&#xe674;</i>筛选</li>
-                                <li @click="sortVisible = true" :class="{on: sortVisible}"><i class="iconfont">&#xe673;</i>排序</li>
+                                <li @click="filterVisible = true" :class="{on: filterFlag}"><i class="iconfont">&#xe674;</i>筛选</li>
+                                <li @click="sortVisible = true" :class="{on: sortData[0].sortIndex!=0}"><i class="iconfont">&#xe673;</i>排序</li>
                             </ul>
                         </div>
                         <div v-infinite-scroll="loadMore" infinite-scroll-disabled="true" infinite-scroll-distance="10">
@@ -72,35 +72,41 @@
             </div>
         </div>
         <!-- 筛选弹窗 -->
-        <mt-popup v-model="filterVisible" position="bottom" class="popup-filter">
-            <div class="popup-content">
-                <div class="con-item" v-for="list in filterConditions">
-                    <h4>{{list.propName}}</h4>
-                    <ul class="clearfix">
-                        <li :class="{on:index == list.filterIndex}" v-for="(item,index) in list.propValList" @click="selectFilter(list,item,index)">{{item.propVal}}</li>
-                    </ul>
+        <div class="mupop_dialog" :class="{on: filterVisible}">
+            <div class="mup_bg" @click="filterVisible = false"></div>
+            <div class="mupop_dialog_wrapper">
+                <div class="popup-content">
+                    <div class="con-item" v-for="list in filterConditions">
+                        <h4>{{list.propName}}</h4>
+                        <ul class="clearfix">
+                            <li :class="{on:index == list.filterIndex}" v-for="(item,index) in list.propValList" @click="selectFilter(list,item,index)">{{item.propVal}}</li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-            <div class="pop-btns flex">
+                <div class="pop-btns flex">
                     <a class="flex-1" href="javscript:void(0)" @click="resetConditions">重置</a>
                     <a class="flex-1 confirm" href="javscript:void(0)" @click="confirmConditions">确定</a>
                 </div>
-        </mt-popup>
-        <!-- 排序弹窗 -->
-        <mt-popup v-model="sortVisible" position="bottom" class="popup-filter">
-            <div class="popup-content">
-                <div class="con-item" v-for="list in sortData">
-                    <h4>{{list.sortName}}</h4>
-                    <ul class="clearfix">
-                        <li :class="{on:index == list.sortIndex}" v-for="(item,index) in list.sortConditions" @click="selectSort(list,item,index)">{{item.propVal}}</li>
-                    </ul>
-                </div>
             </div>
-            <div class="pop-btns flex">
+        </div>
+        <!-- 排序弹窗 -->
+        <div class="mupop_dialog" :class="{on: sortVisible}">
+            <div class="mup_bg" @click="sortVisible = false"></div>
+            <div class="mupop_dialog_wrapper">
+                <div class="popup-content">
+                    <div class="con-item" v-for="list in sortData">
+                        <h4>{{list.sortName}}</h4>
+                        <ul class="clearfix">
+                            <li :class="{on:index == list.sortIndex}" v-for="(item,index) in list.sortConditions" @click="selectSort(list,item,index)" v-if="item.propVal!='库存'">{{item.propVal}}</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="pop-btns flex">
                     <a class="flex-1" href="javscript:void(0)" @click="resetSort">重置</a>
                     <a class="flex-1 confirm" href="javscript:void(0)" @click="confirmConditions">确定</a>
                 </div>
-        </mt-popup>
+            </div>
+        </div>
     </div>
 </template>
 <script>
@@ -130,6 +136,7 @@
                 totalSize: 0,
                 sortDesc: true,      //排序
                 sort: 4,
+                filterFlag: false,
                 sortData:[{
                     sortName: '排序',
                     sortIndex: 0,
@@ -240,6 +247,20 @@
                     }
                 });
                 this.searchResult();
+            },
+            'propertiesValList': {
+                handler(newData,oldData){
+                    let attrVal = '';
+                    for(let attr in newData){
+                        attrVal = attr;
+                    }
+                    if(newData[attrVal].propValId === 'all'){
+                        this.filterFlag = false;
+                    }else{
+                        this.filterFlag = true;
+                    }
+                },
+                deep: true
             }
         },
         mounted(){

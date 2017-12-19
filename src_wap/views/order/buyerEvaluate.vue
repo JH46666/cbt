@@ -16,10 +16,10 @@
                             <img :src="item.imgUrl" />
                         </div>
                         <div class="star_head_icon">
-                            <span class="star" v-for="index in 5" :class="{on: index <= item.stars}" @click="hasStar(index,item)" :key="index"></span>
+                            <span class="star" v-for="star in 5" :class="{on: star <= item.stars}" @click="hasStar(star,item)" :key="star"></span>
                         </div>
                         <div class="star_head_text">
-                            {{ textMs[starIndex] }}
+                            {{ item.text }}
                         </div>
                     </div>
                     <div class="text_content">
@@ -101,12 +101,19 @@ export default {
             return new Promise((resolve,reject) => {
                 this.$api.post('/oteao/evaluation/saveEvaluation',JSON.stringify(data),res => {
                     this.flag = true;
-                    return Toast({
+                    Toast({
                         message: res.message,
                         iconClass: 'icon icon-success'
                     });
+                    setTimeout(()=>{
+                        this.$router.push({
+                            name: '订单列表',
+                            query: {
+                                orderStatus: 'null'
+                            }
+                        })
+                    },300)
                 },res=>{
-                    this.flag = true;
                     if(res.code == 1001){
                         return Toast({
                             message: '请至少填写5个字的评价',
@@ -124,6 +131,7 @@ export default {
         hasStar(index,obj) {
             this.starIndex = index;
             obj.stars = index;
+            obj.text = this.textMs[index];
         },
         getOrderProList(orderId) {
             let data = {
@@ -157,7 +165,8 @@ export default {
                         content: '',
                         stars: 0,
                         sku: obj.proSku,
-                        extendId: obj.proExtId
+                        extendId: obj.proExtId,
+                        text: ''
                     })
                 }
                 this.imgUrlList = postList;
@@ -170,7 +179,8 @@ export default {
                             content: '',
                             stars: 0,
                             sku: res.data.subOrder[i].products[j].proSku,
-                            extendId: res.data.subOrder[i].products[j].proExtId
+                            extendId: res.data.subOrder[i].products[j].proExtId,
+                            text: ''
                         })
                     }
                 }
@@ -182,29 +192,29 @@ export default {
        this.wxFlag = this.$tool.isWx;
   　},
     beforeRouteLeave(next) {
-        if(!this.flag){
-            MessageBox({
-                title: '提示',
-                message: '确定放弃评价?',
-                confirmButtonText: '确认放弃',
-                showCancelButton: true
+        if(!this.postDisAble && !this.flag){
+            this.$messageBox({
+                title:'提示',
+                message:`确定放弃评价?`,
+                showCancelButton: true,
+                cancelButtonText: '取消放弃',
+                confirmButtonText: '继续评价'
+            }).then(res => {
+                if(res === 'cancel') {
+                    this.$router.push({
+                        name: '订单详情',
+                        query: {
+                            orderId: this.orderId
+                        }
+                    })
+                    location.reload();
+                } else {
+                    return;
+                }
             })
-            MessageBox.confirm('确认放弃评价?').then(action => {
-                this.$router.push({
-                    name: '订单详情',
-                    query: {
-                        orderId: this.orderId
-                    }
-                })
-                location.reload();
-            },action => {
-                console.log(cancel);
-            },);
+            return ;
         }else{
-            this.$router.push({
-                name: '订单列表'
-            })
-            location.reload();
+            this.$router.go(-1);
         }
     },
     beforeRouteEnter(to, from, next) {

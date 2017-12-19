@@ -119,7 +119,7 @@ export default {
                 }
                 this.$api.post('/oteao/order/cancelOrder',data,res => {
                     Toast({
-                        message: `订单【${this.cancelPro.orderNo}】已关闭`,
+                        message: `订单取消成功`,
                         iconClass: 'icon icon-success'
                     });
                     this.cancelClass = null;
@@ -166,10 +166,13 @@ export default {
                     });
                     return window.location.reload();
                 },res=>{
-                    return Toast({
+                    Toast({
                         message: res.errorMsg,
                         iconClass: 'icon icon-fail'
                     });
+                    setTimeout(()=>{
+                        window.location.reload();
+                    },200)
                 })
             },action => {
                 console.log('cancel!');
@@ -188,10 +191,13 @@ export default {
                     });
                     return window.location.reload();
                 },res=>{
-                    return Toast({
+                    Toast({
                         message: res.errorMsg,
                         iconClass: 'icon icon-fail'
                     });
+                    setTimeout(()=>{
+                        window.location.reload();
+                    },200)
                 })
             },action => {
                 console.log('cancel!');

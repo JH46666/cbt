@@ -121,18 +121,18 @@
                     </div>
                 </template>
             </div>
-            <div class="order_address" v-if="orderDetailData.expressDeliveryName === '客户自提'" :class="{ 'on': pullOrDownShop }">
+            <div class="order_address" v-if="orderDetailData.expressDeliveryName === '客户自提'" :class="{ 'on': !pullOrDownShop }">
                 <div class="order_address_1">
                     <div class="order_address_num">
                         自提
                     </div>
                     <div class="order_address_icon">
-                        <span @click="pullOrDownShopMethod">门店地址<i class="iconfont" :class="{ 'icon-single-down': !pullOrDownShop,'icon-shang': pullOrDownShop }"></i></span>
+                        <span @click="pullOrDownShopMethod">门店地址<i class="iconfont" :class="{ 'icon-single-down': pullOrDownShop,'icon-shang': !pullOrDownShop }"></i></span>
                     </div>
                 </div>
                 <div class="order_address_2">
                     <div class="order_addrss_text">
-                        {{ orderDetailData.shopAddress }}
+                        提货地址：{{ orderDetailData.shopAddress }}
                     </div>
                     <div class="order_addrss_tel">
                         联系电话：<a :href="linkShopTel">{{ orderDetailData.shopPhone }}</a>
@@ -307,11 +307,11 @@ export default {
             setTimeout(() => {
                 let data = {
                     payId: this.orderDetailData.payId,
-                    cancelReason: this.cancelList[this.cancelList]
+                    cancelReason: this.cancelList[this.cancelClass]
                 }
                 this.$api.post('/oteao/order/cancelOrder',data,res => {
                     Toast({
-                        message: `订单【${this.orderDetailData.orderNo}】已关闭`,
+                        message: `订单已取消`,
                         iconClass: 'icon icon-success'
                     });
                     this.cancelClass = null;
