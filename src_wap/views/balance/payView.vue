@@ -58,7 +58,7 @@
             </div>
             <div class="text-item" v-if="$route.name === '结算显示' && !$route.query.fail">
                 <div class="left">已付金额：</div>
-                <div class="right"><span class="gold">￥{{ order.orderSum | toFix2 }}</span></div>
+                <div class="right"><span class="gold">￥{{ order.onlinePayAmount | toFix2 }}</span></div>
             </div>
             <div class="text-item" v-if="$route.name === '货到付款成功' || $route.query.fail">
                 <div class="left">待付金额：</div>
