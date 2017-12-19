@@ -27,12 +27,12 @@ const create = {
             twoIndex: null,
             oneIndex: null,
             imgs:{
-                detailImg1: '',     //详情图片1
-                detailImg2: '',     //详情图片2
-                detailImg3: '',     //详情图片3
+                mainImg: [],            //主图
+                detailImg1: [],         //详情图片1
+                detailImg2: [],         //详情图片2
+                detailImg3: [],         //详情图片3
+                imgsStep4: []           //详情4
             },
-            mainImg: [],            //主图
-            imgsStep4:[],           //详情4
             textMs1: '',
             textMs2: '',
             textMs3: '',
@@ -75,12 +75,12 @@ const create = {
                 twoIndex: null,
                 oneIndex: null,
                 imgs:{
-                    detailImg1: '',     //详情图片1
-                    detailImg2: '',     //详情图片2
-                    detailImg3: '',     //详情图片3
+                    mainImg: [],            //主图
+                    detailImg1: [],         //详情图片1
+                    detailImg2: [],         //详情图片2
+                    detailImg3: [],         //详情图片3
+                    imgsStep4: []           //详情4
                 },
-                mainImg: [],            //主图
-                imgsStep4:[],           //详情4
                 textMs1: '',
                 textMs2: '',
                 textMs3: '',
