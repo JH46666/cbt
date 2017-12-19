@@ -112,8 +112,8 @@
                                 <div class="detail_active_item">
                                     <span>运费</span>
                                     <template v-if="detailData.productInfo.businessType == 'ORG_SALES'">
-                                        <p v-if="!detailData.orgFreightTemplateVoList || detailData.orgFreightTemplateVoList.length == 0">运费，本店商品全国包邮</p>
-                                        <p v-else-if="detailData.orgFreightTemplateVoList && detailData.orgFreightTemplateVoList.length > 0">运费，邮费依实际重量计算运费</p>
+                                        <p v-if="!detailData.orgFreightTemplateVoList || detailData.orgFreightTemplateVoList.length == 0">本店商品全国包邮</p>
+                                        <p v-else-if="detailData.orgFreightTemplateVoList && detailData.orgFreightTemplateVoList.length > 0">邮费依实际重量计算运费</p>
                                     </template>
                                     <template v-else>
                                         <p>全场在线支付满500免运费</p>
@@ -140,7 +140,7 @@
                     <mt-tab-container-item id="1" ref="tabcontent1">
                         <!-- <div class="detail_img_title" :class="{'on': tabFixed,'wxon': wxFixed}" ref="imgHeight">图片详情</div> -->
                         <div class="mint_cell_wrapper mint_cell_img_wrapper">
-                            <mt-cell v-for="(item,index) in imgDetail" :key="index">
+                            <mt-cell v-for="(item,index) in imgDetail" :key="index" v-if="item.content != '' && item.imgArray.length != 0">
                                 <div class="mint_cell_img_title">{{ item.title }}</div>
                                 <div class="mint_cell_img">
                                     <img :src="ur.imgUrl" v-for="(ur,k) in item.imgArray" :key="k" />
