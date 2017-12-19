@@ -133,9 +133,9 @@
                 default: false
             }
         },
-        data() {
-            return {
-                businessName: ['茶厂','合作社','茶企','批发商','自营','联营']
+        computed: {
+            businessName() {
+                return  this.$tool.shopType
             }
         }
     }

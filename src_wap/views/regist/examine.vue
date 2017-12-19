@@ -59,7 +59,8 @@
     export default {
         data(){
             return {
-               edit: false
+               edit: false,
+               myData: {}
             }
         },
         computed: {
@@ -71,10 +72,22 @@
                 thirdAccount: state => state.member.thirdAccount,
             })
         },
+        methods: {
+            // 获取数据
+            getData() {
+                this.$api.post('/orgShop/getOrgShop',{
+                    orgId: this.orgDTO.orgID,
+                    sysId: 1
+                },res => {
+                    this.myData = res.data;
+                })
+            }
+        },
         created(){
             // 设置title
             this.$store.commit('SET_TITLE','茶帮通注册');
-                
+            // 拉取数据
+            this.getData();
         },
         // 进来先判断登陆与否
         beforeRouteEnter(to, from, next) {

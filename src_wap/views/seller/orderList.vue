@@ -43,11 +43,12 @@
                                 <mt-button size="small" @click.stop="closeOrder(item)">关闭订单</mt-button>
                                 <mt-button size="small" @click.stop="editPrice(item)">修改价格</mt-button>
                             </template>
-                            <template v-if="item.orderStatus === 'PACKING' || item.orderStatus === 'PAY_WAIT_AUDIT'">
+                            <template v-if="item.orderStatus === 'PACKING'">
                                 <mt-button size="small" @click.stop="closeOrder(item)">关闭订单</mt-button>
                                 <mt-button size="small" class="gold" @click.stop="$router.push({name:'发货',query:{orderNo:item.orderNo}})">发货</mt-button>
                             </template>
                             <template v-if="item.orderStatus === 'DELIVERED'">
+                                <mt-button size="small" @click.stop="closeOrder(item)">关闭订单</mt-button>
                                 <mt-button size="small" @click.stop="$router.push({name:'修改配送方式',query:{orderNo:item.orderNo}})">修改快递</mt-button>
                             </template>
                         </div>
@@ -67,6 +68,7 @@
             </div>
         </section>
         <!-- 关闭订单部分 -->
+        <!-- 待付款状态 -->
         <mt-popup
             v-model="closeUp"
             position="bottom">
@@ -78,6 +80,49 @@
                 <p class="close-tip" @click="pickClose('暂不关闭')">暂不关闭</p>
             </div>
         </mt-popup>
+        <!-- 打包中，已发货状态 -->
+        <mt-popup
+            v-model="closeUpSend"
+            position="bottom">
+            <div class="close-wrap-send">
+                <div class="hd">
+                    <div class="top">
+                        <div class="left">退款金额</div>
+                        <div class="right">￥{{ activeOrder.orderAllSum | toFix2 }}</div>
+                    </div>
+                    <div class="bottom">
+                        <i class="iconfont">&#xe68d;</i>关闭订单后，货款将立即退回给买家
+                    </div>
+                </div>
+                <div class="bd">
+                    <div class="title">
+                        选择关闭订单原因
+                    </div>
+                    <div class="item-wrap">
+                        <div class="item" @click="activeOrder.closeRemark = '缺货'">缺货<i class="iconfont" v-if="activeOrder && activeOrder.closeRemark === '缺货'">&#xe68e;</i></div>
+                        <div class="item" @click="activeOrder.closeRemark = '买家不想买了'">买家不想买了<i class="iconfont" v-if="activeOrder && activeOrder.closeRemark === '买家不想买了'">&#xe68e;</i></div>
+                        <div class="item" @click="activeOrder.closeRemark = '其他'">其他<i class="iconfont" v-if="activeOrder && activeOrder.closeRemark === '其他'">&#xe68e;</i></div>
+                    </div>
+                </div>
+                <div class="btn-bar">
+                    <mt-button type="default" @click="closeUpSend = false">取消</mt-button><mt-button type="default" @click="closeUpSend = false;closeConfirm = true">确定</mt-button>
+                </div>
+            </div>
+        </mt-popup>
+        <!-- 弹窗 -->
+        <transition name="down-slow">
+            <div class="dialog-bg" v-if="closeConfirm">
+                <div class="dialog">
+                    <div class="input-row">
+                        确认退款，即将以下货款金额退给买家，需慎重选择噢~
+                    </div>
+                    <p class="tips">￥{{ activeOrder.orderAllSum | toFix2 }}</p>
+                    <div class="btn-bar">
+                        <mt-button type="default" @click="closeConfirm = false">取消</mt-button><mt-button type="default" @click="pickClose(activeOrder.closeRemark)">确定</mt-button>
+                    </div>
+                </div>
+            </div>
+        </transition>
     </div>
 </template>
 
@@ -88,8 +133,10 @@
         data() {
             return {
                 closeUp: false,         // 关闭订单弹出
+                closeUpSend: false,     // 关闭订单弹出
+                closeConfirm: false,    // 再次确认关闭
                 pageNum: 1,             // 初始页面
-                activeOrder: null,      // 当前激活的订单
+                activeOrder: {},      // 当前激活的订单
             }
         },
         computed: {
@@ -166,18 +213,31 @@
                 },res => {
                     this.$toast('关闭成功')
                     this.closeUp = false;
+                    this.closeConfirm = false;
                     this.activeOrder.orderStatus = 'CLOSE'
-                    this.activeOrder = null;
+                    this.activeOrder = {};
                 },res => {
                     this.$toast(res.message)
                     this.closeUp = false;
-                    this.activeOrder = null;
+                    this.closeConfirm = false;
+                    this.activeOrder = {};
                 })
             },
             // 关闭订单
             closeOrder(order) {
                 this.activeOrder = order;
-                this.closeUp = true;
+
+                if(this.activeOrder.orderStatus === 'PACKING' || this.activeOrder.orderStatus === 'DELIVERED') {
+                    this.closeUpSend = true;
+                    this.$set(this.activeOrder,'closeRemark','');
+                    // this.activeOrder.closeRemark = '';
+                } else {
+                    this.closeUp = true;
+                }
+            },
+            // 关闭订单选择理由
+            chooseWay(way) {
+                this.activeOrder.closeRemark = way;
             },
             // 修改价格
             editPrice(data) {

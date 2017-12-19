@@ -1,4 +1,4 @@
-const filter = {
+var filter = {
     install: function(Vue,option) {
 
         // 保留两位小数

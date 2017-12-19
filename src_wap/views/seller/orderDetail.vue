@@ -94,14 +94,15 @@
         </section>
         <section class="btn-bar">
             <template v-if="myData.orderStatus === 'WAIT_PAY'">
-                <mt-button size="small" class="btn" @click="closeUp = true">关闭订单</mt-button>
+                <mt-button size="small" class="btn" @click="closeOrder">关闭订单</mt-button>
                 <mt-button size="small" class="btn" @click="editPrice">修改价格</mt-button>
             </template>
             <template v-if="myData.orderStatus === 'PACKING' || myData.orderStatus === 'PAY_WAIT_AUDIT'">
-                <mt-button size="small" class="btn" @click="closeUp = true">关闭订单</mt-button>
+                <mt-button size="small" class="btn" @click="closeOrder">关闭订单</mt-button>
                 <mt-button size="small" class="btn gold" @click.stop="$router.push({name:'发货',query:{orderNo:myData.orderNo}})">发货</mt-button>
             </template>
             <template v-if="myData.orderStatus === 'DELIVERED'">
+                <mt-button size="small" class="btn" @click="closeOrder">关闭订单</mt-button>
                 <mt-button size="small" class="btn" @click.stop="$router.push({name:'修改配送方式',query:{orderNo:myData.orderNo}})">修改快递</mt-button>
             </template>
         </section>
@@ -121,6 +122,7 @@
             </div>
         </transition>
         <!-- 关闭订单部分 -->
+        <!-- 待付款状态 -->
         <mt-popup
             v-model="closeUp"
             position="bottom">
@@ -132,6 +134,49 @@
                 <p class="close-tip" @click="pickClose('暂不关闭')">暂不关闭</p>
             </div>
         </mt-popup>
+        <!-- 打包中，已发货状态 -->
+        <mt-popup
+            v-model="closeUpSend"
+            position="bottom">
+            <div class="close-wrap-send">
+                <div class="hd">
+                    <div class="top">
+                        <div class="left">退款金额</div>
+                        <div class="right">￥{{ myData.orderAllSum | toFix2 }}</div>
+                    </div>
+                    <div class="bottom">
+                        <i class="iconfont">&#xe68d;</i>关闭订单后，货款将立即退回给买家
+                    </div>
+                </div>
+                <div class="bd">
+                    <div class="title">
+                        选择关闭订单原因
+                    </div>
+                    <div class="item-wrap">
+                        <div class="item" @click="myData.closeRemark = '缺货'">缺货<i class="iconfont" v-if="myData && myData.closeRemark === '缺货'">&#xe68e;</i></div>
+                        <div class="item" @click="myData.closeRemark = '买家不想买了'">买家不想买了<i class="iconfont" v-if="myData && myData.closeRemark === '买家不想买了'">&#xe68e;</i></div>
+                        <div class="item" @click="myData.closeRemark = '其他'">其他<i class="iconfont" v-if="myData && myData.closeRemark === '其他'">&#xe68e;</i></div>
+                    </div>
+                </div>
+                <div class="btn-bar-close">
+                    <mt-button type="default" @click="closeUpSend = false">取消</mt-button><mt-button type="default" @click="closeUpSend = false;closeConfirm = true">确定</mt-button>
+                </div>
+            </div>
+        </mt-popup>
+        <!-- 弹窗 -->
+        <transition name="down-slow">
+            <div class="dialog-bg" v-if="closeConfirm">
+                <div class="dialog">
+                    <div class="input-row">
+                        确认退款，即将以下货款金额退给买家，需慎重选择噢~
+                    </div>
+                    <p class="tips">￥{{ myData.orderAllSum | toFix2 }}</p>
+                    <div class="btn-bar-close">
+                        <mt-button type="default" @click="closeConfirm = false">取消</mt-button><mt-button type="default" @click="pickClose(myData.closeRemark)">确定</mt-button>
+                    </div>
+                </div>
+            </div>
+        </transition>
     </div>
 </template>
 
@@ -145,6 +190,8 @@
                 cloneRemark: '',                // 备注备份
                 remarkDialog: false,            // 备注弹框
                 closeUp: false,                 // 关闭订单
+                closeUpSend: false,             // 发货的关闭订单
+                closeConfirm: false,            
                 myData: {},                     // 订单详情
                 list: [],                       // 商品列表
             }
@@ -186,11 +233,27 @@
                 },res => {
                     this.$toast('关闭成功')
                     this.closeUp = false;
+                    this.closeConfirm = false;
                     this.myData.orderStatus = 'CLOSE'
                 },res => {
                     this.$toast(res.message)
                     this.closeUp = false;
+                    this.closeConfirm = false;
                 })
+            },
+            // 关闭订单
+            closeOrder() {
+                if(this.myData.orderStatus === 'PACKING' || this.myData.orderStatus === 'DELIVERED') {
+                    this.closeUpSend = true;
+                    this.$set(this.myData,'closeRemark','');
+                    // this.myData.closeRemark = '';
+                } else {
+                    this.closeUp = true;
+                }
+            },
+            // 关闭订单选择理由
+            chooseWay(way) {
+                this.myData.closeRemark = way;
             },
             // 修改价格
             editPrice() {

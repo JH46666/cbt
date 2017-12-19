@@ -219,22 +219,22 @@
                         }
                     })
                 }
+                if(status === 'AUDIT_NO_PASS') {
+                    vm.$messageBox({
+                        title:'提示', 
+                        message:`您的账号审核未通过，只有正式会员才可买买买，若有疑问，请联系客服400-996-3399`,
+                        showCancelButton: true,
+                        cancelButtonText: '取消',
+                        confirmButtonText: '完善资料'
+                    }).then(res => {
+                        if(res === 'cancel') {
+                            return;
+                        } else {
+                            vm.$router.push({name: '茶帮通注册3'})
+                        }
+                    })
+                }
                 return vm.$router.go(-1);
-            }
-            if(status === 'AUDIT_NO_PASS') {
-                vm.$messageBox({
-                    title:'提示', 
-                    message:`您的账号审核未通过，只有正式会员才可买买买，若有疑问，请联系客服400-996-3399`,
-                    showCancelButton: true,
-                    cancelButtonText: '取消',
-                    confirmButtonText: '完善资料'
-                }).then(res => {
-                    if(res === 'cancel') {
-                        return;
-                    } else {
-                        vm.$router.push({name: '茶帮通注册3'})
-                    }
-                })
             }
             store.dispatch('getMemberData').then((res) => {
                 next(vm);

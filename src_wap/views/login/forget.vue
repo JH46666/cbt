@@ -145,7 +145,7 @@
                             Toast('短信验证码过期，请重新获取');
                         }
                         if(res.code === 1001) {
-                            Toast('短信验证码错误');
+                            Toast('您输入的短信验证码错误');
                         }
                     });
                 }
@@ -212,13 +212,14 @@
                     }
                 },1000);
             },
-            created() {
-                
-                // 设置title
-                this.$store.commit('SET_TITLE','忘记密码');
-                
-            }
+            
         },
+        created() {
+            
+            // 设置title
+            this.$store.commit('SET_TITLE','忘记密码');
+            
+        }
     }
 </script>
 <style lang="less">

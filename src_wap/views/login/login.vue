@@ -170,8 +170,25 @@
                         }
                         this.$api.post('/oteao/login/doLoginBySms',data,
                         res=>{
-                            this.$router.push('/');
+                            for (let attr in res.data) {
+                                this.$store.commit('SET_MEMBERDATA',{type:attr,val:res.data[attr]})
+                            }
+                            let status = this.$store.state.member.memberAccount.status;
+                            if(status === 'WAIT_AUDIT' || status === 'AUDIT_NO_PASS') {
+                                this.$router.push({name: '茶帮通注册3'})
+                            }
+                            if(status === 'INACTIVE') {
+                                this.$router.push({name: '茶帮通注册2'})
+                            }
+                            if(this.$store.state.address.from.name === '忘记密码') {
+                                this.$router.push('/')
+                            } else {
+                                this.$router.push(this.$store.state.address.from.fullPath);
+                            }
                         },res=>{
+                            if(res.code === 200) {
+                                return Toast('该账户未注册');
+                            }
                             Toast('您输入的验证码错误，请核实后重新输入');
                         });
                     }

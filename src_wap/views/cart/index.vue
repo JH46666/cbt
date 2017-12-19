@@ -63,6 +63,9 @@
                             <div class="tips_div" v-if="!!item.buyUpperLimit && item.buyNum > item.buyUpperLimit">
                                 <p>每单限购{{item.buyUpperLimit}}，您超出最高购买数量啦~</p>
                             </div>
+                            <div class="tips_div" v-if="!!item.buyLowLimit && item.buyNum < item.buyLowLimit">
+                                <p>每单最低购{{item.buyLowLimit}}，您低于最低购买数量啦~</p>
+                            </div>
                             <div class="del-block" v-if="$tool.isiOS" @click="delItem(item,true)">
                                 <i class="iconfont">&#xe60d;</i>
                             </div>
