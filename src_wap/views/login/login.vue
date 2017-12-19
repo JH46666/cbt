@@ -173,17 +173,17 @@
                             for (let attr in res.data) {
                                 this.$store.commit('SET_MEMBERDATA',{type:attr,val:res.data[attr]})
                             }
-                            let status = this.$store.state.member.memberAccount.status;
+                            let status = res.data.memberAccount.status;
                             if(status === 'WAIT_AUDIT' || status === 'AUDIT_NO_PASS') {
-                                this.$router.push({name: '茶帮通注册3'})
+                                return this.$router.push({name: '茶帮通注册3'})
                             }
                             if(status === 'INACTIVE') {
-                                this.$router.push({name: '茶帮通注册2'})
+                                return this.$router.push({name: '茶帮通注册2'})
                             }
                             if(this.$store.state.address.from.name === '忘记密码') {
-                                this.$router.push('/')
+                                return this.$router.push('/')
                             } else {
-                                this.$router.push(this.$store.state.address.from.fullPath);
+                                return this.$router.push(this.$store.state.address.from.fullPath);
                             }
                         },res=>{
                             if(res.code === 200) {

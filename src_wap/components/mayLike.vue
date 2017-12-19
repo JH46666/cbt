@@ -5,20 +5,15 @@
         <div class="search_pros">
             <ul class="may_pros_list clearfix">
                 <li class="may_pro_item" v-for="mayItem in mayProducts">
-                    <a href="##">
-                        <div class="tag_img">
-                            <img :src="mayItem.tagImg">
-                        </div>
-                        <div class="pro_img">
-                            <img :src="mayItem.proImg" />
-                        </div>
+                    <router-link :to="'/detail?proSku=' + mayItem.proNo">
+                        <goods-img imgWidth="2.6rem" :imgUrl="mayItem.proImg" :tagUrl="mayItem.tagImage"></goods-img>
                         <div class="pro_txt">
-                            <h4>{{mayItem.proName}}</h4>
-                            <p>{{mayItem.proDesc}}</p>
-                            <p class="pro_price">￥{{toFixed(mayItem.proPrice)}}</p> 
+                            <h4>{{mayItem.proTitle}}</h4>
+                            <p>{{mayItem.subTitle}}</p>
+                            <p class="pro_price">￥{{ mayItem.proPrice | toFix2}}</p> 
                         </div>
-                    </a>
-                    <a class="cart_cir" href="javscript:void(0);"></a>
+                    </router-link>
+                    <span class="cart_cir" @click.self="addCart(mayItem)"></span>
                 </li>
             </ul>
             <div class="no-more">没有更多了哟~</div>
@@ -30,46 +25,30 @@
         name: 'mayLike',
         data(){
             return {
-                mayProducts:[
-                {   
-                    proId: 11,
-                    tagImg: '../src_wap/assets/images/specail_tag.png',  //商品图片
-                    proImg: '../src_wap/assets/cart_img1.png',  //商品图片
-                    proName: "安溪西坪 清香型（消酸）铁观音303-507  2015秋茶",  //商品名称
-                    proDesc: "正岩核心产区 花香馥郁",
-                    proPrice: 300, //商品价格
-                    proWeight: "斤",
-                    proHref: "/login",
-                    isSpecial: true,    //是否为特价商品
-                },
-                {
-                    proId: 12,
-                    tagImg: null,
-                    proImg: '../src_wap/assets/cart_img1.png',  //商品图片
-                    proName: "安溪西坪 清香型（消酸）铁观音303-507  2015秋茶",  //商品名称
-                    proDesc: "正岩核心产区 花香馥郁",
-                    proPrice: 330, //商品价格
-                    proWeight: "斤",
-                    proHref: "/login",
-                    isSpecial: false,    //是否为特价商品
-                },
-                ]
+                mayProducts:[]
             }
-        },
-        created(){
-
         },
         methods:{
-            //保留两位小数
-            toFixed(num) { 
-                if(isNaN(num)) {
-                    return '0.00'
-                }else{
-                    return Number(num).toFixed(2);
-                }
+            // 获取数据
+            getData() {
+                this.$api.post('/oteao/productInterestingRecord/query',{
+                    'productInterestingRecord.sysId': 1,
+                    'productInterestingRecord.device': 'WAP',
+                    'pageSize': 10
+                },res => {
+                    this.mayProducts = res.data || []
+                },res => {})
+            },
+            // 加入购物车
+            addCart(item) {
+                this.$store.dispatch('addCart',{proId: item.proId,buyNum:1}).then(res => {
+                    this.$emit('addCart');
+                })
             }
            
-           
+        },
+        created(){
+            this.getData();
         }
     }
 </script>
@@ -161,26 +140,8 @@
                             .line(.5rem);
                         }
                     }
-                    .tag_img{
-                        .position(a);
-                        top: 0;
-                        left: 0;
-                        max-width: .8rem;
-                        max-height: .8rem;
-                    }
-                    .pro_img{
-                        .w(2.6rem);
-                        .h(2.6rem);
-                        overflow: hidden;
-                        margin: 0 auto .1rem;
-                        img{
-                            .w(100%);
-                            .position(r);
-                            top: 50%;
-                            -webkit-transform: translateY(-50%);
-                            -o-transform: translateY(-50%);
-                            transform: translateY(-50%);
-                        }
+                    .cbt-goods-img{
+                        margin: 0 auto .2rem;
                     }
                     .cart_cir{
                         .position(a);
@@ -194,12 +155,12 @@
                 }
             }
             .no-more{
-                .h(.6rem);
-                .line(.6rem);
+                .h(.8rem);
+                .line(.8rem);
+                .bg(#f5f5f5);
                 .color(#adadad);
                 .algin(c);
-                .fontSize(.3rem);
-                border-radius: 10px;
+                .fontSize(.28rem);
                 margin: .1rem auto;
                 cursor: pointer;
             }

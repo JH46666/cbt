@@ -41,9 +41,9 @@
         <transition name="down-slow">
             <div class="dialog-bg" v-if="editTel || editAlipay">
                 <div class="dialog" v-if="editTel">
-                    <div class="title">修改电话</div>
+                    <div class="title">修改服务电话</div>
                     <div class="input-row">
-                        <input type="tel" maxlength="13" v-model="cloneTel">
+                        <input type="tel" maxlength="13" v-model="cloneTel" res="tel">
                     </div>
                     <p class="tips">用于买家联系您使用，请填写您常用的号码</p>
                     <div class="btn-bar">
@@ -53,7 +53,7 @@
                 <div class="dialog" v-if="editAlipay">
                     <div class="title">修改支付宝</div>
                     <div class="input-row">
-                        <input type="tel" maxlength="13" v-model="clonePay">
+                        <input type="tel" maxlength="13" v-model="clonePay" res="pay">
                     </div>
                     <p class="tips">后续交易金额将转入此账户，请务必填写正确</p>
                     <div class="btn-bar">
@@ -112,16 +112,18 @@
                 if(type === 'tel') {
                     this.cloneTel = this.myData.businessTelephone;
                     this.editTel = true;
+                    this.$nextTick(() => this.$refs.tel.focus());
                 } else if(type === 'pay') {
                     this.clonePay = this.myData.alipayAccount;
                     this.editAlipay = true;
+                    this.$nextTick(() => this.$refs.pay.focus());
                 }
             },
             // 修改数据
             edit(type) {
 
                 if(type === 'tel') {
-                    
+                    if(this.cloneTel === '') return this.$toast('服务电话不能为空')
                     if((/\d+/g).test(this.cloneTel)) {
                         if(this.cloneTel.length < 8) return this.$toast('电话号码最小长度为8')
                         this.$api.post('/orgShop/updateBusinessTelephone',{
@@ -130,9 +132,11 @@
                             this.$toast('服务电话修改成功~')
                             this.getData();
                             this.editTel = false;
+                        },res => {
+                            this.$toast('您输入的电话号码格式错误，请重新输入~')
                         })
                     } else {
-                        this.$toast('您输入的电话号码有误，请重新输入')
+                        this.$toast('您输入的电话号码格式错误，请重新输入~')
                         this.cloneTel = '';
                     }
 

@@ -36,10 +36,11 @@ const cart = {
                 },res=>{
                     // 更新购物车数量
                     dispatch('queryCartTotal');
-                    return Toast({
+                    Toast({
                         message: res.message,
                         iconClass: 'icon icon-success'
                     });
+                    resolve(res);
                 },res=>{
                     return Toast({
                         message: res.message,
@@ -51,7 +52,7 @@ const cart = {
         queryCartTotal({commit}) {
             $api.get('/oteao/shoppingCart/getCartTotalCount',{sysId:1},res => {
                 commit('UPDATETOTAL',res.data);
-            })
+            },res => {})
         }
     }
 }
