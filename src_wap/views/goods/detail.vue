@@ -312,7 +312,6 @@ export default {
     created() {
         // 设置title
         this.$store.commit('SET_TITLE','商品详情');
-
         // 获取购物车数量
         this.$store.dispatch('queryCartTotal');
 
@@ -641,13 +640,7 @@ export default {
             deep:true
         },
         tabSelected(val) {
-            if(val === '1'){
-                console.log(this.$refs.tabcontent1.$el.height);
-            }else if(val === '2'){
-                console.log(this.$refs.tabcontent2.$el.style);
-            }else if(val === '3'){
-                console.log(this.$refs.tabcontent3.$el.style);
-            }
+            this.$refs.wrapper.scrollTop = screen.height;
         }
     },
     mounted () {
