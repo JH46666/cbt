@@ -198,7 +198,6 @@ import $api from 'api';
                 },
                 region: 'oss-cn-hangzhou',
                 bucket: 'imgcbt',
-                urlList: [],
                 urls: {
                     main: [],
                     one: [],

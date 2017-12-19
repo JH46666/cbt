@@ -509,7 +509,6 @@ export default {
     created() {
         // 设置title
         this.$store.commit('SET_TITLE','商品修改');
-
         if(!this.resize.mainId){
             this.proSku = this.$route.query.proSku;
             this.resize.mainId = this.$route.query.edit;
@@ -526,13 +525,8 @@ export default {
                 this.resize.form.goodsPtsj = this.detailObj.productPrice[1].price;
                 this.resize.form.goodsSell = this.detailObj.productExtInfo.reason;
                 this.resize.form.goodsKc = this.detailObj.productExtInfo.stockNum;
-                this.resize.oneImgFile = [null];
-                this.resize.secondImgFile = [null];
-                this.resize.thirdImgFile = [null];
                 for(let obj of this.detailObj.productImgList){
-                    this.resize.mainImg.push({
-                        'imgSrc': obj.imgUrl
-                    })
+                    this.resize.imgs.mainImg.push(obj.imgUrl)
                     this.resize.mainImgFile.push(null);
                 }
                 this.getCatDetail(this.detailObj.productInfo.catId).then((reses) =>{
@@ -566,27 +560,27 @@ export default {
                             selval: obj.propertiesVal.propVal
                         })
                     }
-                    // for(let i=0;i<this.getProvList.length;i++){
-                    //     for(let j=0;j<this.resize.proValList.length;j++){
-                    //         if(this.getProvList[i].id == this.resize.proValList[j].id){
-                    //             console.log(this.getProvList[i].content,this.getProvList[i].selval);
-                    //             this.resize.proValList[j].proValId = this.getProvList[i].content;
-                    //             this.resize.proValList[j].proVal = this.getProvList[i].selval;
-                    //         }
-                    //     }
-                    // }
-                    let content = JSON.parse(rs.data.content);
-                    this.resize.imgs.detailImg1 = content.oneImgContent.imgUrl[0];
-                    this.resize.textMs1 = content.oneImgContent.content;
-                    this.resize.imgs.detailImg2 = content.twoImgContent.imgUrl[0];
-                    this.resize.textMs2 = content.twoImgContent.content;
-                    this.resize.imgs.detailImg3 = content.threeImgContent.imgUrl[0];
-                    this.resize.textMs3 = content.threeImgContent.content;
-                    for(let obj of content.fourImgContent.imgUrl){
-                        this.resize.imgsStep4.push(obj)
+                    let contentJson = JSON.parse(rs.data.content);
+                    for(let obj of contentJson.oneImgContent.imgArray){
+                        this.resize.imgs.detailImg1.push(obj.imgUrl);
+                        this.resize.oneImgFile.push(null);
+                    }
+                    this.resize.textMs1 = contentJson.oneImgContent.content;
+                    for(let obj of contentJson.twoImgContent.imgArray){
+                        this.resize.imgs.detailImg2.push(obj.imgUrl);
+                        this.resize.secondImgFile.push(null);
+                    }
+                    this.resize.textMs2 = contentJson.twoImgContent.content;
+                    for(let obj of contentJson.threeImgContent.imgArray){
+                        this.resize.imgs.detailImg3.push(obj.imgUrl);
+                        this.resize.thirdImgFile.push(null);
+                    }
+                    this.resize.textMs3 = contentJson.threeImgContent.content;
+                    for(let obj of contentJson.fourImgContent.imgArray){
+                        this.resize.imgs.imgsStep4.push(obj.imgUrl);
                         this.resize.fourImgFile.push(null);
                     }
-                    this.resize.textMs4 = content.fourImgContent.content;
+                    this.resize.textMs4 = contentJson.fourImgContent.content;
                 })
                 for(let i=0;i<this.brandList.length;i++){
                     if(this.brandList[i].name == this.resize.form.goodsBrand){
