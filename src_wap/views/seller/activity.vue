@@ -1,5 +1,5 @@
 <template lang="html">
-    <div class="activity">
+    <div class="activity" :style="style">
         <div class="f5-2"></div>
         <div class="activity_name">
             <label for="activeName">活动名称</label>
@@ -273,6 +273,12 @@ export default {
 
     },
     computed: {
+        style() {
+            let h = document.body.scrollHeight;
+            return {
+                height: this.$tool.isWx ? `calc(${h}px)` : `calc(${h}px - .88rem)`
+            }
+        },
         selectNum() {
             let num = 0;
             for(let obj of this.proList){

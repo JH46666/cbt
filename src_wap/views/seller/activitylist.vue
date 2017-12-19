@@ -8,7 +8,7 @@
         </mt-navbar>
         <mt-tab-container v-model="selected">
             <mt-tab-container-item :id="selected" class="on">
-                <div class="mt_cell_wrapper" v-infinite-scroll="loadMore" infinite-scroll-disabled="noInfinity" infinite-scroll-distance="10">
+                <div class="mt_cell_wrapper" v-infinite-scroll="loadMore" :infinite-scroll-disabled="noInfinity" infinite-scroll-distance="60">
                     <template v-if="actiiveList.length == 0">
                         <div class="f5-2"></div>
                         <div class="active_empty">
@@ -131,7 +131,7 @@ export default {
                 })
                 this.getList(3).then(res => {
                     this.orderNum = res.total_record;
-                    this.actiiveList = res.data;
+                    this.actiiveList = res.data || [];
                 })
             }
         },
@@ -156,19 +156,17 @@ export default {
     },
     methods: {
         loadMore() {
-            setTimeout(() => {
-                try {
-                    if(this.actiiveList.length >= this.orderNum) return this.noInfinity = true;
-                    this.pageSize++;
-                    this.getList(Number(this.selected)).then((res) =>{
-                        let timeData = res.data.order;
-                        this.actiiveList = this.actiiveList.concat(timeData);
-                        this.noInfinity = false;
-                    })
-                } catch (e) {
+            try {
+                if(this.actiiveList.length >= this.orderNum) return this.noInfinity = true;
+                this.pageSize++;
+                this.getList(Number(this.selected)).then((res) =>{
+                    let timeData = res.data;
+                    this.actiiveList = this.actiiveList.concat(timeData);
+                    this.noInfinity = false;
+                })
+            } catch (e) {
 
-                }
-            },500)
+            }
         },
         deleteActive(obj) {
             let data = {

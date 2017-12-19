@@ -7,7 +7,8 @@
             <div class="recruit_box">
                 <p><span>百万</span>收入不是梦</p>
                 <img src="../../assets/images/seller_zm.png" />
-                <p>茶帮通，产地茶全渠道运营服务平台让茶叶买卖更轻松</p>
+                <p>茶帮通，产地茶全渠道运营服务平台</p>
+                <p>让茶叶买卖更轻松</p>
             </div>
             <mt-button type="primary" @click.native="goRegist">注册为卖家</mt-button>
             <p class="look_item">查看注册要求<i class="iconfont">&#xe744;</i></p>
@@ -25,7 +26,7 @@ export default {
     created() {
         // 设置title
         this.$store.commit('SET_TITLE','卖家招募');
-            
+
     },
     methods: {
         goRegist() {
