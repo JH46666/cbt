@@ -31,35 +31,28 @@
             <p class="color_9"><span class="color_f33">1-3项必须上传，</span>建议尺寸保持一致，单张图片小于8M</p>
             <div class="upload-step">
                 <h4><span class="serial-num">1</span>高清实拍，清晰展示商品外形细节，最多可上传<span class="color_f33">3</span>张</h4>
-                <div class="proview_box">
-                    <!-- <mt-swipe :show-indicators="false" :auto="0">
+                <div class="proview_box" v-if="resize.imgs.detailImg1.length > 0">
+                    <mt-swipe :show-indicators="false" :auto="0" @change="handleChangeOne">
                         <mt-swipe-item  v-for="(item,index) in resize.imgs.detailImg1" :key="index">
-                            <img :src="item.imgSrc" />
-                            <a class="delete-btn" href="javascript: void(0);" @click="deleteImg(index,true)"><i class="iconfont">&#xe651;</i></a>
+                            <img :src="item" />
+                            <a class="delete-btn" href="javascript: void(0);" @click="deleteImg(index,'one')"><i class="iconfont">&#xe651;</i></a>
                             <div class="small-camera" v-if="resize.imgs.detailImg1.length<3">
                                 <label>
                                     <img src="../../assets/images/camera.png" />
-                                    <input type="file" accept="image/*" hidden @change="onPreview(index,$event,true)">
+                                    <input type="file" accept="image/*" hidden @change="onPreview('one',$event)">
                                 </label>
                             </div>
                         </mt-swipe-item>
-                    </mt-swipe> -->
+                    </mt-swipe>
+                    <div class="len_num">
+                        <span>{{ changeIndex.one }}</span>/{{ resize.imgs.detailImg1.length }}
+                    </div>
                 </div>
                 <div class="flex example-box" v-if="resize.imgs.detailImg1.length === 0">
                     <div class="flex-1 upload-box">
                         <label class="camera-bg">
                             <input type="file" accept="image/*" hidden @change="onPreview('one',$event)">
                         </label>
-                        <!-- <div class="one-img"><img :src="resize.imgs.detailImg1" /></div>
-                        <div v-show="resize.imgs.detailImg1!=''">
-                            <a class="delete-btn" href="javascript: void(0);" @click="deleteImg('detailImg1')"><i class="iconfont">&#xe651;</i></a>
-                            <div class="small-camera">
-                                <label>
-                                    <img src="../../assets/images/camera.png" />
-                                    <input type="file" accept="image/*" hidden @change="onPreview('detailImg1',$event)">
-                                </label>
-                            </div>
-                        </div> -->
                     </div>
                     <div class="flex-1">
                         <img src="../../assets/upload-eg1.jpg" />
@@ -69,35 +62,28 @@
             </div>
             <div class="upload-step">
                 <h4><span class="serial-num">2</span>拒绝盗图，清晰展示商品内在细节，如茶汤，最多可上传<span class="color_f33">3</span>张</h4>
-                <div class="proview_box">
-                    <!-- <mt-swipe :show-indicators="false" :auto="0">
-                        <mt-swipe-item  v-for="(item,index) in resize.imgs.detailImg1" :key="index">
-                            <img :src="item.imgSrc" />
-                            <a class="delete-btn" href="javascript: void(0);" @click="deleteImg(index,true)"><i class="iconfont">&#xe651;</i></a>
-                            <div class="small-camera" v-if="resize.imgs.detailImg1.length<3">
+                <div class="proview_box" v-if="resize.imgs.detailImg2.length > 0">
+                    <mt-swipe :show-indicators="false" :auto="0" @change="handleChangeTwo">
+                        <mt-swipe-item  v-for="(item,index) in resize.imgs.detailImg2" :key="index">
+                            <img :src="item" />
+                            <a class="delete-btn" href="javascript: void(0);" @click="deleteImg(index,'two')"><i class="iconfont">&#xe651;</i></a>
+                            <div class="small-camera" v-if="resize.imgs.detailImg2.length<3">
                                 <label>
                                     <img src="../../assets/images/camera.png" />
-                                    <input type="file" accept="image/*" hidden @change="onPreview(index,$event,true)">
+                                    <input type="file" accept="image/*" hidden @change="onPreview('two',$event)">
                                 </label>
                             </div>
                         </mt-swipe-item>
-                    </mt-swipe> -->
+                    </mt-swipe>
+                    <div class="len_num">
+                        <span>{{ changeIndex.two }}</span>/{{ resize.imgs.detailImg2.length }}
+                    </div>
                 </div>
                 <div class="flex example-box" v-if="resize.imgs.detailImg2.length === 0">
                     <div class="flex-1 upload-box">
                         <label class="camera-bg">
                             <input type="file" accept="image/*" hidden @change="onPreview('two',$event)">
                         </label>
-                        <!-- <div class="one-img"><img :src="resize.imgs.detailImg2" alt=""></div>
-                        <div v-show="resize.imgs.detailImg2!=''">
-                            <a class="delete-btn" href="javascript: void(0);" @click="deleteImg('detailImg2')"><i class="iconfont">&#xe651;</i></a>
-                            <div class="small-camera">
-                                <label>
-                                    <img src="../../assets/images/camera.png" />
-                                    <input type="file" accept="image/*" hidden @change="onPreview('detailImg2',$event)">
-                                </label>
-                            </div>
-                        </div> -->
                     </div>
                     <div class="flex-1">
                         <img src="../../assets/upload-eg2.jpg" />
@@ -107,35 +93,28 @@
             </div>
             <div class="upload-step">
                 <h4><span class="serial-num">3</span>拒绝盗图，清晰展示商品内在细节，如叶底，最多可上传<span class="color_f33">3</span>张</h4>
-                <div class="proview_box">
-                    <!-- <mt-swipe :show-indicators="false" :auto="0">
-                        <mt-swipe-item  v-for="(item,index) in resize.imgs.detailImg1" :key="index">
-                            <img :src="item.imgSrc" />
-                            <a class="delete-btn" href="javascript: void(0);" @click="deleteImg(index,true)"><i class="iconfont">&#xe651;</i></a>
-                            <div class="small-camera" v-if="resize.imgs.detailImg1.length<3">
+                <div class="proview_box" v-if="resize.imgs.detailImg3.length > 0">
+                    <mt-swipe :show-indicators="false" :auto="0" @change="handleChangeThree">
+                        <mt-swipe-item  v-for="(item,index) in resize.imgs.detailImg3" :key="index">
+                            <img :src="item" />
+                            <a class="delete-btn" href="javascript: void(0);" @click="deleteImg(index,'three')"><i class="iconfont">&#xe651;</i></a>
+                            <div class="small-camera" v-if="resize.imgs.detailImg3.length<3">
                                 <label>
                                     <img src="../../assets/images/camera.png" />
-                                    <input type="file" accept="image/*" hidden @change="onPreview(index,$event,true)">
+                                    <input type="file" accept="image/*" hidden @change="onPreview('three',$event)">
                                 </label>
                             </div>
                         </mt-swipe-item>
-                    </mt-swipe> -->
+                    </mt-swipe>
+                    <div class="len_num">
+                        <span>{{ changeIndex.three }}</span>/{{ resize.imgs.detailImg3.length }}
+                    </div>
                 </div>
                 <div class="flex example-box" v-if="resize.imgs.detailImg3.length === 0">
                     <div class="flex-1 upload-box">
                         <label class="camera-bg">
                             <input type="file" accept="image/*" hidden @change="onPreview('three',$event)">
                         </label>
-                        <!-- <div class="one-img"><img :src="resize.imgs.detailImg3" /></div>
-                        <div v-show="resize.imgs.detailImg3!=''">
-                            <a class="delete-btn" href="javascript: void(0);" @click="deleteImg('detailImg3')"><i class="iconfont">&#xe651;</i></a>
-                            <div class="small-camera">
-                                <label>
-                                    <img src="../../assets/images/camera.png" />
-                                    <input type="file" accept="image/*" hidden @change="onPreview('detailImg3',$event)">
-                                </label>
-                            </div>
-                        </div> -->
                     </div>
                     <div class="flex-1">
                         <img src="../../assets/upload-eg3.jpg" />
@@ -174,10 +153,16 @@
         </div>
         <div class="flex btns">
             <mt-button type="primary" @click="$router.go(-1)">上一步</mt-button>
-            <mt-button type="primary" :disabled="disabledBol" @click="saveMethod('0')">保存</mt-button>
+            <mt-button type="primary" :disabled="disabledBol || loading1" @click="saveMethod('0')">
+                <img src="../../assets/images/loading3.gif" height="20" width="20" slot="icon" :class="{on: loading1 && !flag}">
+                保存
+            </mt-button>
         </div>
         <div class="save-rackup">
-            <mt-button type="primary" :disabled="disabledBol" @click="saveMethod('1')">保存并上架</mt-button>
+            <mt-button type="primary" :disabled="disabledBol || loading2" @click="saveMethod('1')">
+                <img src="../../assets/images/loading3.gif" height="20" width="20" slot="icon" :class="{on: loading2 && flag}">
+                保存并上架
+            </mt-button>
         </div>
         <!-- 成功上架弹窗 -->
         <div class="popup suc_popup" v-show="sucFlag">
@@ -205,13 +190,12 @@ import $api from 'api';
             return {
                 sucFlag: false,         //是否成功上架
                 changeIndex: {
-                    main: null,
-                    one: null,
-                    two: null,
-                    three: null,
-                    four: null
+                    main: 1,
+                    one: 1,
+                    two: 1,
+                    three: 1,
+                    four: 1
                 },
-                ossImg: [],
                 region: 'oss-cn-hangzhou',
                 bucket: 'imgcbt',
                 urlList: [],
@@ -223,8 +207,10 @@ import $api from 'api';
                     four: []
                 },
                 path: 'test_path/',
-                flag: 0,
+                flag: null,
                 sussTips: '成功上架！',
+                loading1: false,
+                loading2: false,
             }
         },
         computed:{
@@ -278,6 +264,9 @@ import $api from 'api';
                 })
             },
             saveMethod(flag) {
+                this.disabledBol = true;
+                this.loading1 = true;
+                this.loading2 = true;
                 if(flag === '0'){
                     this.flag = 0;
                 }else{
@@ -382,36 +371,53 @@ import $api from 'api';
                         imgUrl: this.urls.main[i]
                     })
                 }
-                let oneImgContent = {
+                let oneImg = {
                     title: '外形细节展示',
-                    imgUrl: [this.urls.one[0]],
-                    content: this.resize.textMs1
+                    content: this.resize.textMs1,
+                    imgArray: []
+                };
+                for(let obj of this.urls.one){
+                    oneImg.imgArray.push({
+                        imgUrl: obj
+                    })
                 }
-                let twoImgContent = {
+                let twoImg = {
                     title: '汤色细节展示',
-                    imgUrl: [this.urls.two[0]],
-                    content: this.resize.textMs2
+                    content: this.resize.textMs2,
+                    imgArray: []
                 }
-                let threeImgContent = {
+                for(let obj of this.urls.two){
+                    twoImg.imgArray.push({
+                        imgUrl: obj
+                    })
+                }
+                let threeImg = {
                     title: '叶底细节展示',
-                    imgUrl: [this.urls.third[0]],
-                    content: this.resize.textMs3
+                    content: this.resize.textMs3,
+                    imgArray: []
                 }
-                let fourImgContent = {
+                for(let obj of this.urls.third){
+                    threeImg.imgArray.push({
+                        imgUrl: obj
+                    })
+                }
+                let fourImg = {
                     title: '其它细节展示',
-                    imgUrl: [],
-                    content: this.resize.textMs4
+                    content: this.resize.textMs4,
+                    imgArray: [],
                 };
                 if(this.urls.four.length != 0){
                     for(let i=0;i<this.urls.four.length;i++){
-                        fourImgContent.imgUrl.push(this.urls.four[i])
+                        fourImg.imgArray.push({
+                            imgUrl: this.urls.four[i]
+                        })
                     }
                 }
                 let allContent = {
-                    oneImgContent: oneImgContent,
-                    twoImgContent: twoImgContent,
-                    threeImgContent: threeImgContent,
-                    fourImgContent: fourImgContent
+                    oneImgContent: oneImg,
+                    twoImgContent: twoImg,
+                    threeImgContent: threeImg,
+                    fourImgContent: fourImg
                 }
                 let data = {
                     "catProps": [],
@@ -452,6 +458,8 @@ import $api from 'api';
                         `&frontOrgProInfoDetailVo.retailPrice=${encodeURI(this.resize.form.goodsPtsj) }` +
                         `&frontOrgProInfoDetailVo.isSaveOnShelf=${ encodeURI(stata) }`,JSON.stringify(data),res => {
                             this.sucFlag = true;
+                            this.loading1 = false;
+                            this.loading2 = false;
                             if(stata == 0){
                                 this.sussTips = '创建成功！';
                             }else{
@@ -476,6 +484,8 @@ import $api from 'api';
                         `&frontOrgProInfoDetailVo.retailPrice=${encodeURI(this.resize.form.goodsPtsj) }` +
                         `&frontOrgProInfoDetailVo.isSaveOnShelf=${ encodeURI(stata) }`,JSON.stringify(data),res => {
                             this.sucFlag = true;
+                            this.loading1 = false;
+                            this.loading2 = false;
                             if(stata == 0){
                                 this.sussTips = '创建成功！';
                             }else{
@@ -487,7 +497,6 @@ import $api from 'api';
                 }
             },
             handleChangeMain(index) {
-                console.log(index);
                 this.changeIndex.main = index+1;
             },
             handleChangeOne(index) {
@@ -521,7 +530,7 @@ import $api from 'api';
                     reader.onload = (e)=>{
                         this.resize.imgs.mainImg.push(e.target.result);
                     }
-                    this.resize.mainImgFile.push(e.target.files[0])
+                    this.resize.mainImgFile.push(e.target.files[0]);
                 }else if(type === 'one'){
                     reader.onload = (e)=>{
                         this.resize.imgs.detailImg1.push(e.target.result);

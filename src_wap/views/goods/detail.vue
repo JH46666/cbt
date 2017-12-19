@@ -137,19 +137,19 @@
                 </mt-navbar>
                 <!-- tab-container -->
                 <mt-tab-container v-model="tabSelected" :swipeable="true">
-                    <mt-tab-container-item id="1">
+                    <mt-tab-container-item id="1" ref="tabcontent1">
                         <!-- <div class="detail_img_title" :class="{'on': tabFixed,'wxon': wxFixed}" ref="imgHeight">图片详情</div> -->
                         <div class="mint_cell_wrapper mint_cell_img_wrapper">
                             <mt-cell v-for="(item,index) in imgDetail" :key="index">
                                 <div class="mint_cell_img_title">{{ item.title }}</div>
                                 <div class="mint_cell_img">
-                                    <img :src="ur" v-for="(ur,k) in item.imgUrl" :key="k" />
+                                    <img :src="ur.imgUrl" v-for="(ur,k) in item.imgArray" :key="k" />
                                 </div>
                                 <p class="mint_cell_img_content">{{ item.content }}</p>
                             </mt-cell>
                         </div>
                     </mt-tab-container-item>
-                    <mt-tab-container-item id="2">
+                    <mt-tab-container-item id="2" ref="tabcontent2">
                         <div class="reguler_wrapper">
                             <div class="reguler_item" style="height: .98rem; padding: 0;">
                                 <div>商品编号</div>
@@ -187,7 +187,7 @@
                             </div>
                         </div>
                     </mt-tab-container-item>
-                    <mt-tab-container-item id="3">
+                    <mt-tab-container-item id="3" ref="tabcontent3">
                         <div class="comment_wrapper" ref="commentTotal" :class="{'on': tabFixed,'wxon': wxFixed}">
                             <div class="comment_title">商品评价</div>
                             <div class="comment_number">
@@ -601,6 +601,9 @@ export default {
                })
            }
            this.showOrHide = true;
+       },
+       scrollDoc() {
+
        }
     },
     watch: {
@@ -637,6 +640,15 @@ export default {
             },
             deep:true
         },
+        tabSelected(val) {
+            if(val === '1'){
+                console.log(this.$refs.tabcontent1.$el.height);
+            }else if(val === '2'){
+                console.log(this.$refs.tabcontent2.$el.style);
+            }else if(val === '3'){
+                console.log(this.$refs.tabcontent3.$el.style);
+            }
+        }
     },
     mounted () {
         // this.setLine();             // 判断超出隐藏或者显示

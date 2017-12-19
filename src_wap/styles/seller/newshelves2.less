@@ -99,6 +99,21 @@
                 position: relative;
                 margin-top: .3rem;
                 margin-bottom: .3rem;
+                img{
+                    height: 100%;
+                }
+                .len_num{
+                    .position(a);
+                    bottom: .3rem;
+                    left: .3rem;
+                    height: .46rem;
+                    padding: 0 .1rem;
+                    .bg(#4c4c4c);
+                    .color(#fff);
+                    .fontSize(.24rem);
+                    .line(.46rem);
+                    border-radius: .23rem;
+                }
             }
             .serial-num{
                 display: inline-block;
@@ -177,6 +192,7 @@
             &.is-disabled {
                 .bg(#e6e6e6);
                 .color(#adadad);
+                opacity: 1;
             }
         }
     }
@@ -193,6 +209,7 @@
             &.is-disabled {
                 .bg(#e6e6e6);
                 .color(#adadad);
+                opacity: 1;
             }
         }
     }
@@ -234,6 +251,15 @@
                     .bg(#f08200);
                     border-radius: 0 0 5px 0;
                 }
+            }
+        }
+    }
+    .mint-button-icon{
+        img{
+            width: auto;
+            display: none;
+            &.on{
+                display: block;
             }
         }
     }

@@ -264,6 +264,9 @@
             .mint-tab-container-item{
                 .scroll-y(a);
             }
+            .mint-tab-item-label{
+                .fontSize(.28rem);
+            }
             .mint-navbar{
                 .paddingAll(0,1.1rem,0,1.1rem);
                 .bg(#fafafa);
@@ -480,7 +483,11 @@
                     // padding: 0 .2rem;
                     img{
                         max-width: 100%;
+                        &+ img{
+                            margin-top: .1rem;
+                        }
                     }
+
                 }
                 .mint_cell_img_content{
                     padding: .4rem .2rem 0;
