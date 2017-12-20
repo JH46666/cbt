@@ -135,7 +135,7 @@
                 pageSize: 20,
                 totalSize: 0,
                 sortDesc: true,      //排序
-                sort: 4,
+                sort: 1,
                 filterFlag: false,
                 sortData:[{
                     sortName: '排序',
@@ -143,7 +143,7 @@
                     sortConditions:[
                         {
                             propVal: '销量',
-                            propId: 4
+                            propId: 1
                         },
                         {
                             propVal: '价格高到低',
@@ -157,10 +157,6 @@
                             propVal: '新品',
                             propId: 2
                         },
-                        {
-                            propVal: '库存',
-                            propId: 1
-                        }
                     ]
                 }]
             }
@@ -220,7 +216,7 @@
                 this.resultData = [];
                 this.pageNumber = 1;
                 this.totalSize = 0;
-                this.sort = 4;
+                this.sort = 1;
                 this.sortDesc = true;
                 let data = {
                     catId: val,
@@ -287,7 +283,7 @@
                 for(let item of this.sortData){
                     item.sortIndex = 0;
                 }
-                this.sort = 4;
+                this.sort = 1;
                 this.sortVisible = false;
             },
             //加载更多

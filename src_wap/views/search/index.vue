@@ -18,7 +18,7 @@
             <div class="title"><h3>历史搜索</h3></div>
             <ul class="history-wrap">
                 <template v-for="(item,i) in history">
-                    <router-link :to="{name: '搜索',query: {q: item.searchContent,c: '4',sort: 'desc'}
+                    <router-link :to="{name: '搜索',query: {q: item.searchContent,c: '1',sort: 'desc'}
                         }" tag="div" class="history-item">
                         {{ item.searchContent }}
                     </router-link>
@@ -30,9 +30,9 @@
         </section>
         <!-- 搜索列表 -->
         <section class="sort-bar" v-if="!noSearch && list.length">
-            <label class="sort-item" :class="{active:sortClass === '4'}">
+            <label class="sort-item" :class="{active:sortClass === '1'}">
                 销量
-                <input type="radio" value="4" v-model="sortClass">
+                <input type="radio" value="1" v-model="sortClass">
             </label>
             <label class="sort-item" :class="{active:sortClass === '2'}">
                 新品
@@ -98,7 +98,7 @@
         data() {
             return {
                 text: '',               // 搜索关键字
-                sortClass: '4',         // 排序方式
+                sortClass: '1',         // 排序方式
                 priceSort: false,       // 价格排序，降序
                 hotList: [              // 热搜
                     {
@@ -107,7 +107,7 @@
                             name: '搜索',
                             query: {
                                 q: '安溪铁观音',
-                                c: '4',
+                                c: '1',
                                 sort: 'desc'
                             }
                         }
@@ -118,7 +118,7 @@
                             name: '搜索',
                             query: {
                                 q: '金骏眉',
-                                c: '4',
+                                c: '1',
                                 sort: 'desc'
                             }
                         }
@@ -129,7 +129,7 @@
                             name: '搜索',
                             query: {
                                 q: '正山小种',
-                                c: '4',
+                                c: '1',
                                 sort: 'desc'
                             }
                         }
@@ -140,7 +140,7 @@
                             name: '搜索',
                             query: {
                                 q: '云南滇红',
-                                c: '4',
+                                c: '1',
                                 sort: 'desc'
                             }
                         }
@@ -151,7 +151,7 @@
                             name: '搜索',
                             query: {
                                 q: '龙井',
-                                c: '4',
+                                c: '1',
                                 sort: 'desc'
                             }
                         }
@@ -240,7 +240,7 @@
             // 搜索
             search() {
                 if(this.text === '') return;
-                this.$router.replace({name: '搜索',query: {q: this.text,c: '4',sort: 'desc'}})
+                this.$router.replace({name: '搜索',query: {q: this.text,c: '1',sort: 'desc'}})
             },
             // 搜索处理函数
             handle(page = 1) {
@@ -264,16 +264,20 @@
                         "sort": query.c,
                         "sysId": 1
                     }
-                    // 如果有登陆，储存搜索历史
-                    if(this.id) {
-                        this.$api.post('/oteao/searchProductRecord/insert',{
-                            'searchProductRecord.memberId': this.id,
-                            'searchProductRecord.sysId': 1,
-                            'searchProductRecord.searchContent': query.q,
-                            'searchProductRecord.device': 'WAP'
-                        },res => {})
-                    }
 
+
+                    // 储存搜索历史
+                    let historyData = {
+                        // 'searchProductRecord.memberId': this.id || '',
+                        'searchProductRecord.sysId': 1,
+                        'searchProductRecord.searchContent': query.q,
+                        'searchProductRecord.device': 'WAP'
+                    }
+                    if(this.id) {
+                        historyData['searchProductRecord.memberId'] = this.id
+                    }
+                    this.$api.post('/oteao/searchProductRecord/insert',historyData,res => {})
+                    
 
 
 
@@ -346,17 +350,15 @@
                 })
             } catch (error) {
                 // 获取搜索历史
-                if(this.id) {
-                    this.$api.post('/oteao/searchProductRecord/query',{
-                        pageSize: 10,
-                        'searchProductRecord.memberId': this.id,
-                        'searchProductRecord.sysId': 1,
-                        'searchProductRecord.device': 'WAP'
-                    },res => {
-                        res.data = res.data || [];
-                        this.history = res.data;
-                    },res =>{})
-                }
+                this.$api.post('/oteao/searchProductRecord/query',{
+                    pageSize: 10,
+                    // 'searchProductRecord.memberId': this.id,
+                    'searchProductRecord.sysId': 1,
+                    'searchProductRecord.device': 'WAP'
+                },res => {
+                    res.data = res.data || [];
+                    this.history = res.data;
+                },res =>{})
             }
         },
         // 进来先判断登陆与否
