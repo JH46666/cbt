@@ -395,9 +395,6 @@ export default {
                      this.selected = null;
                 });
             }
-            this.$router.push({
-                name: '购物车'
-            })
             this.$store.dispatch('addCart',{proId:this.detailData.productExtInfo.proId,buyNum:this.goodsCount}).then(res=>{
                 console.log(res);
 
