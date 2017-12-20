@@ -1,5 +1,5 @@
 <template>
-    <div class="freight_wrapper">
+    <div class="freight_wrapper" :style="style">
         <div class="caption flex">
             <p>全国包邮，除以下省份</p>
         </div>
@@ -142,7 +142,7 @@ import $api from 'api';
         created(){
             // 设置title
             this.$store.commit('SET_TITLE','运费配置');
-            
+
             this.$api.get('oteao/baseRegion/getRegionTree',{},res => {
                 for(let i=0;i<res.data.length-3;i++){
                     if(res.data[i].regionName === '江苏省' || res.data[i].regionName === '上海市' || res.data[i].regionName === '浙江省'){
@@ -225,6 +225,12 @@ import $api from 'api';
             })
         },
         computed:{
+            style() {
+                let h = document.body.scrollHeight;
+                return {
+                    height: this.$tool.isWx ? `calc(${h}px)` : `calc(${h}px - .88rem)`
+                }
+            },
             // disabledBol() {
             //     let arr = this.addressType.one.concat(this.addressType.two,this.addressType.three,this.addressType.four);
             //     for(let i=0;i<arr.length;i++){
@@ -299,11 +305,11 @@ import $api from 'api';
                         message: '运费配置成功',
                         iconClass: 'icon icon-success'
                     });
-                    setTimeout(()=>{
-                        this.$router.push({
-                            name: '卖家中心'
-                        })
-                    },200)
+                    // setTimeout(()=>{
+                    //     this.$router.push({
+                    //         name: '卖家中心'
+                    //     })
+                    // },200)
                 })
             },
             addFreight() {
@@ -311,23 +317,23 @@ import $api from 'api';
                     "orgFreightTemplateVoList": []
                 }
                 for(let i=0;i<this.postArray.length;i++){
+                    if(this.postArray[i].area.length==0){
+                        return Toast({
+                            message: '请先选择省份',
+                            iconClass: 'icon icon-fail'
+                        });
+                    }
                     if(this.postArray[i].sweight !='' && this.postArray[i].xweight != '' && this.postArray[i].buyer != '' && this.postArray[i].area.length > 0){
                         data.orgFreightTemplateVoList.push({
                             "baseRegionVoList": [],
-                            "continuedHeavyCost": this.postArray[i].sweight,
-                            "firstHeavyCost": this.postArray[i].xweight,
+                            "continuedHeavyCost": this.postArray[i].xweight,
+                            "firstHeavyCost": this.postArray[i].sweight,
                             "freeCost": this.postArray[i].buyer,
                             "templateId": this.postArray[i].templateId,
                             "delFlag": this.postArray[i].delFlag
                         })
                         let areaArray = this.postArray[i].area,
                             areaNameArray = this.postArray[i].areaText.split(',');
-                        if(areaArray.length==0){
-                            return Toast({
-                                message: '请先选择省份',
-                                iconClass: 'icon icon-fail'
-                            });
-                        }
                         for(let obj of areaArray){
                             data.orgFreightTemplateVoList[i].baseRegionVoList.push({
                                 "id": obj,

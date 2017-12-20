@@ -1,107 +1,105 @@
 <template lang="html">
-    <div class="activity">
-        <div class="activity_wrapper">
-            <div class="f5-2"></div>
-            <div class="activity_name">
-                <label for="activeName">活动名称</label>
-                <input type="text" id="activeName" placeholder="输入2-15个汉字" maxlength="15" v-model="activeName" />
+    <div class="activity" :style="style">
+        <div class="f5-2"></div>
+        <div class="activity_name">
+            <label for="activeName">活动名称</label>
+            <input type="text" id="activeName" placeholder="输入2-15个汉字" maxlength="15" v-model="activeName" />
+        </div>
+        <div class="f5-2"></div>
+        <div class="activityt_date">
+            <div class="activityt_date_wrapper">
+                <label for="activeStartDate">开始时间</label>
+                <input type="text" id="activeStartDate" readonly placeholder="请选择" v-model="activeStartDate" @click="openPicker('start')" />
+                <i class="iconfont">&#xe744;</i>
             </div>
-            <div class="f5-2"></div>
-            <div class="activityt_date">
-                <div class="activityt_date_wrapper">
-                    <label for="activeStartDate">开始时间</label>
-                    <input type="text" id="activeStartDate" readonly placeholder="请选择" v-model="activeStartDate" @click="openPicker('start')" />
-                    <i class="iconfont">&#xe744;</i>
-                </div>
+        </div>
+        <div class="activityt_date">
+            <div class="activityt_date_wrapper border_none">
+                <label for="activeEndDate">结束时间</label>
+                <input type="text" id="activeEndDate" readonly placeholder="请选择" v-model="activeEndDate"  @click="openPicker('end')" />
+                <i class="iconfont">&#xe744;</i>
             </div>
-            <div class="activityt_date">
-                <div class="activityt_date_wrapper border_none">
-                    <label for="activeEndDate">结束时间</label>
-                    <input type="text" id="activeEndDate" readonly placeholder="请选择" v-model="activeEndDate"  @click="openPicker('end')" />
-                    <i class="iconfont">&#xe744;</i>
-                </div>
-            </div>
-            <div class="f5-2"></div>
-            <div class="activity_name">
-                <label for="activeLimit">每人限购</label>
-                <input type="number" id="activeLimit" placeholder="不填表示不限制" v-model="activeLimit" @blur="longInt" />
-            </div>
-            <div class="f5-2"></div>
-            <div class="activity_name">
-                特价商品({{ selProList.length }})件
-            </div>
-            <div class="activity_pro">
-                <div class="activity_pro_item" v-for="(item,index) in selProList" :key="index">
-                    <div class="activity_pro_item_top">
-                        <div class="activity_pro_item_top_left">
-                            <img :src="item.proImg" />
-                        </div>
-                        <div class="activity_pro_item_top_right">
-                            <p>{{ item.proName }}</p>
-                            <p>￥{{ item.proPrice }}</p>
-                        </div>
+        </div>
+        <div class="f5-2"></div>
+        <div class="activity_name">
+            <label for="activeLimit">每人限购</label>
+            <input type="number" id="activeLimit" placeholder="不填表示不限制" v-model="activeLimit" @blur="longInt" />
+        </div>
+        <div class="f5-2"></div>
+        <div class="activity_name">
+            特价商品({{ selProList.length }})件
+        </div>
+        <div class="activity_pro">
+            <div class="activity_pro_item" v-for="(item,index) in selProList" :key="index">
+                <div class="activity_pro_item_top">
+                    <div class="activity_pro_item_top_left">
+                        <img :src="item.proImg" />
                     </div>
-                    <div class="activity_pro_item_bottom">
-                        <div><label>折扣：</label><input type="number" v-model="item.discount" @change="getPriceOrDiscount(index,'discount')" /></div>
-                        <div><label>折扣价：</label><input type="number" v-model="item.discountPrice" @change="getPriceOrDiscount(index,'discountPrice')" /></div>
-                        <i class="iconfont" @click="deteledPro(index)">&#xe60d;</i>
+                    <div class="activity_pro_item_top_right">
+                        <p>{{ item.proName }}</p>
+                        <p>￥{{ item.proPrice }}</p>
                     </div>
                 </div>
+                <div class="activity_pro_item_bottom">
+                    <div><label>折扣：</label><input type="number" v-model="item.discount" @change="getPriceOrDiscount(index,'discount')" /></div>
+                    <div><label>折扣价：</label><input type="number" v-model="item.discountPrice" @change="getPriceOrDiscount(index,'discountPrice')" /></div>
+                    <i class="iconfont" @click="deteledPro(index)">&#xe60d;</i>
+                </div>
             </div>
-            <div class="f5-2"></div>
-            <div class="activity_name" @click="addProMethod">
-                <div class="plus_icon">+</div>
-                <div class="add_text">添加商品</div>
-            </div>
-            <mt-popup v-model="selectPro" position="bottom">
-                <div class="dialog_wrapper">
-                    <div class="dialog_search">
-                        <div class="search_wrapper">
-                            <input type="text" placeholder="搜索商品" v-model="searchKeyWord" />
-                            <i class="iconfont" @click="searchMethod">&#xe649;</i>
-                        </div>
+        </div>
+        <div class="f5-2"></div>
+        <div class="activity_name" @click="addProMethod">
+            <div class="plus_icon">+</div>
+            <div class="add_text">添加商品</div>
+        </div>
+        <mt-button type="primary" :disabled="isSave" @click.native="saveActive">保存</mt-button>
+        <mt-popup v-model="selectPro" position="bottom">
+            <div class="dialog_wrapper">
+                <div class="dialog_search">
+                    <div class="search_wrapper">
+                        <input type="text" placeholder="搜索商品" v-model="searchKeyWord" />
+                        <i class="iconfont" @click="searchMethod">&#xe649;</i>
                     </div>
-                    <div class="dialig_list">
-                        <div class="dialig_list_wrapper">
-                            <div class="item" v-for="(item,index) in proList" :key="index" @click="item.checked = !item.checked" :class="{on: item.checked}">
-                                <div class="item_left">
-                                    <div class="checkedBox" :class="{on: item.checked}"></div>
-                                </div>
-                                <div class="item_center">
-                                    <img :src="item.proImg" />
-                                </div>
-                                <div class="item_right">
-                                    <p class="item_text">{{ item.proName }}</p>
-                                    <p class="item_price">￥ {{ item.proPrice }}</p>
-                                    <div class="item_bottom">
-                                        <div class="selled">
-                                            已售<span v-if="item.salesNum">{{ item.salesNum }}</span><span v-else> 0 </span>
-                                        </div>
-                                        <div class="totaled">
-                                            库存<span>{{ item.stockNum }}</span>
-                                        </div>
+                </div>
+                <div class="dialig_list">
+                    <div class="dialig_list_wrapper">
+                        <div class="item" v-for="(item,index) in proList" :key="index" @click="item.checked = !item.checked" :class="{on: item.checked}">
+                            <div class="item_left">
+                                <div class="checkedBox" :class="{on: item.checked}"></div>
+                            </div>
+                            <div class="item_center">
+                                <img :src="item.proImg" />
+                            </div>
+                            <div class="item_right">
+                                <p class="item_text">{{ item.proName }}</p>
+                                <p class="item_price">￥ {{ item.proPrice }}</p>
+                                <div class="item_bottom">
+                                    <div class="selled">
+                                        已售<span v-if="item.salesNum">{{ item.salesNum }}</span><span v-else> 0 </span>
+                                    </div>
+                                    <div class="totaled">
+                                        库存<span>{{ item.stockNum }}</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="select_wrapper">
-                        <div class="select_count">
-                            <div class="checkedAll" :class="{on: selectAll}" @click="checkedAllMethod"></div>
-                            <div class="checkedNum">已选<span>{{ selectNum }}</span>款</div>
-                        </div>
-                        <mt-button type="primary" :disabled="selDisable" @click.native="selProMethod">选好了</mt-button>
-                    </div>
                 </div>
-            </mt-popup>
-            <template>
-                <mt-datetime-picker ref="picker1" type="datetime" @confirm="handleConfirm1" :startDate="new Date()"></mt-datetime-picker>
-            </template>
-            <template>
-                <mt-datetime-picker ref="picker2" type="datetime" @confirm="handleConfirm2" :startDate="new Date()"></mt-datetime-picker>
-            </template>
-        </div>
-        <mt-button type="primary" :disabled="isSave" @click.native="saveActive">保存</mt-button>
+                <div class="select_wrapper">
+                    <div class="select_count">
+                        <div class="checkedAll" :class="{on: selectAll}" @click="checkedAllMethod"></div>
+                        <div class="checkedNum">已选<span>{{ selectNum }}</span>款</div>
+                    </div>
+                    <mt-button type="primary" :disabled="selDisable" @click.native="selProMethod">选好了</mt-button>
+                </div>
+            </div>
+        </mt-popup>
+        <template>
+            <mt-datetime-picker ref="picker1" type="datetime" @confirm="handleConfirm1" :startDate="new Date()"></mt-datetime-picker>
+        </template>
+        <template>
+            <mt-datetime-picker ref="picker2" type="datetime" @confirm="handleConfirm2" :startDate="new Date()"></mt-datetime-picker>
+        </template>
     </div>
 </template>
 

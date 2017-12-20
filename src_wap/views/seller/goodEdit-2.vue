@@ -268,6 +268,14 @@ import $api from 'api';
                 })
             },
             saveMethod(flag) {
+                let status = store.state.member.memberAccount.status;
+                if(status === 'FREEZE') {
+                    return this.$messageBox({
+                        title:'提示',
+                        message:`您的账号因违规操作而被冻结无法买买买~若有疑问，请联系客服400-996-3399`,
+                        confirmButtonText: '我知道了'
+                    })
+                }
                 this.disabledBol = true;
                 this.loading1 = true;
                 this.loading2 = true;
