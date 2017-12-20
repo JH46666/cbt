@@ -350,17 +350,15 @@
                 })
             } catch (error) {
                 // 获取搜索历史
-                if(this.id) {
-                    this.$api.post('/oteao/searchProductRecord/query',{
-                        pageSize: 10,
-                        'searchProductRecord.memberId': this.id,
-                        'searchProductRecord.sysId': 1,
-                        'searchProductRecord.device': 'WAP'
-                    },res => {
-                        res.data = res.data || [];
-                        this.history = res.data;
-                    },res =>{})
-                }
+                this.$api.post('/oteao/searchProductRecord/query',{
+                    pageSize: 10,
+                    // 'searchProductRecord.memberId': this.id,
+                    'searchProductRecord.sysId': 1,
+                    'searchProductRecord.device': 'WAP'
+                },res => {
+                    res.data = res.data || [];
+                    this.history = res.data;
+                },res =>{})
             }
         },
         // 进来先判断登陆与否
