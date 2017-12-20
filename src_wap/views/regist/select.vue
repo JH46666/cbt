@@ -19,6 +19,9 @@
                 <div class="select_item_content" id="1">
                     <div class="mumber_type" v-for="(item,index) in registType" :key="index" :class="{on: index === registClass}" @click="selectRegistType(index)">{{ item }}</div>
                 </div>
+                <!-- <div class="select_item_content">
+                    <input type="text" readonly v-model="loginNumber" />
+                </div> -->
             </div>
         </div>
         <div class="f5_2"></div>
@@ -296,7 +299,7 @@ export default {
                 this.$api.post('/oteao/file/getSignature',data,res => {
                     resolve(res);
                 },res=>{
-                    return Toast({
+                    return this.$toast({
                         message: res.errorMsg,
                         iconClass: 'icon icon-fail'
                     });
@@ -370,6 +373,21 @@ export default {
                 this.postMember();
             })
         },
+        // postApi(data) {
+        //     return new Promise((resolve,reject) => {
+        //         this.$api.post('/oteao/file/getSignature',data,res => {
+        //             return Toast({
+        //                 message: '信息资料已提交，待审核',
+        //                 iconClass: 'icon icon-success'
+        //             });
+        //         },res=>{
+        //             return Toast({
+        //                 message: res.errorMsg,
+        //                 iconClass: 'icon icon-fail'
+        //             });
+        //         })
+        //     })
+        // },
         postMember() {
             let data = {};
             if(this.registClass === 0){
@@ -387,12 +405,15 @@ export default {
                     "provinceName": this.addressObj.provinceName
                 }
                 this.$api.post('/oteao/login/fillOrgInfo',JSON.stringify(data),res => {
-                    return Toast({
+                    this.$toast({
                         message: '信息资料已提交，待审核',
                         iconClass: 'icon icon-success'
                     });
+                    return this.$router.push({
+                        name: '茶帮通注册3'
+                    })
                 },res=>{
-                    return Toast({
+                    return this.$toast({
                         message: res.errorMsg,
                         iconClass: 'icon icon-fail'
                     });
@@ -436,12 +457,15 @@ export default {
                     }
                 }
                 this.$api.post('/oteao/login/fillShop',JSON.stringify(data),res => {
-                    return Toast({
+                    this.$toast({
                         message: '信息资料已提交，待审核',
                         iconClass: 'icon icon-success'
                     });
+                    return this.$router.push({
+                        name: '茶帮通注册3'
+                    })
                 },res=>{
-                    return Toast({
+                    return this.$toast({
                         message: res.errorMsg,
                         iconClass: 'icon icon-fail'
                     });
