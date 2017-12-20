@@ -13,7 +13,7 @@
                     <i class="iconfont">&#xe649;</i>
                 </a>
             </div>
-            <div class="cancel" @click="clearTxt">取消</div>
+            <div class="cancel" @click="cancelText">取消</div>
         </div>
         <!-- tab按钮 -->
         <div class="tab-btn-wrapper" ref="tabs">
@@ -51,7 +51,7 @@
         </div>
         <!-- 商品 -->
         <div class="tab-content-wrapper">
-            <div v-show="tabId == 'yes'" class="rack-up">
+            <div v-show="tabId == 'yes'" class="rack-up" v-infinite-scroll="loadMore1" :infinite-scroll-disabled="noInfinity1" infinite-scroll-distance="10">
                 <div class="good-item" v-if="onShelf.listData.length>0" v-for="(item,index) in onShelf.listData" :key="index">
                     <!-- 头部 caption -->
                     <div class="item-caption flex">
@@ -81,17 +81,22 @@
                         <a href="javascript:void(0);" class="flex-1 algin_c" @click="stateMethod(item.proExtId,'down')"><i class="iconfont">&#xe683;</i>下架</a>
                     </div>
                 </div>
-                <div class="get_more" @click="getMore('up')" v-if="onShelf.listData.length < onShelf.totalPage">
-                    点击加载更多~
+                <div class="goods-loading" v-if="!noInfinity1">
+                    <mt-spinner type="fading-circle" color="#f08200"></mt-spinner>
+                    <span class="loading-text">正在努力加载中~</span>
                 </div>
-                <div v-if="onShelf.listData.length==0">
+                <div class="no-more" v-if="onShelf.listData.length == onShelf.totalPage && onShelf.listData.length != 0">没有更多了呦~</div>
+                <!-- <div class="get_more" @click="getMore('up')" v-if="onShelf.listData.length < onShelf.totalPage">
+                    点击加载更多~
+                </div> -->
+                <div v-if="onShelf.totalPage==0">
                     <div class="no-item">
                         <img src="../../assets/images/wusousoushuju.jpg" alt="">
-                        <p>暂无已上架的商品~</p>
+                        <p>暂无已上架商品~</p>
                     </div>
                 </div>
             </div>
-            <div v-show="tabId == 'no'" class="no-shelves">
+            <div v-show="tabId == 'no'" class="no-shelves" v-infinite-scroll="loadMore2" :infinite-scroll-disabled="noInfinity2" infinite-scroll-distance="10">
                 <div class="good-item" v-for="(item,index) in offShelf.listData" v-if="offShelf.listData.length>0" :key="index">
                     <!-- 头部 caption -->
                     <div class="item-caption flex">
@@ -122,13 +127,18 @@
                         <a href="javascript:void(0);" class="flex-1 algin_c" @click="stateMethod(item.proExtId,'up')"><i class="iconfont">&#xe680;</i>上架</a>
                     </div>
                 </div>
-                <div class="get_more" @click="getMore('down')" v-if="offShelf.listData.length < offShelf.totalPage">
-                    点击加载更多~
+                <div class="goods-loading" v-if="!noInfinity2">
+                    <mt-spinner type="fading-circle" color="#f08200"></mt-spinner>
+                    <span class="loading-text">正在努力加载中~</span>
                 </div>
-                <div v-if="offShelf.listData.length==0">
+                <div class="no-more" v-if="offShelf.listData.length == offShelf.totalPage && offShelf.listData.length != 0">没有更多了呦~</div>
+                <!-- <div class="get_more" @click="getMore('down')" v-if="offShelf.listData.length < offShelf.totalPage">
+                    点击加载更多~
+                </div> -->
+                <div v-if="offShelf.totalPage==0">
                     <div class="no-item">
                         <img src="../../assets/images/wusousoushuju.jpg" alt="">
-                        <p>暂无未下架的商品~</p>
+                        <p>暂无未下架商品~</p>
                     </div>
                 </div>
             </div>
@@ -202,6 +212,8 @@ import $api from 'api';
                 },
                 selectText: '上架时间',
                 flag: false,
+                noInfinity1: false,
+                noInfinity2: false,
             }
         },
         created(){
@@ -274,6 +286,39 @@ import $api from 'api';
             }
         },
         methods:{
+            loadMore1() {
+                console.log(!this.noInfinity1);
+                try {
+                    if(this.onShelf.listData.length >= this.onShelf.totalPage) return this.noInfinity1 = true;
+                    this.onShelf.currentPage++;
+                    this.getList(this.onShelf.orderBy,this.onShelf.sorts,this.onShelf.currentPage,'ON_SHELF').then((res) =>{
+                        let timeData = res.data;
+                        for(let obj of timeData){
+                            this.$set(obj,'checked',false)
+                        }
+                        this.onShelf.listData = this.onShelf.listData.concat(timeData);
+                        this.noInfinity1 = false;
+                    })
+                } catch (e) {
+
+                }
+            },
+            loadMore2() {
+                try {
+                    if(this.offShelf.listData.length >= this.offShelf.totalPage) return this.noInfinity1 = true;
+                    this.offShelf.currentPage++;
+                    this.getList(this.offShelf.orderBy,this.offShelf.sorts,this.offShelf.currentPage,'OFF_SHELF').then((res) =>{
+                        let timeData = res.data;
+                        for(let obj of timeData){
+                            this.$set(obj,'checked',false)
+                        }
+                        this.offShelf.listData = this.offShelf.listData.concat(timeData);
+                        this.noInfinity1 = false;
+                    })
+                } catch (e) {
+
+                }
+            },
             resMethod(num) {
                 this.descFlag = !this.descFlag;
                 if(this.descFlag){
@@ -333,12 +378,28 @@ import $api from 'api';
                 })
             },
             goCreate() {
+                let status = store.state.member.memberAccount.status;
+                if(status === 'FREEZE') {
+                    return this.$messageBox({
+                        title:'提示',
+                        message:`您的账号因违规操作而被冻结无法买买买~若有疑问，请联系客服400-996-3399`,
+                        confirmButtonText: '我知道了'
+                    })
+                }
                 this.$store.commit('SET_RESIZE');
                 this.$router.push({
                     name: '新品上架-1'
                 })
             },
             goBrect() {
+                let status = store.state.member.memberAccount.status;
+                if(status === 'FREEZE') {
+                    return this.$messageBox({
+                        title:'提示',
+                        message:`您的账号因违规操作而被冻结无法买买买~若有疑问，请联系客服400-996-3399`,
+                        confirmButtonText: '我知道了'
+                    })
+                }
                 if(this.tabId === 'yes'){
                     this.$router.push({
                         name: '批量处理',
@@ -442,6 +503,14 @@ import $api from 'api';
                 })
             },
             stateMethod(id,type) {
+                let status = store.state.member.memberAccount.status;
+                if(status === 'FREEZE') {
+                    return this.$messageBox({
+                        title:'提示',
+                        message:`您的账号因违规操作而被冻结无法买买买~若有疑问，请联系客服400-996-3399`,
+                        confirmButtonText: '我知道了'
+                    })
+                }
                 let data = {
                     proExtIds: id,
                     sysId: 1,
@@ -527,6 +596,10 @@ import $api from 'api';
             //清空搜索内容
             clearTxt(){
                 this.searchTxt = "";
+            },
+            cancelText() {
+                this.searchTxt = "";
+                this.searchMethod();
             },
             //保留两位小数
             toFixed(num) {

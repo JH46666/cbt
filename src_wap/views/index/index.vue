@@ -1,6 +1,6 @@
 <template>
     <div>这是首页
-        <cbt-date></cbt-date>
+        <!-- <cbt-date></cbt-date> -->
     </div>
 </template>
 
@@ -18,7 +18,7 @@ import cbtDate from '../../components/datePicker.vue'
         created(){
             // 设置title
             this.$store.commit('SET_TITLE','茶帮通商城');
-            
+
             if(location.href.indexOf('?wxpaycallback=') !== -1 ){
                 // 表示微信支付回调
                 // let src = location.href.split('?')[1].split('#')[0].split('=')[1];

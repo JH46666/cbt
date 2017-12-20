@@ -74,11 +74,11 @@
                                 <p class="item_text">{{ item.proName }}</p>
                                 <p class="item_price">￥ {{ item.proPrice }}</p>
                                 <div class="item_bottom">
-                                    <div class="totaled">
-                                        库存<span>{{ item.stockNum }}</span>
-                                    </div>
                                     <div class="selled">
                                         已售<span v-if="item.salesNum">{{ item.salesNum }}</span><span v-else> 0 </span>
+                                    </div>
+                                    <div class="totaled">
+                                        库存<span>{{ item.stockNum }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -95,10 +95,10 @@
             </div>
         </mt-popup>
         <template>
-            <mt-datetime-picker ref="picker1" type="datetime" @confirm="handleConfirm1" :startDate="new Date('2017/01/01 00:00:00')"></mt-datetime-picker>
+            <mt-datetime-picker ref="picker1" type="datetime" @confirm="handleConfirm1" :startDate="new Date()"></mt-datetime-picker>
         </template>
         <template>
-            <mt-datetime-picker ref="picker2" type="datetime" @confirm="handleConfirm2" :startDate="new Date('2017/01/01 00:00:00')"></mt-datetime-picker>
+            <mt-datetime-picker ref="picker2" type="datetime" @confirm="handleConfirm2" :startDate="new Date()"></mt-datetime-picker>
         </template>
     </div>
 </template>

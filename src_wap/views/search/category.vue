@@ -252,13 +252,11 @@
                 handler(newData,oldData){
                     let attrVal = '';
                     for(let attr in newData){
-                        attrVal = attr;
+                        if(newData[attr].propValId!='all'){
+                            return this.filterFlag = true;
+                        }
                     }
-                    if(newData[attrVal].propValId === 'all'){
-                        this.filterFlag = false;
-                    }else{
-                        this.filterFlag = true;
-                    }
+                    this.filterFlag = false;
                 },
                 deep: true
             }

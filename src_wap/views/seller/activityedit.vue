@@ -74,11 +74,11 @@
                                 <p class="item_text">{{ item.proName }}</p>
                                 <p class="item_price">￥ {{ item.proPrice }}</p>
                                 <div class="item_bottom">
-                                    <div class="totaled">
-                                        库存<span>{{ item.stockNum }}</span>
-                                    </div>
                                     <div class="selled">
                                         已售<span v-if="item.salesNum">{{ item.salesNum }}</span><span v-else> 0 </span>
+                                    </div>
+                                    <div class="totaled">
+                                        库存<span>{{ item.stockNum }}</span>
                                     </div>
                                 </div>
                             </div>
