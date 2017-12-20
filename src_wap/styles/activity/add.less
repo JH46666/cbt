@@ -2,9 +2,16 @@
 .activity{
     .ipScroll;
     .bg(#fff);
-    padding-bottom: .98rem;
+    .flex;
+    .flex-dir;
+    overflow: hidden;
+    // padding-bottom: .98rem;
+    .activity_wrapper{
+        .flex-1;
+        overflow-y: auto;
+    }
     &.edit{
-        padding-bottom: .98rem;
+        // padding-bottom: .98rem;
     }
     .f5-2{
         width: 100%;
@@ -160,10 +167,10 @@
         }
     }
     .mint-button--primary{
-        .position(f);
+        // .position(f);
         width: 100%;
-        left: 0;
-        bottom: 0;
+        // left: 0;
+        // bottom: 0;
         .bg(@mainCol);
         .reduis(0);
         z-index: 6;
@@ -187,13 +194,15 @@
            width: 100%;
            height: 9rem;
            .bg(#fff);
+           .flex;
+           .flex-dir;
            .dialog_search{
-               .position(a);
-               top: 0;
-               left: 0;
+               // .position(a);
+               // top: 0;
+               // left: 0;
                height: .92rem;
                width: 100%;
-               z-index: 8;
+               // z-index: 8;
                .flex;
                .justify-content;
                .flex-dir(row);
@@ -227,7 +236,8 @@
                width: 100%;
                .position(r);
                height: 100%;
-               padding: .92rem 0 .98rem;
+               .flex-1;
+               // padding: .92rem 0 .98rem;
                .bg(#fff);
                overflow: hidden;
                .dialig_list_wrapper{
@@ -315,9 +325,9 @@
                }
            }
            .select_wrapper{
-               .position(f);
-               bottom: 0;
-               left: 0;
+               // .position(f);
+               // bottom: 0;
+               // left: 0;
                width: 100%;
                height: .98rem;
                padding-left: .3rem;
