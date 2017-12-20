@@ -264,15 +264,19 @@
                         "sort": query.c,
                         "sysId": 1
                     }
-                    // 如果有登陆，储存搜索历史
-                    if(this.id) {
-                        this.$api.post('/oteao/searchProductRecord/insert',{
-                            'searchProductRecord.memberId': this.id,
-                            'searchProductRecord.sysId': 1,
-                            'searchProductRecord.searchContent': query.q,
-                            'searchProductRecord.device': 'WAP'
-                        },res => {})
+
+
+                    // 储存搜索历史
+                    let historyData = {
+                        // 'searchProductRecord.memberId': this.id || '',
+                        'searchProductRecord.sysId': 1,
+                        'searchProductRecord.searchContent': query.q,
+                        'searchProductRecord.device': 'WAP'
                     }
+                    if(this.id) {
+                        historyData['searchProductRecord.memberId'] = this.id
+                    }
+                    this.$api.post('/oteao/searchProductRecord/insert',historyData,res => {})
 
 
 
