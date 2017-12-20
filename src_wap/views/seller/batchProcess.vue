@@ -2,13 +2,14 @@
     <div class="goods_manage_wrapper batch_wrapper">
         <!-- 商品 -->
         <div class="tab-content-wrapper">
-            <div class="no-shelves">
+            <div class="no-shelves" v-infinite-scroll="loadMore" infinite-scroll-disabled="true" infinite-scroll-distance="10">
                 <div class="good-item" v-for="item in proList">
                     <!-- 头部 caption -->
                     <div class="item-caption flex">
                         <div class="cap-l flex flex-1 align_items_c">
                             <label class="check-cir" :class="{'checked':item.checked}" @click="item.checked = !item.checked"></label>
-                            <span>上架 {{item.createTime}}</span>
+                            <span v-if="state === 'ON_SHELF'">创建 {{item.createTime}}</span>
+                            <span v-if="state === 'OFF_SHELF'">上架 {{item.createTime}}</span>
                         </div>
                         <div class="cap-r algin_r">
                             <span class="saled">已售<span class="number" v-if="item.salesNum"> {{item.salesNum}} </span><span class="number" v-else> 0 </span></span>
@@ -27,9 +28,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="get_more" @click="getMore" v-if="proList.length < totalPage">
-                    点击加载更多~
+                <div class="goods-loading" v-if="proList.length < totalPage">
+                    <mt-spinner type="fading-circle" color="#f08200"></mt-spinner>
+                    <span class="loading-text">正在努力加载中~</span>
                 </div>
+                <div class="no-more" v-if="proList.length == totalPage">没有更多了呦~</div>
+                <!-- <div class="get_more" @click="getMore" v-if="proList.length < totalPage">
+                    点击加载更多~
+                </div> -->
             </div>
         </div>
         <!-- 底部fixed栏 -->
@@ -54,6 +60,7 @@ import { Toast } from 'mint-ui';
                 totalPage: 0,
                 keyWord: '',
                 state: '',
+                noInfinity: false,
             }
         },
         computed:{
@@ -87,29 +94,36 @@ import { Toast } from 'mint-ui';
         created() {
             // 设置title
             this.$store.commit('SET_TITLE','批量处理');
-            
             this.state = this.$route.query.state;
             this.keyWord = this.$route.query.keyWord;
-            if(this.state === 'ON_SHELF'){
-                this.getList(this.currentPage,this.state).then((res) => {
-                    this.proList = res.data;
-                    this.totalPage = res.total_record;
-                    for(let obj of this.proList){
-                        this.$set(obj,'checked',false);
-                    }
-                })
-            }else{
-                this.getList(this.currentPage,this.state).then((res) => {
-                    this.proList = res.data;
-                    this.totalPage = res.total_record;
-                    for(let obj of this.proList){
-                        this.$set(obj,'checked',false);
-                    }
-                })
-            }
-
+            this.getList(this.currentPage,this.state).then((res) => {
+                this.proList = res.data;
+                this.totalPage = res.total_record;
+                for(let obj of this.proList){
+                    this.$set(obj,'checked',false);
+                }
+            })
         },
         methods:{
+            loadMore() {
+                try {
+                    if(this.proList.length < this.totalPage){
+                        this.currentPage++;
+                        this.getList(this.currentPage,this.state).then((res) =>{
+                            let timeData = res.data;
+                            for(let obj of timeData){
+                                this.$set(obj,'checked',false);
+                            }
+                            this.proList = this.proList.concat(timeData);
+                            if(this.proList.length === this.totalPage){
+                                this.currentPage--;
+                            }
+                        })
+                    }
+                } catch (e) {
+
+                }
+            },
             downMethod() {
                 let checkedId = [];
                 for(let obj of this.proList){
