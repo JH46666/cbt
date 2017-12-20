@@ -161,6 +161,9 @@
             showPopup(){
                 if(this.getFlag && this.phoneFlag){
                     this.$api.get('/oteao/memberAccount/searchIsExist',{memberAccount:this.regInfo.phone},res=>{
+                        if(res.data.returnResult) {
+                            return Toast('您输入的手机号已注册，请重新输入');
+                        }
                         this.verifyFlag = true;
                     },res=>{
                         Toast('您输入的手机号已注册，请重新输入');
