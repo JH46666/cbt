@@ -132,7 +132,7 @@
                 propertiesValList:{},  //筛选属性值
                 resultData:[],         //查询结果
                 pageNumber: 1,
-                pageSize: 5,
+                pageSize: 20,
                 totalSize: 0,
                 sortDesc: true,      //排序
                 sort: 4,
