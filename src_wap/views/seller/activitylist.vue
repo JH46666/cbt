@@ -9,11 +9,12 @@
         <mt-tab-container v-model="selected">
             <mt-tab-container-item :id="selected" class="on">
                 <div class="mt_cell_wrapper" v-infinite-scroll="loadMore" :infinite-scroll-disabled="noInfinity" infinite-scroll-distance="60">
-                    <template v-if="actiiveList.length == 0">
+                    <template v-if="orderNum == 0">
                         <div class="f5-2"></div>
                         <div class="active_empty">
                             <img src="../../assets/images/empty_activily.png" />
-                            <span>没有任何特价活动哟~</span>
+                            <span  v-if="selected==0">没有任何特价活动哟~</span>
+                            <span  v-else>暂时没有该状态的特价活动哟~</span>
                         </div>
                     </template>
                     <template v-else>
@@ -52,7 +53,7 @@
                         <mt-spinner type="fading-circle" color="#f08200"></mt-spinner>
                         <span class="loading-text">正在努力加载中~</span>
                     </div>
-                    <div class="no-more" v-if="actiiveList.length == orderNum">没有更多了呦~</div>
+                    <div class="no-more" v-if="actiiveList.length == orderNum && actiiveList.length != 0">没有更多了呦~</div>
                 </div>
                 <div class="add_activily" @click="goAdd">
                     <div class="plus_icon">+</div>

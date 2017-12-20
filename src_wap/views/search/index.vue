@@ -49,13 +49,13 @@
         </section>
         <!-- 商品列表 -->
         <section class="goods-list" v-if="!noSearch && list.length">
-            <div 
+            <div
                 v-infinite-scroll="loadMore"
                 infinite-scroll-disabled="true"
                 infinite-scroll-distance="10"
             >
-                <goods-item 
-                v-for="(item,index) in list" 
+                <goods-item
+                v-for="(item,index) in list"
                 :key="index"
                 :mainTit="item.proTitle"
                 :subTit="item.subTitle"
@@ -156,8 +156,8 @@
                             }
                         }
                     },
-                ],   
-                noSearch: true,         // 未搜索  
+                ],
+                noSearch: true,         // 未搜索
                 list: [],               // 搜索结果
                 total: 0,               // 总条目
                 pageNum: 1,             // 页码
@@ -337,7 +337,7 @@
         created() {
             // 设置title
             this.$store.commit('SET_TITLE','搜索');
-                
+
             // 根据地址栏获取条件
             try {
                 this.handle().then(res => {

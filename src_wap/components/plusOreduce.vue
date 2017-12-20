@@ -1,7 +1,7 @@
 <template>
     <div class="plusOreduce">
         <span class="reduce btn" @click="reduceMethod">-</span>
-        <input v-model.number="num" type="tel" class="countNum">
+        <input v-model.number="num" type="number" class="countNum" @blur="limit">
         <span class="plus btn" @click="plusMethod">+</span>
     </div>
 </template>
@@ -40,13 +40,11 @@ export default {
                 this.num = 1;
             }
             this.$emit('countNum',this.num);
-        }
-    },
-    watch: {
-        num(val) {
-            if(val!=''){
+        },
+        limit() {
+            if(this.num!=''){
                 let reg = /^[1-9]\d*$/;
-                if(!reg.test(val)){
+                if(!reg.test(this.num)){
                     Toast({
                         message: '请输入大于等于1的正整数',
                         position: 'center',
@@ -54,7 +52,7 @@ export default {
                     });
                     this.num = Math.floor(this.num);
                 }else{
-                    if(parseInt(val) > this.maxNum){
+                    if(parseInt(this.num) > this.maxNum){
                         Toast({
                             message: '您需购买的数量超出商品的现有库存！',
                             position: 'center',
