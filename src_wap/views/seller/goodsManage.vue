@@ -433,6 +433,14 @@ import $api from 'api';
                 }
             },
             plusMethod() {
+                let status = store.state.member.memberAccount.status;
+                if(status === 'FREEZE') {
+                    return this.$messageBox({
+                        title:'提示',
+                        message:`您的账号因违规操作而被冻结无法买买买~若有疑问，请联系客服400-996-3399`,
+                        confirmButtonText: '我知道了'
+                    })
+                }
                 let checkedId = [];
                 for(let obj of this.offShelf.listData){
                     if(obj.checked){
@@ -453,7 +461,11 @@ import $api from 'api';
                         window.location.reload();
                     },500)
                 },res=>{
-                    return MessageBox('提示', res.errorMsg);
+                    return this.$messageBox({
+                        title:'提示',
+                        message: res.errorMsg,
+                        confirmButtonText: '我知道了'
+                    })
                 })
             },
             getMore(type) {

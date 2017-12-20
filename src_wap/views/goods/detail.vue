@@ -59,7 +59,7 @@
                     </mt-swipe-item>
                 </mt-swipe>
                 <!--   -->
-                <div class="detail_special" v-if="detailData.productExtInfo.isSales && detailData.productExtInfo.state === 'ON_SHELF' && loginId && state === 'status'">
+                <div class="detail_special" v-if="detailData.productExtInfo.isSales && detailData.productExtInfo.state === 'ON_SHELF' && loginId && state === 'ACTIVE'">
                     <div class="detail_special_wrapper">
                         <div class="detail_special_price">
                             <span>特价</span>
@@ -86,17 +86,17 @@
                 <div class="detail_describe_wrapper">
                     <div class="detail_describe_text">
                         <p class="detail_text">{{ detailData.productInfo.proName }}</p>
-                        <template  v-if="detailData.productExtInfo.state === 'OFF_SHELF' && loginId && state === 'status'">
+                        <template  v-if="detailData.productExtInfo.state === 'OFF_SHELF' && loginId && state === 'ACTIVE'">
                             <div class="off_shelf_tips">
                                 暂无报价
                             </div>
                         </template>
-                        <template  v-if="loginId && state === 'status'">
+                        <template  v-if="loginId && state === 'ACTIVE'">
                             <div class="off_shelf_tips">
                                 询价
                             </div>
                         </template>
-                        <template v-if="detailData.productPrice.length != 0 && detailData.productExtInfo.state === 'ON_SHELF' && loginId && state === 'status'">
+                        <template v-if="detailData.productPrice.length != 0 && detailData.productExtInfo.state === 'ON_SHELF' && loginId && state === 'ACTIVE'">
                             <p class="detail_now_price" v-if="!detailData.productExtInfo.isSales">￥{{ detailData.productPrice[0].price | toFix2 }}</p>
                             <p class="detail_suggest_price">建议零售价：￥{{ detailData.productPrice[1].price | toFix2 }}</p>
                         </template>
