@@ -152,11 +152,14 @@
                     <span v-if="orderDetailData.redPacketSum === 0">￥0</span>
                     <span v-else>-￥{{ orderDetailData.redPacketSum | toFix2 }}</span>
                 </div>
-                <div class="price_detail_item">
-                    <span>积分抵扣</span>
-                    <span v-if="orderDetailData.useJfSum === 0">0积分</span>
-                    <span v-else>-{{ orderDetailData.useJfSum }}积分</span>
+                <div class="price_detail_item" v-if="orderDetailData.fullCut.length>0">
+                    <span>{{ orderDetailData.fullCut[0].showName }}</span>
+                    <span>-￥{{ orderDetailData.fullCut[0].giveNum | toFix2 }}</span>
                 </div>
+                <!-- <div class="price_detail_item" v-if="orderDetailData.useJfSum != 0">
+                    <span>积分抵扣</span>
+                    <span>-{{ orderDetailData.useJfSum }}积分</span>
+                </div> -->
                 <div class="price_detail_item">
                     <span>运费</span>
                     <span>{{ orderDetailData.freightSum | toFix2 }}</span>
@@ -169,7 +172,7 @@
             <div class="order_price_total">
                 <div class="price_total_item">
                     <span>返积分：{{  orderDetailData.giveJfSum }}分</span>
-                    <span>余额支付：￥{{ orderDetailData.useCashSum | toFix2 }}</span>
+                    <span>余额支付：￥{{ orderDetailData.useStoreValue | toFix2 }}</span>
                 </div>
                 <div class="price_total_item">
                     <span>{{  orderDetailData.orderSum | toFix2 }}</span>实际付款：
@@ -235,7 +238,9 @@ export default {
             pullOrDownShop: false,
             isThird: true,
             titleText: '订单详情',
-            orderDetailData: {},
+            orderDetailData: {
+                fullCut: []
+            },
             closeUp: false,
             cancelList: ['我不想买了','拍错商品，重新下单','其他原因'],
             cancelClass: null,
