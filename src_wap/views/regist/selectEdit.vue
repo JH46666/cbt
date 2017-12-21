@@ -215,14 +215,13 @@ export default {
             ],
             exampleFlag: false,
             addressShowOrHide: false,
-            addressObj: {},
+            addressObj: {
+                areaCode: '110101',
+                cityCode: '110100',
+                provinceCode: '110000',
+            },
             region: 'oss-cn-hangzhou',
             bucket: 'imgcbt',
-            addreeObj: {
-                pro: '110000',
-                city: '110100',
-                area: '110101'
-            },
             flag: true,
             onlyName: '成为会员',
         }
@@ -231,6 +230,52 @@ export default {
         // 设置title
         this.$store.commit('SET_TITLE','茶帮通注册');
         this.loginNumber = store.state.member.member.memberAccount;
+        this.formData.shopName = store.state.member.orgDTO.orgName;
+        this.formData.shopTel = store.state.member.orgDTO.contactPerson;
+        this.formData.shopAddress = store.state.member.orgDTO.address;
+        this.formData.shopArea = `${store.state.member.orgDTO.provinceName}${store.state.member.orgDTO.cityName}${store.state.member.orgDTO.countyName}`;
+        this.addressObj.provinceCode = store.state.member.orgDTO.provinceID;
+        this.addressObj.cityCode = store.state.member.orgDTO.cityID;
+        this.addressObj.areaCode = store.state.member.orgDTO.countyID;
+        if(this.$route.query.edit === 'seller'){
+            this.getData(store.state.member.orgDTO.orgID);
+            if(store.state.member.shop.shopStatus == 1){
+                this.flag = false;
+                this.onlyName = '成为卖家';
+            }else{
+                this.registClass = 1;
+            }
+            this.sellerClass = store.state.member.shop.shopType - 1;
+            if(store.state.member.shop.shopType == 1){
+                this.licenseImg = [{imgUrl: store.state.member.shop.businessLicensePic}];
+                this.productImg = [{imgUrl: store.state.member.shop.produceLicensePic}];
+                this.licenseImgUrl = [{imgUrl: store.state.member.shop.businessLicensePic}];
+                this.productImgUrl = [{imgUrl: store.state.member.shop.produceLicensePic}];
+            }
+            if(store.state.member.shop.shopType == 2){
+                this.licenseImg = [{imgUrl: store.state.member.shop.businessLicensePic}];
+                this.productImg = [{imgUrl: store.state.member.shop.qsLicensePic}];
+                this.licenseImgUrl = [{imgUrl: store.state.member.shop.businessLicensePic}];
+                this.productImgUrl = [{imgUrl: store.state.member.shop.qsLicensePic}];
+            }
+            if(store.state.member.shop.shopType == 3){
+                this.licenseImg = [{imgUrl: store.state.member.shop.businessLicensePic}];
+                this.licenseImgUrl = [{imgUrl: store.state.member.shop.businessLicensePic}];
+            }
+            if(store.state.member.shop.shopType == 4){
+                this.licenseImg = [{imgUrl: store.state.member.shop.businessLicensePic}];
+                this.licenseImgUrl = [{imgUrl: store.state.member.shop.businessLicensePic}];
+            }
+        }else{
+            if(store.state.member.memberAccount.status === 'WAIT_AUDIT'){
+                this.flag = false;
+                this.onlyName = '成为会员';
+            }else{
+                this.registClass = 0;
+            }
+            this.shopImg = [{imgUrl: store.state.member.orgDTO.facadePics}];
+            this.shopImgUrl = [store.state.member.orgDTO.facadePics];
+        }
     },
     computed: {
         iSubmit() {
@@ -249,16 +294,24 @@ export default {
             }
         },
         provinceNum() {
-            return this.addreeObj.pro;
+            return this.addressObj.provinceCode;
         },
         cityNum() {
-            return this.addreeObj.city;
+            return this.addressObj.cityCode;
         },
         areaNum() {
-            return this.addreeObj.area;
+            return this.addressObj.areaCode;
         }
     },
     methods: {
+        getData(pay) {
+            this.$api.post('/orgShop/getOrgShop',{
+                orgId: pay,
+                sysId: 1
+            },res => {
+                this.formData.shopPayNumber = res.data.alipayAccount;
+            })
+        },
         getAddress(obj) {
             this.formData.shopArea = obj.address;
             this.addressObj = obj;
@@ -379,25 +432,26 @@ export default {
             })
         },
         submitMethod() {
-            this.doUpload().then(() => {
+            if(this.shopImgFile.length==0 && this.licenseImgFile.length==0 && this.productImgFile.length==0){
                 this.postMember();
-            })
+            }else{
+                this.doUpload().then(() => {
+                    this.postMember();
+                })
+            }
         },
         postMember() {
             let data = {};
             if(this.registClass === 0){
                 data = {
                     "areaCode": this.addressObj.areaCode,
-                    "areaName": this.addressObj.areaName,
                     "cityCode": this.addressObj.cityCode,
-                    "cityName": this.addressObj.cityName,
                     "contactor": this.formData.shopTel,
                     "detailAddress": this.formData.shopAddress,
                     "device": 'WAP',
                     "facadePics": this.shopImgUrl[0],
                     "orgName": this.formData.shopName,
                     "provinceCode": this.addressObj.provinceCode,
-                    "provinceName": this.addressObj.provinceName
                 }
                 this.$api.post('/oteao/login/fillOrgInfo',JSON.stringify(data),res => {
                     this.$toast({
@@ -417,15 +471,12 @@ export default {
                 data = {
                     'alipayAccount': this.formData.shopPayNumber,
                     "areaCode": this.addressObj.areaCode,
-                    "areaName": this.addressObj.areaName,
                     "cityCode": this.addressObj.cityCode,
-                    "cityName": this.addressObj.cityName,
                     "contactor": this.formData.shopTel,
                     "detailAddress": this.formData.shopAddress,
                     "device": 'WAP',
                     "orgName": this.formData.shopName,
                     "provinceCode": this.addressObj.provinceCode,
-                    "provinceName": this.addressObj.provinceName,
                     "shop": {}
                 }
                 if(this.sellerClass === 0){
