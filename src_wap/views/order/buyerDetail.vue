@@ -68,7 +68,7 @@
                             <span>{{ order.subOrderNo }}</span>
                         </div>
                         <div class="list_wrapper">
-                            <div class="list_item" v-for="(item,index) in order.products" :key="index">
+                            <div class="list_item" v-for="(item,index) in order.products" :key="index"  @click="$router.push({name: '商品详情',query: {proSku: item.proSku}})">
                                 <div class="list_img">
                                     <img :src="item.imageUrl" />
                                 </div>
@@ -110,7 +110,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="order_head"  v-if="orderDetailData.expressDeliveryName != '客户自提'">
+                        <div class="order_head"  v-if="orderDetailData.expressDeliveryCode != 'get_self'">
                             <div class="order_express">
                                 <img src="../../assets/images/sfkd.png" v-if="orderDetailData.expressDeliveryCode == 'ship_sf'" />
                                 <img src="../../assets/images/stkd.png" v-if="orderDetailData.expressDeliveryCode == 'ship_sto'" />
@@ -121,7 +121,7 @@
                     </div>
                 </template>
             </div>
-            <div class="order_address" v-if="orderDetailData.expressDeliveryName === '客户自提'" :class="{ 'on': !pullOrDownShop }">
+            <div class="order_address" v-if="orderDetailData.expressDeliveryCode === 'get_self'" :class="{ 'on': !pullOrDownShop }">
                 <div class="order_address_1">
                     <div class="order_address_num">
                         自提
