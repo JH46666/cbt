@@ -126,10 +126,11 @@ export default {
                     return window.location.reload();
                 },res=>{
                     this.cancelClass = null;
-                    return Toast({
+                    Toast({
                         message: res.errorMsg,
                         iconClass: 'icon icon-fail'
                     });
+                    return window.location.reload();
                 })
             },300)
         },
