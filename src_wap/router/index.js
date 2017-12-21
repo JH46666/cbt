@@ -165,6 +165,14 @@ const router = new Router({
 					meta: {
 						hideFooter: true
 					}
+				},
+				{
+					path: 'selecter',
+					name: '茶帮通注册5',
+					component: resolve => require(['@/views/regist/selectEdit.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
 				}
 			]
 		},

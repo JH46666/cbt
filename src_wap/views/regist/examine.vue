@@ -101,7 +101,7 @@
                     </div>
                 </div>
             </template>
-            <mt-button size="large"  @click="$router.push({name: '茶帮通注册2',query: {edit: 'true'}})">修改资料</mt-button>
+            <mt-button size="large"  @click="goEdit">修改资料</mt-button>
             <div class="go_index"><a href="javascript:void(0);" @click="$router.push('/')">去首页</a></div>
         </div>
     </div>
@@ -116,6 +116,7 @@
                myData: {},
                imgFlag: 0,
                sellerType: ['茶厂','合作社','茶企','批发商'],
+               flag: '',
             }
         },
         computed: {
@@ -128,6 +129,14 @@
             })
         },
         methods: {
+            goEdit() {
+                this.$router.push({
+                    name: '茶帮通注册5',
+                    query: {
+                        edit: this.flag
+                    }
+                })
+            },
             // 获取数据
             getData() {
                 this.$api.post('/orgShop/getOrgShop',{
@@ -143,6 +152,7 @@
             this.$store.commit('SET_TITLE','茶帮通注册');
             // 拉取数据
             if(store.state.member.shop){
+                this.flag = 'seller';
                 this.getData();
                 if(store.state.member.shop.shopStatus == 1){
                     return this.imgFlag = 0;
@@ -152,6 +162,7 @@
                 }
                 return;
             }else{
+                this.flag = 'buyer';
                 if(store.state.member.memberAccount.status == 'WAIT_AUDIT'){
                     return this.imgFlag = 0;
                 }

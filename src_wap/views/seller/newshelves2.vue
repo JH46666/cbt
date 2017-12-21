@@ -205,7 +205,6 @@ import $api from 'api';
                     third: [],
                     four: []
                 },
-                path: 'test_path/',
                 flag: null,
                 sussTips: '成功上架！',
                 loading1: false,
@@ -234,9 +233,6 @@ import $api from 'api';
         created() {
             // 设置title
             this.$store.commit('SET_TITLE','新品上架');
-            if(process.env.NODE_ENV != 'development'){
-                this.path = 'online_img/';
-            }
         },
         methods:{
             random_string(len) {
@@ -309,7 +305,7 @@ import $api from 'api';
                             bucket: this.bucket
                         })
                         for(let i=0; i<this.resize.mainImgFile.length; i++){            // 主图
-                            let random_name =res.data.basePath + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.mainImgFile[i].name.split('.').pop()
+                            let random_name =res.data.basePath +'goods/' + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.mainImgFile[i].name.split('.').pop()
                             client.multipartUpload(random_name, this.resize.mainImgFile[i]).then((results) => {
                                 const url = '//img0.oteao.com/'+ results.name;
                                 this.urls.main.push(url);
@@ -321,7 +317,7 @@ import $api from 'api';
                             })
                         }
                         for(let i=0; i<this.resize.oneImgFile.length; i++){            // 1图
-                            let random_name = res.data.basePath + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.oneImgFile[i].name.split('.').pop()
+                            let random_name = res.data.basePath +'goods/' + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.oneImgFile[i].name.split('.').pop()
                             client.multipartUpload(random_name, this.resize.oneImgFile[i]).then((results) => {
                                 const url = '//img1.oteao.com/'+ results.name;
                                 this.urls.one.push(url);
@@ -333,7 +329,7 @@ import $api from 'api';
                             })
                         }
                         for(let i=0; i<this.resize.secondImgFile.length; i++){            // 2图
-                            let random_name = res.data.basePath + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.secondImgFile[i].name.split('.').pop()
+                            let random_name = res.data.basePath +'goods/' + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.secondImgFile[i].name.split('.').pop()
                             client.multipartUpload(random_name, this.resize.secondImgFile[i]).then((results) => {
                                 const url = '//img2.oteao.com/'+ results.name;
                                 this.urls.two.push(url);
@@ -345,7 +341,7 @@ import $api from 'api';
                             })
                         }
                         for(let i=0; i<this.resize.thirdImgFile.length; i++){            // 3图
-                            let random_name = res.data.basePath + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.thirdImgFile[i].name.split('.').pop()
+                            let random_name = res.data.basePath +'goods/' + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.thirdImgFile[i].name.split('.').pop()
                             client.multipartUpload(random_name, this.resize.thirdImgFile[i]).then((results) => {
                                 const url = '//img3.oteao.com/'+ results.name;
                                 this.urls.third.push(url);
@@ -357,7 +353,7 @@ import $api from 'api';
                             })
                         }
                         for(let i=0; i<this.resize.fourImgFile.length; i++){            // 4图
-                            let random_name = res.data.basePath + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.fourImgFile[i].name.split('.').pop()
+                            let random_name = res.data.basePath +'goods/' + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.fourImgFile[i].name.split('.').pop()
                             client.multipartUpload(random_name, this.resize.fourImgFile[i]).then((results) => {
                                 const url = '//img4.oteao.com/'+ results.name;
                                 this.urls.four.push(url);
