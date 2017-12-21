@@ -124,7 +124,11 @@
                     </template>
                     <div class="detail_describe_count">
                         <label class="label_text">采购量</label>
-                        <plusOreduce :maxNum="detailData.productExtInfo.stockNum" @countNum="goodsCounts"></plusOreduce>
+                        <div class="plusOreduce">
+                            <span class="reduce btn" @click="reduceMethod">-</span>
+                            <input v-model="goodsCount" type="number" class="countNum" @blur="limit">
+                            <span class="plus btn" @click="plusMethod">+</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -250,14 +254,14 @@
 </template>
 
 <script>
-import plusOreduce from '@/components/plusOreduce.vue'
+// import plusOreduce from '@/components/plusOreduce.vue'
 import { Toast,Indicator,MessageBox  } from 'mint-ui'
 import store from 'store';
 import { mapState } from 'vuex'
 export default {
-    components: {
-        plusOreduce
-    },
+    // components: {
+    //     plusOreduce
+    // },
     data() {
         return {
             selected: null,
@@ -304,6 +308,7 @@ export default {
             starNum: 0,
             loginId: null,
             state: '',
+            maxNum: 0,
         }
     },
     computed:{
@@ -322,6 +327,7 @@ export default {
         this.proSku = this.$route.query.proSku;
         this.getDetail().then((res) =>{
             this.detailData = res.data;
+            this.maxNum = this.detailData.productExtInfo.stockNum;
             this.shopTel = `tel://${res.data.orgShopCenterVo.businessTelephone}`;
             this.getAttrOrImg().then((res) => {
                 this.attrImgDetail = res.data;
@@ -336,6 +342,43 @@ export default {
         this.addLike();
     },
     methods: {
+        plusMethod() {
+            this.goodsCount++;
+            if(this.goodsCount > this.maxNum){
+                this.goodsCount = this.maxNum;
+                Toast({
+                    message: '您需购买的数量超出商品的现有库存！',
+                    position: 'center',
+                    duration: 500
+                });
+            }
+        },
+        reduceMethod() {
+            this.goodsCount--;
+            if(this.goodsCount < 1){
+                this.goodsCount = 1;
+            }
+        },
+        limit() {
+            if(parseFloat(this.goodsCount)<1){
+                Toast({
+                    message: '请输入大于等于1的正整数',
+                    position: 'center',
+                    duration: 200
+                });
+                this.goodsCount = 1;
+            }else{
+                this.goodsCount = Math.floor(this.goodsCount);
+                if(parseInt(this.goodsCount) > this.maxNum){
+                    Toast({
+                        message: '您需购买的数量超出商品的现有库存！',
+                        position: 'center',
+                        duration: 200
+                    });
+                    this.goodsCount = this.maxNum;
+                }
+            }
+        },
         // 添加商品到猜你喜欢
         addLike() {
             this.$api.post('/oteao/productInterestingRecord/insert',{
@@ -397,7 +440,6 @@ export default {
             }
             this.$store.dispatch('addCart',{proId:this.detailData.productExtInfo.proId,buyNum:this.goodsCount}).then(res=>{
                 console.log(res);
-
             },res=>{});
         },
         getMoreComment() {
@@ -470,9 +512,6 @@ export default {
         },
         handleChange(index) {           // 图片索引
             this.imgIndex = index+1;
-        },
-        goodsCounts(val) {             // 购买数量
-            this.goodsCount = val;
         },
         regStar(val) {                 // 隐藏会员账号
             if(val.length <= 5){

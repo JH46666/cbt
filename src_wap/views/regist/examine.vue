@@ -11,6 +11,13 @@
                         </div>
                         <p  class="error_txt"></p>
                     </div>
+                    <div class="form_item" v-if="$store.state.member.shop && $store.state.member.shop.shopStatus != 2">
+                        <div class="flex align_items_end">
+                            <label for="">注册类型</label>
+                            <p  class="flex-1">卖家({{ sellerType[$store.state.member.shop.shopType-1] }})</p>
+                        </div>
+                        <p  class="error_txt"></p>
+                    </div>
                     <div class="form_item">
                         <div class="flex align_items_end">
                             <label for="">店铺名称</label>
@@ -39,14 +46,51 @@
                         </div>
                         <p class="error_txt"></p>
                     </div>
+                    <div class="form_item" v-if="$store.state.member.shop && $store.state.member.shop.shopStatus != 2">
+                        <div class="flex align_items_end">
+                            <label for="">支付宝</label>
+                            <p  class="flex-1">{{ myData.alipayAccount }}</p>
+                        </div>
+                        <p class="error_txt"></p>
+                    </div>
                 </form>
                 <div class="examine_img" v-if="imgFlag == 0"><img src="../../assets/images/examine.png" alt=""></div>
                 <div class="examine_img" v-else><img src="../../assets/images/shbtg.png" alt=""></div>
             </div>
-            <template v-if="$store.state.member.shop">
-                <div class="shop_img">
+            <template v-if="$store.state.member.shop && $store.state.member.shop.shopStatus != 2">
+                <div class="shop_img shop_img_2" v-if="$store.state.member.shop.shopType == 1">
+                    <template v-if="$store.state.member.shop.businessLicensePic && $store.state.member.shop.produceLicensePic">
+                        <div class="uploaded_box_2">
+                            <img class="shop" :src="$store.state.member.shop.businessLicensePic" />
+                        </div>
+                        <div class="uploaded_box_2">
+                            <img class="shop" :src="$store.state.member.shop.produceLicensePic" />
+                        </div>
+                    </template>
+                    <template v-else>
+                        <div class="uploaded_box">
+                            <img class="shop" :src="$store.state.member.shop.businessLicensePic" />
+                        </div>
+                    </template>
+                </div>
+                <div class="shop_img shop_img_2" v-if="$store.state.member.shop.shopType == 2">
+                    <template v-if="$store.state.member.shop.businessLicensePic && $store.state.member.shop.qsLicensePic">
+                        <div class="uploaded_box_2">
+                            <img class="shop" :src="$store.state.member.shop.businessLicensePic" />
+                        </div>
+                        <div class="uploaded_box_2">
+                            <img class="shop" :src="$store.state.member.shop.qsLicensePic" />
+                        </div>
+                    </template>
+                    <template v-else>
+                        <div class="uploaded_box">
+                            <img class="shop" :src="$store.state.member.shop.businessLicensePic" />
+                        </div>
+                    </template>
+                </div>
+                <div class="shop_img shop_img_2" v-if="$store.state.member.shop.shopType == 3 || $store.state.member.shop.shopType == 4">
                     <div class="uploaded_box">
-                        <img class="shop" :src="orgDTO.facadePics" />
+                        <img class="shop" :src="$store.state.member.shop.businessLicensePic" />
                     </div>
                 </div>
             </template>
@@ -57,7 +101,6 @@
                     </div>
                 </div>
             </template>
-
             <mt-button size="large"  @click="$router.push({name: '茶帮通注册2',query: {edit: 'true'}})">修改资料</mt-button>
             <div class="go_index"><a href="javascript:void(0);" @click="$router.push('/')">去首页</a></div>
         </div>
@@ -72,6 +115,7 @@
                edit: false,
                myData: {},
                imgFlag: 0,
+               sellerType: ['茶厂','合作社','茶企','批发商'],
             }
         },
         computed: {
@@ -98,14 +142,15 @@
             // 设置title
             this.$store.commit('SET_TITLE','茶帮通注册');
             // 拉取数据
-            // this.getData();
             if(store.state.member.shop){
+                this.getData();
                 if(store.state.member.shop.shopStatus == 1){
                     return this.imgFlag = 0;
                 }
                 if(store.state.member.shop.shopStatus == 3){
                     return this.imgFlag = 1;
                 }
+                return;
             }else{
                 if(store.state.member.memberAccount.status == 'WAIT_AUDIT'){
                     return this.imgFlag = 0;
@@ -113,6 +158,7 @@
                 if(store.state.member.memberAccount.status == 'AUDIT_NO_PASS'){
                     return this.imgFlag = 1;
                 }
+                return;
             }
         },
         // 进来先判断登陆与否

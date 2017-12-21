@@ -1,7 +1,7 @@
 <template>
     <div class="plusOreduce">
         <span class="reduce btn" @click="reduceMethod">-</span>
-        <input v-model.number="num" type="number" class="countNum" @blur="limit">
+        <input v-model="num" type="number" class="countNum" @blur="limit">
         <span class="plus btn" @click="plusMethod">+</span>
     </div>
 </template>
