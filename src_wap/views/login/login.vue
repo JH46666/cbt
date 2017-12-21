@@ -144,22 +144,28 @@
                                 this.$store.commit('SET_MEMBERDATA',{type:attr,val:res.data[attr]})
                             }
                             let status = this.$store.state.member.memberAccount.status;
+                            if(res.data.shop){
+                                if(res.data.shop.shopStatus == 1 || res.data.shop.shopStatus == 3){
+                                    return this.$router.push({name: '茶帮通注册3'})
+                                }
+                            }
+                            console.log(1)
                             if(status === 'WAIT_AUDIT' || status === 'AUDIT_NO_PASS') {
-                                this.$router.push({name: '茶帮通注册3'})
+                                return this.$router.push({name: '茶帮通注册3'})
                             }
                             if(status === 'INACTIVE') {
-                                this.$router.push({name: '茶帮通注册2'})
+                                return this.$router.push({name: '茶帮通注册2'})
                             }
                             if(this.$store.state.address.from.name === '忘记密码') {
-                                this.$router.push('/')
+                                return this.$router.push('/')
                             } else {
-                                this.$router.push(this.$store.state.address.from.fullPath);
+                                return this.$router.push(this.$store.state.address.from.fullPath);
                             }
                         },res=>{
                             if(res.code === 4064){
-                                this.illegalFlag = true;
+                                return this.illegalFlag = true;
                             }else{
-                                Toast('账号或密码错误，请核实后重新输入');
+                                return Toast('账号或密码错误，请核实后重新输入');
                             }
                         });
                     }else if(this.selected == '1'){
@@ -248,7 +254,7 @@
         created() {
             // 设置title
             this.$store.commit('SET_TITLE','账户登录');
-            
+
         },
         watch:{
             selected(val){

@@ -16,12 +16,12 @@
                 <div class="select_item_label">
                     <label for="1">注册类型</label>
                 </div>
-                <div class="select_item_content" id="1">
+                <div class="select_item_content" id="1" v-if="flag">
                     <div class="mumber_type" v-for="(item,index) in registType" :key="index" :class="{on: index === registClass}" @click="selectRegistType(index)">{{ item }}</div>
                 </div>
-                <!-- <div class="select_item_content">
-                    <input type="text" readonly v-model="loginNumber" />
-                </div> -->
+                <div class="select_item_content" v-else>
+                    <input type="text" readonly v-model="onlyName" />
+                </div>
             </div>
         </div>
         <div class="f5_2"></div>
@@ -161,7 +161,7 @@
                 </div>
             </div>
         </div>
-        <address-panel v-show="addressShowOrHide" @getAllData="getAddress"></address-panel>
+        <address-panel v-show="addressShowOrHide" @getAllData="getAddress" :provinceCode="provinceNum" :cityCode="cityNum" :areaCode="areaNum"></address-panel>
     </div>
 </template>
 
@@ -219,6 +219,13 @@ export default {
             region: 'oss-cn-hangzhou',
             bucket: 'imgcbt',
             path: 'test_path/',
+            addreeObj: {
+                pro: '110000',
+                city: '110100',
+                area: '110101'
+            },
+            flag: true,
+            onlyName: '成为会员',
         }
     },
     created() {
@@ -227,7 +234,20 @@ export default {
         if(process.env.NODE_ENV != 'development'){
             this.path = 'online_img/';
         }
-        this.loginNumber = store.state.member.member.memberAccount
+        this.loginNumber = store.state.member.member.memberAccount;
+        if(this.$route.query.edit === 'true'){
+            this.flag = false;
+            if(store.state.member.orgDTO){
+                this.formData.shopName = store.state.member.orgDTO.orgName;
+                this.formData.shopTel = store.state.member.orgDTO.contactPerson;
+                this.formData.shopAddress = store.state.member.orgDTO.address;
+                this.shopImg = [{imgUrl: store.state.member.orgDTO.facadePics}];
+                this.formData.shopArea = `${store.state.member.orgDTO.provinceName}${store.state.member.orgDTO.cityName}${store.state.member.orgDTO.countyName}`;
+                this.addreeObj.pro = store.state.member.orgDTO.provinceID;
+                this.addreeObj.city = store.state.member.orgDTO.cityID;
+                this.addreeObj.area = store.state.member.orgDTO.countyID;
+            }
+        }
     },
     computed: {
         iSubmit() {
@@ -244,6 +264,15 @@ export default {
                     return true;
                 }
             }
+        },
+        provinceNum() {
+            return this.addreeObj.pro;
+        },
+        cityNum() {
+            return this.addreeObj.city;
+        },
+        areaNum() {
+            return this.addreeObj.area;
         }
     },
     methods: {

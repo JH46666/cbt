@@ -2,11 +2,6 @@
     <div class="seller_wrapper">
         <div class="t_txt"><p class="color_9">恭喜您成功注册，请填写以下资料等待审核，审核后才可以询价和下单，如需帮助，请拨打 400-996-3399</p></div>
         <div class="seller_content">
-            <div class="shop_img">
-                <div class="uploaded_box">
-                    <img class="shop" :src="orgDTO.facadePics" alt="">
-                </div>
-            </div>
             <div class="shop_info">
                 <form>
                     <div class="form_item">
@@ -45,10 +40,25 @@
                         <p class="error_txt"></p>
                     </div>
                 </form>
-                <div class="examine_img" v-if="memberAccount.status === 'WAIT_AUDIT'"><img src="../../assets/images/examine.png" alt=""></div>
+                <div class="examine_img" v-if="imgFlag == 0"><img src="../../assets/images/examine.png" alt=""></div>
                 <div class="examine_img" v-else><img src="../../assets/images/shbtg.png" alt=""></div>
             </div>
-            <mt-button size="large"  @click="$router.push({name: '茶帮通注册2'})">修改资料</mt-button>
+            <template v-if="$store.state.member.shop">
+                <div class="shop_img">
+                    <div class="uploaded_box">
+                        <img class="shop" :src="orgDTO.facadePics" />
+                    </div>
+                </div>
+            </template>
+            <template v-else>
+                <div class="shop_img">
+                    <div class="uploaded_box">
+                        <img class="shop" :src="orgDTO.facadePics" />
+                    </div>
+                </div>
+            </template>
+
+            <mt-button size="large"  @click="$router.push({name: '茶帮通注册2',query: {edit: 'true'}})">修改资料</mt-button>
             <div class="go_index"><a href="javascript:void(0);" @click="$router.push('/')">去首页</a></div>
         </div>
     </div>
@@ -60,7 +70,8 @@
         data(){
             return {
                edit: false,
-               myData: {}
+               myData: {},
+               imgFlag: 0,
             }
         },
         computed: {
@@ -87,7 +98,22 @@
             // 设置title
             this.$store.commit('SET_TITLE','茶帮通注册');
             // 拉取数据
-            this.getData();
+            // this.getData();
+            if(store.state.member.shop){
+                if(store.state.member.shop.shopStatus == 1){
+                    return this.imgFlag = 0;
+                }
+                if(store.state.member.shop.shopStatus == 3){
+                    return this.imgFlag = 1;
+                }
+            }else{
+                if(store.state.member.memberAccount.status == 'WAIT_AUDIT'){
+                    return this.imgFlag = 0;
+                }
+                if(store.state.member.memberAccount.status == 'AUDIT_NO_PASS'){
+                    return this.imgFlag = 1;
+                }
+            }
         },
         // 进来先判断登陆与否
         beforeRouteEnter(to, from, next) {
