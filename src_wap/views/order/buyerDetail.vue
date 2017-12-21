@@ -273,10 +273,11 @@ export default {
                     });
                     return window.location.reload();
                 },res=>{
-                    return Toast({
+                    Toast({
                         message: res.errorMsg,
                         iconClass: 'icon icon-fail'
                     });
+                    return window.location.reload();
                 })
             },action => {
                 console.log('cancel!');
@@ -323,10 +324,11 @@ export default {
                     return window.location.reload();
                 },res=>{
                     this.cancelClass = null;
-                    return Toast({
+                    Toast({
                         message: res.errorMsg,
                         iconClass: 'icon icon-fail'
                     });
+                    return window.location.reload();
                 })
             },300)
         },
@@ -360,10 +362,11 @@ export default {
                     });
                     return window.location.reload();
                 },res=>{
-                    return Toast({
+                    Toast({
                         message: res.errorMsg,
                         iconClass: 'icon icon-fail'
                     });
+                    return window.location.reload();
                 })
             },action => {
                 console.log('cancel!');
