@@ -149,7 +149,6 @@
                                     return this.$router.push({name: '茶帮通注册3'})
                                 }
                             }
-                            console.log(1)
                             if(status === 'WAIT_AUDIT' || status === 'AUDIT_NO_PASS') {
                                 return this.$router.push({name: '茶帮通注册3'})
                             }
