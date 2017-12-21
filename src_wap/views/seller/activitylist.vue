@@ -139,7 +139,7 @@ export default {
     },
     created() {
         // 设置title
-        this.$store.commit('SET_TITLE','活动列表');
+        this.$store.commit('SET_TITLE','限时特价');
 
         if(this.$route.query.sort != undefined){
             this.getList(this.$route.query.sort).then(res => {

@@ -305,11 +305,11 @@ import $api from 'api';
                         message: '运费配置成功',
                         iconClass: 'icon icon-success'
                     });
-                    // setTimeout(()=>{
-                    //     this.$router.push({
-                    //         name: '卖家中心'
-                    //     })
-                    // },200)
+                    setTimeout(()=>{
+                        this.$router.push({
+                            name: '卖家中心'
+                        })
+                    },200)
                 })
             },
             addFreight() {
@@ -317,12 +317,6 @@ import $api from 'api';
                     "orgFreightTemplateVoList": []
                 }
                 for(let i=0;i<this.postArray.length;i++){
-                    if(this.postArray[i].area.length==0){
-                        return Toast({
-                            message: '请先选择省份',
-                            iconClass: 'icon icon-fail'
-                        });
-                    }
                     if(this.postArray[i].sweight !='' && this.postArray[i].xweight != '' && this.postArray[i].buyer != '' && this.postArray[i].area.length > 0){
                         data.orgFreightTemplateVoList.push({
                             "baseRegionVoList": [],
@@ -342,6 +336,15 @@ import $api from 'api';
                         }
                         for(let obj of areaNameArray){
                             data.orgFreightTemplateVoList[i].baseRegionVoList.regionName = obj;
+                        }
+                    }else{
+                        if(this.postArray[i].sweight !='' || this.postArray[i].xweight != '' || this.postArray[i].buyer != ''){
+                            if(this.postArray[i].area.length == 0){
+                                return Toast({
+                                    message: '请先选择省份',
+                                    iconClass: 'icon icon-fail'
+                                });
+                            }
                         }
                     }
                 }

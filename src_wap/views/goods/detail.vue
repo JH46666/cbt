@@ -91,7 +91,7 @@
                                 暂无报价
                             </div>
                         </template>
-                        <template  v-if="loginId && state === 'ACTIVE'">
+                        <template  v-if="!loginId && state != 'ACTIVE'">
                             <div class="off_shelf_tips">
                                 询价
                             </div>
@@ -116,7 +116,7 @@
                                         <p v-else-if="detailData.orgFreightTemplateVoList && detailData.orgFreightTemplateVoList.length > 0">邮费依实际重量计算运费</p>
                                     </template>
                                     <template v-else>
-                                        <p>全场在线支付满500免运费</p>
+                                        <p>全场茶叶在线支付满500免包邮</p>
                                     </template>
                                 </div>
                             </div>
@@ -342,7 +342,7 @@ export default {
                 'productInterestingRecord.sysId': 1,
                 'productInterestingRecord.sku': this.proSku,
                 'productInterestingRecord.device': 'WAP'
-            },res => {})
+            },res => {},res =>{})
         },
         isLevelType(val) {
             let g = Number(val)
