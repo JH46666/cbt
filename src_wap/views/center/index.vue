@@ -219,12 +219,18 @@
                         if(res === 'cancel') {
                             return;
                         } else {
-                            vm.$router.push({
-                                name: '茶帮通注册5',
-                                query: {
-                                    edit: 'buyer'
-                                }
-                            })
+                            if(store.state.member.orgDTO){
+                                vm.$router.push({
+                                    name: '茶帮通注册3',
+                                    query: {
+                                        edit: 'buyer'
+                                    }
+                                })
+                            }else{
+                                vm.$router.push({
+                                    name: '茶帮通注册2'
+                                })
+                            }
                         }
                     })
                 }
@@ -239,7 +245,18 @@
                         if(res === 'cancel') {
                             return;
                         } else {
-                            vm.$router.push({name: '茶帮通注册3'})
+                            if(store.state.member.orgDTO){
+                                vm.$router.push({
+                                    name: '茶帮通注册3',
+                                    query: {
+                                        edit: 'buyer'
+                                    }
+                                })
+                            }else{
+                                vm.$router.push({
+                                    name: '茶帮通注册2'
+                                })
+                            }
                         }
                     })
                 }

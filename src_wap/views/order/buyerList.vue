@@ -165,15 +165,15 @@ export default {
                         message: `订单【${orderNo}】已确认收货`,
                         iconClass: 'icon icon-success'
                     });
-                    return window.location.reload();
+                    setTimeout(()=>{
+                        window.location.reload();
+                    },200)
                 },res=>{
                     Toast({
                         message: res.errorMsg,
                         iconClass: 'icon icon-fail'
                     });
-                    setTimeout(()=>{
-                        window.location.reload();
-                    },200)
+
                 })
             },action => {
                 console.log('cancel!');
@@ -190,15 +190,14 @@ export default {
                         message: `订单【${orderNo}】已确认收货`,
                         iconClass: 'icon icon-success'
                     });
-                    return window.location.reload();
+                    setTimeout(()=>{
+                        window.location.reload();
+                    },200)
                 },res=>{
                     Toast({
                         message: res.errorMsg,
                         iconClass: 'icon icon-fail'
                     });
-                    setTimeout(()=>{
-                        window.location.reload();
-                    },200)
                 })
             },action => {
                 console.log('cancel!');

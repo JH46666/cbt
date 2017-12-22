@@ -88,7 +88,7 @@
                         </div>
                     </template>
                 </div>
-                <div class="shop_img shop_img_2" v-if="$store.state.member.shop.shopType == 3 || $store.state.member.shop.shopType == 4">
+                <div class="shop_img" v-if="$store.state.member.shop.shopType == 3 || $store.state.member.shop.shopType == 4">
                     <div class="uploaded_box">
                         <img class="shop" :src="$store.state.member.shop.businessLicensePic" />
                     </div>
@@ -174,15 +174,16 @@
         },
         // 进来先判断登陆与否
         beforeRouteEnter(to, from, next) {
-            if(!store.state.member.member.id) {
-                store.dispatch('getMemberData').then((res) => {
-                    next();
-                }).catch(res => {
-                    next(vm => vm.$router.push('/login'));
-                })
-            } else {
+            store.dispatch('getMemberData').then((res) => {
                 next();
-            }
+            }).catch(res => {
+                next(vm => vm.$router.push('/login'));
+            })
+            // if(!store.state.member.member.id) {
+            //
+            // } else {
+            //     next();
+            // }
         }
 
     }

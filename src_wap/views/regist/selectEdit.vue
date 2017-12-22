@@ -238,33 +238,32 @@ export default {
         this.addressObj.cityCode = store.state.member.orgDTO.cityID;
         this.addressObj.areaCode = store.state.member.orgDTO.countyID;
         if(this.$route.query.edit === 'seller'){
+            this.registClass = 1;
             this.getData(store.state.member.orgDTO.orgID);
             if(store.state.member.shop.shopStatus == 1){
                 this.flag = false;
                 this.onlyName = '成为卖家';
-            }else{
-                this.registClass = 1;
             }
             this.sellerClass = store.state.member.shop.shopType - 1;
             if(store.state.member.shop.shopType == 1){
                 this.licenseImg = [{imgUrl: store.state.member.shop.businessLicensePic}];
                 this.productImg = [{imgUrl: store.state.member.shop.produceLicensePic}];
-                this.licenseImgUrl = [{imgUrl: store.state.member.shop.businessLicensePic}];
-                this.productImgUrl = [{imgUrl: store.state.member.shop.produceLicensePic}];
+                this.licenseImgUrl = [store.state.member.shop.businessLicensePic];
+                this.productImgUrl = [store.state.member.shop.produceLicensePic];
             }
             if(store.state.member.shop.shopType == 2){
                 this.licenseImg = [{imgUrl: store.state.member.shop.businessLicensePic}];
                 this.productImg = [{imgUrl: store.state.member.shop.qsLicensePic}];
-                this.licenseImgUrl = [{imgUrl: store.state.member.shop.businessLicensePic}];
-                this.productImgUrl = [{imgUrl: store.state.member.shop.qsLicensePic}];
+                this.licenseImgUrl = [store.state.member.shop.businessLicensePic];
+                this.productImgUrl = [store.state.member.shop.qsLicensePic];
             }
             if(store.state.member.shop.shopType == 3){
                 this.licenseImg = [{imgUrl: store.state.member.shop.businessLicensePic}];
-                this.licenseImgUrl = [{imgUrl: store.state.member.shop.businessLicensePic}];
+                this.licenseImgUrl = [store.state.member.shop.businessLicensePic];
             }
             if(store.state.member.shop.shopType == 4){
                 this.licenseImg = [{imgUrl: store.state.member.shop.businessLicensePic}];
-                this.licenseImgUrl = [{imgUrl: store.state.member.shop.businessLicensePic}];
+                this.licenseImgUrl = [store.state.member.shop.businessLicensePic];
             }
         }else{
             if(store.state.member.memberAccount.status === 'WAIT_AUDIT'){

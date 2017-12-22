@@ -271,17 +271,18 @@ export default {
             }
             MessageBox.confirm('确定确认收货?').then(action => {
                 this.$api.post('/oteao/order/subOrderConfimReceipt',data,res => {
-                    Toast({
+                    this.$toast({
                         message: `订单【${orderNo}】已确认收货`,
                         iconClass: 'icon icon-success'
                     });
-                    return window.location.reload();
+                    setTimeout(()=>{
+                        window.location.reload();
+                    },200)
                 },res=>{
-                    Toast({
+                    this.$toast({
                         message: res.errorMsg,
                         iconClass: 'icon icon-fail'
                     });
-                    return window.location.reload();
                 })
             },action => {
                 console.log('cancel!');
@@ -296,7 +297,7 @@ export default {
                 this.$api.post('/oteao/order/orderProductList',data,res => {
                     resolve(res);
                 },res=>{
-                    return Toast({
+                    return this.$toast({
                         message: res.errorMsg,
                         iconClass: 'icon icon-fail'
                     });
@@ -320,7 +321,7 @@ export default {
                     cancelReason: this.cancelList[this.cancelClass]
                 }
                 this.$api.post('/oteao/order/cancelOrder',data,res => {
-                    Toast({
+                    this.$toast({
                         message: `订单已取消`,
                         iconClass: 'icon icon-success'
                     });
@@ -328,7 +329,7 @@ export default {
                     return window.location.reload();
                 },res=>{
                     this.cancelClass = null;
-                    Toast({
+                    this.$toast({
                         message: res.errorMsg,
                         iconClass: 'icon icon-fail'
                     });
@@ -360,17 +361,18 @@ export default {
             }
             MessageBox.confirm('确定确认收货?').then(action => {
                 this.$api.post('/oteao/order/confimReceipt',data,res => {
-                    Toast({
+                    this.$toast({
                         message: `订单【${orderNo}】已确认收货`,
                         iconClass: 'icon icon-success'
                     });
-                    return window.location.reload();
+                    setTimeout(()=>{
+                        window.location.reload();
+                    },200)
                 },res=>{
-                    Toast({
+                    this.$toast({
                         message: res.errorMsg,
                         iconClass: 'icon icon-fail'
                     });
-                    return window.location.reload();
                 })
             },action => {
                 console.log('cancel!');
@@ -402,7 +404,7 @@ export default {
                 this.$api.post('/oteao/order/findOrderByNo',data,res => {
                     resolve(res);
                 },res=>{
-                    return Toast({
+                    return this.$toast({
                         message: res.errorMsg,
                         iconClass: 'icon icon-fail'
                     });
