@@ -427,12 +427,18 @@ export default {
                         this.selected = null;
                         return;
                     } else {
-                        this.$router.push({
-                            name: '茶帮通注册5',
-                            query: {
-                                edit: 'buyer'
-                            }
-                        })
+                        if(store.state.member.orgDTO){
+                            vm.$router.push({
+                                name: '茶帮通注册3',
+                                query: {
+                                    edit: 'buyer'
+                                }
+                            })
+                        }else{
+                            vm.$router.push({
+                                name: '茶帮通注册2'
+                            })
+                        }
                     }
                 })
             }
@@ -643,12 +649,18 @@ export default {
                        this.selected = null;
                        return ;
                    } else {
-                       this.$router.push({
-                           name: '茶帮通注册5',
-                           query: {
-                               edit: 'buyer'
-                           }
-                       })
+                       if(store.state.member.orgDTO){
+                           vm.$router.push({
+                               name: '茶帮通注册3',
+                               query: {
+                                   edit: 'buyer'
+                               }
+                           })
+                       }else{
+                           vm.$router.push({
+                               name: '茶帮通注册2'
+                           })
+                       }
                    }
                })
            }
@@ -704,12 +716,18 @@ export default {
                        this.selected = null;
                        return;
                    } else {
-                       this.$router.push({
-                           name: '茶帮通注册5',
-                           query: {
-                               edit: 'seller'
-                           }
-                       })
+                       if(store.state.member.orgDTO){
+                           vm.$router.push({
+                               name: '茶帮通注册3',
+                               query: {
+                                   edit: 'buyer'
+                               }
+                           })
+                       }else{
+                           vm.$router.push({
+                               name: '茶帮通注册2'
+                           })
+                       }
                    }
                })
            }
