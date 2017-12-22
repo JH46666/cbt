@@ -44,6 +44,22 @@ const create = {
             fourImgFile: [],
             proValList: [],
             mainId: null,
+            defaultArray: [
+                {
+                    name: '香气',
+                    select: null,
+                    content: '',
+                    showOfHide: false,
+                    prop: ['偏淡','一般','香','高香','极香']
+                },
+                {
+                    name: '滋味',
+                    select: null,
+                    content: '',
+                    showOfHide: false,
+                    prop: ['偏淡','一般','浓','很浓','极浓']
+                }
+            ],
         }
     },
     mutations: {
@@ -92,6 +108,22 @@ const create = {
                 fourImgFile: [],
                 proValList: [],
                 mainId: null,
+                defaultArray: [
+                    {
+                        name: '香气',
+                        select: null,
+                        content: '',
+                        showOfHide: false,
+                        prop: ['偏淡','一般','香','高香','极香']
+                    },
+                    {
+                        name: '滋味',
+                        select: null,
+                        content: '',
+                        showOfHide: false,
+                        prop: ['偏淡','一般','浓','很浓','极浓']
+                    }
+                ],
             };
         }
     },
