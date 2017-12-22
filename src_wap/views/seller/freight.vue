@@ -1,5 +1,5 @@
 <template>
-    <div class="freight_wrapper" :style="style">
+    <div class="freight_wrapper">
         <div class="caption flex">
             <p>全国包邮，除以下省份</p>
         </div>
@@ -225,12 +225,6 @@ import $api from 'api';
             })
         },
         computed:{
-            style() {
-                let h = document.body.scrollHeight;
-                return {
-                    height: this.$tool.isWx ? `calc(${h}px)` : `calc(${h}px - .88rem)`
-                }
-            },
             // disabledBol() {
             //     let arr = this.addressType.one.concat(this.addressType.two,this.addressType.three,this.addressType.four);
             //     for(let i=0;i<arr.length;i++){
@@ -345,6 +339,26 @@ import $api from 'api';
                                     iconClass: 'icon icon-fail'
                                 });
                             }
+                        }else{
+                            data.orgFreightTemplateVoList.push({
+                                "baseRegionVoList": [],
+                                "continuedHeavyCost": this.postArray[i].xweight,
+                                "firstHeavyCost": this.postArray[i].sweight,
+                                "freeCost": this.postArray[i].buyer,
+                                "templateId": this.postArray[i].templateId,
+                                "delFlag": this.postArray[i].delFlag
+                            })
+                            let areaArray = this.postArray[i].area,
+                                areaNameArray = this.postArray[i].areaText.split(',');
+                            for(let obj of areaArray){
+                                data.orgFreightTemplateVoList[i].baseRegionVoList.push({
+                                    "id": obj,
+                                    "regionName": ''
+                                })
+                            }
+                            for(let obj of areaNameArray){
+                                data.orgFreightTemplateVoList[i].baseRegionVoList.regionName = obj;
+                            }
                         }
                     }
                 }
@@ -361,7 +375,11 @@ import $api from 'api';
             },
             toFixedTwo(val,str,index) {
                 let delTrim = String(val).trim();
-                this.postArray[index].sweight = parseFloat(delTrim).toFixed(2);
+                if(delTrim == ''){
+                    return ;
+                }else{
+                    this.postArray[index].sweight = parseFloat(delTrim).toFixed(2);
+                }
             },
             delectMethod(index) {
                 // this.postArray.splice(index,1);
