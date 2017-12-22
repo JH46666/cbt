@@ -36,7 +36,7 @@
                         </div>
                         <div class="order_foot">
                             <div class="price_wrapper">
-                                <div class="price">订单金额：<span>￥{{ item.orderSum  }}</span></div>
+                                <div class="price">订单金额：<span>￥{{ item.orderAllSum }}</span></div>
                                 <div class="count">共{{ item.products.length }}件</div>
                             </div>
                             <div class="btn_wrapper">
