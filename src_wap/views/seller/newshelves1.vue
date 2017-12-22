@@ -113,6 +113,24 @@
                         </div>
                     </div>
                 </div>
+                <div class="good_type_list">
+                    <div class="good_type_list_wrapper">
+                        <div class="item" v-for="(item,index) in resize.defaultArray" :key="index">
+                            <label class="item-left" :for="index+2">
+                                {{ item.name }}
+                            </label>
+                            <div class="item-right" @click="selectDefault(index)">
+                                <input type="text" readonly :id="index+2" v-model="item.content" placeholder="非必填" />
+                            </div>
+                            <i class="iconfont" @click="selectDefault(index)">&#xe744;</i>
+                            <mt-popup v-model="item.showOfHide" position="bottom">
+                                <div class="close-wrap">
+                                    <p class="close-tip"  v-for="(secobj,secindex) in item.prop" :class="{on: secindex == item.select}" :key="secindex" @click="selectDefaultProp(item,secindex,secobj)">{{ secobj }}<i class="iconfont">&#xe684;</i></p>
+                                </div>
+                            </mt-popup>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="btn_wrapper">
                 <mt-button type="primary" :disabled="disabledBol" @click="goStep3">下一步</mt-button>
@@ -196,6 +214,17 @@ export default {
             item.proVal = secobj.propVal;
             item.proValId = secobj.id;
             item.proShowHide = false;
+        },
+        selectDefaultProp(item,index,secobj) {
+            item.select = index;
+            item.content = secobj;
+            item.showOfHide = false;
+        },
+        selectDefault(index) {
+            for(let i=0;i<this.resize.defaultArray.length;i++){
+                this.resize.defaultArray[i].showOfHide = false;
+                this.resize.defaultArray[index].showOfHide = true;
+            }
         },
         clickSelProVal(index) {
             for(let i=0;i<this.resize.proValList.length;i++){

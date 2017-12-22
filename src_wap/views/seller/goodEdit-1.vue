@@ -114,6 +114,24 @@
                         </div>
                     </div>
                 </div>
+                <div class="good_type_list">
+                    <div class="good_type_list_wrapper">
+                        <div class="item" v-for="(item,index) in resize.defaultArray" :key="index">
+                            <label class="item-left" :for="index+2">
+                                {{ item.name }}
+                            </label>
+                            <div class="item-right" @click="selectDefault(index)">
+                                <input type="text" readonly :id="index+2" v-model="item.content" placeholder="非必填" />
+                            </div>
+                            <i class="iconfont" @click="selectDefault(index)">&#xe744;</i>
+                            <mt-popup v-model="item.showOfHide" position="bottom">
+                                <div class="close-wrap">
+                                    <p class="close-tip"  v-for="(secobj,secindex) in item.prop" :class="{on: secindex == item.select}" :key="secindex" @click="selectDefaultProp(item,secindex,secobj)">{{ secobj }}<i class="iconfont">&#xe684;</i></p>
+                                </div>
+                            </mt-popup>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="btn_wrapper">
                 <mt-button type="primary" :disabled="disabledBol" @click="goStep3">下一步</mt-button>
@@ -232,6 +250,17 @@ export default {
         }
     },
     methods: {
+        selectDefaultProp(item,index,secobj) {
+            item.select = index;
+            item.content = secobj;
+            item.showOfHide = false;
+        },
+        selectDefault(index) {
+            for(let i=0;i<this.resize.defaultArray.length;i++){
+                this.resize.defaultArray[i].showOfHide = false;
+                this.resize.defaultArray[index].showOfHide = true;
+            }
+        },
         selectPro(item,index,secobj) {
             item.proIndex = index;
             item.proVal = secobj.propVal;
@@ -525,6 +554,18 @@ export default {
                 this.resize.form.goodsPtsj = this.detailObj.productPrice[1].price;
                 this.resize.form.goodsSell = this.detailObj.productExtInfo.reason;
                 this.resize.form.goodsKc = this.detailObj.productExtInfo.stockNum;
+                this.resize.defaultArray[0].content = this.detailObj.productExtInfo.fragrance;
+                for(let i=0;i<this.resize.defaultArray[0].prop.length;i++){
+                    if(this.resize.defaultArray[0].prop[i] == this.detailObj.productExtInfo.fragrance){
+                        this.resize.defaultArray[0].select = i;
+                    }
+                }
+                this.resize.defaultArray[1].content = this.detailObj.productExtInfo.taste;
+                for(let i=0;i<this.resize.defaultArray[1].prop.length;i++){
+                    if(this.resize.defaultArray[1].prop[i] == this.detailObj.productExtInfo.taste){
+                        this.resize.defaultArray[1].select = i;
+                    }
+                }
                 for(let obj of this.detailObj.productImgList){
                     this.resize.imgs.mainImg.push(obj.imgUrl)
                     this.resize.mainImgFile.push(null);

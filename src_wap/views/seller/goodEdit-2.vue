@@ -504,6 +504,8 @@ import $api from 'api';
                         `&frontOrgProInfoDetailVo.stockNum=${ encodeURI(this.resize.form.goodsKc) }` +
                         `&frontOrgProInfoDetailVo.proPrice=${ encodeURI(this.resize.form.goodsSx) }` +
                         `&frontOrgProInfoDetailVo.retailPrice=${encodeURI(this.resize.form.goodsPtsj) }` +
+                        `&frontOrgProInfoDetailVo.fragrance=${encodeURI(this.resize.defaultArray[0].content)}` +
+                        `&frontOrgProInfoDetailVo.taste=${encodeURI(this.resize.defaultArray[1].content)}` +
                         `&frontOrgProInfoDetailVo.isSaveOnShelf=${ encodeURI(stata) }`,JSON.stringify(data),res => {
                             this.sucFlag = true;
                             this.loading1 = false;
@@ -531,6 +533,8 @@ import $api from 'api';
                         `&frontOrgProInfoDetailVo.stockNum=${ encodeURI(this.resize.form.goodsKc) }` +
                         `&frontOrgProInfoDetailVo.proPrice=${ encodeURI(this.resize.form.goodsSx) }` +
                         `&frontOrgProInfoDetailVo.retailPrice=${encodeURI(this.resize.form.goodsPtsj) }` +
+                        `&frontOrgProInfoDetailVo.fragrance=${encodeURI(this.resize.defaultArray[0].content)}` +
+                        `&frontOrgProInfoDetailVo.taste=${encodeURI(this.resize.defaultArray[1].content)}` +
                         `&frontOrgProInfoDetailVo.isSaveOnShelf=${ encodeURI(stata) }`,JSON.stringify(data),res => {
                             this.sucFlag = true;
                             this.loading1 = false;

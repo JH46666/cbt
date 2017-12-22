@@ -159,28 +159,28 @@
                                 <div>商品编号</div>
                                 <div>{{ detailData.productInfo.proSku }}</div>
                             </div>
+                            <div class="reguler_item" style="height: 1.5rem; padding: 0;" v-if="detailData.productExtInfo.fragrance != null">
+                                <div>详情</div>
+                                <div class="x_star">
+                                    <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '偏淡' || detailData.productExtInfo.fragrance === '一般' || detailData.productExtInfo.fragrance === '香' || detailData.productExtInfo.fragrance === '高香' || detailData.productExtInfo.fragrance === '极香'}">偏淡</span>
+                                    <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '一般' || detailData.productExtInfo.fragrance === '香' || detailData.productExtInfo.fragrance === '高香' || detailData.productExtInfo.fragrance === '极香'}">一般</span>
+                                    <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '香' || detailData.productExtInfo.fragrance === '高香' || detailData.productExtInfo.fragrance === '极香'}">香</span>
+                                    <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '高香' || detailData.productExtInfo.fragrance === '极香'}">高香</span>
+                                    <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '极香'}">极香</span>
+                                </div>
+                            </div>
+                            <div class="reguler_item" style="height: 1.5rem; padding: 0;" v-if="detailData.productExtInfo.taste != null">
+                                <div>滋味</div>
+                                <div class="z_star">
+                                    <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '偏淡' || detailData.productExtInfo.taste === '一般' || detailData.productExtInfo.taste === '浓' || detailData.productExtInfo.taste === '很浓' || detailData.productExtInfo.taste === '极浓'}">偏淡</span>
+                                    <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '一般' || detailData.productExtInfo.taste === '浓' || detailData.productExtInfo.taste === '很浓' || detailData.productExtInfo.taste === '极浓'}">一般</span>
+                                    <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '浓' || detailData.productExtInfo.taste === '很浓' || detailData.productExtInfo.taste === '极浓'}">浓</span>
+                                    <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '很浓' || detailData.productExtInfo.taste === '极浓'}">很浓</span>
+                                    <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '极浓'}">极浓</span>
+                                </div>
+                            </div>
                             <template v-for="(item,index) in attrImgDetail.propValList">
-                                <div class="reguler_item" v-if="item.propName === '香气'" style="height: 1.5rem; padding: 0;">
-                                    <div>{{ item.propName }}</div>
-                                    <div class="x_star">
-                                        <span class="x_grey" :class="{on: item.propertiesVal.propVal === '偏淡' || item.propertiesVal.propVal === '一般' || item.propertiesVal.propVal === '香' || item.propertiesVal.propVal === '高香' || item.propertiesVal.propVal === '极香'}">偏淡</span>
-                                        <span class="x_grey" :class="{on: item.propertiesVal.propVal === '一般' || item.propertiesVal.propVal === '香' || item.propertiesVal.propVal === '高香' || item.propertiesVal.propVal === '极香'}">一般</span>
-                                        <span class="x_grey" :class="{on: item.propertiesVal.propVal === '香' || item.propertiesVal.propVal === '高香' || item.propertiesVal.propVal === '极香'}">香</span>
-                                        <span class="x_grey" :class="{on: item.propertiesVal.propVal === '高香' || item.propertiesVal.propVal === '极香'}">高香</span>
-                                        <span class="x_grey" :class="{on: item.propertiesVal.propVal === '极香'}">极香</span>
-                                    </div>
-                                </div>
-                                <div class="reguler_item" v-if="item.propName === '滋味'" style="height: 1.5rem; padding: 0;">
-                                    <div>{{ item.propName }}</div>
-                                    <div class="z_star">
-                                        <span class="z_grey" :class="{on: item.propertiesVal.propVal === '偏淡' || item.propertiesVal.propVal === '一般' || item.propertiesVal.propVal === '浓' || item.propertiesVal.propVal === '很浓' || item.propertiesVal.propVal === '极浓'}">偏淡</span>
-                                        <span class="z_grey" :class="{on: item.propertiesVal.propVal === '一般' || item.propertiesVal.propVal === '浓' || item.propertiesVal.propVal === '很浓' || item.propertiesVal.propVal === '极浓'}">一般</span>
-                                        <span class="z_grey" :class="{on: item.propertiesVal.propVal === '浓' || item.propertiesVal.propVal === '很浓' || item.propertiesVal.propVal === '极浓'}">浓</span>
-                                        <span class="z_grey" :class="{on: item.propertiesVal.propVal === '很浓' || item.propertiesVal.propVal === '极浓'}">很浓</span>
-                                        <span class="z_grey" :class="{on: item.propertiesVal.propVal === '极浓'}">极浓</span>
-                                    </div>
-                                </div>
-                                <div class="reguler_item"v-if="item.propName != '香气' && item.propName != '滋味'" style="height: .98rem; padding: 0;">
+                                <div class="reguler_item" style="height: .98rem; padding: 0;">
                                     <div>{{ item.propName }}</div>
                                     <div>{{ item.propertiesVal.propVal }}</div>
                                 </div>
@@ -328,7 +328,9 @@ export default {
         this.getDetail().then((res) =>{
             this.detailData = res.data;
             this.maxNum = this.detailData.productExtInfo.stockNum;
-            this.shopTel = `tel://${res.data.orgShopCenterVo.businessTelephone}`;
+            if(res.data.orgShopCenterVo){
+                this.shopTel = `tel://${res.data.orgShopCenterVo.businessTelephone}`;
+            }
             this.getAttrOrImg().then((res) => {
                 this.attrImgDetail = res.data;
                 this.imgDetail =  JSON.parse(res.data.content)
