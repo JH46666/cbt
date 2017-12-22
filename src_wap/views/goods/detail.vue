@@ -749,7 +749,19 @@ export default {
     mounted () {
         // this.setLine();             // 判断超出隐藏或者显示
         this.wxFlag = this.$tool.isWx;
-  　}
+  　},
+    // 进来先判断登陆与否
+    beforeRouteEnter(to, from, next) {
+        if(!store.state.member.member.id) {
+            store.dispatch('getMemberData').then((res) => {
+                next();
+    }).catch(res => {
+        next();
+    })
+    } else {
+        next();
+        }
+    }
 }
 </script>
 
