@@ -148,7 +148,7 @@
             // 推出登陆
             quit() {
                 this.$messageBox({
-                    title:'提示', 
+                    title:'提示',
                     message:`是否退出登录`,
                     showCancelButton: true,
                     cancelButtonText: '取消',
@@ -171,7 +171,7 @@
         created() {
             // 设置title
             this.$store.commit('SET_TITLE','我的中心');
-            
+
             // 获取订单数量
             this.$api.post('/oteao/order/countOrderNum',{},res => {
                 this.count = res.data;
@@ -194,14 +194,14 @@
                 };
                 if(status === 'WAIT_AUDIT') {
                     vm.$messageBox({
-                        title:'提示', 
+                        title:'提示',
                         message:`您的账号审核中，只有正式会员才可查看，若有疑问，请联系客服400-996-3399`,
                         confirmButtonText: '我知道了'
                     });
                 }
                 if(status === 'FREEZE') {
                     vm.$messageBox({
-                        title:'提示', 
+                        title:'提示',
                         message:`您的账号因违规操作而被冻结无法进入~若有疑问，请联系客服400-996-3399`,
                         confirmButtonText: '我知道了'
                     }).then(res => {
@@ -210,7 +210,7 @@
                 }
                 if(status === 'INACTIVE') {
                     vm.$messageBox({
-                        title:'提示', 
+                        title:'提示',
                         message:`您的账号审核未通过，只有正式会员才可查看，若有疑问，请联系客服400-996-3399`,
                         showCancelButton: true,
                         cancelButtonText: '取消',
@@ -219,13 +219,18 @@
                         if(res === 'cancel') {
                             return;
                         } else {
-                            vm.$router.push({name: '茶帮通注册2'})
+                            vm.$router.push({
+                                name: '茶帮通注册5',
+                                query: {
+                                    edit: 'buyer'
+                                }
+                            })
                         }
                     })
                 }
                 if(status === 'AUDIT_NO_PASS') {
                     vm.$messageBox({
-                        title:'提示', 
+                        title:'提示',
                         message:`您的账号审核未通过，只有正式会员才可查看，若有疑问，请联系客服400-996-3399`,
                         showCancelButton: true,
                         cancelButtonText: '取消',

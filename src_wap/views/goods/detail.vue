@@ -427,7 +427,12 @@ export default {
                         this.selected = null;
                         return;
                     } else {
-                        this.$router.push({name: '茶帮通注册2'})
+                        this.$router.push({
+                            name: '茶帮通注册5',
+                            query: {
+                                edit: 'buyer'
+                            }
+                        })
                     }
                 })
             }
@@ -638,7 +643,12 @@ export default {
                        this.selected = null;
                        return ;
                    } else {
-                       this.$router.push({name: '茶帮通注册2'})
+                       this.$router.push({
+                           name: '茶帮通注册5',
+                           query: {
+                               edit: 'buyer'
+                           }
+                       })
                    }
                })
            }
@@ -694,7 +704,12 @@ export default {
                        this.selected = null;
                        return;
                    } else {
-                       this.$router.push({name: '茶帮通注册2'})
+                       this.$router.push({
+                           name: '茶帮通注册5',
+                           query: {
+                               edit: 'seller'
+                           }
+                       })
                    }
                })
            }
