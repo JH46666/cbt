@@ -287,7 +287,7 @@
                             list: [val]
                         })
                     }
-                    
+
                 })
                 return data;
             },
@@ -379,7 +379,7 @@
                         item.buyLowLimit = res.data.buyLowLimit;
                         item.buyUpperLimit = res.data.buyUpperLimit;
                         // 更新购物车数量
-                        this.$store.dispatch('queryCartTotal'); 
+                        this.$store.dispatch('queryCartTotal');
                         resolve(res);
                     },res => {
                         reject(res);
@@ -389,7 +389,7 @@
             // 减
             numDecrease(item){
                 // 旧的数量
-                let oldVal = item.buyNum;       
+                let oldVal = item.buyNum;
                 // 新的数量
                 let newVal = item.buyNum - 1;
 
@@ -411,14 +411,14 @@
             // 加
             numPlus(item){
                 // 旧的数量
-                let oldVal = item.buyNum;       
+                let oldVal = item.buyNum;
                 // 新的数量
                 let newVal = item.buyNum + 1;
 
                 if(!!item.buyUpperLimit) {
                     if(newVal > item.buyUpperLimit) return;
                 }
-                
+
                 this.updateSeleNum(item,newVal,oldVal).then(res => {
                     if(res.data.isDisable) {
                         return this.getData();
@@ -507,10 +507,10 @@
                         this.listPannel.forEach(val => val.cartList.forEach(h => h.checked = false));
                     } else {
                         this.listPannel.forEach(val => val.cartList.forEach(h => h.checked = true));
-                    } 
+                    }
                 }
 
-                
+
             },
             // 猜你喜欢加入购物车
             likeAdd() {
@@ -539,7 +539,7 @@
                         }
                         this.$store.commit('SET_CART_LIST',res.data);
                         // 更新购物车数量
-                        this.$store.dispatch('queryCartTotal'); 
+                        this.$store.dispatch('queryCartTotal');
                         resolve(res);
                     },res=>{
                         this.$store.commit('SET_CART_LIST',{});
@@ -562,14 +562,14 @@
                 };
                 if(status === 'WAIT_AUDIT') {
                     vm.$messageBox({
-                        title:'提示', 
+                        title:'提示',
                         message:`您的账号审核中，只有正式会员才可买买买，若有疑问，请联系客服400-996-3399`,
                         confirmButtonText: '我知道了'
                     });
                 }
                 if(status === 'FREEZE') {
                     vm.$messageBox({
-                        title:'提示', 
+                        title:'提示',
                         message:`您的账号因违规操作而被冻结无法买买买~若有疑问，请联系客服400-996-3399`,
                         confirmButtonText: '我知道了'
                     }).then(res => {
@@ -578,7 +578,7 @@
                 }
                 if(status === 'INACTIVE') {
                     vm.$messageBox({
-                        title:'提示', 
+                        title:'提示',
                         message:`您的账号审核未通过，只有正式会员才可买买买，若有疑问，请联系客服400-996-3399`,
                         showCancelButton: true,
                         cancelButtonText: '取消',
@@ -587,13 +587,18 @@
                         if(res === 'cancel') {
                             return;
                         } else {
-                            vm.$router.push({name: '茶帮通注册2'})
+                            vm.$router.push({
+                                name: '茶帮通注册5',
+                                query: {
+                                    edit: 'buyer'
+                                }
+                            })
                         }
                     })
                 }
                 if(status === 'AUDIT_NO_PASS') {
                     vm.$messageBox({
-                        title:'提示', 
+                        title:'提示',
                         message:`您的账号审核未通过，只有正式会员才可买买买，若有疑问，请联系客服400-996-3399`,
                         showCancelButton: true,
                         cancelButtonText: '取消',
