@@ -152,10 +152,12 @@
                     <span v-if="orderDetailData.redPacketSum === 0">￥0</span>
                     <span v-else>-￥{{ orderDetailData.redPacketSum | toFix2 }}</span>
                 </div>
-                <div class="price_detail_item" v-if="orderDetailData.fullCut.length>0">
-                    <span>{{ orderDetailData.fullCut[0].showName }}</span>
-                    <span>-￥{{ orderDetailData.fullCut[0].giveNum | toFix2 }}</span>
-                </div>
+                <template v-if="orderDetailData.fullCut.length>0">
+                    <div class="price_detail_item" v-for="(rule,index) in orderDetailData.fullCut" :key="index">
+                        <span>{{ rule.showName }}</span>
+                        <span>-￥{{ rule.giveNum | toFix2 }}</span>
+                    </div>
+                </template>
                 <!-- <div class="price_detail_item" v-if="orderDetailData.useJfSum != 0">
                     <span>积分抵扣</span>
                     <span>-{{ orderDetailData.useJfSum }}积分</span>
@@ -166,7 +168,7 @@
                 </div>
                 <div class="price_detail_item">
                     <span>运费</span>
-                    <span>{{ orderDetailData.freightSum | toFix2 }}</span>
+                    <span>￥{{ orderDetailData.freightSum | toFix2 }}</span>
                 </div>
                 <div class="price_detail_item">
                     <span>订单总价</span>
@@ -178,8 +180,11 @@
                     <span>返积分：{{  orderDetailData.giveJfSum }}分</span>
                     <span>余额支付：￥{{ orderDetailData.useStoreValue | toFix2 }}</span>
                 </div>
-                <div class="price_total_item">
-                    <span>{{  orderDetailData.orderSum | toFix2 }}</span>实际付款：
+                <div class="price_total_item"  v-if="orderDetailData.payType!='CASH_DELIVERY'">
+                    <span>￥{{  orderDetailData.orderSum | toFix2 }}</span>实际付款：
+                </div>
+                <div class="price_total_item"  v-else>
+                    <span>￥{{  orderDetailData.orderSum | toFix2 }}</span>待付款：
                 </div>
             </div>
         </div>
