@@ -199,7 +199,7 @@
         computed: {
             orderPrice() {
                 try {
-                    return this.$tool.math.eval(`${this.myData.orderSum} - ${this.myData.freightSum}`)
+                    return this.$tool.math.eval(`${this.myData.orderAllSum} - ${this.myData.freightSum}`)
                 } catch (error) {
                     return 0
                 }
