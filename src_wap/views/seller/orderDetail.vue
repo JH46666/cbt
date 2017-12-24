@@ -62,7 +62,7 @@
                 </div>
                 <div class="item">
                     <div class="left">实际收入</div>
-                    <div class="right gold">￥{{ myData.orderSum | toFix2  }}</div>
+                    <div class="right gold">￥{{ myData.orderAllSum | toFix2  }}</div>
                 </div>
             </section>
             <section class="date-pannel">
