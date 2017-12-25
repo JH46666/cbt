@@ -19,7 +19,7 @@
         </div>
         <!-- 一级 -->
         <div class="first-box" :class="{'wx-first': wxFlag}">
-            <ul class="first-cat flex" ref="wrapper">
+            <ul class="first-cat" ref="wrapper">
                 <li class="cat-item" :class="{on: index==activeCatIndex}" v-for="(cat,index) in firstCat" @click="searchFirstCat(index,cat.id,$event.target)">
                     <span>{{cat.catName}}</span>
                 </li>
@@ -29,7 +29,7 @@
         <!-- 分类 -->
         <div class="main-floor">
             <!-- 二级 -->
-            <div class="sub-box flex">
+            <div class="sub-box clearfix">
                 <div class="sub-left ipScroll">
                     <ul>
                         <li v-for="(subItem,index) in subCat" class="sub-item flex align_items_c" :class="{'on':index==activeSubIndex}" @click="searchSub(index,subItem.id)">
@@ -38,35 +38,38 @@
                     </ul>
                 </div>
                 <div class="flex-1 content-r">
-                    <div class="content-inner ipScroll">
-                        <div class="condition-box">
-                            <ul class="flex">
-                                <li @click="filterVisible = true" :class="{on: filterFlag}"><i class="iconfont">&#xe674;</i>筛选</li>
-                                <li @click="sortVisible = true" :class="{on: sortData[0].sortIndex!=0}"><i class="iconfont">&#xe673;</i>排序</li>
-                            </ul>
+                    <div class="content-inner ipScroll" style="overflow: hidden;">
+                        <div style="height: 100%; overflow-y: auto;">
+                            <div class="condition-box">
+                                <ul class="flex">
+                                    <li @click="filterVisible = true" :class="{on: filterFlag}"><i class="iconfont">&#xe674;</i>筛选</li>
+                                    <li @click="sortVisible = true" :class="{on: sortData[0].sortIndex!=0}"><i class="iconfont">&#xe673;</i>排序</li>
+                                </ul>
+                            </div>
+                            <div v-infinite-scroll="loadMore" infinite-scroll-disabled="true" infinite-scroll-distance="10">
+                                <goods-item v-for="item of resultData" :key="item.id"
+                                    :link="item.proSku"
+                                    :mainTit="item.proTitle"
+                                    :subTit="item.subTitle"
+                                    :price="item.proPrice"
+                                    :imgUrl="item.proImg"
+                                    :tagUrl="item.tagImgUrl"
+                                    :aromaStar="item.aromaStar"
+                                    :aromaName="item.aromaVal"
+                                    :tasteStar="item.tasteStar"
+                                    :businessType="item.tagNum"
+                                    :tasteName="item.tasteVal"
+                                    :isLogin="$tool.isLogin()"
+                                    imgWidth="1.56rem">
+                                </goods-item>
+                            </div>
+                            <div class="goods-loading" v-if="loading">
+                                <mt-spinner type="fading-circle" color="#f08200"></mt-spinner>
+                                <span class="loading-text">正在努力加载中</span>
+                            </div>
+                            <div class="no-more" v-if="nomore">没有更多了呦</div>
                         </div>
-                        <div v-infinite-scroll="loadMore" infinite-scroll-disabled="true" infinite-scroll-distance="10">
-                            <goods-item v-for="item of resultData" :key="item.id"
-                                :link="item.proSku"
-                                :mainTit="item.proTitle"
-                                :subTit="item.subTitle"
-                                :price="item.proPrice"
-                                :imgUrl="item.proImg"
-                                :tagUrl="item.tagImgUrl"
-                                :aromaStar="item.aromaStar"
-                                :aromaName="item.aromaVal"
-                                :tasteStar="item.tasteStar"
-                                :businessType="item.tagNum"
-                                :tasteName="item.tasteVal"
-                                :isLogin="$tool.isLogin()"
-                                imgWidth="1.56rem">
-                            </goods-item>
-                        </div>
-                        <div class="goods-loading" v-if="loading">
-                            <mt-spinner type="fading-circle" color="#f08200"></mt-spinner>
-                            <span class="loading-text">正在努力加载中</span>
-                        </div>
-                        <div class="no-more" v-if="nomore">没有更多了呦</div>
+
                     </div>
                 </div>
             </div>
@@ -321,43 +324,38 @@
                     this.sortVisible = false;
                     let tempArr = res.data;
                     for(let item of tempArr){
-                        for(let prop of item.proInfoPropertyVos){
-                            if(prop.propName === '香气'){
-                                let star = 0;
-                                if(prop.propVal === '偏淡'){
-                                    star = 1;
-                                }else if(prop.propVal === '一般'){
-                                    star = 2;
-                                }else if(prop.propVal === '香'){
-                                    star = 3;
-                                }else if(prop.propVal === '高香'){
-                                    star = 4;
-                                }else if(prop.propVal === '极香'){
-                                    star = 5;
-                                }else {
-                                    star = 0;
-                                }
-                                this.$set(item,'aromaVal',prop.propertyVal);
-                                this.$set(item,'aromaStar',star);
-                            }else if(prop.propName === '滋味'){
-                                let star = 0;
-                                if(prop.propVal === '偏淡'){
-                                    star = 1;
-                                }else if(prop.propVal === '一般'){
-                                    star = 2;
-                                }else if(prop.propVal === '浓'){
-                                    star = 3;
-                                }else if(prop.propVal === '很浓'){
-                                    star = 4;
-                                }else if(prop.propVal === '极浓'){
-                                    star = 5;
-                                }else {
-                                    star = 0;
-                                }
-                                this.$set(item,'tasteVal',prop.prpertyVal);
-                                this.$set(item,'tasteStar',star);
-                            }
+                        let star = 0;
+                        if(item.fragrance === '偏淡'){
+                            star = 1;
+                        }else if(item.fragrance === '一般'){
+                            star = 2;
+                        }else if(item.fragrance === '香'){
+                            star = 3;
+                        }else if(item.fragrance === '高香'){
+                            star = 4;
+                        }else if(item.fragrance === '极香'){
+                            star = 5;
+                        }else {
+                            star = 0;
                         }
+                        // this.$set(item,'aromaVal','香气');
+                        this.$set(item,'aromaStar',star);
+                        let stars = 0;
+                        if(item.taste === '偏淡'){
+                            stars = 1;
+                        }else if(item.taste === '一般'){
+                            stars = 2;
+                        }else if(item.taste === '浓'){
+                            stars = 3;
+                        }else if(item.taste === '很浓'){
+                            stars = 4;
+                        }else if(item.taste === '极浓'){
+                            stars = 5;
+                        }else {
+                            stars = 0;
+                        }
+                        // this.$set(item,'tasteVal','滋味');
+                        this.$set(item,'tasteStar',stars);
                     }
                     this.resultData = this.resultData.concat(tempArr);
                     this.totalSize = res.total_record;

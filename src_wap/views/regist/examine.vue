@@ -1,6 +1,7 @@
 <template>
     <div class="seller_wrapper">
-        <div class="t_txt"><p class="color_9">恭喜您成功注册，请填写以下资料等待审核，审核后才可以询价和下单，如需帮助，请拨打 400-996-3399</p></div>
+        <div class="t_txt" v-if="imgFlag == 0"><p class="color_9">恭喜您成功注册，请填写以下资料等待审核，审核后才可以询价和下单，如需帮助，请拨打 400-996-3399</p></div>
+        <div class="t_txt red" v-else><p class="color_9">审核不通过，{{ remark }}，如需帮助请拨打400-996-3399</p></div>
         <div class="seller_content">
             <div class="shop_info">
                 <form>
@@ -117,6 +118,7 @@
                imgFlag: 0,
                sellerType: ['茶厂','合作社','茶企','批发商'],
                flag: '',
+               remark: '',
             }
         },
         computed: {
@@ -150,6 +152,7 @@
         created(){
             // 设置title
             this.$store.commit('SET_TITLE','茶帮通注册');
+            this.remark = state.member.auditRecord.remark;
             // 拉取数据
             if(store.state.member.shop){
                 this.flag = 'seller';
