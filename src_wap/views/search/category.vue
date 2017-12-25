@@ -19,7 +19,7 @@
         </div>
         <!-- 一级 -->
         <div class="first-box" :class="{'wx-first': wxFlag}">
-            <ul class="first-cat flex" ref="wrapper">
+            <ul class="first-cat" ref="wrapper">
                 <li class="cat-item" :class="{on: index==activeCatIndex}" v-for="(cat,index) in firstCat" @click="searchFirstCat(index,cat.id,$event.target)">
                     <span>{{cat.catName}}</span>
                 </li>
@@ -38,35 +38,38 @@
                     </ul>
                 </div>
                 <div class="flex-1 content-r">
-                    <div class="content-inner ipScroll">
-                        <div class="condition-box">
-                            <ul class="flex">
-                                <li @click="filterVisible = true" :class="{on: filterFlag}"><i class="iconfont">&#xe674;</i>筛选</li>
-                                <li @click="sortVisible = true" :class="{on: sortData[0].sortIndex!=0}"><i class="iconfont">&#xe673;</i>排序</li>
-                            </ul>
+                    <div class="content-inner ipScroll" style="overflow: hidden;">
+                        <div style="height: 100%; overflow-y: auto;">
+                            <div class="condition-box">
+                                <ul class="flex">
+                                    <li @click="filterVisible = true" :class="{on: filterFlag}"><i class="iconfont">&#xe674;</i>筛选</li>
+                                    <li @click="sortVisible = true" :class="{on: sortData[0].sortIndex!=0}"><i class="iconfont">&#xe673;</i>排序</li>
+                                </ul>
+                            </div>
+                            <div v-infinite-scroll="loadMore" infinite-scroll-disabled="true" infinite-scroll-distance="10">
+                                <goods-item v-for="item of resultData" :key="item.id"
+                                    :link="item.proSku"
+                                    :mainTit="item.proTitle"
+                                    :subTit="item.subTitle"
+                                    :price="item.proPrice"
+                                    :imgUrl="item.proImg"
+                                    :tagUrl="item.tagImgUrl"
+                                    :aromaStar="item.aromaStar"
+                                    :aromaName="item.aromaVal"
+                                    :tasteStar="item.tasteStar"
+                                    :businessType="item.tagNum"
+                                    :tasteName="item.tasteVal"
+                                    :isLogin="$tool.isLogin()"
+                                    imgWidth="1.56rem">
+                                </goods-item>
+                            </div>
+                            <div class="goods-loading" v-if="loading">
+                                <mt-spinner type="fading-circle" color="#f08200"></mt-spinner>
+                                <span class="loading-text">正在努力加载中</span>
+                            </div>
+                            <div class="no-more" v-if="nomore">没有更多了呦</div>
                         </div>
-                        <div v-infinite-scroll="loadMore" infinite-scroll-disabled="true" infinite-scroll-distance="10">
-                            <goods-item v-for="item of resultData" :key="item.id"
-                                :link="item.proSku"
-                                :mainTit="item.proTitle"
-                                :subTit="item.subTitle"
-                                :price="item.proPrice"
-                                :imgUrl="item.proImg"
-                                :tagUrl="item.tagImgUrl"
-                                :aromaStar="item.aromaStar"
-                                :aromaName="item.aromaVal"
-                                :tasteStar="item.tasteStar"
-                                :businessType="item.tagNum"
-                                :tasteName="item.tasteVal"
-                                :isLogin="$tool.isLogin()"
-                                imgWidth="1.56rem">
-                            </goods-item>
-                        </div>
-                        <div class="goods-loading" v-if="loading">
-                            <mt-spinner type="fading-circle" color="#f08200"></mt-spinner>
-                            <span class="loading-text">正在努力加载中</span>
-                        </div>
-                        <div class="no-more" v-if="nomore">没有更多了呦</div>
+                        
                     </div>
                 </div>
             </div>
