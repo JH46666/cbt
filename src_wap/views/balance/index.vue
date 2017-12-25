@@ -1,13 +1,16 @@
 <template>
     <div id="balance">
         <div class="main-top" ref="main">
-            <div class="address">
+            <div class="address" @click="editAddress">
                 <div class="left"><i class="icon-dizhi"></i></div>
-                <div class="center">
+                <div class="center" v-if="Object.keys(address).length > 0">
                     <p class="user">{{ address.recName }} &nbsp;&nbsp; {{ address.mobilePhone }}</p>
                     <p>{{ (address.provinceName + address.cityName + address.areaName + address.detailAddress) || '&nbsp;' }}</p>
                 </div>
-                <div class="right" @click="editAddress"><i class="icon-icon07"></i></div>
+                <div class="center" v-else>
+                    <p>您还没有收货地址哦~</p>
+                </div>
+                <div class="right"><i class="icon-icon07"></i></div>
             </div>
 
             <template v-for="(item,index) in pannel">
@@ -136,7 +139,10 @@
             </section>
         </div>
         <section class="save-order">
-            <p class="price">应付：<span class="gold">￥{{ totalPrice | toFix2 }}</span></p>
+            <div class="left" :class="{serverPrice: serverPrice > 0}">
+                <p class="price">应付：<span class="gold">￥{{ totalPrice | toFix2 }}</span></p>
+                <p class="tips" v-if="serverPrice > 0">含手续费： ￥{{ serverPrice | toFix2 }}</p>
+            </div>
             <mt-button type="default" :disabled="disabled" @click="upOrder">提交订单</mt-button>
         </section>
 
@@ -214,6 +220,16 @@
                 let obj = {};
                 data.forEach(val => obj[val.ruleSetId] = val.showType)
                 return obj;
+            },
+            // 手续费
+            serverPrice() {
+                let result = 0;
+                this.pannel.forEach(val => {
+                    if(val.selfSupport && val.currentPayMethod === 'CASH_DELIVERY') {
+                        result = val.payAndDeliveryAndfreightMap.feeForCashDeliveryMap[val.currentDeliveryMethod];
+                    }
+                })
+                return result;
             },
             ...mapState({
                 id: state => state.member.member.id,
