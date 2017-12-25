@@ -133,7 +133,7 @@
                     </div>
                 </div>
             </div>
-            <div class="btn_wrapper">
+            <div class="btn_wrapper" v-if="showOfHideStep">
                 <mt-button type="primary" :disabled="disabledBol" @click="goStep3">下一步</mt-button>
             </div>
         </div>
@@ -195,6 +195,7 @@ export default {
             parentCatId: 0,
             getProvList: [],
             state: '',
+            showOfHideStep: true,
         }
     },
     watch: {
@@ -247,6 +248,32 @@ export default {
                 }
 　　　　　　　},
 　　　　　　　deep:true
+        },
+        'resize.defaultArray': {
+            handler(curVal,oldVal){
+                let isShow = curVal.every((item)=>{
+                    return item.showOfHide === false;
+                })
+                if(isShow){
+                    this.showOfHideStep = true;
+                }else{
+                    this.showOfHideStep = false;
+                }
+            },
+            deep: true
+        },
+        'resize.proValList': {
+            handler(curVal,oldVal){
+                let isShow = curVal.every((item)=>{
+                    return item.proShowHide === false;
+                })
+                if(isShow){
+                    this.showOfHideStep = true;
+                }else{
+                    this.showOfHideStep = false;
+                }
+            },
+            deep: true
         }
     },
     methods: {
