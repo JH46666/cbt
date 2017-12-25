@@ -22,6 +22,10 @@
         <div class="floor3"><button class="confirm-pay" @click="pay" :disabled="disabled">确定支付 <span>￥{{ comfirnPrice | toFix2 }}</span></button></div>
         <div id="form" v-html="form"></div>
         <a :href="wxhost" ref="wxhost"></a>
+        <div class="juhua" v-if="loading">
+            <img src="../../assets/images/loading.gif" alt="">
+            <p>正在提交，请稍等~</p>
+        </div>
     </div>
 </template>
 <script>
@@ -48,7 +52,8 @@
                 ],
                 form: '',
                 wxhost: '',             // 微信回调
-                disabled: false
+                disabled: false,
+                loading: false,         
             }
         },
         computed: {
@@ -94,7 +99,7 @@
 
 
                     // 使用余额支付的话需要判断当前的余额是否够用，需要配合在线支付
-
+                    this.loading = true;
                     this.$api.post('/oteao/payOrder/modityOrderStoreValue',{
                         payOrderId: this.payId,
                     },res => {
@@ -212,7 +217,28 @@
                                 // 某些浏览器重定向问题，这个地方需要写入session，用来唤醒弹框
                                 // sessionStorage.h5wxpay = true;
                                 // sessionStorage.payId = this.payId;
-                                let src = res.data.mweb_url + `&redirect_url=` + encodeURI(location.origin + `/?wxpaycallback=${this.payId}+${this.$route.query.type}`);
+                                let src = res.data.mweb_url;
+                                if(this.$tool.isiOS) {
+                                    src += `&redirect_url=` + encodeURI(location.origin + `/?wxpaycallback=${this.payId}+${this.$route.query.type}`);
+                                }
+                                if(this.$tool.isAndroid) {
+                                    setTimeout(() => {
+                                        this.$messageBox({
+                                            title:'提示',
+                                            message:`是否完成支付?`,
+                                            showCancelButton: true,
+                                            cancelButtonText: '更换支付方式',
+                                            confirmButtonText: '完成支付'
+                                        }).then(res => {
+                                            if(res === 'cancel') {
+                                                this.loading = false;
+                                                this.disabled = false;
+                                            } else {
+                                                this.$router.push({name: '结算显示',query:{payId: this.payId,wx: 'wxpaycallback',type: this.$route.query.type}})
+                                            }
+                                        })
+                                    },2000)
+                                }
                                 this.wxhost = src;
                                 this.$nextTick(() =>{
                                     this.$refs.wxhost.click();
