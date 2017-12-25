@@ -1,6 +1,6 @@
 #!/bin/bash
 
-npm install
+cnpm install
 
 
 # 构建pc
