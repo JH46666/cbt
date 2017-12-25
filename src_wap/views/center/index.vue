@@ -95,11 +95,11 @@
                 <div class="left"><i class="icon-zhongxindianpu"></i>申请为卖家</div>
                 <div class="right"><i class="icon-icon07"></i></div>
             </router-link>
-            <router-link :to="{name: '茶帮通注册4'}" class="tools-entry" v-if="shop ? shop.shopStatus === 1 || shop.shopStatus === 3 : false ">
+            <router-link :to="{name: '茶帮通注册3',query: {edit: 'seller'}}" class="tools-entry" v-if="shop ? shop.shopStatus === 1 || shop.shopStatus === 3 : false ">
                 <div class="left"><i class="icon-zhongxindianpu"></i>卖家中心</div>
                 <div class="right"><i class="icon-icon07"></i></div>
             </router-link>
-            <router-link :to="{name: '卖家中心'}" class="tools-entry" v-if="shop ? shop.shopStatus === 2 || shop.shopStatus === -2 : false ">
+            <router-link :to="{name: '卖家中心'}" class="tools-entry" v-else>
                 <div class="left"><i class="icon-zhongxindianpu"></i>卖家中心</div>
                 <div class="right"><i class="icon-icon07"></i></div>
             </router-link>
