@@ -66,15 +66,9 @@
         <div class="f5_2"></div>
         <div class="select_bottom_wrapper">
             <div class="select_bottom_btn">
-                <mt-button type="primary" :disabled="iSubmit" @click="submitMethod" v-if="!eximain">{{ registText }}</mt-button>
+                <mt-button type="primary" :disabled="iSubmit" @click="submitMethod">立即注册</mt-button>
             </div>
             <mt-button type="primary" class="to_index" @click="$router.push({name:'首页'})">去首页</mt-button>
-        </div>
-        <div class="dialog" :class="{on: eximain}">
-            <div class="dialog_wrapper">
-                <img src="../../assets/images/examine.png" />
-                <mt-button type="primary" @click="changeText">修改资料</mt-button>
-            </div>
         </div>
     </div>
 </template>
@@ -136,7 +130,7 @@ export default {
     created() {
         // 设置title
         this.$store.commit('SET_TITLE','茶帮通注册');
-            
+
         if(process.env.NODE_ENV != 'development'){
             this.path = 'online_img/';
         }
@@ -163,7 +157,7 @@ export default {
             this.sellerClass = index;
         },
         onPreview(type,ev) {
-            if(ev.target.files[0].size > 8*1024*1024) return Toast({
+            if(ev.target.files[0].size > 8*1024*1024) return this.$toast({
                 message: '图片不能超出8M哦~',
                 iconClass: 'icon icon-info'
             });
@@ -203,7 +197,7 @@ export default {
                 this.$api.post('/oteao/file/getSignature',data,res => {
                     resolve(res);
                 },res=>{
-                    return Toast({
+                    return this.$this.$toast({
                         message: res.errorMsg,
                         iconClass: 'icon icon-fail'
                     });
@@ -231,9 +225,7 @@ export default {
                         stsToken: res.data.securityToken,
                         bucket: this.bucket
                     })
-                    console.log(client);
                     for(let i=0; i<this.shopImgFile.length; i++){            // 主图
-                        console.log(this.shopImgFile[i]);
                         let random_name =res.data.basePath + this.random_string(6) + '_' + new Date().getTime() + '.' + this.shopImgFile[i].name.split('.').pop()
                         client.multipartUpload(random_name, this.shopImgFile[i]).then((results) => {
                             const url = '//img0.oteao.com/'+ results.name;
@@ -313,9 +305,20 @@ export default {
                 }
             }
             this.$api.post('/oteao/login/fillShop',JSON.stringify(data),res => {
-                this.eximain = true;
+                this.$toast({
+                    message: '资料填写成功，待审核',
+                    iconClass: 'icon icon-fail'
+                });
+                return setTimeout(()=>{
+                    this.$router.push({
+                        name: '茶帮通注册3',
+                        query: {
+                            edit: 'seller'
+                        }
+                    })
+                },200)
             },res=>{
-                return Toast({
+                return this.$toast({
                     message: res.errorMsg,
                     iconClass: 'icon icon-fail'
                 });

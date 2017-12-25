@@ -62,7 +62,7 @@
                 </div>
                 <div class="item">
                     <div class="left">实际收入</div>
-                    <div class="right gold">￥{{ myData.orderSum | toFix2  }}</div>
+                    <div class="right gold">￥{{ myData.orderAllSum | toFix2  }}</div>
                 </div>
             </section>
             <section class="date-pannel">
@@ -199,7 +199,7 @@
         computed: {
             orderPrice() {
                 try {
-                    return this.$tool.math.eval(`${this.myData.orderSum} - ${this.myData.freightSum}`)
+                    return this.$tool.math.eval(`${this.myData.orderAllSum} - ${this.myData.freightSum}`)
                 } catch (error) {
                     return 0
                 }
