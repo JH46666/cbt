@@ -19,7 +19,7 @@
         </div>
         <!-- 一级 -->
         <div class="first-box" :class="{'wx-first': wxFlag}">
-            <ul class="first-cat" ref="wrapper">
+            <ul class="first-cat flex" ref="wrapper">
                 <li class="cat-item" :class="{on: index==activeCatIndex}" v-for="(cat,index) in firstCat" @click="searchFirstCat(index,cat.id,$event.target)">
                     <span>{{cat.catName}}</span>
                 </li>
