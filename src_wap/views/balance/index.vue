@@ -355,7 +355,7 @@
             upOrder() {
                 // 先判断是否选择地址
                 if(!this.address.id) {
-                    this.$toast('请选择一个地址')
+                    return this.$toast('请选择一个地址')
                 }
                 let orgSettleRequestList = [];
 
