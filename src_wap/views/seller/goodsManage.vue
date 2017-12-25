@@ -85,7 +85,7 @@
                     <mt-spinner type="fading-circle" color="#f08200"></mt-spinner>
                     <span class="loading-text">正在努力加载中~</span>
                 </div>
-                <div class="no-more" v-if="onShelf.listData.length == onShelf.totalPage">没有更多了呦~</div>
+                <div class="no-more" v-if="onShelf.listData.length == onShelf.totalPage && onShelf.totalPage > 0">没有更多了呦~</div>
                 <div v-if="onShelf.totalPage==0">
                     <div class="no-item">
                         <img src="../../assets/images/wusousoushuju.jpg" alt="">
@@ -127,7 +127,7 @@
                     <mt-spinner type="fading-circle" color="#f08200"></mt-spinner>
                     <span class="loading-text">正在努力加载中~</span>
                 </div>
-                <div class="no-more" v-if="offShelf.listData.length == offShelf.totalPage">没有更多了呦~</div>
+                <div class="no-more" v-if="offShelf.listData.length == offShelf.totalPage && offShelf.totalPage > 0">没有更多了呦~</div>
                 <div v-if="offShelf.totalPage==0">
                     <div class="no-item">
                         <img src="../../assets/images/wusousoushuju.jpg" alt="">

@@ -25,8 +25,8 @@
                                     <img src="../../assets/images/%.png" />
                                     <span>{{ item.showName }}</span>
                                 </div>
-                                <div class="head_right on" v-if="new Date(item.startTime) < new Date() && new Date(item.endTime) > new Date()">进行中</div>
-                                <div class="head_right" v-else-if="new Date(item.endTime) < new Date()">已结束</div>
+                                <div class="head_right on" v-if="item.status === 'ON_WAY'">进行中</div>
+                                <div class="head_right" v-else-if="item.status === 'IS_END'">已结束</div>
                                 <div class="head_right" v-else>未开始</div>
                             </div>
                             <div class="active_section" @click="goEdit(item)">
@@ -216,7 +216,7 @@ export default {
         },
         goEdit(item) {
             const nowDate = new Date();
-            if(new Date(item.endTime)>nowDate || new Date(item.startTime)>nowDate){
+            if(item.status === 'ON_WAY' || item.status === 'NOT_START'){
                 return this.$router.push({
                     name: '编辑活动',
                     query: {
