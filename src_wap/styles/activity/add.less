@@ -205,22 +205,47 @@
                    height: .6rem;
                    .flex;
                    .flex-dir(row);
+                   .position(r);
                    input{
                        .flex-1;
                        border-radius: .4rem 0 0 .4rem;
                        padding: 0 .3rem;
                        border: 1px solid #e5e5e5;
                        border-right: 0 none;
+                       height: 100%;
                    }
                    i{
-                       width: .76rem;
-                       height: 100%;
-                       border-radius: 0 .4rem .4rem 0;
-                       .bg(@mainCol);
-                       .color(#fff);
+                       &:nth-child(2){
+                           width: .76rem;
+                           height: 100%;
+                           border-radius: 0 .4rem .4rem 0;
+                           .bg(@mainCol);
+                           .color(#fff);
+                           .line(.6rem);
+                           .algin(c);
+                           .fontSize(.36rem);
+                       }
+                       &:last-child{
+                           .position(a);
+                           right: .96rem;
+                           top: .15rem;
+                           .color(#999);
+                           display: none;
+                           &.on{
+                               display: block;
+                           }
+                       }
+                   }
+                   span{
+                       width: 1rem;
+                       height: .6rem;
+                       .position(a);
+                       right: -1rem;
+                       .color(@mainCol);
+                       .fontSize(.28rem);
+                       top: 0;
                        .line(.6rem);
                        .algin(c);
-                       .fontSize(.36rem);
                    }
                }
            }
