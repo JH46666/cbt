@@ -165,7 +165,6 @@
                                 // return alert(JSON.stringify(res.data.h5pay));
                                 let data = JSON.parse(res.data.h5pay);
                                 let self = this;
-
                                 function onBridgeReady(){
                                     WeixinJSBridge.invoke(
                                         'getBrandWCPayRequest', {
@@ -196,8 +195,7 @@
                                     onBridgeReady();
                                 }
                             },res => {
-                                this.$router.push({name: '结算显示',query:{payId: self.payId,fail:true,type: self.$route.query.type}})
-                                // alert(JSON.stringify(res))
+                                this.$router.push({name: '结算显示',query:{payId: this.payId,fail:true,type: this.$route.query.type}})
                                 // window.location = res.data.mweb_url;
                             })
 

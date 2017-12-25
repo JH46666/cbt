@@ -121,7 +121,7 @@
         },
         watch: {
             'active.currentPayMethod'(val) {
-                if(val === 'ONLINE' && this.active.selfSupport === true) {
+                if(this.active.selfSupport === true) {
                     this.active.currentDeliveryMethod = 'ship_sto'
                 }
             }

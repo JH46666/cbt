@@ -184,10 +184,10 @@
             },
             noOrder() {
                 try {
-                    if(this.list.length === this.$store.state.seller.orderList[this.selected].orderNum) {
-                        return true
-                    } else {
+                    if(this.$store.state.seller.orderList[this.selected].orderNum) {
                         return false
+                    } else {
+                        return true
                     }
                     
                 } catch (error) {

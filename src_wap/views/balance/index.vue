@@ -58,7 +58,7 @@
                         <div class="center">
                             <p>{{ payMethods[item.currentPayMethod] }}  {{ expressName[item.currentDeliveryMethod] }}</p>
                             <!-- 运费 -->
-                            <p v-if="item.selfSupport === true">运费： 
+                            <p>运费： 
                                 <template v-if="item.currentPayMethod === 'ONLINE'">
                                     <span class="gold">{{ item.payAndDeliveryAndfreightMap.ONLINE[item.currentDeliveryMethod] | toFix2  }}</span>
                                 </template> 
@@ -66,7 +66,14 @@
                                     <span class="gold">{{ item.payAndDeliveryAndfreightMap.CASH_DELIVERY[item.currentDeliveryMethod] | toFix2  }}</span>
                                 </template>
                             </p>
-                            <p v-else>运费： <span class="gold">{{ item.shopExpress | toFix2  }}</span></p>
+                            <!-- <p v-else>运费：  
+                                <template v-if="item.currentPayMethod === 'ONLINE'">
+                                    <span class="gold">{{ item.payAndDeliveryAndfreightMap.ONLINE[item.currentDeliveryMethod] | toFix2  }}</span>
+                                </template> 
+                                <template v-else>
+                                    <span class="gold">{{ item.payAndDeliveryAndfreightMap.CASH_DELIVERY[item.currentDeliveryMethod] | toFix2  }}</span>
+                                </template>
+                            </p> -->
                         </div>
                         <div class="right">
                             <i class="icon-xiangyou"></i>
