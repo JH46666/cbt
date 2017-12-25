@@ -106,7 +106,7 @@
                 } else {
                     this.express = 'express'
                 }
-                this.$api.post('/oteao/order/orderProductList',{orderId: this.myData.orderId,device: 'WAP'},res => {
+                this.$api.post('/oteao/order/sellerOrderProductList',{orderId: this.myData.orderId,device: 'WAP'},res => {
                     this.list = res.data.mainOrder.products
                 })
             })
