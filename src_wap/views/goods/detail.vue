@@ -91,7 +91,7 @@
                                 暂无报价
                             </div>
                         </template>
-                        <template  v-if="!loginId && state != 'ACTIVE'">
+                        <template  v-if="!loginId || state != 'ACTIVE'">
                             <div class="off_shelf_tips">
                                 询价
                             </div>

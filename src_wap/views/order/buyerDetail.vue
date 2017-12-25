@@ -180,12 +180,19 @@
                     <span>返积分：{{  orderDetailData.giveJfSum }}分</span>
                     <span>余额支付：￥{{ orderDetailData.useStoreValue | toFix2 }}</span>
                 </div>
-                <div class="price_total_item"  v-if="orderDetailData.payType!='CASH_DELIVERY'">
-                    <span>￥{{  orderDetailData.orderSum | toFix2 }}</span>实际付款：
-                </div>
-                <div class="price_total_item"  v-else>
-                    <span>￥{{  orderDetailData.orderSum | toFix2 }}</span>待付款：
-                </div>
+                <template v-if="orderDetailData.payType!='CASH_DELIVERY'">
+                    <div class="price_total_item">
+                        <span>￥{{  orderDetailData.orderSum | toFix2 }}</span>实际付款：
+                    </div>
+                </template>
+                <template v-else>
+                    <div class="price_total_item" v-if="orderDetailData.orderStatus === 'WAIT_PAY'">
+                        <span>￥{{  orderDetailData.orderSum | toFix2 }}</span>待付款：
+                    </div>
+                    <div class="price_total_item"  v-else>
+                        <span>￥{{  orderDetailData.orderSum | toFix2 }}</span>实际付款：
+                    </div>
+                </template>
             </div>
         </div>
         <!-- 下单时间 -->
@@ -274,24 +281,26 @@ export default {
                 subOrderNo: child,
                 orderNo: parent
             }
-            MessageBox.confirm('确定确认收货?').then(action => {
-                this.$api.post('/oteao/order/subOrderConfimReceipt',data,res => {
-                    this.$toast({
-                        message: `订单【${orderNo}】已确认收货`,
-                        iconClass: 'icon icon-success'
-                    });
-                    setTimeout(()=>{
-                        window.location.reload();
-                    },200)
-                },res=>{
-                    this.$toast({
-                        message: res.errorMsg,
-                        iconClass: 'icon icon-fail'
-                    });
-                })
-            },action => {
-                console.log('cancel!');
-            });
+            MessageBox.confirm('确定确认收货?').then(res => {
+                if(res === 'cancel'){
+                    console.log('cancel!');
+                }else{
+                    this.$api.post('/oteao/order/subOrderConfimReceipt',data,res => {
+                        this.$toast({
+                            message: `订单【${orderNo}】已确认收货`,
+                            iconClass: 'icon icon-success'
+                        });
+                        return setTimeout(()=>{
+                            window.location.reload();
+                        },200)
+                    },res=>{
+                        return this.$toast({
+                            message: res.errorMsg,
+                            iconClass: 'icon icon-fail'
+                        });
+                    })
+                }
+            })
         },
         getOrderList(orderId) {
             let data = {
@@ -364,24 +373,27 @@ export default {
             let data = {
                 orderNo: orderNumber
             }
-            MessageBox.confirm('确定确认收货?').then(action => {
-                this.$api.post('/oteao/order/confimReceipt',data,res => {
-                    this.$toast({
-                        message: `订单【${orderNo}】已确认收货`,
-                        iconClass: 'icon icon-success'
-                    });
-                    setTimeout(()=>{
-                        window.location.reload();
-                    },200)
-                },res=>{
-                    this.$toast({
-                        message: res.errorMsg,
-                        iconClass: 'icon icon-fail'
-                    });
-                })
-            },action => {
-                console.log('cancel!');
-            });
+            MessageBox.confirm('确定确认收货?').then(res => {
+                if(res === 'cancel'){
+                    console.log('cancel!');
+                }else{
+                    this.$api.post('/oteao/order/confimReceipt',data,res => {
+                        console.log(res);
+                        this.$toast({
+                            message: `订单【${orderNo}】已确认收货`,
+                            iconClass: 'icon icon-success'
+                        });
+                        return setTimeout(()=>{
+                            window.location.reload();
+                        },200)
+                    },res=>{
+                        return this.$toast({
+                            message: res.errorMsg,
+                            iconClass: 'icon icon-fail'
+                        });
+                    })
+                }
+            })
         },
         regStar(val) {                 // 隐藏会员账号
             if(val == ''){

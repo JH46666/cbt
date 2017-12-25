@@ -59,6 +59,8 @@
                     <div class="search_wrapper">
                         <input type="text" placeholder="搜索商品" v-model="searchKeyWord" />
                         <i class="iconfont" @click="searchMethod">&#xe649;</i>
+                        <span @click="resetList">取消</span>
+                        <i class="iconfont icon-guanbi2" :class="{on: searchKeyWord.length>0}" @click="resetSeachText"></i>
                     </div>
                 </div>
                 <div class="dialig_list">
@@ -142,6 +144,19 @@ export default {
         })
     },
     methods: {
+        resetSeachText() {
+            this.searchKeyWord = '';
+        },
+        resetList() {
+            this.searchKeyWord = '';
+            this.getSearchList(this.searchKeyWord).then((res) => {
+                this.proList = res.data;
+                for(let obj of this.proList){
+                    this.$set(obj,'checked',false);
+                }
+            })
+            this.selectPro = false;
+        },
         toFixed(val) {
             return parseFloat(val).toFixed(2);
 
@@ -204,7 +219,7 @@ export default {
                     obj.specialPrice = ((parseFloat(obj.discount)/10)*obj.proPrice).toFixed(2);
                 }else if(obj.specialPrice == '' && obj.discount == ''){
                     return Toast ({
-                        message:`请填写特价商品的折扣折或折扣`,
+                        message:`请填写特价商品的折扣价或折扣`,
                         iconClass: 'icon icon-fail'
                     })
                 }
