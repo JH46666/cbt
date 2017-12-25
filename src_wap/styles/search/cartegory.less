@@ -71,8 +71,9 @@
             top: .96rem;
         }
         .first-cat{
-            .flex;
-            .flex-dir(row);
+            // .clearfix;
+            // .flex;
+            // .flex-dir(row);
             overflow-x: scroll;
             overflow-y: hidden;
             white-space: nowrap;
@@ -83,6 +84,8 @@
             .cat-item{
                 .position(r);
                 // float: left;
+                display: inline-block;
+                // padding: .25rem .33rem .25rem .33rem;
                 span{
                     display: block;
                     padding: .25rem .33rem .25rem .33rem;
