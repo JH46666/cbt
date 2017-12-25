@@ -266,10 +266,24 @@
         .flex;
         bottom: 0;
         z-index: 100;
-        .price{
+        .left{
             .flex-1;
-            .algin(r);
-            .paddingR(.3rem);
+            &.serverPrice{
+                .paddingT(.2rem);
+                p{
+                    .line(1.5);
+                    .algin(r);
+                    .paddingR(.3rem);
+                }
+            }
+            .price{
+                .line(1.04rem);
+                .algin(r);
+                .paddingR(.3rem);
+            }
+            .tips{
+                .color(@b-9);
+            }
         }
         .mint-button{
             .w(2.46rem);
@@ -377,6 +391,24 @@
                 }
             }
         }
+        .edit-12-25{
+            margin-bottom: .4rem;
+            .left{
+                .flex_num(3);
+                .flex;
+                .text-right{
+                    .position(r);
+                    top: .1rem;
+                }
+                .tips{
+                    .fontSize(.22rem);
+                    .color(@b-9);
+                }
+            }
+            .right{
+                .flex-1;
+            }
+        }
         span.icon{
             top: .16rem;
             margin-right: .2rem;
@@ -409,7 +441,7 @@
         // 门店自提
         .indoor-wrap{
             .bg(#fafafa);
-            .h(2.5rem);
+            .h(2.3rem);
             .tips{
                 .paddingRow(.35rem);
                 .fontSize(.28rem);

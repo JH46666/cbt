@@ -18,8 +18,13 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="check-item delivery">
-                            <div class="left"><i class="icon-huodaofukuan"></i> 货到付款</div>
+                        <div class="check-item delivery edit-12-25">
+                            <div class="left"><i class="icon-huodaofukuan"></i>
+                                <div class="text-right">
+                                    <p>货到付款</p>
+                                    <p class="tips">需依待付金额收取<span class="gold">3%</span>手续费，最低5元</p>
+                                </div>
+                            </div>
                             <div class="right">
                                 <label :class="{checked:active.currentPayMethod === 'CASH_DELIVERY'}">
                                     <input type="radio" value="CASH_DELIVERY" v-model="active.currentPayMethod">
