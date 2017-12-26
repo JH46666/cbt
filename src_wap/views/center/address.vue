@@ -38,6 +38,7 @@
         methods: {
             // 设置默认地址
             setDefault(i) {
+                if(this.value[i].isDefault === 1) return;
                 this.$api.post('/oteao/deliveryAddress/updateDefauleAddress',{
                     deliveryAddressId: this.value[i].id
                 },res => {
@@ -80,6 +81,7 @@
                     this.value = res.data;
                 })
             },
+            // 结算页设置地址
             setBalance(val) {
                 let edit = Boolean(sessionStorage.edit);
                 if(!edit) return;
