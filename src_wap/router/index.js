@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import store from 'store'
+import * as $tool from 'utils/index.js';
 
 Vue.use(Router)
 
@@ -418,6 +419,14 @@ const router = new Router({
 					}
 				},
 			]
+		},
+		{
+			path: 'wxlogin',
+			name: '微信登录第三页面',
+			component: resolve => require(['@/views/login/wxLogin.vue'],resolve),
+			meta: {
+				hideFooter: true
+			}
 		}
 	]
 })
@@ -425,7 +434,10 @@ const router = new Router({
 router.beforeEach((to,from,next) => {
 	store.commit('RECORD_ROUTER',{type:'to',data:to})
 	store.commit('RECORD_ROUTER',{type:'from',data:from})
+
+	// 需要判断是否在微信内部，是的话要授权登录
 	next()
+
 })
 
 
