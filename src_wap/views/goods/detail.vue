@@ -429,14 +429,14 @@ export default {
                             return;
                         } else {
                             if(store.state.member.orgDTO){
-                                vm.$router.push({
+                                this.$router.push({
                                     name: '茶帮通注册3',
                                     query: {
                                         edit: 'buyer'
                                     }
                                 })
                             }else{
-                                vm.$router.push({
+                                this.$router.push({
                                     name: '茶帮通注册2'
                                 })
                             }
@@ -653,14 +653,14 @@ export default {
                            return ;
                        } else {
                            if(store.state.member.orgDTO){
-                               vm.$router.push({
+                               this.$router.push({
                                    name: '茶帮通注册3',
                                    query: {
                                        edit: 'buyer'
                                    }
                                })
                            }else{
-                               vm.$router.push({
+                               this.$router.push({
                                    name: '茶帮通注册2'
                                })
                            }
@@ -722,14 +722,14 @@ export default {
                            return;
                        } else {
                            if(store.state.member.orgDTO){
-                               vm.$router.push({
+                               this.$router.push({
                                    name: '茶帮通注册3',
                                    query: {
                                        edit: 'buyer'
                                    }
                                })
                            }else{
-                               vm.$router.push({
+                               this.$router.push({
                                    name: '茶帮通注册2'
                                })
                            }

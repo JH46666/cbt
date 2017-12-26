@@ -43,7 +43,12 @@
         <!-- 新闻 -->
         <div class="news_wrapper">
             <div class="news_item">
+                <div class="news_item_left">
 
+                </div>
+                <div class="news_item_right">
+                    
+                </div>
             </div>
         </div>
         <!-- 红包茶叶 -->
