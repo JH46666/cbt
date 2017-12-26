@@ -200,15 +200,6 @@
                 list: [],                       // 商品列表
             }
         },
-        computed: {
-            orderPrice() {
-                try {
-                    return this.$tool.math.eval(`${this.myData.orderAllSum} - ${this.myData.freightSum}`)
-                } catch (error) {
-                    return 0
-                }
-            }
-        },
         methods: {
             // 填写备注
             showRemark() {
