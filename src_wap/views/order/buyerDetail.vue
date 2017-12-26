@@ -111,10 +111,16 @@
                             </div>
                         </div>
                         <div class="order_head"  v-if="orderDetailData.expressDeliveryCode != 'get_self'">
-                            <div class="order_express">
+                            <div class="order_express" v-if="orderDetailData.payType!='CASH_DELIVERY'">
                                 <img src="../../assets/images/sfkd.png" v-if="orderDetailData.expressDeliveryCode == 'ship_sf'" />
                                 <img src="../../assets/images/stkd.png" v-if="orderDetailData.expressDeliveryCode == 'ship_sto'" />
                                 <img src="../../assets/images/emskd.png" v-if="orderDetailData.expressDeliveryCode == 'ship_ems'" /> {{ orderDetailData.expressDeliveryName }}
+                                <span>{{ orderDetailData.expressNo }}</span>
+                            </div>
+                            <div class="order_express" v-else>
+                                <img src="../../assets/images/sfkd.png" v-if="orderDetailData.expressDeliveryCode == 'ship_sf'" />
+                                <img src="../../assets/images/stkd.png" v-if="orderDetailData.expressDeliveryCode == 'ship_sto'" />
+                                <img src="../../assets/images/emskd.png" v-if="orderDetailData.expressDeliveryCode == 'ship_ems'" /> {{ orderDetailData.expressDeliveryName }}-货到付款
                                 <span>{{ orderDetailData.expressNo }}</span>
                             </div>
                         </div>
@@ -186,11 +192,11 @@
                     </div>
                 </template>
                 <template v-else>
-                    <div class="price_total_item" v-if="orderDetailData.orderStatus === 'WAIT_PAY'">
-                        <span>￥{{  orderDetailData.orderSum | toFix2 }}</span>待付款：
+                    <div class="price_total_item" v-if="orderDetailData.orderStatus === 'FINISH'">
+                        <span>￥{{  orderDetailData.orderSum | toFix2 }}</span>：实际付款：
                     </div>
                     <div class="price_total_item"  v-else>
-                        <span>￥{{  orderDetailData.orderSum | toFix2 }}</span>实际付款：
+                        <span>￥{{  orderDetailData.orderSum | toFix2 }}</span>待付款
                     </div>
                 </template>
             </div>

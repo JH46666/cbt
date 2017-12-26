@@ -221,7 +221,7 @@
                         } else {
                             if(store.state.member.orgDTO){
                                 vm.$router.push({
-                                    name: '茶帮通注册3',
+                                    name: '茶帮通注册5',
                                     query: {
                                         edit: 'buyer'
                                     }
@@ -247,7 +247,7 @@
                         } else {
                             if(store.state.member.orgDTO){
                                 vm.$router.push({
-                                    name: '茶帮通注册3',
+                                    name: '茶帮通注册5',
                                     query: {
                                         edit: 'buyer'
                                     }
