@@ -259,14 +259,6 @@ import $api from 'api';
                 })
             },
             saveMethod(flag) {
-                let status = store.state.member.memberAccount.status;
-                if(status === 'FREEZE') {
-                    return this.$messageBox({
-                        title:'提示',
-                        message:`您因违规操作而被冻结无法发布商品，若有疑问，请联系客服400-996-3399`,
-                        confirmButtonText: '我知道了'
-                    })
-                }
                 this.disabledBol = true;
                 this.loading1 = true;
                 this.loading2 = true;
@@ -274,6 +266,18 @@ import $api from 'api';
                     this.flag = 0;
                 }else{
                     this.flag = 1;
+                    let status = store.state.member.memberAccount.status;
+                    if(status === 'FREEZE') {
+                        return this.$messageBox({
+                            title:'提示',
+                            message:`您因违规操作而被冻结无法发布商品，若有疑问，请联系客服400-996-3399`,
+                            confirmButtonText: '我知道了'
+                        }).then(res => {
+                            this.disabledBol = false;
+                            this.loading1 = false;
+                            this.loading2 = false;
+                        });
+                    }
                 }
                 this.doUpload(flag).then(() => {
                     this.onlySave(this.flag);

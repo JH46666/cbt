@@ -67,6 +67,14 @@
                     <input type="text" id="5" v-model="formData.shopAddress" placeholder="必填项，请填写详细地址" maxlength="50" />
                 </div>
             </div>
+            <div class="select_item" v-if="registClass === 1">
+                <div class="select_item_label">
+                    <label for="8">服务电话</label>
+                </div>
+                <div class="select_item_content">
+                    <input type="number" id="8" v-model="formData.shopResTel" placeholder="必填项，请填写服务电话" maxlength="11" />
+                </div>
+            </div>
             <div class="select_item pay_item" v-if="registClass === 1">
                 <div class="select_item_label">
                     <label for="7">支付宝</label>
@@ -185,7 +193,8 @@ export default {
                 shopTel: '',
                 shopArea: '',
                 shopAddress: '',
-                shopPayNumber: ''
+                shopPayNumber: '',
+                shopResTel: ''
             },
             shopImg: [],
             licenseImg: [],
@@ -240,6 +249,7 @@ export default {
         if(this.$route.query.edit === 'seller'){
             this.registClass = 1;
             this.getData(store.state.member.orgDTO.orgID);
+
             if(store.state.member.shop.shopStatus == 1){
                 this.flag = false;
                 this.onlyName = '成为卖家';
@@ -309,6 +319,7 @@ export default {
                 sysId: 1
             },res => {
                 this.formData.shopPayNumber = res.data.alipayAccount;
+                this.formData.shopResTel = res.data.businessTelephone;
             })
         },
         getAddress(obj) {
@@ -470,6 +481,7 @@ export default {
                 data = {
                     'alipayAccount': this.formData.shopPayNumber,
                     "areaCode": this.addressObj.areaCode,
+                    'businessTelephone': this.formData.shopResTel,
                     "cityCode": this.addressObj.cityCode,
                     "contactor": this.formData.shopTel,
                     "detailAddress": this.formData.shopAddress,

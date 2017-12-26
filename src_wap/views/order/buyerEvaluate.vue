@@ -191,30 +191,23 @@ export default {
     mounted () {
        this.wxFlag = this.$tool.isWx;
   　},
-    beforeRouteLeave(next) {
+    beforeRouteLeave(to, from, next) {
         if(!this.postDisAble && !this.flag){
             this.$messageBox({
                 title:'提示',
                 message:`确定放弃评价?`,
                 showCancelButton: true,
-                cancelButtonText: '取消放弃',
+                cancelButtonText: '放弃评价',
                 confirmButtonText: '继续评价'
             }).then(res => {
                 if(res === 'cancel') {
-                    this.$router.push({
-                        name: '订单详情',
-                        query: {
-                            orderId: this.orderId
-                        }
-                    })
-                    location.reload();
+                    next();
                 } else {
                     return;
                 }
             })
-            return ;
         }else{
-            this.$router.go(-1);
+            next();
         }
     },
     beforeRouteEnter(to, from, next) {
