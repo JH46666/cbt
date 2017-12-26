@@ -54,7 +54,11 @@
             <section class="price-pannel">
                 <div class="item">
                     <div class="left">商品金额</div>
-                    <div class="right">￥{{ orderPrice | toFix2  }}</div>
+                    <div class="right">￥{{ myData.productPaySum | toFix2  }}</div>
+                </div>
+                <div class="item">
+                    <div class="left">内部优惠</div>
+                    <div class="right">￥{{  0 - myData.internalDiscountSum | toFix2  }}</div>
                 </div>
                 <div class="item">
                     <div class="left">运费</div>
@@ -196,15 +200,6 @@
                 list: [],                       // 商品列表
             }
         },
-        computed: {
-            orderPrice() {
-                try {
-                    return this.$tool.math.eval(`${this.myData.orderAllSum} - ${this.myData.freightSum}`)
-                } catch (error) {
-                    return 0
-                }
-            }
-        },
         methods: {
             // 填写备注
             showRemark() {
@@ -282,7 +277,6 @@
                 },res =>{
                     this.myData = res.data || {};
                     this.remark = this.myData.customerRemark || '';
-                    // this.orderPrice = this.$tool.math.eval(`${this.myData.orderSum} - ${this.myData.freightSum}`);
 
                     this.$api.post('/oteao/order/sellerOrderProductList',{orderId: this.myData.orderId,device: 'WAP'},res => {
                         this.list = res.data.mainOrder.products
