@@ -7,7 +7,7 @@
         <div class="floor1" v-if="totalAmount > 0">
             <p class="remaining color_6">余额 <span class="color_9">￥{{ totalAmount | toFix2 }}</span></p>
             <ul class="flex use_box">
-                <li class="flex-1" @click="isUse = true" :class="{'on': isUse}">使用 ￥{{ totalAmount > myData.orderSum ? myData.orderSum : totalAmount | toFix2 }}</li>
+                <li class="flex-1" @click="isUse = true" :class="{'on': isUse}">使用 ￥{{ totalAmount > usePrice ? usePrice : totalAmount | toFix2 }}</li>
                 <li class="flex-1" @click="isUse = false" :class="{'on': !isUse}">不使用</li>
             </ul>
         </div>
@@ -78,6 +78,10 @@
                 } catch (error) {
                     return 0
                 }
+            },
+            // 要支付的金额
+            usePrice() {
+                return this.$route.query.type === 'onlineanddelivery' ? this.myData.orderSum - this.myData.cashDeliverySum : this.myData.orderSum
             }
         },
         methods:{
@@ -274,7 +278,7 @@
                 this.isUse = true;
             }
             this.type = this.$route.query.type;
-            alert(this.payId)
+            // alert(this.payId)
         },
         beforeRouteEnter(to, from, next) {
             if(store.state.member.member.id) {

@@ -3,7 +3,7 @@
     <div class="may_like">
         <h4 class="tit_like"><span>您可能喜欢</span></h4>
         <div class="search_pros">
-            <ul class="may_pros_list clearfix">
+            <ul class="may_pros_list clearfix" v-if="mayProducts.length > 0">
                 <li class="may_pro_item" v-for="mayItem in mayProducts">
                     <router-link :to="'/detail?proSku=' + mayItem.proNo">
                         <goods-img imgWidth="2.6rem" :imgUrl="mayItem.proImg" :tagUrl="mayItem.tagImage"></goods-img>
@@ -37,7 +37,9 @@
                     'pageSize': 10
                 },res => {
                     this.mayProducts = res.data || []
-                },res => {})
+                },res => {
+                    this.mayProducts = []
+                })
             },
             // 加入购物车
             addCart(item) {

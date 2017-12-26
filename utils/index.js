@@ -10,7 +10,7 @@ let isWx = (function () {
 
 // 是否登陆
 let isLogin = () => {
-    return Boolean(store.state.member.member.id || store.state.member.memberAccount.status === 'ACTIVE')
+    return Boolean(store.state.member.member.id) && store.state.member.memberAccount.status === 'ACTIVE'
 }
 
 // 格式化日期

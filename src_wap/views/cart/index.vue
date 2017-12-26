@@ -67,7 +67,7 @@
                                 <p>每单最低购{{item.buyLowLimit}}，您低于最低购买数量啦~</p>
                             </div>
                             <div class="tips_div" v-if="!!item.limitMsg">
-                                <p>{{ limitMsg }}</p>
+                                <p>{{ item.limitMsg }}</p>
                             </div>
                             <div class="del-block" v-if="$tool.isiOS" @click="delItem(item,true)">
                                 <i class="iconfont">&#xe60d;</i>

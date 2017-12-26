@@ -134,7 +134,7 @@
             </section> -->
 
 
-            <section class="bd-address" @click="gotoTop">
+            <section class="bd-address" @click="gotoTop" v-if="Object.keys(address).length > 0">
                 收货地址：{{ (address.provinceName + address.cityName + address.areaName + address.detailAddress) || '&nbsp;' }}&nbsp;&nbsp;&nbsp;&nbsp;{{ address.recName }} {{ address.mobilePhone }}
             </section>
         </div>
