@@ -379,7 +379,8 @@
                         item.buyLowLimit = res.data.buyLowLimit;
                         item.buyUpperLimit = res.data.buyUpperLimit;
                         // 更新购物车数量
-                        this.$store.dispatch('queryCartTotal');
+                        // this.$store.dispatch('queryCartTotal');
+                        this.getData();
                         resolve(res);
                     },res => {
                         reject(res);
@@ -526,7 +527,7 @@
                         for ( let todo of list) {
                             for ( let i = 0; i < todo.cartList.length; i++) {
                                 // 勾选
-                                todo.cartList[i].checked = false;
+                                todo.cartList[i].checked = true;
                                 // 设置旧的购买量
                                 todo.cartList[i].oldBuy = todo.cartList[i].buyNum;
                                 // 左划
