@@ -53,7 +53,7 @@
                 <i class="iconfont">&#xe618;</i>
             </div>
             <div class="detail_img">
-                <mt-swipe :auto="2000" :show-indicators="false" @change="handleChange">
+                <mt-swipe :auto="5000" :show-indicators="false" @change="handleChange">
                     <mt-swipe-item v-for="(item,index) in detailData.productImgList" :key="index">
                         <img :src="item.imgUrl" :key="index">
                     </mt-swipe-item>
@@ -116,7 +116,7 @@
                                         <p v-else-if="detailData.orgFreightTemplateVoList && detailData.orgFreightTemplateVoList.length > 0">邮费依实际重量计算运费</p>
                                     </template>
                                     <template v-else>
-                                        <p>全场茶叶在线支付满500免包邮</p>
+                                        <p>全场茶叶在线支付满500包邮</p>
                                     </template>
                                 </div>
                             </div>
@@ -402,58 +402,60 @@ export default {
             }
         },
         addCartInfo() {
-            let status = store.state.member.memberAccount.status;
-            if(!store.state.member.member.id){
-               return this.$router.push({name: '账户登录'});
-            }
-            if(status === 'WAIT_AUDIT') {
-                return this.$messageBox({
-                    title:'提示',
-                    message:`您的账号审核中，只有正式会员才以买买买，若有疑问，请联系客服400-996-3399`,
-                    confirmButtonText: '我知道了'
-                }).then(res => {
-                     this.selected = null;
-                });
-            }
-            if(status === 'INACTIVE' || status == 'AUDIT_NO_PASS') {
-                return this.$messageBox({
-                    title:'提示',
-                    message:`您的账号审核未通过，只有正式会员才可以买买买，若有疑问，请联系客服400-996-3399`,
-                    showCancelButton: true,
-                    cancelButtonText: '取消',
-                    confirmButtonText: '完善资料'
-                }).then(res => {
-                    if(res === 'cancel') {
-                        this.selected = null;
-                        return;
-                    } else {
-                        if(store.state.member.orgDTO){
-                            vm.$router.push({
-                                name: '茶帮通注册3',
-                                query: {
-                                    edit: 'buyer'
-                                }
-                            })
-                        }else{
-                            vm.$router.push({
-                                name: '茶帮通注册2'
-                            })
+            this.$store.dispatch('getMemberData').then(()=>{
+                let status = store.state.member.memberAccount.status;
+                if(!store.state.member.member.id){
+                   return this.$router.push({name: '账户登录'});
+                }
+                if(status === 'WAIT_AUDIT') {
+                    return this.$messageBox({
+                        title:'提示',
+                        message:`您的账号审核中，只有正式会员才以买买买，若有疑问，请联系客服400-996-3399`,
+                        confirmButtonText: '我知道了'
+                    }).then(res => {
+                         this.selected = null;
+                    });
+                }
+                if(status === 'INACTIVE' || status == 'AUDIT_NO_PASS') {
+                    return this.$messageBox({
+                        title:'提示',
+                        message:`您的账号审核未通过，只有正式会员才可以买买买，若有疑问，请联系客服400-996-3399`,
+                        showCancelButton: true,
+                        cancelButtonText: '取消',
+                        confirmButtonText: '完善资料'
+                    }).then(res => {
+                        if(res === 'cancel') {
+                            this.selected = null;
+                            return;
+                        } else {
+                            if(store.state.member.orgDTO){
+                                vm.$router.push({
+                                    name: '茶帮通注册3',
+                                    query: {
+                                        edit: 'buyer'
+                                    }
+                                })
+                            }else{
+                                vm.$router.push({
+                                    name: '茶帮通注册2'
+                                })
+                            }
                         }
-                    }
-                })
-            }
-            if(status === 'FREEZE') {
-                return this.$messageBox({
-                    title:'提示',
-                    message:`您的账号因违规操作而被冻结无法买买买~若有疑问，请联系客服400-996-3399`,
-                    confirmButtonText: '我知道了'
-                }).then(res => {
-                     this.selected = null;
-                });
-            }
-            this.$store.dispatch('addCart',{proId:this.detailData.productExtInfo.proId,buyNum:this.goodsCount}).then(res=>{
-                console.log(res);
-            },res=>{});
+                    })
+                }
+                if(status === 'FREEZE') {
+                    return this.$messageBox({
+                        title:'提示',
+                        message:`您的账号因违规操作而被冻结无法买买买~若有疑问，请联系客服400-996-3399`,
+                        confirmButtonText: '我知道了'
+                    }).then(res => {
+                         this.selected = null;
+                    });
+                }
+                this.$store.dispatch('addCart',{proId:this.detailData.productExtInfo.proId,buyNum:this.goodsCount}).then(res=>{
+                    console.log(res);
+                },res=>{});
+            })
         },
         getMoreComment() {
             this.page++;
@@ -624,123 +626,127 @@ export default {
            }
        },
        openCart() {
-           let status = store.state.member.memberAccount.status;
-           if(!store.state.member.member.id){
-              return this.$router.push({name: '账户登录'});
-           }
-           if(status === 'WAIT_AUDIT') {
-               return this.$messageBox({
-                   title:'提示',
-                   message:`您的账号审核中，只有正式会员才以买买买，若有疑问，请联系客服400-996-3399`,
-                   confirmButtonText: '我知道了'
-               }).then(res => {
-                    this.selected = null;
-               })
-           }
-           if(status === 'INACTIVE' || status == 'AUDIT_NO_PASS') {
-               return this.$messageBox({
-                   title:'提示',
-                   message:`您的账号审核未通过，只有正式会员才可以买买买，若有疑问，请联系客服400-996-3399`,
-                   showCancelButton: true,
-                   cancelButtonText: '取消',
-                   confirmButtonText: '完善资料'
-               }).then(res => {
-                   if(res === 'cancel') {
-                       this.selected = null;
-                       return ;
-                   } else {
-                       if(store.state.member.orgDTO){
-                           vm.$router.push({
-                               name: '茶帮通注册3',
-                               query: {
-                                   edit: 'buyer'
-                               }
-                           })
-                       }else{
-                           vm.$router.push({
-                               name: '茶帮通注册2'
-                           })
+           this.$store.dispatch('getMemberData').then(()=>{
+               let status = store.state.member.memberAccount.status;
+               if(!store.state.member.member.id){
+                  return this.$router.push({name: '账户登录'});
+               }
+               if(status === 'WAIT_AUDIT') {
+                   return this.$messageBox({
+                       title:'提示',
+                       message:`您的账号审核中，只有正式会员才以买买买，若有疑问，请联系客服400-996-3399`,
+                       confirmButtonText: '我知道了'
+                   }).then(res => {
+                        this.selected = null;
+                   })
+               }
+               if(status === 'INACTIVE' || status == 'AUDIT_NO_PASS') {
+                   return this.$messageBox({
+                       title:'提示',
+                       message:`您的账号审核未通过，只有正式会员才可以买买买，若有疑问，请联系客服400-996-3399`,
+                       showCancelButton: true,
+                       cancelButtonText: '取消',
+                       confirmButtonText: '完善资料'
+                   }).then(res => {
+                       if(res === 'cancel') {
+                           this.selected = null;
+                           return ;
+                       } else {
+                           if(store.state.member.orgDTO){
+                               vm.$router.push({
+                                   name: '茶帮通注册3',
+                                   query: {
+                                       edit: 'buyer'
+                                   }
+                               })
+                           }else{
+                               vm.$router.push({
+                                   name: '茶帮通注册2'
+                               })
+                           }
                        }
-                   }
+                   })
+               }
+               if(status === 'FREEZE') {
+                   return this.$messageBox({
+                       title:'提示',
+                       message:`您的账号因违规操作而被冻结无法买买买~若有疑问，请联系客服400-996-3399`,
+                       confirmButtonText: '我知道了'
+                   }).then(res => {
+                        this.selected = null;
+                   })
+               }
+               this.$router.push({
+                   name: '购物车'
                })
-           }
-           if(status === 'FREEZE') {
-               return this.$messageBox({
-                   title:'提示',
-                   message:`您的账号因违规操作而被冻结无法买买买~若有疑问，请联系客服400-996-3399`,
-                   confirmButtonText: '我知道了'
-               }).then(res => {
-                    this.selected = null;
-               })
-           }
-           this.$router.push({
-               name: '购物车'
            })
        },
        openDialog() {
-           let status = store.state.member.memberAccount.status;
-           if(!store.state.member.member.id){
-               return this.$messageBox({
-                   title:'提示',
-                   message:`您尚未登录，无法查看商家信息`,
-                   showCancelButton: true,
-                   cancelButtonText: '取消',
-                   confirmButtonText: '去登录'
-               }).then(res => {
-                   if(res === 'cancel') {
-                       this.selected = null;
-                       return;
-                   } else {
-                       this.$router.push({name: '账户登录'})
-                   }
-               })
-           }
-           if(status === 'WAIT_AUDIT') {
-               return this.$messageBox({
-                   title:'提示',
-                   message:`您的账号审核中，无法查看商家信息~若有疑问，请联系客服400-996-3399`,
-                   confirmButtonText: '我知道了'
-               }).then(res => {
-                    this.selected = null;
-               });
-           }
-           if(status === 'INACTIVE' || status == 'AUDIT_NO_PASS') {
-               return this.$messageBox({
-                   title:'提示',
-                   message:`您的账号审核未通过，只有正式会员才可查看，若有疑问，请联系客服400-996-3399`,
-                   showCancelButton: true,
-                   cancelButtonText: '取消',
-                   confirmButtonText: '完善资料'
-               }).then(res => {
-                   if(res === 'cancel') {
-                       this.selected = null;
-                       return;
-                   } else {
-                       if(store.state.member.orgDTO){
-                           vm.$router.push({
-                               name: '茶帮通注册3',
-                               query: {
-                                   edit: 'buyer'
-                               }
-                           })
-                       }else{
-                           vm.$router.push({
-                               name: '茶帮通注册2'
-                           })
+           this.$store.dispatch('getMemberData').then(()=>{
+               let status = store.state.member.memberAccount.status;
+               if(!store.state.member.member.id){
+                   return this.$messageBox({
+                       title:'提示',
+                       message:`您尚未登录，无法查看商家信息`,
+                       showCancelButton: true,
+                       cancelButtonText: '取消',
+                       confirmButtonText: '去登录'
+                   }).then(res => {
+                       if(res === 'cancel') {
+                           this.selected = null;
+                           return;
+                       } else {
+                           this.$router.push({name: '账户登录'})
                        }
-                   }
-               })
-           }
-           if(status === 'FREEZE') {
-               return this.$messageBox({
-                   title:'提示',
-                   message:`您的账号因违规操作而被冻结无法查看商家信息~若有疑问，请联系客服400-996-3399`,
-                   confirmButtonText: '我知道了'
-               }).then(res => {
-                    this.selected = null;
-               });
-           }
-           this.showOrHide = true;
+                   })
+               }
+               if(status === 'WAIT_AUDIT') {
+                   return this.$messageBox({
+                       title:'提示',
+                       message:`您的账号审核中，无法查看商家信息~若有疑问，请联系客服400-996-3399`,
+                       confirmButtonText: '我知道了'
+                   }).then(res => {
+                        this.selected = null;
+                   });
+               }
+               if(status === 'INACTIVE' || status == 'AUDIT_NO_PASS') {
+                   return this.$messageBox({
+                       title:'提示',
+                       message:`您的账号审核未通过，只有正式会员才可查看，若有疑问，请联系客服400-996-3399`,
+                       showCancelButton: true,
+                       cancelButtonText: '取消',
+                       confirmButtonText: '完善资料'
+                   }).then(res => {
+                       if(res === 'cancel') {
+                           this.selected = null;
+                           return;
+                       } else {
+                           if(store.state.member.orgDTO){
+                               vm.$router.push({
+                                   name: '茶帮通注册3',
+                                   query: {
+                                       edit: 'buyer'
+                                   }
+                               })
+                           }else{
+                               vm.$router.push({
+                                   name: '茶帮通注册2'
+                               })
+                           }
+                       }
+                   })
+               }
+               if(status === 'FREEZE') {
+                   return this.$messageBox({
+                       title:'提示',
+                       message:`您的账号因违规操作而被冻结无法查看商家信息~若有疑问，请联系客服400-996-3399`,
+                       confirmButtonText: '我知道了'
+                   }).then(res => {
+                        this.selected = null;
+                   });
+               }
+               this.showOrHide = true;
+           })
        }
     },
     watch: {
