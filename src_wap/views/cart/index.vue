@@ -74,7 +74,7 @@
                             </div>
                         </div>
                         <!-- 活动&赠品 -->
-                        <template v-if="list.giftList ? list.giftList.length > 0 : false">
+                        <template v-if="list.giftList ? list.giftList.length > 0 && !edit  : false">
                             <div class="pro_item"  v-for="todo in arrayGift(list.giftList)" :key="todo.proId">
                                 <!-- 活动&赠品caption -->
                                 <div class="pro_free_caption">
