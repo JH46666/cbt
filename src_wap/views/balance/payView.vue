@@ -75,8 +75,8 @@
         </div>
         <!-- 猜你喜欢 -->
         <may-like v-if="$route.name === '结算显示' && !$route.query.fail || $route.name === '货到付款成功'"></may-like>
-        <div class="go-index">
-            <mt-button type="default" @click="$router.push('/')" v-if="$route.query.fail" class="goback-index">返回首页</mt-button>
+        <div class="go-index" v-if="$route.query.fail">
+            <mt-button type="default" @click="$router.push('/')" class="goback-index">返回首页</mt-button>
         </div>
     </div>
 </template>

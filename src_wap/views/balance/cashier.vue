@@ -7,7 +7,7 @@
         <div class="floor1" v-if="totalAmount > 0">
             <p class="remaining color_6">余额 <span class="color_9">￥{{ totalAmount | toFix2 }}</span></p>
             <ul class="flex use_box">
-                <li class="flex-1" @click="isUse = true" :class="{'on': isUse}">使用 ￥{{ totalAmount > myData.orderSum ? myData.orderSum : totalAmount | toFix2 }}</li>
+                <li class="flex-1" @click="isUse = true" :class="{'on': isUse}">使用 ￥{{ totalAmount > comfirnPrice ? comfirnPrice : totalAmount | toFix2 }}</li>
                 <li class="flex-1" @click="isUse = false" :class="{'on': !isUse}">不使用</li>
             </ul>
         </div>

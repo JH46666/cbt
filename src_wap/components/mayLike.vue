@@ -37,7 +37,9 @@
                     'pageSize': 10
                 },res => {
                     this.mayProducts = res.data || []
-                },res => {})
+                },res => {
+                    this.mayProducts = []
+                })
             },
             // 加入购物车
             addCart(item) {
