@@ -49,6 +49,13 @@
                     </div>
                     <div class="form_item" v-if="$store.state.member.shop && $store.state.member.shop.shopStatus != 2">
                         <div class="flex align_items_end">
+                            <label for="">服务电话</label>
+                            <p  class="flex-1">{{ myData.businessTelephone }}</p>
+                        </div>
+                        <p class="error_txt"></p>
+                    </div>
+                    <div class="form_item" v-if="$store.state.member.shop && $store.state.member.shop.shopStatus != 2">
+                        <div class="flex align_items_end">
                             <label for="">支付宝</label>
                             <p  class="flex-1">{{ myData.alipayAccount }}</p>
                         </div>
@@ -152,11 +159,28 @@
         created(){
             // 设置title
             this.$store.commit('SET_TITLE','茶帮通注册');
-            this.remark = state.member.auditRecord.remark;
+            this.remark = store.state.member.auditRecord.remark;
             // 拉取数据
             if(store.state.member.shop){
                 this.flag = 'seller';
                 this.getData();
+                if(store.state.member.memberAccount.status != 'ACTIVE' && store.state.member.shop.shopStatus != 2){
+                    if(store.state.member.submitRecord.remark == '会员资料完善'){
+                        if(store.state.member.shop.shopStatus == 1){
+                            return this.imgFlag = 0;
+                        }
+                        if(store.state.member.shop.shopStatus == 3){
+                            return this.imgFlag = 1;
+                        }
+                    }else{
+                        if(store.state.member.memberAccount.status == 'WAIT_AUDIT'){
+                            return this.imgFlag = 0;
+                        }
+                        if(store.state.member.memberAccount.status == 'AUDIT_NO_PASS'){
+                            return this.imgFlag = 1;
+                        }
+                    }
+                }
                 if(store.state.member.shop.shopStatus == 1){
                     return this.imgFlag = 0;
                 }
@@ -182,11 +206,6 @@
             }).catch(res => {
                 next(vm => vm.$router.push('/login'));
             })
-            // if(!store.state.member.member.id) {
-            //
-            // } else {
-            //     next();
-            // }
         }
 
     }

@@ -370,7 +370,7 @@
                 let o_l = e.parentNode.offsetLeft;
                 this.activeCatIndex = index;
                 this.activeCatId = id;
-                if(index>=3 && index<=this.firstCat.length-3){
+                if(index>=3){
                     this.$refs.wrapper.scrollLeft = o_l-2*o_w;
                 }
                 for(let item of this.catTree){
