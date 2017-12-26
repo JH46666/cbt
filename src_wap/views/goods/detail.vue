@@ -430,7 +430,7 @@ export default {
                         } else {
                             if(store.state.member.orgDTO){
                                 vm.$router.push({
-                                    name: '茶帮通注册5',
+                                    name: '茶帮通注册3',
                                     query: {
                                         edit: 'buyer'
                                     }
@@ -654,7 +654,7 @@ export default {
                        } else {
                            if(store.state.member.orgDTO){
                                vm.$router.push({
-                                   name: '茶帮通注册5',
+                                   name: '茶帮通注册3',
                                    query: {
                                        edit: 'buyer'
                                    }
@@ -723,7 +723,7 @@ export default {
                        } else {
                            if(store.state.member.orgDTO){
                                vm.$router.push({
-                                   name: '茶帮通注册5',
+                                   name: '茶帮通注册3',
                                    query: {
                                        edit: 'buyer'
                                    }
