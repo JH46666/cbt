@@ -191,7 +191,7 @@
                                 return this.$router.push(this.$store.state.address.from.fullPath);
                             }
                         },res=>{
-                            if(res.code === 200) {
+                            if(res.code === 2000) {
                                 return Toast('该账户未注册');
                             }
                             Toast('您输入的验证码错误，请核实后重新输入');
