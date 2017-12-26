@@ -76,6 +76,7 @@
 <style lang="less">
 @import '~@/styles/base/tools.less';
 .cbt_footer{
+    .bg(#fff);
     .flex;
     .flex-dir(row);
     .position(f);

@@ -193,10 +193,10 @@
                 </template>
                 <template v-else>
                     <div class="price_total_item" v-if="orderDetailData.orderStatus === 'FINISH'">
-                        <span>￥{{  orderDetailData.orderSum | toFix2 }}</span>：实际付款：
+                        <span>￥{{  orderDetailData.orderSum | toFix2 }}</span>实际付款：
                     </div>
                     <div class="price_total_item"  v-else>
-                        <span>￥{{  orderDetailData.orderSum | toFix2 }}</span>待付款
+                        <span>￥{{  orderDetailData.orderSum | toFix2 }}</span>待付款：
                     </div>
                 </template>
             </div>

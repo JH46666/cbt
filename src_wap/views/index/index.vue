@@ -44,17 +44,22 @@
         <div class="news_wrapper">
             <div class="news_item">
                 <div class="news_item_left">
-
+                    茶帮通
+                    <div class="news_logo">头条</div>
                 </div>
                 <div class="news_item_right">
-                    
+                    醉品茶集全国招商大会再度引爆茶业茶业醉品茶集全国招商大会再度引爆茶业茶业
                 </div>
             </div>
         </div>
         <!-- 红包茶叶 -->
         <div class="packet_wrapper">
             <div class="packet_item item_1">
-
+                <div class="packet_item_left">
+                    <span>签到得现金红包</span>
+                    <span>茶帮通会员抢红包进行中</span>
+                </div>
+                <div class="packet_item_right">去抢红包</div>
             </div>
             <div class="packet_item item_2">
                 <div class="items">
