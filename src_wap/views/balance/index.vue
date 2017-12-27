@@ -17,6 +17,7 @@
                 <section class="goods-pannel">
                     <div class="title">
                         <img src="../../assets/images/small_logo.png" alt="" v-if="item.selfSupport === true">
+                        <img src="../../assets/images/shop_icon.png" class="third-shop" alt="" v-else >
                         {{ item.shopName }}
                     </div>
                     <template v-for="(todo,i) in item.cartList">
@@ -87,7 +88,9 @@
                             红包
                         </div>
                         <div class="center">
+                        <template v-if="item.redPacketDeduction > 0">
                             - {{ item.redPacketDeduction | toFix2   }}
+                        </template>
                         </div>
                         <div class="right">
                             <i class="icon-xiangyou"></i>

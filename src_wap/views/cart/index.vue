@@ -60,10 +60,10 @@
                                 <div class="pro-delete"><a href="##"><i class="iconfont">&#xe60d;</i></a></div>
                             </div>
                             <!-- 提示信息 -->
-                            <div class="tips_div" v-if="!!item.buyUpperLimit && item.buyNum > item.buyUpperLimit">
+                            <div class="tips_div" v-if="!!item.buyUpperLimit && item.buyNum > item.buyUpperLimit && !item.limitMsg">
                                 <p>每单限购{{item.buyUpperLimit}}，您超出最高购买数量啦~</p>
                             </div>
-                            <div class="tips_div" v-if="!!item.buyLowLimit && item.buyNum < item.buyLowLimit">
+                            <div class="tips_div" v-if="!!item.buyLowLimit && item.buyNum < item.buyLowLimit && !item.limitMsg">
                                 <p>每单最低购{{item.buyLowLimit}}，您低于最低购买数量啦~</p>
                             </div>
                             <div class="tips_div" v-if="!!item.limitMsg">
@@ -131,14 +131,18 @@
                         <div class="right_info flex-1">
                             <div class="pro_info flex">
                                 <div class="pro_img">
-                                    <a href="javascript:void(0);"><goods-img imgWidth="1.6rem" :imgUrl="item.imageUrl"></goods-img></a>
+                                    <router-link :to="{name: '商品详情',query:{proSku: item.proSku}}" v-if="item.isOnShelves == 1"><goods-img imgWidth="1.6rem" :tagUrl="item.tagImage" :imgUrl="item.imageUrl"></goods-img></router-link>
+                                    <a href="javascript:void(0);" v-else><goods-img imgWidth="1.6rem" :imgUrl="item.imageUrl"></goods-img></a>
                                     <div class="expired_txt">
                                         <p>失效</p>
                                     </div>
                                 </div>
                                 <div class="flex-1 pro_detail">
                                     <div class="flex flex_col detail_inner">
-                                        <a href="javascript:void(0);">
+                                        <router-link :to="{name: '商品详情',query:{proSku: item.proSku}}" v-if="item.isOnShelves == 1">
+                                            <h4>{{item.proName}}</h4>
+                                        </router-link>
+                                        <a href="javascript:void(0);" v-else>
                                             <h4>{{item.proName}}</h4>
                                         </a>
                                         <div class="flex-1 flex align_items_end">

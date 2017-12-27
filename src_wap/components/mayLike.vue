@@ -10,7 +10,7 @@
                         <div class="pro_txt">
                             <h4>{{mayItem.proTitle}}</h4>
                             <p>{{mayItem.subTitle}}</p>
-                            <p class="pro_price">￥{{ mayItem.proPrice | toFix2}}</p> 
+                            <p class="pro_price">￥{{   mayItem.activityPrice || mayItem.proPrice | toFix2}}</p> 
                         </div>
                     </router-link>
                     <span class="cart_cir" @click.self="addCart(mayItem)"></span>
