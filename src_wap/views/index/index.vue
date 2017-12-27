@@ -135,24 +135,42 @@
         <div class="keyword_wrapper">
             <div class="swiper-container">
                 <div class="swiper-wrapper">
-                    <div class="swiper-slide">Slide 1</div>
-                    <div class="swiper-slide">Slide 2</div>
-                    <div class="swiper-slide">Slide 3</div>
+                    <div class="swiper-slide" v-for="(item,index) in userSay" :key="index">
+                        <div class="user_img">
+                            <img :src="item.imgUrl" />
+                        </div>
+                        <div class="user_shop">
+                            <i class="iconfont">&#xe690;</i>
+                            <p>{{ item.shopName }}</p>
+                            <span>{{ item.shopType }}</span>
+                        </div>
+                        <div class="user_key_word">
+                            {{ item.keyWord }}
+                        </div>
+                        <div class="user_content">
+                            {{ item.content }}
+                        </div>
+                    </div>
                 </div>
-                <!-- 如果需要分页器 -->
-                <div class="swiper-pagination"></div>
             </div>
         </div>
         <!-- 为你推荐 -->
         <div class="suggest_wrapper">
             <div class="suggest_head">
                 <div class="suggest_title">
-
+                    <div class="suggest_logo">
+                        为你<div>
+                            推荐
+                        </div>
+                    </div>
+                    <div class="suggest_right">
+                        平台精选，用心推荐
+                    </div>
                 </div>
             </div>
             <div class="suggest_content">
                 <div class="suggest_item">
-
+                    
                 </div>
                 <div class="suggest_item">
 
@@ -165,19 +183,7 @@
         <div class="top_wrapper"></div>
     </div>
 </template>
-<script src="https://cdn.bootcss.com/jquery/3.2.0/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.2/js/swiper.min.js"></script>
-<script>
-var swiper = new Swiper('.swiper-container', {
-    slidesPerView: 3,
-    spaceBetween: 30,
-    freeMode: true,
-    pagination: {
-        el: '.swiper-pagination',
-        clickable: true,
-    },
-});
-</script>
+
 <script>
 import cbtDate from '../../components/datePicker.vue'
     export default {
@@ -217,6 +223,43 @@ import cbtDate from '../../components/datePicker.vue'
                         catId: 108,
                         catName: '花茶'
                     }
+                ],
+                userSay: [
+                    {
+                        imgUrl: '../../src_wap/assets/i_img_01.jpg',
+                        shopType: '茶馆',
+                        shopName: '--黑龙江哈尔滨松北区某茶叶店',
+                        keyWord: '0经营风险，无需围货',
+                        content: '采购茶叶一直是我最为头疼的事情，我们小店是小本经营，采购量其实不大，导致很多茶厂茶企都不愿意小量批发给我们。但是茶帮通就很好，1斤都可以批发，卖多少进多少，不用囤货，而且价格也比市场上便宜，真正的物美价廉！'
+                    },
+                    {
+                        imgUrl: '../../src_wap/assets/i_img_02.jpg',
+                        shopType: '茶馆',
+                        shopName: '--福建省泉州某茶馆',
+                        keyWord: '降低采购成本30~50%',
+                        content: '以前买茶都要自己跑茶企茶厂，一次采购下来要三四天，费事有费力。自从用了茶帮通，平台上的茶叶资源应有尽有，一键采购，极大地节约了采购成本，而且多了很多时间可以陪家人！'
+                    },
+                    {
+                        imgUrl: '../../src_wap/assets/i_img_03.jpg',
+                        shopType: '茶馆',
+                        shopName: '--厦门市思明区某茶叶店',
+                        keyWord: '超长退换货期',
+                        content: '我们买茶很怕买到以次充好的茶叶，而茶帮通很好地解决了这一点，平台上不仅汇聚了全国茶业资源，而且可以查看对方的信用认证，还有最高长达三个月的退换货周期，极大地保障了我们采购的利益！'
+                    },
+                    {
+                        imgUrl: '../../src_wap/assets/i_img_04.jpg',
+                        shopType: '茶馆',
+                        shopName: '--深圳罗湖区某茶叶店',
+                        keyWord: '覆盖名优品种90%',
+                        content: '茶帮通对于我来说，最大的改变就是平台透明，茶叶产地、质量等全部都在明细中写得清清楚楚，供应商的资质等都可以查看，一点也不用担心买到质量不好的产品。'
+                    },
+                    {
+                        imgUrl: '../../src_wap/assets/i_img_05.jpg',
+                        shopType: '茶馆',
+                        shopName: '--福建省安徽某茶企',
+                        keyWord: '最专业的垂直化B2B+O2O平台',
+                        content: '做茶叶其实很累，靠的就是一颗喜欢茶的心。而“卖“茶更是劳心劳力，市场上各种真假难辨的分销商、茶铺总是好茶坏茶掺着卖，我不想自己辛苦做的茶卖给”黑心商人“，而茶帮通很好地帮我筛选分销商，让我能把好茶卖给好的客户！'
+                    },
                 ]
             }
         },
@@ -231,6 +274,13 @@ import cbtDate from '../../components/datePicker.vue'
                 let payId = src[0].split('=')[1];
                 location.replace(location.origin + `/#/balance/payview?payId=${payId}&wx=wxpaycallback&type=${src[1]}`);
             }
+        },
+        mounted() {
+            var swiper = new Swiper('.swiper-container', {
+                slidesPerView: 'auto',
+                spaceBetween: 25,
+                freeMode: true
+            });
         }
     }
 </script>
