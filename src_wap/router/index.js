@@ -431,12 +431,30 @@ const router = new Router({
 	]
 })
 
+let count = 0;
 router.beforeEach((to,from,next) => {
 	store.commit('RECORD_ROUTER',{type:'to',data:to})
 	store.commit('RECORD_ROUTER',{type:'from',data:from})
-
+	// 计数，为1才去执行微信的登录
+	count++;
 	// 需要判断是否在微信内部，是的话要授权登录
-	next()
+	if($tool.isWx && count === 1) {
+
+		// 从 localStorage 获取数据并删除
+		window.isWxLogin = Boolean(localStorage.isWxLogin)
+		delete localStorage.isWxLogin;
+
+		if(! window.isWxLogin) {
+			localStorage.setItem('isWxLogin',true);
+			// chiputaobutuputaopi 与文哥商量的 key 值
+			// console.log(encodeURI(location.origin + `/api/wap/wechatAutoLogin?chiputaobutuputaopi=${location.origin}/#/${to.fullPath}`))
+			location.href = encodeURI(location.origin + `/api/wap/wechatAutoLogin?chiputaobutuputaopi=${location.origin}`) + `/%23` + encodeURI(to.fullPath)
+		} else {
+			next()
+		}
+	} else {
+		next()
+	}
 
 })
 
