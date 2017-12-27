@@ -141,7 +141,7 @@
         <mt-popup v-model="closeUp" position="bottom">
             <div class="close-wrap">
                 <p class="close-tip"  v-for="(item,index) in selList" :class="{on: index === selectClass}" :key="index" @click="selectRightList(index)">{{ item.name }}<i class="iconfont">&#xe684;</i></p>
-                <p class="close-tip" @click="cancelList">取消选择</p>
+                <!-- <p class="close-tip" @click="cancelList">取消选择</p> -->
             </div>
         </mt-popup>
         <mt-popup v-model="dialogTypeBol" position="bottom">
