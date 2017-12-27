@@ -176,6 +176,10 @@
                 height: 2.26rem;
                 .clearfix;
                 .items{
+                    img{
+                        width: 100%;
+                        height: 100%;
+                    }
                     width: 3.4rem;
                     height: 100%;
                     .bg(#fff);
@@ -192,7 +196,7 @@
     .seller_wrapper{
         margin-top: .2rem;
         padding:  0 .3rem .3rem .3rem;
-        .bg(pink);
+        .bg(#fff);
         width: 100%;
         .seller_pro_wrapper{
             width: 100%;
@@ -201,12 +205,61 @@
             .seller_pro_item{
                 width: 100%;
                 height: .34rem;
+                .flex;
+                .flex-dir(row);
+                .line(.34rem);
+                .seller_pro_logo{
+                    .flex-1;
+                    .flex;
+                    .flex-dir(row);
+                    .color(#333);
+                    .fontSize(.32rem);
+                    div{
+                        width: .71rem;
+                        height: .34rem;
+                        background-image: url('../../assets/images/l_jiaoyi.png');
+                        background-repeat: no-repeat;
+                        background-size: 100%;
+                        .color(#fff);
+                        .fontSize(.26rem);
+                        .algin(c);
+                    }
+                }
+                .seller_pro{
+                    width: 5.54rem;
+                    height: 100%;
+                    padding-left: .2rem;
+                    .flex;
+                    .flex-dir(row);
+                    p{
+                        width: 3.9rem;
+                        .color(#666);
+                        .fontSize(.26rem);
+                        .oneLine;
+                    }
+                    span{
+                        .flex-1;
+                        .fontSize(.26rem);
+                        .color(@mainCol);
+                    }
+                }
             }
         }
         .seller_link{
             width: 100%;
             height: 1.44rem;
-            .bg(purple);
+            .bg(#f7f7f7);
+            .flex;
+            .flex-dir(row);
+            .align-items;
+            .seller_link_logo{
+                width: 2.34rem;
+                height: 1.28rem;
+                margin-left: .08rem;
+                img{
+                    width: 100%;
+                }
+            }
         }
     }
     .cat_wrapper{

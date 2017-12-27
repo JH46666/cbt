@@ -169,8 +169,8 @@
                     <span>-{{ orderDetailData.useJfSum }}积分</span>
                 </div> -->
                 <div class="price_detail_item" v-if="orderDetailData.internalDiscountSum">
-                    <span>优惠</span>
-                    <span>{{ orderDetailData.internalDiscountSum | toFix2 }}</span>
+                    <span>内部优惠</span>
+                    <span>-￥{{ orderDetailData.internalDiscountSum | toFix2 }}</span>
                 </div>
                 <div class="price_detail_item">
                     <span>运费</span>
