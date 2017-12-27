@@ -139,7 +139,7 @@
         <mt-popup v-model="closeUp" position="bottom">
             <div class="close-wrap">
                 <p class="close-tip"  v-for="(item,index) in selList" :class="{on: index === selectClass}" :key="index" @click="selectRightList(index)">{{ item.name }}<i class="iconfont">&#xe684;</i></p>
-                <!-- <p class="close-tip" @click="cancelList">取消选择</p> -->
+                <p class="close-tip" @click="cancelList">取消选择</p>
             </div>
         </mt-popup>
         <mt-popup v-model="dialogTypeBol" position="bottom">
@@ -385,7 +385,7 @@ export default {
         },
         cancelList() {
             if(this.selList[this.selList.length-1].name === this.brandList[this.brandList.length-1].name){          // 品牌选择
-                this.resize.form.goodsBrand = '';
+                this.resize.form.goodsBrand = '其它品牌';
                 this.resize.selIndex.pp = null;
                 this.resize.selId.pp = null;
                 this.closeUp = false;
