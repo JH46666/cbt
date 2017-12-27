@@ -275,8 +275,8 @@ import $api from 'api';
                     this.flag = 0;
                 }else{
                     this.flag = 1;
-                    let status = store.state.member.memberAccount.status;
-                    if(status === 'FREEZE') {
+                    let status = store.state.member.shop.shopStatus;
+                    if(status == -2) {
                         return this.$messageBox({
                             title:'提示',
                             message:`您因违规操作而被冻结无法发布商品，若有疑问，请联系客服400-996-3399`,
