@@ -155,7 +155,7 @@
                             if(status === 'INACTIVE') {
                                 return this.$router.push({name: '茶帮通注册2'})
                             }
-                            if(this.$store.state.address.from.name === '忘记密码') {
+                            if(this.$store.state.address.from.name === '忘记密码' || this.$store.state.address.from.name === this.$route.name) {
                                 return this.$router.push('/')
                             } else {
                                 return this.$router.push(this.$store.state.address.from.fullPath);
@@ -185,7 +185,7 @@
                             if(status === 'INACTIVE') {
                                 return this.$router.push({name: '茶帮通注册2'})
                             }
-                            if(this.$store.state.address.from.name === '忘记密码') {
+                            if(this.$store.state.address.from.name === '忘记密码' || this.$store.state.address.from.name === this.$route.name) {
                                 return this.$router.push('/')
                             } else {
                                 return this.$router.push(this.$store.state.address.from.fullPath);
