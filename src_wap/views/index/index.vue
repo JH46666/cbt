@@ -63,10 +63,10 @@
             </div>
             <div class="packet_item item_2">
                 <div class="items">
-
+                    <img src="../../assets/img_xiaozhongcha.jpg" />
                 </div>
                 <div class="items">
-
+                    <img src="../../assets/img_yingji.jpg" />
                 </div>
             </div>
         </div>
@@ -74,11 +74,24 @@
         <div class="seller_wrapper">
             <div class="seller_pro_wrapper">
                 <div class="seller_pro_item">
-
+                    <div class="seller_pro_logo">
+                        最新
+                        <div>交易</div>
+                    </div>
+                    <div class="seller_pro">
+                        <p>醉品朴茶】特色奇种系列 正山小醉品朴茶】特色奇种系列 正山小</p>
+                        <span>18652.63元</span>
+                    </div>
                 </div>
             </div>
             <div class="seller_link">
-
+                <div class="seller_link_logo">
+                    <img src="../../assets/images/img_ruzhu.png" />
+                </div>
+                <div class="seller_link_text">
+                    <p>入驻茶帮通，百万收入不是梦</p>
+                    <p>茶帮通卖家火热招募中</p>
+                </div>
             </div>
         </div>
         <!-- 分类 -->
@@ -89,7 +102,16 @@
                 </div>
             </div>
             <div class="cat_bottom">
-
+                <div class="cat_list">
+                    <div class="cat_list_wrapper">
+                        <span class="on">精选</span>
+                        <span>乌龙茶</span>
+                        <span>红茶</span>
+                        <span>绿茶</span>
+                        <span>白茶</span>
+                        <span>黑茶</span>
+                    </div>
+                </div>
             </div>
         </div>
         <!-- 用户说 -->

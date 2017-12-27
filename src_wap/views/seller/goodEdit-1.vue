@@ -433,7 +433,7 @@ export default {
         },
         cancelList() {
             if(this.selList[this.selList.length-1].name === this.brandList[this.brandList.length-1].name){          // 品牌选择
-                this.resize.form.goodsBrand = '';
+                this.resize.form.goodsBrand = '其它品牌';
                 this.resize.selIndex.pp = null;
                 this.resize.selId.pp = null;
                 this.closeUp = false;

@@ -363,14 +363,14 @@ import $api from 'api';
                 })
             },
             goCreate() {
-                let status = store.state.member.memberAccount.status;
-                if(status === 'FREEZE') {
-                    return this.$messageBox({
-                        title:'提示',
-                        message:`您的账号因违规操作而被冻结无法买买买~若有疑问，请联系客服400-996-3399`,
-                        confirmButtonText: '我知道了'
-                    })
-                }
+                // let status = store.state.member.shop.shopStatus;
+                // if(status == -2) {
+                //     return this.$messageBox({
+                //         title:'提示',
+                //         message:`您因违规操作而被冻结无法发布商品，若有疑问，请联系客服400-996-3399`,
+                //         confirmButtonText: '我知道了'
+                //     })
+                // }
                 this.$store.commit('SET_RESIZE');
                 this.$router.push({
                     name: '新品上架-1'
@@ -410,11 +410,11 @@ import $api from 'api';
                 }
             },
             plusMethod() {
-                let status = store.state.member.memberAccount.status;
-                if(status === 'FREEZE') {
+                let status = store.state.member.shop.shopStatus;
+                if(status == -2) {
                     return this.$messageBox({
                         title:'提示',
-                        message:`您因违规操作而被冻结无法发布商品，若有疑问，请联系客服400-996-3399`,
+                        message:`您因违规操作而被冻结无法操作商品，若有疑问，请联系客服400-996-3399`,
                         confirmButtonText: '我知道了'
                     })
                 }
@@ -493,11 +493,11 @@ import $api from 'api';
             },
             stateMethod(id,type) {
                 if(type === 'up'){
-                    let status = store.state.member.memberAccount.status;
-                    if(status === 'FREEZE') {
+                    let status = store.state.member.shop.shopStatus;
+                    if(status == -2) {
                         return this.$messageBox({
                             title:'提示',
-                            message:`您因违规操作而被冻结无法发布商品，若有疑问，请联系客服400-996-3399`,
+                            message:`您因违规操作而被冻结无法上架商品，若有疑问，请联系客服400-996-3399`,
                             confirmButtonText: '我知道了'
                         })
                     }
