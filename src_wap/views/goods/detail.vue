@@ -144,13 +144,18 @@
                     <mt-tab-container-item id="1" ref="tabcontent1">
                         <!-- <div class="detail_img_title" :class="{'on': tabFixed,'wxon': wxFixed}" ref="imgHeight">图片详情</div> -->
                         <div class="mint_cell_wrapper mint_cell_img_wrapper">
-                            <mt-cell v-for="(item,index) in imgDetail" :key="index" v-if="item.content != '' && item.imgArray.length != 0">
-                                <div class="mint_cell_img_title">{{ item.title }}</div>
-                                <div class="mint_cell_img">
-                                    <img :src="ur.imgUrl" v-for="(ur,k) in item.imgArray" :key="k" />
-                                </div>
-                                <p class="mint_cell_img_content">{{ item.content }}</p>
-                            </mt-cell>
+                            <template v-if="imgDetailHtml.length>0">
+                                <div v-html="imgDetailHtml"></div>
+                            </template>
+                            <template v-else>
+                                <mt-cell v-for="(item,index) in imgDetail" :key="index" v-if="item.content != '' && item.imgArray.length != 0">
+                                    <div class="mint_cell_img_title">{{ item.title }}</div>
+                                    <div class="mint_cell_img">
+                                        <img :src="ur.imgUrl" v-for="(ur,k) in item.imgArray" :key="k" />
+                                    </div>
+                                    <p class="mint_cell_img_content">{{ item.content }}</p>
+                                </mt-cell>
+                            </template>
                         </div>
                     </mt-tab-container-item>
                     <mt-tab-container-item id="2" ref="tabcontent2">
@@ -160,7 +165,7 @@
                                 <div>{{ detailData.productInfo.proSku }}</div>
                             </div>
                             <div class="reguler_item" style="height: 1.5rem; padding: 0;" v-if="detailData.productExtInfo.fragrance != null">
-                                <div>详情</div>
+                                <div>香气</div>
                                 <div class="x_star">
                                     <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '偏淡' || detailData.productExtInfo.fragrance === '一般' || detailData.productExtInfo.fragrance === '香' || detailData.productExtInfo.fragrance === '高香' || detailData.productExtInfo.fragrance === '极香'}">偏淡</span>
                                     <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '一般' || detailData.productExtInfo.fragrance === '香' || detailData.productExtInfo.fragrance === '高香' || detailData.productExtInfo.fragrance === '极香'}">一般</span>
@@ -309,6 +314,7 @@ export default {
             loginId: null,
             state: '',
             maxNum: 0,
+            imgDetailHtml: ''
         }
     },
     computed:{
@@ -331,13 +337,18 @@ export default {
             if(res.data.orgShopCenterVo){
                 this.shopTel = `tel://${res.data.orgShopCenterVo.businessTelephone}`;
             }
-            this.getAttrOrImg().then((res) => {
-                this.attrImgDetail = res.data;
-                this.imgDetail =  JSON.parse(res.data.content)
-                this.getCommentList(this.detailData.productExtInfo.id).then((res) => {
-                    this.commentList = res.data.evaluations;
-                    this.commentRecond = res.total_record;
-                    this.prectent = res.data.praiseRate == null ? 0 : res.data.praiseRate;
+            this.getAttrOrImg().then((attr) => {
+                this.attrImgDetail = attr.data;
+                try {
+                    this.imgDetail =  JSON.parse(attr.data.content)
+                } catch (e) {
+                    this.imgDetailHtml = attr.data.content;
+                }
+                this.getCommentList(res.data.productExtInfo.id).then((comment) => {
+                    console.log(comment);
+                    this.commentList = comment.data.evaluations;
+                    this.commentRecond = comment.total_record;
+                    this.prectent = comment.data.praiseRate == null ? 0 : comment.data.praiseRate;
                 })
             })
         })
