@@ -297,6 +297,52 @@
                 left: 50%;
                 margin-left: -3.45rem;
                 box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.1);
+                .flex;
+                .flex-dir;
+                .cat_items_head{
+                    width: 100%;
+                    height: .81rem;
+                    padding: 0 .2rem;
+                    .line(.8rem);
+                    border-bottom: 1px solid #e5e5e5;
+                    .clearfix;
+                    span{
+                        .fontSize(.26rem);
+                        .line(.8rem);
+                        &:first-child{
+                            .color(#333);
+                            float: left;
+                        }
+                        &:last-child{
+                            .color(#999);
+                            float: right;
+                        }
+                    }
+                }
+                .cat_items_content{
+                    width: 100%;
+                    .flex-1;
+                    .fontSize(0);
+                    span{
+                        display: inline-block;
+                        .algin(c);
+                        .line(2.3rem);
+                        .fontSize(.26rem);
+                        width: 2.3rem;
+                        height: 2.3rem;
+                        border-right: 1px solid #e5e5e5;
+                        border-top: 1px solid #e5e5e5;
+                        &:nth-child(1){
+                            border-top: 0 none;
+                        }
+                        &:nth-child(2){
+                            border-top: 0 none;
+                        }
+                        &:nth-child(3){
+                            border-top: 0 none;
+                        }
+                    }
+                }
             }
         }
         .cat_bottom{
@@ -338,17 +384,47 @@
     .user_wrapper{
         width: 100%;
         padding: .32rem .3rem;
-        .bg(green);
+        .bg(#fff);
         .user_item{
             height: .34rem;
             width: 100%;
+            .flex;
+            .flex-dir(row);
+            .line(.34rem);
+            .user_item_logo{
+                .flex-1;
+                .flex;
+                .flex-dir(row);
+                .fontSize(.32rem);
+                .color(#333);
+                div{
+                    width: .4rem;
+                    height: .34rem;
+                    background-image: url('../../assets/images/l_yonghushuo.png');
+                    background-repeat: no-repeat;
+                    background-size: 100%;
+                    .algin(c);
+                    .color(#fff);
+                    .fontSize(.26rem);
+                }
+            }
+            .user_item_right{
+                width: 5.8rem;
+                padding-left: .2rem;
+                .color(#999);
+                .fontSize(.22rem);
+            }
         }
     }
     .keyword_wrapper{
         width: 100%;
-        height: 6.6rem;
-        .bg(black);
+        height: 6.92rem;
+        .bg(#fff);
         margin: .3rem 0;
+        .swiper-container{
+            width: 100%;
+            height: 100%;
+        }
     }
     .suggest_wrapper{
         .bg(#fff);
