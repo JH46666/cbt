@@ -63,10 +63,10 @@
             </div>
             <div class="packet_item item_2">
                 <div class="items">
-
+                    <img src="../../assets/img_xiaozhongcha.jpg" />
                 </div>
                 <div class="items">
-
+                    <img src="../../assets/img_yingji.jpg" />
                 </div>
             </div>
         </div>
@@ -74,11 +74,20 @@
         <div class="seller_wrapper">
             <div class="seller_pro_wrapper">
                 <div class="seller_pro_item">
-
+                    <div class="seller_pro_logo">
+                        最新
+                        <div>交易</div>
+                    </div>
+                    <div class="seller_pro">
+                        <p>醉品朴茶】特色奇种系列 正山小醉品朴茶】特色奇种系列 正山小</p>
+                        <span>18652.63元</span>
+                    </div>
                 </div>
             </div>
             <div class="seller_link">
-
+                <div class="seller_link_logo">
+                    <img src="../../assets/images/img_ruzhu.png" />
+                </div>
             </div>
         </div>
         <!-- 分类 -->
