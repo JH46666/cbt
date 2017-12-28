@@ -360,3 +360,85 @@
         }
     }
 }
+//商品集合
+.product_collection{
+    .bg(#fff);
+    padding-bottom: 0.8rem;
+    .pro-item{
+        float: left;
+        .w(50%);
+        padding: .2rem;
+        position: relative;
+        box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        border-bottom: 1px solid #f7f7f7;
+        &:nth-of-type(odd) {
+            border-right: 1px solid #f7f7f7;
+        }
+        .tag-img {
+            position: absolute;
+            right: 20px;
+            top: 0;
+            width: .68rem;
+            z-index: 10;
+            img {
+                width: 100%;
+            }
+        }
+        .pro_img {
+            width: 2.6rem;
+            height: 2.6rem;
+            overflow: hidden;
+            margin: 0 auto;
+            img {
+                width: 100%;
+                position: relative;
+                top: 50%;
+                -webkit-transform: translateY(-50%);
+                -o-transform: translateY(-50%);
+                transform: translateY(-50%);
+            }
+        }
+        .pro-txt {
+            color: #999;
+            font-size: .24rem;
+            h4 {
+                color: #333;
+                font-size: .28rem;
+                display: -webkit-box;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                word-break: break-all;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 2;
+                height: .8rem;
+                line-height: .4rem;
+            }
+            .attr-txt{
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                padding-top: .06rem;
+                line-height: .5rem;
+                height: .5rem;
+            }
+            .price-box{
+                margin-top: .1rem;
+                .pro-price{
+                    color: #f08200;
+                    font-size: .32rem;
+                }
+                .type{
+                    border: 1px solid #f08200;
+                    color: #f08200;
+                    font-size: .24rem;
+                    line-height: .32rem;
+                    padding: 0 .1rem;
+                    position: relative;
+                    top: -1px;
+                    margin-left: .05rem;
+                }
+            }
+        }
+    }
+}
