@@ -8,18 +8,18 @@
 <template>
     <div class="product_collection clearfix">
         <div class="pro-item" v-for="(item,index) in productData" :key="index">
-            <router-link :to="'/detail?proSku='" class="cbt-collection-item">
+            <router-link :to="'/detail?proSku='+item.proSku" class="cbt-collection-item">
                 <!-- <div class="tag-img">
                     <img src="//img4.zuipin.cn/zpfx/common/2017-10-12-14-56-58-59df123a5d83217620.png">
                 </div> -->
                 <div class="pro_img">
-                    <img src="../../wap/static/img/guan.jpg">
+                    <img src="item.proImg">
                 </div>
                 <div class="pro-txt">
-                    <h4>醉品朴茶 安溪铁观音 2017秋茶 乌龙茶 清香型 正炒 一级 醇朴 250g</h4>
-                    <p class="attr-txt">醉品直供基地 15年老茶师制作</p>
+                    <h4>{{item.proName}}</h4>
+                    <p class="attr-txt">{{item.subTitle}}</p>
                     <p class="price-box">
-                        <span class="pro-price">￥135</span>
+                        <span class="pro-price">￥{{item.proPrice}}</span>
                         <!-- 其他的类型加other  class就行 -->
                         <span class="type">自营</span>
                     </p>
