@@ -360,6 +360,13 @@
                     this.history = res.data;
                 },res =>{})
             }
+            this.$store.dispatch('getBlock','hotsearch').then(res => {
+                try {
+                    this.hotList = JSON.parse(res.data.htmlText);
+                } catch (error) {
+                    
+                }
+            })
         },
         // 进来先判断登陆与否
         beforeRouteEnter(to, from, next) {

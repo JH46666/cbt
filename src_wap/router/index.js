@@ -60,6 +60,14 @@ const router = new Router({
 					name: '购物车',
 					component: resolve => require(['@/views/cart/index.vue'],resolve),
 
+				},
+				{
+					path: 'block',
+					name: '静态块页面',
+					component: resolve => require(['@/views/block/index.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
 				}
 			]
 		},
@@ -450,7 +458,20 @@ const router = new Router({
 				}
 			]
 		},
-		
+		{
+			path: '/news',
+			component: resolve => require(['@/views/layout/mainWrap.vue'],resolve),
+			children: [
+				{
+					path: 'list',
+					name: '新闻列表',
+					component: resolve => require(['@/views/news/index.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+			],
+		},
 	]
 })
 

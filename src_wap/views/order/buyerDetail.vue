@@ -97,18 +97,33 @@
                 <template v-if="orderListDetail.subOrder == null && orderListDetail.mainOrder != null">
                     <div class="order_item">
                         <div class="list_wrapper">
-                            <div class="list_item" v-for="(item,index) in orderListDetail.mainOrder.products" @click="$router.push({name: '商品详情',query: {proSku: item.proSku}})">
-                                <div class="list_img">
-                                    <img :src="item.imageUrl" />
-                                </div>
-                                <div class="list_content">
-                                    <p>{{ item.productName }}</p>
-                                    <div class="list_price_count">
-                                        <span>￥{{ item.productPrice | toFix2 }}</span>
-                                        <span>x{{ item.productNum | toFix2 }}</span>
+                            <template v-for="(item,index) in orderListDetail.mainOrder.products">
+                                <div class="list_item" :key="index" @click="$router.push({name: '商品详情',query: {proSku: item.proSku}})" v-if="item.premiumEnum === 'NO_PREMIUM'">
+                                    <div class="list_img">
+                                        <img :src="item.imageUrl" />
+                                    </div>
+                                    <div class="list_content">
+                                        <p>{{ item.productName }}</p>
+                                        <div class="list_price_count">
+                                            <span>￥{{ item.productPrice | toFix2 }}</span>
+                                            <span>x{{ item.productNum | toFix2 }}</span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                                <div class="list_item on" :key="index" @click="$router.push({name: '商品详情',query: {proSku: item.proSku}})" v-else>
+                                    <div class="list_img">
+                                        <img :src="item.imageUrl" />
+                                    </div>
+                                    <div class="list_content">
+                                        <p class="freeP"><span>赠品</span><span>{{ item.productName }}</span></p>
+                                        <div class="list_price_count">
+                                            <span>￥{{ item.productPrice | toFix2 }}</span>
+                                            <span>x{{ item.productNum | toFix2 }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+
                         </div>
                         <div class="order_head"  v-if="orderDetailData.expressDeliveryCode != 'get_self'">
                             <div class="order_express" v-if="orderDetailData.payType!='CASH_DELIVERY'">
@@ -170,7 +185,7 @@
                 </div> -->
                 <div class="price_detail_item" v-if="orderDetailData.internalDiscountSum">
                     <span>内部优惠</span>
-                    <span>-￥{{ orderDetailData.internalDiscountSum | toFix2 }}</span>
+                    <span>{{ (0-orderDetailData.internalDiscountSum) | toFix2 }}</span>
                 </div>
                 <div class="price_detail_item">
                     <span>运费</span>
@@ -188,7 +203,7 @@
                 </div>
                 <template v-if="orderDetailData.payType!='CASH_DELIVERY'">
                     <div class="price_total_item">
-                        <span>￥{{  orderDetailData.orderSum | toFix2 }}</span>实际付款：
+                        <span>{{  orderDetailData.orderSum | toFix2 }}</span>实际付款：
                     </div>
                 </template>
                 <template v-else>

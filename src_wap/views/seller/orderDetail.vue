@@ -226,7 +226,11 @@
                     orderNo: this.myData.orderNo,
                     closeReason: way
                 },res => {
-                    this.$toast('关闭成功')
+                    if(this.myData.orderStatus === 'PACKING' || this.myData.orderStatus === 'DELIVERED') {
+                        this.$toast('订单关闭，退款成功~')
+                    } else {
+                        this.$toast('关闭成功')
+                    }
                     this.closeUp = false;
                     this.closeConfirm = false;
                     this.myData.orderStatus = 'CLOSE'
