@@ -235,7 +235,7 @@
                     }
                     padding: 0 .36rem;
                     height: .86rem;
-                    // border-top: 1px solid #e5e5e5;
+                    border-top: 1px dotted #e5e5e5;
                     // border-bottom: 1px dotted #e5e5e5;
                     .flex;
                     .flex-dir(row);
@@ -251,6 +251,9 @@
                 }
                 .list_wrapper{
                     .list_item{
+                        &.on{
+                            border-bottom: 0 none;
+                        }
                         width: 100%;
                         padding: .36rem;
                         border-bottom: 1px solid #e5e5e5;
@@ -279,6 +282,27 @@
                                 .color(#333);
                                 .fontSize(.26rem);
                                 .line(1.5);
+                                &.freeP{
+                                    .flex;
+                                    .flex-dir(row);
+                                }
+                                span:first-child{
+                                    width: .8rem;
+                                    height: .36rem;
+                                    border: 1px solid @mainCol;
+                                    .color(@mainCol);
+                                    .fontSize(.28rem);
+                                    .line(.36rem);
+                                    .algin(c);
+                                    margin-top: .05rem;
+                                }
+                                span:last-child{
+                                    .fontSize(.26rem);
+                                    .line(1.5);
+                                    .moreLine;
+                                    .flex-1;
+                                    padding-left: .05rem;
+                                }
                             }
                             .list_price_count{
                                 .flex;
