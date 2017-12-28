@@ -1,6 +1,6 @@
 <template>
     <div class="branch-hall">
-        <div class="hall-banner"><img src="../../../wap/static/img/mzg.jpg" alt=""></div>
+        <div class="hall-banner"><img src="../../assets/mzg.jpg" alt=""></div>
         <collection :myProducts="listData"></collection>
     </div>
 </template>

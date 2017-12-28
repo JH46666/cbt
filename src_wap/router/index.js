@@ -480,6 +480,20 @@ const router = new Router({
 				},
 			],
 		},
+		{
+			path: '/packet',
+			component: resolve => require(['@/views/layout/mainWrap.vue'],resolve),
+			children: [
+				{
+					path: '/',
+					name: '红包馆',
+					component: resolve => require(['@/views/page/packetHall.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+			],
+		},
 	]
 })
 

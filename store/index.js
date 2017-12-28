@@ -25,7 +25,7 @@ export default new Vuex.Store({
         }
     },
     actions: {
-        getBlock({commit},code) {
+        getBlock({commit,dispatch},code) {
             return new Promise((resolve,reject) => {
                 $api.post('/htmlModuleManage/seachByNo',{
                     'htmlModuleManage.htmlNo': code

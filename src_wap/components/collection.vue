@@ -1,4 +1,4 @@
-<!-- 
+<!--
     props           type            default
     myProducts      array           []       //商品集合列表信息
 
@@ -13,7 +13,7 @@
                     <img src="//img4.zuipin.cn/zpfx/common/2017-10-12-14-56-58-59df123a5d83217620.png">
                 </div> -->
                 <div class="pro_img">
-                    <img src="item.proImg">
+                    <img src="../assets/guan.jpg">
                 </div>
                 <div class="pro-txt">
                     <h4>{{item.proName}}</h4>
@@ -27,7 +27,7 @@
             </router-link>
         </div>
     </div>
-    
+
 </template>
 
 
@@ -41,7 +41,7 @@
                     return []
                 }
             },
-            
+
         },
         data(){
             return {
