@@ -1,5 +1,5 @@
 <template lang="html">
-    <div class="activity">
+    <div class="activity add">
         <div class="f5-2"></div>
         <div class="activity_name">
             <label for="activeName">活动名称</label>
@@ -324,6 +324,7 @@ export default {
         }
     },
     beforeRouteEnter(to, from, next) {
+
         if(store.state.member.member.id) {
             next();
         } else {
