@@ -135,6 +135,14 @@ const router = new Router({
 					meta: {
 						hideFooter: true
 					}
+				},
+				{
+					path: 'brandVenue',
+					name: '修改密码',
+					component: resolve => require(['@/views/center/brandVenue.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
 				}
 			]
 		},
@@ -437,6 +445,28 @@ const router = new Router({
 			]
 		},
 		{
+			path: 'wxlogin',
+			name: '微信登录第三页面',
+			component: resolve => require(['@/views/login/wxLogin.vue'],resolve),
+			meta: {
+				hideFooter: true
+			}
+		},
+		{
+			path: '/page',
+			component: resolve => require(['@/views/layout/mainWrap.vue'],resolve),
+			children: [
+				{
+					path: 'branchHall',
+					name: '分馆',
+					component: resolve => require(['@/views/page/branchHall.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				}
+			]
+		},
+		{
 			path: '/news',
 			component: resolve => require(['@/views/layout/mainWrap.vue'],resolve),
 			children: [
@@ -452,6 +482,20 @@ const router = new Router({
 					path: 'detail',
 					name: '新闻详情',
 					component: resolve => require(['@/views/news/index.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+			],
+		},
+		{
+			path: '/packet',
+			component: resolve => require(['@/views/layout/mainWrap.vue'],resolve),
+			children: [
+				{
+					path: '/',
+					name: '红包馆',
+					component: resolve => require(['@/views/page/packetHall.vue'],resolve),
 					meta: {
 						hideFooter: true
 					}
