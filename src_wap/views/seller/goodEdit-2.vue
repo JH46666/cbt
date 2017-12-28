@@ -427,54 +427,120 @@ import $api from 'api';
                     content: this.resize.textMs1,
                     imgArray: []
                 };
+                let oneImgSrc = ``;
                 for(let obj of this.urls.one){
                     oneImg.imgArray.push({
                         imgUrl: obj
                     })
+                    oneImgSrc = oneImgSrc + `<img src="${obj}">`;
                 }
+                let oneImgStr = `<a class="mint-cell">`+
+                    `<div class="mint-cell-left"></div>`+
+                    `<div class="mint-cell-wrapper">`+
+                        `<div class="mint-cell-title">`+
+                            `<span class="mint-cell-text"></span>`+
+                        `</div>`+
+                        `<div class="mint-cell-value">`+
+                            `<div class="mint_cell_img_title">${oneImg.title}</div>`+
+                            `<div class="mint_cell_img">${oneImgSrc}</div>`+
+                            `<p class="mint_cell_img_content">1</p>`+
+                        `</div>`+
+                    `</div>`+
+                    `<div class="mint-cell-right"></div>`+
+                `</a>`;
                 let twoImg = {
                     title: '汤色细节展示',
                     content: this.resize.textMs2,
                     imgArray: []
                 }
+                let twoImgSrc = ``;
                 for(let obj of this.urls.two){
                     twoImg.imgArray.push({
                         imgUrl: obj
                     })
+                    twoImgSrc = twoImgSrc + `<img src="${obj}">`;
                 }
+                let twoImgStr = `<a class="mint-cell">`+
+                    `<div class="mint-cell-left"></div>`+
+                    `<div class="mint-cell-wrapper">`+
+                        `<div class="mint-cell-title">`+
+                            `<span class="mint-cell-text"></span>`+
+                        `</div>`+
+                        `<div class="mint-cell-value">`+
+                            `<div class="mint_cell_img_title">${twoImg.title}</div>`+
+                            `<div class="mint_cell_img">${twoImgSrc}</div>`+
+                            `<p class="mint_cell_img_content">1</p>`+
+                        `</div>`+
+                    `</div>`+
+                    `<div class="mint-cell-right"></div>`+
+                `</a>`;
                 let threeImg = {
                     title: '叶底细节展示',
                     content: this.resize.textMs3,
                     imgArray: []
                 }
+                let threeImgSrc = ``;
                 for(let obj of this.urls.third){
                     threeImg.imgArray.push({
                         imgUrl: obj
                     })
+                    threeImgSrc = threeImgSrc + `<img src="${obj}">`;
                 }
+                let threeImgStr = `<a class="mint-cell">`+
+                    `<div class="mint-cell-left"></div>`+
+                    `<div class="mint-cell-wrapper">`+
+                        `<div class="mint-cell-title">`+
+                            `<span class="mint-cell-text"></span>`+
+                        `</div>`+
+                        `<div class="mint-cell-value">`+
+                            `<div class="mint_cell_img_title">${threeImg.title}</div>`+
+                            `<div class="mint_cell_img">${threeImgSrc}</div>`+
+                            `<p class="mint_cell_img_content">1</p>`+
+                        `</div>`+
+                    `</div>`+
+                    `<div class="mint-cell-right"></div>`+
+                `</a>`;
                 let fourImg = {
                     title: '其它细节展示',
                     content: this.resize.textMs4,
                     imgArray: [],
                 };
+                let fourImgSrc = ``;
                 if(this.urls.four.length != 0){
                     for(let i=0;i<this.urls.four.length;i++){
                         fourImg.imgArray.push({
                             imgUrl: this.urls.four[i]
                         })
+                        fourImgSrc = fourImgSrc + `<img src="${this.urls.four[i]}">`;
                     }
                 }
+                let fourImgStr = `<a class="mint-cell">`+
+                    `<div class="mint-cell-left"></div>`+
+                    `<div class="mint-cell-wrapper">`+
+                        `<div class="mint-cell-title">`+
+                            `<span class="mint-cell-text"></span>`+
+                        `</div>`+
+                        `<div class="mint-cell-value">`+
+                            `<div class="mint_cell_img_title">${fourImg.title}</div>`+
+                            `<div class="mint_cell_img">${fourImgSrc}</div>`+
+                            `<p class="mint_cell_img_content">1</p>`+
+                        `</div>`+
+                    `</div>`+
+                    `<div class="mint-cell-right"></div>`+
+                `</a>`;
                 let allContent = {
                     oneImgContent: oneImg,
                     twoImgContent: twoImg,
                     threeImgContent: threeImg,
                     fourImgContent: fourImg
                 }
+                let allOrgContent = oneImgStr + twoImgStr + threeImgStr + fourImgStr;
                 let data = {
                     "catProps": [],
                     "productDetails": [
                         {
                             "content": JSON.stringify(allContent),
+                            'orgContent': allOrgContent
                         }
                     ],
                     "productImgs": mainImg
