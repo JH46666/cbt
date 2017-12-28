@@ -1,6 +1,7 @@
 <template>
     <div class="set_wrapper">
-        <div class="logo_img"><img src="../../assets/images/logo.png" alt=""></div>
+        <router-link to="/" tag="div" class="logo_img" v-if="logoImg === ''"><img src="../../assets/images/logo.png" alt=""></router-link>
+        <router-link to="/" tag="div" class="logo_img" v-else v-html="logoImg"></router-link>
         <div>
             <!-- 表单 -->
             <div action="" class="form_wrapper com_wrapper">
@@ -20,7 +21,7 @@
                     <a @click="visFlag = !visFlag" class="vis_flag color_ad"><i class="iconfont" :class="{'icon-xianshimima': visFlag,'icon-yincangmima': !visFlag}"></i></a>
                 </div>
                 <mt-button size="large" type="primary" :class="{'is-disabled':disabledFlag}" :title="activeFlag" @click="submit">立即注册</mt-button>
-                <p class="color_9 xy-txt">点击 立即注册 即表示您同意遵守茶帮通 <a href="javascript:void(0);" class="color_f08">用户协议</a> 和 <a href="javascript:void(0);" class="color_f08">隐私政策</a></p>
+                <p class="color_9 xy-txt">点击 立即注册 即表示您同意遵守茶帮通 <router-link class="color_f08" :to="{name: '静态块页面',query:{blockNo: 'wapagreement'}}">用户协议</router-link> 和 <router-link class="color_f08" :to="{name: '静态块页面',query:{blockNo: 'wapprivacy'}}">隐私政策</router-link></p>
             </div>
         </div>
         <!-- 验证码弹窗 -->
@@ -47,6 +48,7 @@
                 getCount: 0,                        //获取短信的次数          
                 errorTips: '',                    //错误提示
                 timeCount: 60,                    //倒计时
+                logoImg: '',                        //logo的图片
             }
         },
         computed:{
@@ -186,6 +188,9 @@
         created(){
             // 设置title
             this.$store.commit('SET_TITLE','茶帮通注册');
+            this.$store.dispatch('getBlock','waplogin').then(res => {
+                this.logoImg = res.data.htmlText;
+            })
                 
         }
     }
