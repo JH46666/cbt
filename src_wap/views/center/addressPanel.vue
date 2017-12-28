@@ -10,7 +10,7 @@
                     </mt-navbar>
                 </div>
                 <div class="right">
-                    <span @touchend="confirm">确定</span>
+                    <!-- <span @touchend="confirm">确定</span> -->
                 </div>
             </div>
             <div class="select-bottom">
@@ -122,6 +122,7 @@
                     this.selected = '3'
                 } else {
                     this.select.areaCode = code;
+                    this.confirm();
                 }
             },
             confirm() {
