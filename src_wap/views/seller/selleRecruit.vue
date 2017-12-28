@@ -11,7 +11,7 @@
                 <p>让茶叶买卖更轻松</p>
             </div>
             <mt-button type="primary" @click.native="goRegist">注册为卖家</mt-button>
-            <p class="look_item">查看注册要求<i class="iconfont">&#xe744;</i></p>
+            <!-- <p class="look_item">查看注册要求<i class="iconfont">&#xe744;</i></p> -->
         </div>
     </div>
 </template>
