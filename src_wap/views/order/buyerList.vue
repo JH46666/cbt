@@ -21,18 +21,33 @@
                             </div>
                         </div>
                         <div class="order_content" @click="toListDetail(item.orderNo)">
-                            <div class="order_item" v-for="(pro,count) in item.products" :key="count">
-                                <div class="img_item">
-                                    <img :src="pro.imageUrl" />
-                                </div>
-                                <div class="text_item">
-                                    <p class="text_wrap">{{ pro.productName }}</p>
-                                    <div class="count_price_wrap">
-                                        <span>￥{{ pro.productPrice }}</span>
-                                        <span>x{{ pro.productNum }}</span>
+                            <template v-for="(pro,count) in item.products">
+                                <div class="order_item" :key="count" v-if="pro.premiumEnum === 'NO_PREMIUM'">
+                                    <div class="img_item">
+                                        <img :src="pro.imageUrl" />
+                                    </div>
+                                    <div class="text_item">
+                                        <p class="text_wrap">{{ pro.productName }}</p>
+                                        <div class="count_price_wrap">
+                                            <span>￥{{ pro.productPrice }}</span>
+                                            <span>x{{ pro.productNum }}</span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                                <div class="order_item on" :key="count" v-else>
+                                    <div class="img_item">
+                                        <img :src="pro.imageUrl" />
+                                    </div>
+                                    <div class="text_item">
+                                        <p class="text_wrap freeP"><span>赠品</span><span>{{ pro.productName }}</span></p>
+                                        <div class="count_price_wrap">
+                                            <span>￥{{ pro.productPrice }}</span>
+                                            <span>x{{ pro.productNum }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+
                         </div>
                         <div class="order_foot">
                             <div class="price_wrapper">
