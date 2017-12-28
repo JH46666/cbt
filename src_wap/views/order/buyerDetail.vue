@@ -170,7 +170,7 @@
                 </div> -->
                 <div class="price_detail_item" v-if="orderDetailData.internalDiscountSum">
                     <span>内部优惠</span>
-                    <span>-￥{{ orderDetailData.internalDiscountSum | toFix2 }}</span>
+                    <span>{{ (0-orderDetailData.internalDiscountSum) | toFix2 }}</span>
                 </div>
                 <div class="price_detail_item">
                     <span>运费</span>
@@ -188,7 +188,7 @@
                 </div>
                 <template v-if="orderDetailData.payType!='CASH_DELIVERY'">
                     <div class="price_total_item">
-                        <span>￥{{  orderDetailData.orderSum | toFix2 }}</span>实际付款：
+                        <span>{{  orderDetailData.orderSum | toFix2 }}</span>实际付款：
                     </div>
                 </template>
                 <template v-else>
