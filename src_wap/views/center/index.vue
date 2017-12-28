@@ -99,7 +99,7 @@
                 <div class="left"><i class="icon-zhongxindianpu"></i>卖家中心</div>
                 <div class="right"><i class="icon-icon07"></i></div>
             </router-link>
-            <router-link :to="{name: '卖家中心'}" class="tools-entry" v-else>
+            <router-link :to="{name: '卖家中心'}" class="tools-entry" v-if="shop ? shop.shopStatus === 2 || shop.shopStatus === -2 : false ">
                 <div class="left"><i class="icon-zhongxindianpu"></i>卖家中心</div>
                 <div class="right"><i class="icon-icon07"></i></div>
             </router-link>

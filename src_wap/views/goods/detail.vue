@@ -206,7 +206,7 @@
                             </div>
                         </div>
                         <div class="mint_cell_wrapper">
-                            <template v-if="commentList.length > 0">
+                            <template>
                                 <mt-cell v-for="(item,index) in commentList" :key="index">
                                     <div class="comment_head">
                                         <div class="comment_head_wrapper">
@@ -223,9 +223,14 @@
                                 </mt-cell>
                             </template>
                         </div>
-                        <template v-if="commentRecond > 3">
-                            <div class="comment_more_btn" @click="getMoreComment" v-if="commentRecond > commentList.length">
+                        <template v-if="commentList.length < commentRecond">
+                            <div class="comment_more_btn" @click="getMoreComment">
                                 查看更多评论<i class="iconfont">&#xe619;</i>
+                            </div>
+                        </template>
+                        <template v-if="commentList.length >= commentRecond">
+                            <div class="comment_more_btn">
+                                没有更多了呦~
                             </div>
                         </template>
                     </mt-tab-container-item>
@@ -314,7 +319,9 @@ export default {
             loginId: null,
             state: '',
             maxNum: 0,
-            imgDetailHtml: ''
+            imgDetailHtml: '',
+            commentFlag: false,
+            timeData: [],
         }
     },
     computed:{
@@ -345,10 +352,14 @@ export default {
                     this.imgDetailHtml = attr.data.content;
                 }
                 this.getCommentList(res.data.productExtInfo.id).then((comment) => {
-                    console.log(comment);
-                    this.commentList = comment.data.evaluations;
+                    this.timeData = comment.data.evaluations;
                     this.commentRecond = comment.total_record;
                     this.prectent = comment.data.praiseRate == null ? 0 : comment.data.praiseRate;
+                    if(this.commentRecond<=3){
+                        this.commentList  = this.timeData;
+                    }else{
+                        this.commentList = this.timeData.slice(0,3);
+                    }
                 })
             })
         })
@@ -469,23 +480,20 @@ export default {
             })
         },
         getMoreComment() {
-            this.page++;
-            this.getCommentList(this.detailData.productExtInfo.id).then((res) => {
-                this.commentList = this.commentList.concat(res.data.evaluations);
-                this.$nextTick(()=>{
-                    this.setLine();
+            if(this.page == 1 && this.commentList.length<=10){
+                this.commentList = this.timeData;
+            }else{
+                this.page++;
+                this.getCommentList(this.detailData.productExtInfo.id).then((res) => {
+                    this.commentList = this.commentList.concat(res.data.evaluations);
+                    this.$nextTick(()=>{
+                        this.setLine();
+                    })
                 })
-            })
+            }
         },
         getCommentList(extendId) {
             let pageSize = 10;
-            if(this.page == 1){
-                pageSize = 3;
-            }else if(this.page == 2){
-                pageSize = 7;
-            }else{
-                pageSize = 10;
-            }
             let data ={
                 'eval.proExtId': extendId,
                 'page.pageNumber': this.page,

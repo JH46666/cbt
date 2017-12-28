@@ -146,12 +146,7 @@
                                 this.$store.commit('SET_MEMBERDATA',{type:attr,val:res.data[attr]})
                             }
                             let status = this.$store.state.member.memberAccount.status;
-                            if(res.data.shop){
-                                if(res.data.shop.shopStatus == 1 || res.data.shop.shopStatus == 3){
-                                    return this.$router.push({name: '茶帮通注册3'})
-                                }
-                            }
-                            if(status === 'WAIT_AUDIT' || status === 'AUDIT_NO_PASS') {
+                            if(status === 'WAIT_AUDIT' || status === 'AUDIT_NO_PASS'){
                                 return this.$router.push({name: '茶帮通注册3'})
                             }
                             if(status === 'INACTIVE') {

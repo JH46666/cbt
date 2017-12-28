@@ -9,7 +9,7 @@
                     <label for="2">企业名称</label>
                 </div>
                 <div class="select_item_content">
-                    <textarea rows="2" id="2" v-model="formData.shopName" readonly placeholder="必填项，请填写店铺名称"></textarea>
+                    <textarea rows="2" id="2" v-model="formData.shopName" placeholder="必填项，请填写店铺名称"></textarea>
                 </div>
             </div>
             <div class="select_item seller_type" v-if="registClass === 1" style="padding-bottom: .28rem;">
@@ -74,7 +74,7 @@
         <div class="f5_2"></div>
         <div class="select_bottom_wrapper">
             <div class="select_bottom_btn">
-                <mt-button type="primary" :disabled="iSubmit" @click="submitMethod">立即注册</mt-button>
+                <mt-button type="primary" :disabled="iSubmit" @click="submitMethod">提交资料</mt-button>
             </div>
             <mt-button type="primary" class="to_index" @click="$router.push({name:'首页'})">去首页</mt-button>
         </div>
@@ -134,13 +134,16 @@ export default {
             path: 'test_path/',
             eximain: false,
             registText: '立即注册',
+            myData: {},
         }
     },
     created() {
         // 设置title
         this.$store.commit('SET_TITLE','茶帮通注册');
+        this.getData(store.state.member.orgDTO.orgID);
         this.loginNumber = store.state.member.member.memberAccount;
         this.formData.shopName = store.state.member.member.unitName;
+
     },
     computed: {
         iSubmit() {
@@ -154,6 +157,24 @@ export default {
         }
     },
     methods: {
+        // 获取数据
+        getData(id) {
+            this.$api.post('/orgShop/getOrgShop',{
+                orgId: id,
+                sysId: 1
+            },res => {
+                this.myData = res.data;
+                this.formData.shopResTel = res.data.businessTelephone;
+                this.formData.shopPayNumber = res.data.alipayAccount;
+                this.sellerClass = res.data.shopType-1;
+                this.licenseImgUrl = [res.data.businessLicensePic];
+                this.productImgUrl = [res.data.facadePics];
+                this.licenseImg = [res.data.businessLicensePic];
+                this.productImg = [res.data.facadePics];
+                this.licenseImgFile = [null];
+                this.productImgFile = [null];
+            })
+        },
         changeText() {
             this.eximain = false;
             this.registText = '提交资料';
@@ -231,40 +252,55 @@ export default {
                         bucket: this.bucket
                     })
                     for(let i=0; i<this.shopImgFile.length; i++){            // 主图
-                        let random_name =res.data.basePath + this.random_string(6) + '_' + new Date().getTime() + '.' + this.shopImgFile[i].name.split('.').pop()
-                        client.multipartUpload(random_name, this.shopImgFile[i]).then((results) => {
-                            const url = '//img0.oteao.com/'+ results.name;
-                            this.shopImgUrl = [url];
+                        if(this.shopImgFile[i]){
+                            let random_name =res.data.basePath + this.random_string(6) + '_' + new Date().getTime() + '.' + this.shopImgFile[i].name.split('.').pop()
+                            client.multipartUpload(random_name, this.shopImgFile[i]).then((results) => {
+                                const url = '//img0.oteao.com/'+ results.name;
+                                this.shopImgUrl = [url];
+                                flag.shop++;
+                                isFlag(resolve,reject);
+                            }).catch((err) => {
+                                flag.shop++;
+                                isFlag(resolve,reject);
+                            })
+                        }else{
                             flag.shop++;
                             isFlag(resolve,reject);
-                        }).catch((err) => {
-                            flag.shop++;
-                            isFlag(resolve,reject);
-                        })
+                        }
                     }
                     for(let i=0; i<this.licenseImgFile.length; i++){            // 主图
-                        let random_name =res.data.basePath + this.random_string(6) + '_' + new Date().getTime() + '.' + this.licenseImgFile[i].name.split('.').pop()
-                        client.multipartUpload(random_name, this.licenseImgFile[i]).then((results) => {
-                            const url = '//img0.oteao.com/'+ results.name;
-                            this.licenseImgUrl = [url];
+                        if(this.licenseImgFile[i]){
+                            let random_name =res.data.basePath + this.random_string(6) + '_' + new Date().getTime() + '.' + this.licenseImgFile[i].name.split('.').pop()
+                            client.multipartUpload(random_name, this.licenseImgFile[i]).then((results) => {
+                                const url = '//img0.oteao.com/'+ results.name;
+                                this.licenseImgUrl = [url];
+                                flag.lic++;
+                                isFlag(resolve,reject);
+                            }).catch((err) => {
+                                flag.lic++;
+                                isFlag(resolve,reject);
+                            })
+                        }else{
                             flag.lic++;
                             isFlag(resolve,reject);
-                        }).catch((err) => {
-                            flag.lic++;
-                            isFlag(resolve,reject);
-                        })
+                        }
                     }
                     for(let i=0; i<this.productImgFile.length; i++){            // 主图
-                        let random_name =res.data.basePath + this.random_string(6) + '_' + new Date().getTime() + '.' + this.productImgFile[i].name.split('.').pop()
-                        client.multipartUpload(random_name, this.productImgFile[i]).then((results) => {
-                            const url = '//img0.oteao.com/'+ results.name;
-                            this.productImgUrl = [url];
+                        if(this.productImgFile[i]){
+                            let random_name =res.data.basePath + this.random_string(6) + '_' + new Date().getTime() + '.' + this.productImgFile[i].name.split('.').pop()
+                            client.multipartUpload(random_name, this.productImgFile[i]).then((results) => {
+                                const url = '//img0.oteao.com/'+ results.name;
+                                this.productImgUrl = [url];
+                                flag.pro++;
+                                isFlag(resolve,reject);
+                            }).catch((err) => {
+                                flag.pro++;
+                                isFlag(resolve,reject);
+                            })
+                        }else{
                             flag.pro++;
                             isFlag(resolve,reject);
-                        }).catch((err) => {
-                            flag.pro++;
-                            isFlag(resolve,reject);
-                        })
+                        }
                     }
                 })
             })
