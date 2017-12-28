@@ -11,7 +11,7 @@
                 <li class="flex-1" @click="isUse = false" :class="{'on': !isUse}">不使用</li>
             </ul>
         </div>
-        <div class="floor2" :class="{iswx: $tool.isWx}" v-if="(totalAmount < myData.orderSum || isUse === false) && $route.query.type !== 'delivery'">
+        <div class="floor2" :class="{iswx: $tool.isWx}" v-if="( ($route.query.type === 'onlineanddelivery' ?  totalAmount < myData.orderSum - myData.cashDeliverySum : totalAmount < myData.orderSum) || isUse === false) && $route.query.type !== 'delivery'">
             <mt-radio
                 align="right"
                 title="选择支付方式"
@@ -65,12 +65,15 @@
             comfirnPrice() {
                 try {
                     let orderSum = this.$route.query.type === 'onlineanddelivery' ? this.myData.orderSum - this.myData.cashDeliverySum : this.myData.orderSum;
-
                     if(this.isUse) {
                         if(this.totalAmount > orderSum) {
                             return orderSum
                         } else {
-                            return orderSum - this.totalAmount
+                            if(this.$route.query.type === 'delivery') {
+                                return this.totalAmount
+                            } else {
+                                return orderSum - this.totalAmount
+                            }
                         }
                     } else {
                         return orderSum

@@ -1,9 +1,9 @@
 <template>
     <!-- 您可能喜欢 -->
-    <div class="may_like">
+    <div class="may_like" v-if="mayProducts.length > 0">
         <h4 class="tit_like"><span>您可能喜欢</span></h4>
         <div class="search_pros">
-            <ul class="may_pros_list clearfix" v-if="mayProducts.length > 0">
+            <ul class="may_pros_list clearfix">
                 <li class="may_pro_item" v-for="mayItem in mayProducts">
                     <router-link :to="'/detail?proSku=' + mayItem.proNo">
                         <goods-img imgWidth="2.6rem" :imgUrl="mayItem.proImg" :tagUrl="mayItem.tagImage"></goods-img>

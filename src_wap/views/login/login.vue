@@ -1,6 +1,7 @@
 <template>
     <div class="login_wrapper">
-        <div class="logo_img"><img src="../../assets/images/logo.png" alt=""></div>
+        <router-link to="/" tag="div" class="logo_img" v-if="logoImg === ''"><img src="../../assets/images/logo.png" alt=""></router-link>
+        <router-link to="/" tag="div" class="logo_img" v-else v-html="logoImg"></router-link>
         <div>
             <mt-navbar v-model="selected">
                 <mt-tab-item id="2">密码登录</mt-tab-item>
@@ -70,8 +71,9 @@
                 mescodeFlag: false,                 //短信验证是否
                 getFlag: false,                     //获取短信验证码按钮是否可点击
                 getCount: 0,                        //获取短信的次数
-                errorTips: '',                    //错误提示
-                timeCount: 60,                    //倒计时
+                errorTips: '',                      //错误提示
+                timeCount: 60,                      //倒计时
+                logoImg: '',                        //logo的图片
             }
         },
         computed:{
@@ -253,6 +255,9 @@
         created() {
             // 设置title
             this.$store.commit('SET_TITLE','账户登录');
+            this.$store.dispatch('getBlock','waplogin').then(res => {
+                this.logoImg = res.data.htmlText;
+            })
 
         },
         watch:{
