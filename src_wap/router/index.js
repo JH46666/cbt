@@ -135,6 +135,14 @@ const router = new Router({
 					meta: {
 						hideFooter: true
 					}
+				},
+				{
+					path: 'brandVenue',
+					name: '修改密码',
+					component: resolve => require(['@/views/center/brandVenue.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
 				}
 			]
 		},
