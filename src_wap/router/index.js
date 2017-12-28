@@ -174,6 +174,14 @@ const router = new Router({
 					meta: {
 						hideFooter: true
 					}
+				},
+				{
+					path: 'selleredit',
+					name: '茶帮通注册6',
+					component: resolve => require(['@/views/regist/sellerEdit.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
 				}
 			]
 		},
