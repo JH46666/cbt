@@ -20,13 +20,14 @@
         methods: {
         },
         created() {
-            let str = 'wap_hometuijian';
+            let str = 'wap-seasonal';
+
             this.$api.get('/oteao/productCollection/getCollectionDetail',{
                 'device': 'WAP',
                 'sysId': 1,
                 'collection.collectionNo': str
             },res=>{
-                this.listData = res.data.productCollection.products;
+                this.listData = res.data.proExtInfoVoList;
                 console.log(res);
             },res=>{
                 return this.$messageBox({
