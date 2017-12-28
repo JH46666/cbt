@@ -1,5 +1,5 @@
 <template>
-    <div class="freight_wrapper">
+    <div class="freight_wrapper add">
         <div class="caption flex">
             <p>全国包邮，除以下省份</p>
         </div>
@@ -516,6 +516,11 @@ import $api from 'api';
             }
         },
         beforeRouteEnter(to, from, next) {
+            if(from.name === '卖家中心'){
+                next(vm => {
+                    vm.$router.go(0);
+                })
+            }
             if(store.state.member.member.id) {
                 next();
             } else {
