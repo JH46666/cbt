@@ -15,9 +15,18 @@
         <!-- 轮播 -->
         <div class="banner_wrapper">
             <mt-swipe :auto="3000">
-                <mt-swipe-item style="background-color: yellow;"></mt-swipe-item>
-                <mt-swipe-item style="background-color: green;"></mt-swipe-item>
-                <mt-swipe-item style="background-color: red;"></mt-swipe-item>
+                <mt-swipe-item>
+                    <img src="../../assets/banner_1.jpg" />
+                </mt-swipe-item>
+                <mt-swipe-item>
+                    <img src="../../assets/banner_2.jpg" />
+                </mt-swipe-item>
+                <mt-swipe-item>
+                    <img src="../../assets/banner_3.jpg" />
+                </mt-swipe-item>
+                <mt-swipe-item>
+                    <img src="../../assets/banner_4.png" />
+                </mt-swipe-item>
             </mt-swipe>
         </div>
         <!-- 四个馆 -->
