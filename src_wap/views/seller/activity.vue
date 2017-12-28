@@ -324,7 +324,11 @@ export default {
         }
     },
     beforeRouteEnter(to, from, next) {
-
+        if(from.name === '活动列表'){
+            next(vm => {
+                vm.$router.go(0);
+            })
+        }
         if(store.state.member.member.id) {
             next();
         } else {
