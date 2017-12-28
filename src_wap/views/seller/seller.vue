@@ -72,7 +72,7 @@
         <section class="tools-pannel">
             <div class="tools-row">
                 <router-link :to="{name: '商品管理'}" class="item">
-                    <span><i class="icon-xiaoshouguanli blue"></i></span>
+                    <span><i class="icon-zhongxindianpu blue"></i></span>
                     <p>商品管理</p>
                 </router-link>
                 <router-link :to="{name: '运费配置'}" class="item">
@@ -154,7 +154,7 @@
         created() {
             // 设置title
             this.$store.commit('SET_TITLE','卖家中心');
-                
+
             this.$api.post('/oteao/order/countOrderNumBySeller',{},res => {
                 this.count = res.data;
             })
