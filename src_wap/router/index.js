@@ -437,12 +437,18 @@ const router = new Router({
 			]
 		},
 		{
-			path: 'wxlogin',
-			name: '微信登录第三页面',
-			component: resolve => require(['@/views/login/wxLogin.vue'],resolve),
-			meta: {
-				hideFooter: true
-			}
+			path: '/news',
+			component: resolve => require(['@/views/layout/mainWrap.vue'],resolve),
+			children: [
+				{
+					path: 'list',
+					name: '新闻列表',
+					component: resolve => require(['@/views/news/index.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+			],
 		},
 	]
 })
