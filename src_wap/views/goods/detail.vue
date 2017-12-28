@@ -241,7 +241,7 @@
             该商品已下架哦~
         </div>
         <mt-tabbar v-model="selected" class="cbt-footer detail_footer" :isZiYing="isThird" ref="footers">
-            <mt-tab-item id="1" @click.native="openDialog" v-if="detailData.productInfo.businessType != 'ORG_SALES'">
+            <mt-tab-item id="1" @click.native="openKfDialog" v-if="detailData.productInfo.businessType != 'ORG_SALES'">
                 <i class="icon-kefu1" slot="icon"></i>
                 客服
             </mt-tab-item>
@@ -477,6 +477,8 @@ export default {
                 this.$store.dispatch('addCart',{proId:this.detailData.productExtInfo.proId,buyNum:this.goodsCount}).then(res=>{
                     console.log(res);
                 },res=>{});
+            }).catch((res)=>{
+                return this.$router.push({name: '账户登录'});
             })
         },
         getMoreComment() {
@@ -698,7 +700,12 @@ export default {
                this.$router.push({
                    name: '购物车'
                })
+           }).catch((res)=>{
+               return this.$router.push({name: '账户登录'});
            })
+       },
+       openKfDialog() {
+           this.showOrHide = true;
        },
        openDialog() {
            this.$store.dispatch('getMemberData').then(()=>{

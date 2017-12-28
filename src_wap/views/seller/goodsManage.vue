@@ -363,14 +363,6 @@ import $api from 'api';
                 })
             },
             goCreate() {
-                // let status = store.state.member.shop.shopStatus;
-                // if(status == -2) {
-                //     return this.$messageBox({
-                //         title:'提示',
-                //         message:`您因违规操作而被冻结无法发布商品，若有疑问，请联系客服400-996-3399`,
-                //         confirmButtonText: '我知道了'
-                //     })
-                // }
                 this.$store.commit('SET_RESIZE');
                 this.$router.push({
                     name: '新品上架-1'
@@ -528,19 +520,26 @@ import $api from 'api';
                 })
             },
             searchMethod() {
-                if(this.$route.query.state == undefined || this.$route.query.state == 'ON_SHELF'){
-                    this.getList(this.onShelf.orderBy,this.onShelf.sorts,this.onShelf.currentPage,'ON_SHELF').then((res) => {
-                        this.onShelf.listData = res.data;
-                        this.onShelf.totalPage = res.total_record;
-                    })
+                if(this.searchTxt.length==0){
+                    return Toast({
+                        message: `找不到该商品哦~`,
+                        iconClass: 'icon icon-fail'
+                    });
                 }else{
-                    this.getList(this.offShelf.orderBy,this.offShelf.sorts,this.offShelf.currentPage,'OFF_SHELF').then((res) => {
-                        this.offShelf.listData = res.data;
-                        this.offShelf.totalPage = res.total_record;
-                        for(let obj of this.offShelf.listData){
-                            this.$set(obj,'checked',false)
-                        }
-                    })
+                    if(this.$route.query.state == undefined || this.$route.query.state == 'ON_SHELF'){
+                        this.getList(this.onShelf.orderBy,this.onShelf.sorts,this.onShelf.currentPage,'ON_SHELF').then((res) => {
+                            this.onShelf.listData = res.data;
+                            this.onShelf.totalPage = res.total_record;
+                        })
+                    }else{
+                        this.getList(this.offShelf.orderBy,this.offShelf.sorts,this.offShelf.currentPage,'OFF_SHELF').then((res) => {
+                            this.offShelf.listData = res.data;
+                            this.offShelf.totalPage = res.total_record;
+                            for(let obj of this.offShelf.listData){
+                                this.$set(obj,'checked',false)
+                            }
+                        })
+                    }
                 }
             },
             selTab(str) {
