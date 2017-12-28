@@ -5,6 +5,7 @@ import goodsImg from './goodsImg.vue';
 import mayLike from './mayLike.vue';
 import editPrice from './editPrice';
 import msgPopup from './msgPopup';
+import collection from './collection';
 import redActive from './redMessage.js'
 
 export default {
@@ -15,6 +16,7 @@ export default {
         Vue.component(goodsItem.name,goodsItem);
         Vue.component(mayLike.name,mayLike);
         Vue.component(msgPopup.name,msgPopup);
+        Vue.component(collection.name,collection);
         Vue.prototype.$editPrice = editPrice;
         Vue.prototype.$redActive = redActive;
     }

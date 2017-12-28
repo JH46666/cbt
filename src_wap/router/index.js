@@ -435,7 +435,22 @@ const router = new Router({
 			meta: {
 				hideFooter: true
 			}
-		}
+		},
+		{
+			path: '/page',
+			component: resolve => require(['@/views/layout/mainWrap.vue'],resolve),
+			children: [
+				{
+					path: 'branchHall',
+					name: '分馆',
+					component: resolve => require(['@/views/page/branchHall.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				}
+			]
+		},
+		
 	]
 })
 
