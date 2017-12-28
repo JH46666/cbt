@@ -74,7 +74,10 @@
         <div class="f5_2"></div>
         <div class="select_bottom_wrapper">
             <div class="select_bottom_btn">
-                <mt-button type="primary" :disabled="iSubmit" @click="submitMethod">立即注册</mt-button>
+                <mt-button type="primary" :disabled="iSubmit || loading" @click="submitMethod">
+                    <img src="../../assets/images/loading3.gif" height="20" width="20" slot="icon" v-if="loading" >
+                    立即注册
+                </mt-button>
             </div>
             <mt-button type="primary" class="to_index" @click="$router.push({name:'首页'})">去首页</mt-button>
         </div>
@@ -134,6 +137,7 @@ export default {
             path: 'test_path/',
             eximain: false,
             registText: '立即注册',
+            loading: false,
         }
     },
     created() {
@@ -154,10 +158,6 @@ export default {
         }
     },
     methods: {
-        changeText() {
-            this.eximain = false;
-            this.registText = '提交资料';
-        },
         selectSellerType(index) {
             this.sellerClass = index;
         },
@@ -270,6 +270,7 @@ export default {
             })
         },
         submitMethod() {
+            this.loading = true;
             this.doUpload().then(() => {
                 this.postMember();
             })
