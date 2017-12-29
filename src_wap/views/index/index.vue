@@ -112,19 +112,17 @@
                         <span>更多</span>
                     </div>
                     <div class="cat_items_content">
-                        <span>1</span>
-                        <span>2</span>
-                        <span>3</span>
-                        <span>4</span>
-                        <span>5</span>
-                        <span>6</span>
+                        <span v-if="(item,index) in childCat" :key="item.id">
+                            <img src="item.imgUrl" />
+                            {{ item.name }}
+                        </span>
                     </div>
                 </div>
             </div>
             <div class="cat_bottom">
                 <div class="cat_list">
                     <div class="cat_list_wrapper">
-                        <span v-for="(cat,index) in catList" :key="index" :catid="cat.catId" :class="{on: catIndex == index}" @click="catIndex = index">{{ cat.catName }}</span>
+                        <span v-for="(cat,index) in catList" :key="index" :catid="cat.catId" :class="{on: catIndex == index}" @click="selectCat(cat,index)">{{ cat.catName }}</span>
                     </div>
                 </div>
             </div>
@@ -199,80 +197,34 @@ import cbtDate from '../../components/datePicker.vue'
                 title: '123',
                 listData:[],
                 catIndex: 0,
-                catList: [
-                    {
-                        catId: 0,
-                        catName: '精选'
-                    },
-                    {
-                        catId: 27,
-                        catName: '乌龙茶'
-                    },
-                    {
-                        catId: 72,
-                        catName: '红茶'
-                    },
-                    {
-                        catId: 34,
-                        catName: '绿茶'
-                    },
-                    {
-                        catId: 40,
-                        catName: '黑茶'
-                    },
-                    {
-                        catId: 61,
-                        catName: '黄茶'
-                    },
-                    {
-                        catId: 108,
-                        catName: '花茶'
-                    }
-                ],
-                userSay: [
-                    {
-                        imgUrl: '//img0.oteao.com/WAPIMG/usersay/i_img_01.jpg',
-                        shopType: '茶店',
-                        shopName: '--黑龙江哈尔滨松北区某茶叶店',
-                        keyWord: '0经营风险，无需围货',
-                        content: '采购茶叶一直是我最为头疼的事情，我们小店是小本经营，采购量其实不大，导致很多茶厂茶企都不愿意小量批发给我们。但是茶帮通就很好，1斤都可以批发，卖多少进多少，不用囤货，而且价格也比市场上便宜，真正的物美价廉！'
-                    },
-                    {
-                        imgUrl: '//img1.oteao.com/WAPIMG/usersay/i_img_01.jpg',
-                        shopType: '茶馆',
-                        shopName: '--福建省泉州某茶馆',
-                        keyWord: '降低采购成本30~50%',
-                        content: '以前买茶都要自己跑茶企茶厂，一次采购下来要三四天，费事有费力。自从用了茶帮通，平台上的茶叶资源应有尽有，一键采购，极大地节约了采购成本，而且多了很多时间可以陪家人！'
-                    },
-                    {
-                        imgUrl: '//img2.oteao.com/WAPIMG/usersay/i_img_01.jpg',
-                        shopType: '茶店',
-                        shopName: '--厦门市思明区某茶叶店',
-                        keyWord: '超长退换货期',
-                        content: '我们买茶很怕买到以次充好的茶叶，而茶帮通很好地解决了这一点，平台上不仅汇聚了全国茶业资源，而且可以查看对方的信用认证，还有最高长达三个月的退换货周期，极大地保障了我们采购的利益！'
-                    },
-                    {
-                        imgUrl: '//img3.oteao.com/WAPIMG/usersay/i_img_01.jpg',
-                        shopType: '茶店',
-                        shopName: '--深圳罗湖区某茶叶店',
-                        keyWord: '覆盖名优品种90%',
-                        content: '茶帮通对于我来说，最大的改变就是平台透明，茶叶产地、质量等全部都在明细中写得清清楚楚，供应商的资质等都可以查看，一点也不用担心买到质量不好的产品。'
-                    },
-                    {
-                        imgUrl: '//img4.oteao.com/WAPIMG/usersay/i_img_01.jpg',
-                        shopType: '茶企',
-                        shopName: '--福建省某茶企',
-                        keyWord: '最专业的垂直化B2B+O2O平台',
-                        content: '做茶叶其实很累，靠的就是一颗喜欢茶的心。而“卖“茶更是劳心劳力，市场上各种真假难辨的分销商、茶铺总是好茶坏茶掺着卖，我不想自己辛苦做的茶卖给”黑心商人“，而茶帮通很好地帮我筛选分销商，让我能把好茶卖给好的客户！'
-                    }
-                ]
+                catList: [],
+                userSay: [],
+                childCat: [],
+            }
+        },
+        methods: {
+            selectCat(item,index) {
+                this.catIndex = index;
+                this.childCat = item.children;
             }
         },
         created(){
             // 设置title
             this.$store.commit('SET_TITLE','茶帮通商城');
+            this.$store.dispatch('getBlock','WAP_CAT').then((res)=>{
+                this.catList= JSON.parse(res.data.htmlText);
+            })
             this.$store.dispatch('getBlock','USER_SAY').then((res)=>{
-                console.log(res);
+                this.userSay= JSON.parse(res.data.htmlText);
+                this.$nextTick(()=>{
+                    var swiper = new Swiper('.swiper-container', {
+                        slidesPerView: 'auto',
+                        spaceBetween: 25,
+                        freeMode: true,
+                        centeredSlides: true
+                    });
+                    swiper.slideTo(2, 200, false);
+                })
             })
             if(location.href.indexOf('?wxpaycallback=') !== -1 ){
                 // 表示微信支付回调
@@ -289,14 +241,9 @@ import cbtDate from '../../components/datePicker.vue'
             },res=>{
                 this.listData = res.data.proExtInfoVoList;
             })
-            console.log(JSON.stringify(this.userSay))
         },
         mounted() {
-            var swiper = new Swiper('.swiper-container', {
-                slidesPerView: 'auto',
-                spaceBetween: 25,
-                freeMode: true
-            });
+
         }
     }
 </script>
