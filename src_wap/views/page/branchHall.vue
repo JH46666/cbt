@@ -1,6 +1,6 @@
 <template>
     <div class="branch-hall">
-        <div class="hall-banner"><img src="../../assets/mzg.jpg" alt=""></div>
+        <div class="hall-banner" v-html="bannerImg"></div>
         <collection :myProducts="listData"></collection>
          <!-- 到底啦 -->
         <div class="bottom_wrapper">到底啦~</div>
@@ -12,7 +12,8 @@
     export default {
         data() {
             return {
-                listData:[]
+                listData:[],
+                bannerImg: ''
             }
         },
         computed: {
@@ -26,21 +27,55 @@
             switch (this.$route.query.collectinNo) {
                 case 'wap-seasonal':
                     this.$store.commit('SET_TITLE','应季好茶');
+                    this.$store.dispatch('getBlock','wap-seasonal').then(res => {
+                        if(res.data.htmlText.trim() != ''){
+                            this.bannerImg = res.data.htmlText;
+                        }else{
+                            this.bannerImg = '<img src="//img0.oteao.com/hallBanner/yjhc.jpg" alt="">';
+                        }
+                    });
                     break;
                 case 'wap-smallcrowd':
                     this.$store.commit('SET_TITLE','小众茶');
+                    this.$store.dispatch('getBlock','wap-smallcrowd').then(res => {
+                        if(res.data.htmlText.trim() != ''){
+                            this.bannerImg = res.data.htmlText;
+                        }else{
+                            this.bannerImg = '<img src="//img0.oteao.com/hallBanner/xzg.jpg" alt="">';
+                        }
+                    });
                     break;
                 case 'wap-poop':
                     this.$store.commit('SET_TITLE','品质尾货');
+                    this.$store.dispatch('getBlock','wap-poop').then(res => {
+                        if(res.data.htmlText.trim() != ''){
+                            this.bannerImg = res.data.htmlText;
+                        }else{
+                            this.bannerImg = '<img src="//img0.oteao.com/hallBanner/pzwh.jpg" alt="">';
+                        }
+                    });
                     break;
                 case 'wap-afir':
-                    this.$store.commit('SET_TITLE','名枞馆集合');
+                    this.$store.commit('SET_TITLE','名枞馆');
+                    this.$store.dispatch('getBlock','wap-afir').then(res => {
+                        if(res.data.htmlText.trim() != ''){
+                            this.bannerImg = res.data.htmlText;
+                        }else{
+                            this.bannerImg = '<img src="//img0.oteao.com/hallBanner/mzg.jpg" alt="">';
+                        }
+                    });
                     break;
                 case 'wap-newproduct':
-                    this.$store.commit('SET_TITLE','新品馆集合');
+                    this.$store.commit('SET_TITLE','新品馆');
+                    this.$store.dispatch('getBlock','wap-newproduct').then(res => {
+                        if(res.data.htmlText.trim() != ''){
+                            this.bannerImg = res.data.htmlText;
+                        }else{
+                            this.bannerImg = '<img src="//img0.oteao.com/hallBanner/xpg.jpg" alt="">';
+                        }
+                    });
                     break;
                 default:
-                    this.$store.commit('SET_TITLE','为您推荐');
                     break;
             }
             this.$api.get('/oteao/productCollection/getCollectionDetail',{
@@ -49,7 +84,6 @@
                 'collection.collectionNo': str
             },res=>{
                 this.listData = res.data.proExtInfoVoList;
-                console.log(res);
             },res=>{
                 return this.$messageBox({
                     title:'提示',
@@ -62,7 +96,7 @@
     }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .branch-hall{
     .hall-banner{
         img{
