@@ -198,6 +198,14 @@ const router = new Router({
 					meta: {
 						hideFooter: true
 					}
+				},
+				{
+					path: 'sellerexamine',
+					name: '茶帮通注册7',
+					component: resolve => require(['@/views/regist/sellerExamine.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
 				}
 			]
 		},

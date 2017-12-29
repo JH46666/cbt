@@ -17,7 +17,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        device: '',
+        device: ''
     },
     mutations: {
         SET_DEVICE(state,val) {

@@ -173,8 +173,8 @@ export default {
                 this.sellerClass = res.data.shopType-1;
                 this.licenseImgUrl = [res.data.businessLicensePic];
                 this.productImgUrl = [res.data.facadePics];
-                this.licenseImg = [res.data.businessLicensePic];
-                this.productImg = [res.data.facadePics];
+                this.licenseImg = [{imgUrl: res.data.businessLicensePic}];
+                this.productImg = [{imgUrl: res.data.facadePics}];
                 this.licenseImgFile = [null];
                 this.productImgFile = [null];
             })
