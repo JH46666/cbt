@@ -275,7 +275,7 @@ import cbtDate from '../../components/datePicker.vue'
         created(){
             // 设置title
             this.$store.commit('SET_TITLE','茶帮通商城');
-            this.$store.dispatch('getBlock',{code:'USER_SAY'}).then((res)=>{
+            this.$store.dispatch('getBlock','USER_SAY').then((res)=>{
                 console.log(res);
             })
             if(location.href.indexOf('?wxpaycallback=') !== -1 ){

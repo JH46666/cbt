@@ -143,6 +143,8 @@
                     this.$store.dispatch('viewSign');
                     // 从新拉取会员信息
                     this.$store.dispatch('getMemberData')
+                },res=> {
+                    this.$toast(`今天已经签到过了，请明天再来签到~`)
                 })
             },
             // 推出登陆
