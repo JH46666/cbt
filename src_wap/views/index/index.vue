@@ -32,22 +32,22 @@
         <!-- 四个馆 -->
         <div class="four_wrapper">
             <div class="four_bg"></div>
-            <div class="four_item">
+            <router-link class="four_item" :to="{ path: '/page/branchHall', query: { collectinNo: 'wap-newproduct' }}">
                 <img src="../../assets/images/ic_xinpinguan.png" />
                 <span>新品馆</span>
-            </div>
-            <div class="four_item">
+            </router-link>
+            <router-link class="four_item" :to="{ path: '/page/branchHall', query: { collectinNo: 'wap-afir' }}">
                 <img src="../../assets/images/ic_mingzhongguan.png" />
                 <span>名枞馆</span>
-            </div>
-            <div class="four_item">
+            </router-link>
+            <router-link  class="four_item" :to="{ path: '/page/branchHall', query: { collectinNo: 'wap-afir' }}">
                 <img src="../../assets/images/ic_pinpaiguan.png" />
                 <span>品牌馆</span>
-            </div>
-            <div class="four_item">
+            </router-link>
+            <router-link  class="four_item" :to="{ path: '/page/branchHall', query: { collectinNo: 'wap-poop' }}">
                 <img src="../../assets/images/ic_weihuo.png" />
                 <span>品质尾货</span>
-            </div>
+            </router-link>
         </div>
         <!-- 新闻 -->
         <div class="news_wrapper">
@@ -71,12 +71,12 @@
                 <div class="packet_item_right">去抢红包</div>
             </div>
             <div class="packet_item item_2">
-                <div class="items">
+                <router-link class="items" :to="{ path: '/page/branchHall', query: { collectinNo: 'wap-smallcrowd' }}">
                     <img src="../../assets/img_xiaozhongcha.jpg" />
-                </div>
-                <div class="items">
+                </router-link>
+                <router-link class="items" :to="{ path: '/page/branchHall', query: { collectinNo: 'wap-seasonal' }}">
                     <img src="../../assets/img_yingji.jpg" />
-                </div>
+                </router-link>
             </div>
         </div>
         <!-- 卖家招募 -->
@@ -178,12 +178,7 @@
                 </div>
             </div>
             <div class="suggest_content">
-                <div class="suggest_item">
-
-                </div>
-                <div class="suggest_item">
-
-                </div>
+                <collection :myProducts="listData"></collection>
             </div>
         </div>
         <!-- 到底啦 -->
@@ -202,6 +197,7 @@ import cbtDate from '../../components/datePicker.vue'
         data() {
             return {
                 title: '123',
+                listData:[],
                 catIndex: 0,
                 catList: [
                     {
@@ -285,6 +281,14 @@ import cbtDate from '../../components/datePicker.vue'
                 let payId = src[0].split('=')[1];
                 location.replace(location.origin + `/#/balance/payview?payId=${payId}&wx=wxpaycallback&type=${src[1]}`);
             }
+            //获取为您推荐集合
+            this.$api.get('/oteao/productCollection/getCollectionDetail',{
+                'device': 'WAP',
+                'sysId': 1,
+                'collection.collectionNo': 'wap_hometuijian'
+            },res=>{
+                this.listData = res.data.proExtInfoVoList;
+            })
             console.log(JSON.stringify(this.userSay))
         },
         mounted() {
