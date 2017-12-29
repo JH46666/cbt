@@ -478,6 +478,14 @@ const router = new Router({
 						hideFooter: true
 					}
 				},
+				{
+					path: 'detail',
+					name: '新闻详情',
+					component: resolve => require(['@/views/news/index.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
 			],
 		},
 		{
