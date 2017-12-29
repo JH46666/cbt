@@ -23,6 +23,10 @@ var filter = {
         Vue.filter('ninenineAdd',function(val) {
             return Number(val) > 99 ? '99+' : Number(val)
         })
+        // 截取年月日
+        Vue.filter('sliceDate',function(val) {
+            return ('' + val).split(' ')[0]
+        })
     }
 }
 
