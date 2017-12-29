@@ -94,7 +94,7 @@ export default {
                         "content": obj.content,
                         "proExtId": obj.extendId,
                         "proSku": obj.sku,
-                        "score": obj.stars
+                        "score": obj.stars*20
                     })
                 }
             }
