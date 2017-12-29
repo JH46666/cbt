@@ -138,7 +138,7 @@ const router = new Router({
 				},
 				{
 					path: 'brandVenue',
-					name: '修改密码',
+					name: '品牌馆',
 					component: resolve => require(['@/views/center/brandVenue.vue'],resolve),
 					meta: {
 						hideFooter: true
@@ -481,7 +481,7 @@ const router = new Router({
 				{
 					path: 'detail',
 					name: '新闻详情',
-					component: resolve => require(['@/views/news/index.vue'],resolve),
+					component: resolve => require(['@/views/news/detail.vue'],resolve),
 					meta: {
 						hideFooter: true
 					}
