@@ -301,6 +301,18 @@
             display: block;
         }
         .packet_wrapper{
+            &::after{
+                width: 1.06rem;
+                height: 1.06rem;
+                content: '';
+                .position(a);
+                right: 0;
+                top: 0;
+                background-image: url('../../assets/images/btn_close.png');
+                background-repeat: no-repeat;
+                background-size: 100%;
+            }
+            .position(r);
             .algin(c);
             width: 6.9rem;
             height: 10.1rem;
@@ -310,7 +322,7 @@
             margin-left: -3.45rem;
             margin-top: -5.05rem;
             .bg(#fff);
-            border-radius: 8px;
+            border-radius: 12px;
             .packet_head{
                 .position(r);
                 width: 100%;

@@ -222,7 +222,9 @@ export default {
         }
     },
     created() {
-        console.log(JSON.stringify(this.packetCode));
+        this.$store.dispatch('getBlock','PACKET_CODE').then((res)=>{
+            console.log(res);
+        })
     }
 }
 </script>
