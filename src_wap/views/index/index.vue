@@ -15,17 +15,8 @@
         <!-- 轮播 -->
         <div class="banner_wrapper">
             <mt-swipe :auto="3000">
-                <mt-swipe-item>
-                    <img src="../../assets/banner_1.jpg" />
-                </mt-swipe-item>
-                <mt-swipe-item>
-                    <img src="../../assets/banner_2.jpg" />
-                </mt-swipe-item>
-                <mt-swipe-item>
-                    <img src="../../assets/banner_3.jpg" />
-                </mt-swipe-item>
-                <mt-swipe-item>
-                    <img src="../../assets/banner_4.png" />
+                <mt-swipe-item v-for="(item,index) in banner" :key="index" @click.native="golink(item)">
+                    <img :src="item.imgUrl" />
                 </mt-swipe-item>
             </mt-swipe>
         </div>
@@ -71,11 +62,11 @@
                 <div class="packet_item_right">去抢红包</div>
             </div>
             <div class="packet_item item_2">
-                <router-link class="items" :to="{ path: '/page/branchHall', query: { collectinNo: 'wap-smallcrowd' }}">
-                    <img src="../../assets/img_xiaozhongcha.jpg" />
+                <router-link class="items" v-html="samllHall" :to="{ path: '/page/branchHall', query: { collectinNo: 'wap-smallcrowd' }}" tag='div'>
+                    <!-- <div></div> -->
                 </router-link>
-                <router-link class="items" :to="{ path: '/page/branchHall', query: { collectinNo: 'wap-seasonal' }}">
-                    <img src="../../assets/img_yingji.jpg" />
+                <router-link class="items" v-html="goodHall" :to="{ path: '/page/branchHall', query: { collectinNo: 'wap-seasonal' }}" tag='div'>
+                    <!-- <div></div> -->
                 </router-link>
             </div>
         </div>
@@ -109,12 +100,12 @@
                 <div class="cat_items">
                     <div class="cat_items_head">
                         <span>精选品类</span>
-                        <span>更多</span>
+                        <span @click="$router.push({name: '分类',query: {parent: catId}})">更多</span>
                     </div>
                     <div class="cat_items_content">
-                        <span v-if="(item,index) in childCat" :key="item.id">
-                            <img src="item.imgUrl" />
-                            {{ item.name }}
+                        <span v-for="(item,index) in childCat" :key="item.id" @click="$router.push({name: '分类',query: {parent: item.parent,child: item.id}})">
+                            <img :src="item.imgUrl" />
+                            <i>{{ item.name }}</i>
                         </span>
                     </div>
                 </div>
@@ -200,19 +191,48 @@ import cbtDate from '../../components/datePicker.vue'
                 catList: [],
                 userSay: [],
                 childCat: [],
+                catId: 26,
+                banner: [],
+                samllHall: '',
+                goodHall: '',
             }
         },
         methods: {
             selectCat(item,index) {
                 this.catIndex = index;
-                this.childCat = item.children;
+                this.catId = item.catId;
+                this.childCat = item.chidren;
+            },
+            golink(item) {
+                if(item.link.length>0){
+                    if(item.flag){
+                        this.$router.push({
+                            name: '商品详情',
+                            query: {
+                                proSku: item.link
+                            }
+                        })
+                    }else{
+                        console.log('活动！！！！');
+                    }
+                }
             }
         },
         created(){
             // 设置title
             this.$store.commit('SET_TITLE','茶帮通商城');
             this.$store.dispatch('getBlock','WAP_CAT').then((res)=>{
-                this.catList= JSON.parse(res.data.htmlText);
+                this.catList = JSON.parse(res.data.htmlText);
+                this.childCat = this.catList[0].chidren;
+            })
+            this.$store.dispatch('getBlock','WAP_BANNER').then((res)=>{
+                this.banner = JSON.parse(res.data.htmlText);
+            })
+            this.$store.dispatch('getBlock','WAP_SAMLL').then((res)=>{
+                this.samllHall = JSON.parse(res.data.htmlText);
+            })
+            this.$store.dispatch('getBlock','WAP_GOOD').then((res)=>{
+                this.goodHall = JSON.parse(res.data.htmlText);
             })
             this.$store.dispatch('getBlock','USER_SAY').then((res)=>{
                 this.userSay= JSON.parse(res.data.htmlText);
