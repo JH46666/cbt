@@ -150,8 +150,8 @@ export default {
             successSign: {},            // 签到成功后的数据
             newUserDialog: false,       // 新客红包弹窗
             packetCode: {
-                oldUser: [56910,56909,56908,56907,56906,56905],
-                newUser: [56904,56903,56902,56901,56900,56899]
+                oldUser: [],
+                newUser: []
             },
             newList: [],                // 新客红包列表
             oldList: [],                // 老客红包列表
@@ -189,7 +189,7 @@ export default {
                 // 从新拉取会员信息
                 this.$store.dispatch('getMemberData')
             },res=> {
-                this.$toast(`今天已经签到过了，请明天再来签到~`)
+                this.$toast(res.cnMessage);
             })
 
         },
