@@ -199,7 +199,7 @@
                         <div class="comment_wrapper" ref="commentTotal" :class="{'on': tabFixed,'wxon': wxFixed}">
                             <div class="comment_title">商品评价</div>
                             <div class="comment_number">
-                                <div class="comment_star">好评 <span>{{ prectent }}%</span></div>
+                                <div class="comment_star">好评 <span>{{ prectent | toFix2 }}%</span></div>
                                 <!-- commentRecond -->
                                 <div class="comment_total">共 <span>{{ commentRecond }}</span> 条</div>
                             </div>

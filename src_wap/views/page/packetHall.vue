@@ -8,7 +8,19 @@
             <div class="packet_user_wrapper">
                 <div class="packet_user_logo"></div>
                 <div class="packet_user_text">
-
+                    <div class="swiper-container-1">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                111111111111111111111111111
+                            </div>
+                            <div class="swiper-slide">
+                                222222222222222222222222222
+                            </div>
+                            <div class="swiper-slide">
+                                33333333333333333333333333
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -253,7 +265,7 @@ export default {
                         this.newUserDialog = true;
                     })
                 },res => {
-                    
+
                 })
             }
 
