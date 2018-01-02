@@ -7,7 +7,7 @@
                     <img src="../../assets/images/index_logo.png" />
                 </div>
                 <div class="search_text_wrapper">
-                    <input type="text" readonly placeholder="搜索您喜欢的好茶！" />
+                    <input type="text" readonly placeholder="搜索您喜欢的好茶！" @click="$router.push({name: '搜索'})" />
                     <i class="iconfont">&#xe649;</i>
                 </div>
             </div>
