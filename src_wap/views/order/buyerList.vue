@@ -3,7 +3,6 @@
         <mt-navbar :class="{ 'on': !wxFlag }">
             <mt-tab-item v-for="(item,index) in tabList" :class="{'on': index == selectClass}" @click.native="selTab(index,item)" :key="index">{{ item }}</mt-tab-item>
         </mt-navbar>
-         <!--  -->
         <mt-tab-container>
             <mt-tab-container-item>
                 <div class="mt_cell_wrapper" v-if="orderNum != 0" v-infinite-scroll="loadMore" infinite-scroll-disabled="noInfinity" infinite-scroll-distance="10">
@@ -47,7 +46,6 @@
                                     </div>
                                 </div>
                             </template>
-
                         </div>
                         <div class="order_foot">
                             <div class="price_wrapper">
@@ -55,7 +53,6 @@
                                 <div class="count">共{{ item.products.length }}件</div>
                             </div>
                             <div class="btn_wrapper">
-                                <!-- <mt-button plain v-if="item.orderStatus === 'WAIT_CHECK' || item.orderStatus === 'PAY_WAIT_AUDIT' || item.orderStatus === 'PACKING' || item.orderStatus === 'DELIVERED' || item.orderStatus === 'CBT_BUYER' || item.orderStatus === 'COMMENT' || item.orderStatus === 'CLOSE'" @click.native="confrimMethod">再次购买</mt-button> -->
                                 <mt-button plain v-if="item.isComment === false && item.orderStatus === 'FINISH'" class="pay_now" @click.native="commentMethod(item)">评价</mt-button>
                                 <mt-button plain v-if="item.orderStatus === 'WAIT_PAY' || item.orderStatus === 'WAIT_CHECK'" @click.native="cancelMethod(item)">取消订单</mt-button>
                                 <mt-button plain v-if="item.orderStatus === 'WAIT_PAY'" class="pay_now" @click.native="payMethod(item.payId)">立即支付</mt-button>
@@ -176,19 +173,13 @@ export default {
             }
             MessageBox.confirm('确定确认收货?').then(action => {
                 this.$api.post('/oteao/order/confimReceipt',data,res => {
-                    Toast({
+                    this.$toast({
                         message: `订单【${orderNo}】已确认收货`,
                         iconClass: 'icon icon-success'
                     });
-                    setTimeout(()=>{
-                        window.location.reload();
-                    },200)
+                    return location.reload();
                 },res=>{
-                    Toast({
-                        message: res.errorMsg,
-                        iconClass: 'icon icon-fail'
-                    });
-
+                    return this.$toast(res.errorMsg);
                 })
             },action => {
                 console.log('cancel!');
@@ -201,18 +192,10 @@ export default {
             }
             MessageBox.confirm('确定确认收货?').then(action => {
                 this.$api.post('/oteao/order/subOrderConfimReceipt',data,res => {
-                    Toast({
-                        message: `订单【${orderNo}】已确认收货`,
-                        iconClass: 'icon icon-success'
-                    });
-                    setTimeout(()=>{
-                        window.location.reload();
-                    },200)
+                    this.$toast(`订单【${orderNo}】已确认收货`);
+                    return location.reload();
                 },res=>{
-                    Toast({
-                        message: res.errorMsg,
-                        iconClass: 'icon icon-fail'
-                    });
+                    return this.$toast(res.errorMsg);
                 })
             },action => {
                 console.log('cancel!');
