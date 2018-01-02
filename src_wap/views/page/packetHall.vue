@@ -8,7 +8,7 @@
             <div class="packet_user_wrapper">
                 <div class="packet_user_logo"></div>
                 <div class="packet_user_text">
-                    <div class="swiper-container-1">
+                    <div class="swiper-container-2">
                         <div class="swiper-wrapper">
                             <div class="swiper-slide">
                                 111111111111111111111111111
@@ -179,6 +179,14 @@ export default {
         showNewList() {
 
         }
+    },
+    mounted() {
+        var swiper2 = new Swiper('.swiper-container-2', {
+            direction: 'vertical',
+            autoplay: true,
+            loop: true,
+            slidesPerView :2 
+        });
     },
     methods: {
         // 签到
