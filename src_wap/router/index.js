@@ -25,6 +25,14 @@ const router = new Router({
 					}
                 },
 				{
+					path: 'detail2',
+					name: '商品详情2',
+					component: resolve => require(['@/views/goods/detail0.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+                },
+				{
 					path: 'login',
 					name: '账户登录',
 					component: resolve => require(['@/views/login/login.vue'],resolve),
