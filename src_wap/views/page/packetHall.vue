@@ -22,7 +22,7 @@
                     <div class="packet_sign_left_bottom">会员每日签到可获随机现金红包及积分噢</div>
                 </div>
                 <div class="packet_sign_right">
-                    <mt-button :disabled="iSign">{{ sign }}</mt-button>
+                    <mt-button :disabled="member.id ? sign.returnResult : false" @click="signIn">{{ signText }}</mt-button>
                 </div>
             </div>
         </div>
@@ -37,7 +37,7 @@
                     <span>￥1000</span>
                     <span>新人红包，内含6个红包~</span>
                 </div>
-                <div class="packet_item_right">立即领取</div>
+                <div class="packet_item_right" @click="getRed(packetCode.newUser,'new')">立即领取</div>
             </div>
         </div>
         <div class="packet_old_user">
@@ -49,58 +49,48 @@
         </div>
         <div class="packet_old_list">
             <div class="packet_old_list_wrapper">
-                <div class="packet_old_item" :class="{on: plain1}">
+                <div class="packet_old_item" :class="{on: item.id}" v-for="(item,i) in oldList">
                     <div class="grey_2 left"></div>
                     <div class="grey_2 right"></div>
                     <div class="packet_old_item_head">
                         <div class="packet_logo"><img src="../../assets/images/ic_hbzy.png" /></div>
                         <div class="packet_price">
                             <div class="packet_sum">
-                                <span>￥</span>
-                                <span>56</span>
-                                <span>满100可用</span>
+                                <template v-if="item.amount">
+                                    <span>￥</span>
+                                    <span>{{ item.amount }}</span>
+                                </template>
+                                <template v-if="item.amount">
+                                    <span>{{ item.discount }}</span>
+                                    <span>折</span>
+                                </template>
+                                <span>满{{ item.fullAmountUse }}可用</span>
                             </div>
-                            <div class="packet_name">真的，说要展示十五十五十五</div>
+                            <div class="packet_name">{{ item.limitExplain }}</div>
                         </div>
-                        <div class="packet_btn">
-                            <mt-button :plain="plain1">{{ user1 }}</mt-button>
+                        <div class="packet_btn" v-if="!item.id">
+                            <mt-button :plain="item.id" @click="getRed([item.useRuleId],'old')">立即领取</mt-button>
+                        </div>
+                        <div class="packet_btn" v-else>
+                            <mt-button :plain="item.id" @click="$router.push('/category/')">去使用</mt-button>
                         </div>
                     </div>
-                    <div class="packet_old_item_bottom">有效期至2019-04-14 16:00:00</div>
-                </div>
-                <div class="packet_old_item" :class="{on: plain2}">
-                    <div class="grey_2 left"></div>
-                    <div class="grey_2 right"></div>
-                    <div class="packet_old_item_head">
-                        <div class="packet_logo"><img src="../../assets/images/ic_hbdsf.png" /></div>
-                        <div class="packet_price">
-                            <div class="packet_sum">
-                                <span>￥</span>
-                                <span>56</span>
-                                <span>满100可用</span>
-                            </div>
-                            <div class="packet_name">真的，说要展示十五十五十五</div>
-                        </div>
-                        <div class="packet_btn">
-                            <mt-button :plain="plain2">{{ user2 }}</mt-button>
-                        </div>
-                    </div>
-                    <div class="packet_old_item_bottom">有效期至2019-04-14 16:00:00</div>
+                    <div class="packet_old_item_bottom">有效期至{{ item.endTime }}</div>
                 </div>
             </div>
             <div class="no_packet">到底啦~</div>
         </div>
-        <div class="packet_dialog_1">
+        <div class="packet_dialog_1" v-if="signDialog">
             <div class="sign_wrapper">
                 <div class="sign_top">
                     <img src="../../assets/images/img_hbtc.png" />
                 </div>
                 <p class="sign_success">签到成功</p>
-                <p class="sign_text">获得<span>0.5</span>元现金+20<span>20</span>积分呦~</p>
-                <mt-button>收入囊中</mt-button>
+                <p class="sign_text">获得<span>{{ successSign.balanceGetBySignIn }}</span>元现金+<span>{{ successSign.signInteger }}</span>积分呦~</p>
+                <mt-button @click="signDialog = false">收入囊中</mt-button>
             </div>
         </div>
-        <div class="packet_dialog_2">
+        <div class="packet_dialog_2" v-if="newUserDialog">
             <div class="packet_wrapper">
                 <div class="packet_head">
                     <div class="title_logo"></div>
@@ -109,82 +99,44 @@
                 </div>
                 <div class="packet_content">
                     <div class="packet_content_wrapper">
-                        <div class="packet_old_item">
+                        <div class="packet_old_item" v-for="(item,i) in newList">
                             <div class="grey_2 left"></div>
                             <div class="grey_2 right"></div>
                             <div class="packet_old_item_head">
-                                <div class="packet_logo"><img src="../../assets/images/ic_hbdsf.png" /></div>
+                                <!-- <div class="packet_logo"><img src="../../assets/images/ic_hbdsf.png" /></div> -->
+                                <div class="packet_logo"><img src="../../assets/images/ic_hbzy.png" /></div>
                                 <div class="packet_price">
                                     <div class="packet_sum align_left">
-                                        <span>￥</span>
-                                        <span>56</span>
-                                        <span>满100可用</span>
+                                        <template v-if="item.amount">
+                                            <span>￥</span>
+                                            <span>{{ item.amount }}</span>
+                                        </template>
+                                        <template v-if="item.amount">
+                                            <span>{{ item.discount }}</span>
+                                            <span>折</span>
+                                        </template>
+                                        <span>满{{ item.fullAmountUse }}可用</span>
                                     </div>
-                                    <div class="packet_name align_left">真的，说要展示十五十五十五</div>
+                                    <div class="packet_name align_left">{{ item.limitExplain }}</div>
                                 </div>
                             </div>
-                            <div class="packet_old_item_bottom align_left">有效期至2019-04-14 16:00:00</div>
-                        </div>
-                        <div class="packet_old_item">
-                            <div class="grey_2 left"></div>
-                            <div class="grey_2 right"></div>
-                            <div class="packet_old_item_head">
-                                <div class="packet_logo"><img src="../../assets/images/ic_hbdsf.png" /></div>
-                                <div class="packet_price">
-                                    <div class="packet_sum align_left">
-                                        <span>￥</span>
-                                        <span>56</span>
-                                        <span>满100可用</span>
-                                    </div>
-                                    <div class="packet_name align_left">真的，说要展示十五十五十五</div>
-                                </div>
-                            </div>
-                            <div class="packet_old_item_bottom align_left">有效期至2019-04-14 16:00:00</div>
-                        </div>
-                        <div class="packet_old_item">
-                            <div class="grey_2 left"></div>
-                            <div class="grey_2 right"></div>
-                            <div class="packet_old_item_head">
-                                <div class="packet_logo"><img src="../../assets/images/ic_hbdsf.png" /></div>
-                                <div class="packet_price">
-                                    <div class="packet_sum align_left">
-                                        <span>￥</span>
-                                        <span>56</span>
-                                        <span>满100可用</span>
-                                    </div>
-                                    <div class="packet_name align_left">真的，说要展示十五十五十五</div>
-                                </div>
-                            </div>
-                            <div class="packet_old_item_bottom align_left">有效期至2019-04-14 16:00:00</div>
-                        </div>
-                        <div class="packet_old_item">
-                            <div class="grey_2 left"></div>
-                            <div class="grey_2 right"></div>
-                            <div class="packet_old_item_head">
-                                <div class="packet_logo"><img src="../../assets/images/ic_hbdsf.png" /></div>
-                                <div class="packet_price">
-                                    <div class="packet_sum align_left">
-                                        <span>￥</span>
-                                        <span>56</span>
-                                        <span>满100可用</span>
-                                    </div>
-                                    <div class="packet_name align_left">真的，说要展示十五十五十五</div>
-                                </div>
-                            </div>
-                            <div class="packet_old_item_bottom align_left">有效期至2019-04-14 16:00:00</div>
+                            <div class="packet_old_item_bottom align_left">有效期至{{ item.endTime }}</div>
                         </div>
                     </div>
                 </div>
                 <div class="packet_bottom">
-                    <mt-button>立即使用</mt-button>
+                    <mt-button @click="$router.push('/')">立即使用</mt-button>
                     <p>已放入您的红包，可进入我的 >  我的红包查看</p>
                 </div>
+                <div class="close" @click="newUserDialog = false"></div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+import store from 'store';
 export default {
     data() {
         return {
@@ -192,39 +144,156 @@ export default {
             user1: '去使用',
             plain2: false,
             user2: '立即领用',
-            sign: '签到抢现金',
+            signText: '签到抢现金',
             iSign: false,
-            oldUserPacket: [
-                {
-                    code: '0000000',    // 红包编码
-                    iSelf: true,        // 是否自营  true 自营 false 店铺
-                    sum: 56,            // 红包金额
-                    sumUse: 100,        // 满额使用
-                    name: '叫什么名字',  // 红包名称
-                    endTime: '2020-12-20 00:00:00', // 截止时间
-                    isUse: false        // 是否使用   默认 false 未使用  true 已使用
-                }
-            ],
-            newUserPacket: [
-                {
-                    code: '0000000',    // 红包编码
-                    iSelf: true,        // 是否自营  true 自营 false 店铺
-                    sum: 56,            // 红包金额
-                    sumUse: 100,        // 满额使用
-                    name: '叫什么名字',  // 红包名称
-                    endTime: '2020-12-20 00:00:00' // 截止时间
-                }
-            ],
+            signDialog: false,          // 签到弹窗
+            successSign: {},            // 签到成功后的数据
+            newUserDialog: false,       // 新客红包弹窗
             packetCode: {
                 oldUser: [56910,56909,56908,56907,56906,56905],
                 newUser: [56904,56903,56902,56901,56900,56899]
+            },
+            newList: [],                // 新客红包列表
+            oldList: [],                // 老客红包列表
+            successNew: [],             // 新客成功的列表
+        }
+    },
+    computed: {
+        ...mapState({
+            member: state => state.member.member,
+            memberAccount: state => state.member.memberAccount,
+            sign: state => state.member.sign
+        }),
+        showNewList() {
+
+        }
+    },
+    methods: {
+        // 签到
+        signIn() {
+            if(!this.member.id) {
+                return this.$router.push('/login');
             }
+
+            if(!this.memberActive()) {
+                return this.$toast('只有正式会员才可以签到哟~')
+            }
+
+            this.$api.post('/oteao/member/memberRecord/createSignInLog',{
+                memberId: this.member.id,
+                sysId: 1
+            },res => {
+                this.signDialog = true;
+                this.successSign = res.data;
+                this.$store.dispatch('viewSign');
+                // 从新拉取会员信息
+                this.$store.dispatch('getMemberData')
+            },res=> {
+                this.$toast(`今天已经签到过了，请明天再来签到~`)
+            })
+
+        },
+        // 会员是否激活
+        memberActive() {
+            return this.memberAccount.status === 'ACTIVE' ? true : false;
+        },
+        // 领取红包
+        getRed(list,type) {
+            if(!this.member.id) {
+                return this.$router.push('/login');
+            }
+
+            if(!this.memberActive()) {
+                if(type === 'new') {
+                    return this.$toast('您的等级不允许领取该礼包哦~')
+                } else {
+                    return this.$toast('只有10级经销商等级以上会员才能领取哟')
+                }
+            }
+
+            if(type === 'old') {
+
+                this.$api.post('/oteao/member/redPacket/doActivateByRuleId',{
+                    sysId: 1,
+                    ruleId: list[0]
+                },res => {
+                    this.getRedLIst();
+                },res => {
+                    if(res.code === 3013) {
+                        this.$toast('红包被抢光啦~')
+                    }
+                    if(res.code === 4060) {
+                        this.$toast('红包还未启用~')
+                    }
+                    if(res.code === 4042) {
+                        this.$toast('只有10级经销商等级以上会员才能领取哟~')
+                    }
+                })
+
+            } else {
+                this.$api.post('/oteao/member/redPacket/doActivateByRuleIdList?sysId=1',JSON.stringify(list),res => {
+                    this.successNew = [];
+                    let limitList = [];
+                    for (let attr in res.data) {
+                        if(res.data[attr] === 1) {
+                            this.successNew.push(Number(attr));
+                        }
+                        if(res.data[attr] === '获取数量超出限制') {
+                            limitList.push(Number(attr))
+                        }
+                    }
+                    if(limitList.length === this.newList.length) {
+                        return this.$toast('您己领过该新人礼包，不要贪心哟~')
+                    }
+                    if(this.successNew.length === 0) {
+                        return this.$toast('红包领取失败~')
+                    }
+                    this.$api.post('/oteao/member/redPacket/findRedPacketListByRuleSetIds?sysId=1',JSON.stringify(this.successNew),res => {
+                        this.newList = res.data || [];
+                        this.newUserDialog = true;
+                    })
+                },res => {
+                    
+                })
+            }
+
+
+        },
+        // 拉取红包数据
+        getRedLIst() {
+            this.$api.post('/oteao/member/redPacket/findRedPacketListByRuleSetIds?sysId=1',JSON.stringify(this.packetCode.newUser),res => {
+                this.newList = res.data || [];
+            })
+            this.$api.post('/oteao/member/redPacket/findRedPacketListByRuleSetIds?sysId=1',JSON.stringify(this.packetCode.oldUser),res => {
+                this.oldList = res.data || [];
+            })
         }
     },
     created() {
+        // 设置title
+        this.$store.commit('SET_TITLE','茶帮通红包馆');
+        // 获取红包code并拉取红包信息
         this.$store.dispatch('getBlock','PACKET_CODE').then((res)=>{
-            console.log(res);
+            this.packetCode = JSON.parse(res.data.htmlText);
+            // 拉取红包的列表
+            this.getRedLIst();
         })
+        // 已经登录要判断是否签到
+        if(this.member.id) {
+            this.$store.dispatch('viewSign');
+        }
+    },
+    // 进来先判断登陆与否
+    beforeRouteEnter(to, from, next) {
+        if(!store.state.member.member.id) {
+            store.dispatch('getMemberData').then((res) => {
+                next();
+            }).catch(res => {
+                next();
+            })
+        } else {
+            next();
+        }
     }
 }
 </script>
