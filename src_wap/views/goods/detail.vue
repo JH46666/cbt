@@ -49,9 +49,7 @@
                 <span>回首页</span>
                 <i class="iconfont">&#xe61b;</i>
             </div>
-            <div class="top" :class="{on: tabFixed || wxFixed}" @click="topMethod">
-                <i class="iconfont">&#xe618;</i>
-            </div>
+            <div class="top" :class="{on: tabFixed || wxFixed}" @click="topMethod"></div>
             <div class="detail_img">
                 <mt-swipe :auto="5000" :show-indicators="false" @change="handleChange">
                     <mt-swipe-item v-for="(item,index) in detailData.productImgList" :key="index">
@@ -194,6 +192,7 @@
                                 <div>推荐理由</div>
                                 <div>{{ detailData.productExtInfo.reason }}</div>
                             </div>
+                            <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
                         </div>
                     </mt-tab-container-item>
                     <mt-tab-container-item id="3" ref="tabcontent3">
@@ -816,6 +815,10 @@ export default {
     mounted () {
         // this.setLine();             // 判断超出隐藏或者显示
         this.wxFlag = this.$tool.isWx;
+        let sss = document.querySelectorAll('.mint-tab-container-item');
+        for(let i=0;i<sss.length;i++){
+            sss[i].style['min-height'] = window.screen.height + 'px'
+        }
   　},
     // 进来先判断登陆与否
     beforeRouteEnter(to, from, next) {

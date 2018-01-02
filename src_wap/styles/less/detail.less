@@ -47,20 +47,16 @@
             }
         }
         .top{
-            width: .8rem;
-            height: .8rem;
-            .bg(rgb(28, 28, 28,.6));
-            opacity: 0.6;
+            width: .88rem;
+            height: .88rem;
             .position(f);
-            .reduis(5px);
-            .algin(c);
-            .line(.8rem);
-            .color(#fff);
-            .fontSize(.44rem);
-            z-index: 3;
-            bottom: 1.42rem;
-            right: .2rem;
-            cursor: pointer;
+            right: .5rem;
+            bottom: 1.9rem;
+            z-index: 2000;
+            border-radius: 50%;
+            background-image: url('../../assets/images/ic_top.png');
+            background-repeat: no-repeat;
+            background-size: 100%;
             display: none;
             &.on{
                 display: block;
@@ -150,7 +146,8 @@
 
             }
             img{
-                max-width: 100%;
+                width: 100%;
+                height: 100%;
             }
             .detail_img_index{
                 width: .8rem;
@@ -231,7 +228,7 @@
                                 height: .32rem;
                                 .bg(@mainCol);
                                 .color(#fff);
-                                .fontSize(.18rem);
+                                .fontSize(.2rem);
                                 .algin(c);
                                 .reduis(2px);
                                 .line(.32rem);
