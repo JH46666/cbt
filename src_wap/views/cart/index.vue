@@ -384,7 +384,7 @@
                         item.buyUpperLimit = res.data.buyUpperLimit;
                         // 更新购物车数量
                         // this.$store.dispatch('queryCartTotal');
-                        this.getData();
+                        this.getData(true);
                         resolve(res);
                     },res => {
                         reject(res);
@@ -407,7 +407,7 @@
                 this.updateSeleNum(item,newVal,oldVal).then(res => {
                     // 禁用商品直接重新拉取数据
                     if(res.data.isDisable) {
-                        return this.getData();
+                        return this.getData(true);
                     }
                     item.buyNum = res.data.buyNum;
                     item.oldBuy = res.data.buyNum;
@@ -426,7 +426,7 @@
 
                 this.updateSeleNum(item,newVal,oldVal).then(res => {
                     if(res.data.isDisable) {
-                        return this.getData();
+                        return this.getData(true);
                     }
                     item.buyNum = res.data.buyNum;
                     item.oldBuy = res.data.buyNum;
@@ -454,7 +454,7 @@
                     }
                     this.updateSeleNum(item,item.buyNum).then(res => {
                         if(res.data.isDisable) {
-                            return this.getData();
+                            return this.getData(true);
                         }
                         item.buyNum = res.data.buyNum;
                         item.oldBuy = res.data.buyNum;
@@ -523,19 +523,55 @@
                     this.$refs.mayLike.getData();
                 })
             },
+            // 获取全部的sku的勾选状态
+            getProsku() {
+                let result = {};
+                for (let todo of this.listPannel) {
+                    for (let i = 0; i < todo.cartList.length; i++) {
+                        result[todo.cartList[i].proSku] = todo.cartList[i].checked;
+                    }
+                }
+                return result;
+            },
             // 查询购物车
-            getData() {
+            getData(beforeCheck) {
                 return new Promise((resolve,reject) => {
                     this.$store.dispatch('queryCart',{}).then(res=>{
                         let list = res.data.oteaoCart;
-                        for ( let todo of list) {
-                            for ( let i = 0; i < todo.cartList.length; i++) {
-                                // 勾选
-                                todo.cartList[i].checked = true;
-                                // 设置旧的购买量
-                                todo.cartList[i].oldBuy = todo.cartList[i].buyNum;
-                                // 左划
-                                todo.cartList[i].swiper = false;
+                        
+                        // 保留之前勾选状态
+                        if(beforeCheck) {
+                            let before = this.getProsku();
+                            for ( let todo of list) {
+                                for ( let i = 0; i < todo.cartList.length; i++) {
+                                    // 勾选
+                                    if(before[todo.cartList[i].proSku] === undefined) {
+                                        todo.cartList[i].checked = true;
+                                    }
+                                    if(before[todo.cartList[i].proSku] === false) {
+                                        todo.cartList[i].checked = false;
+                                    }
+                                    if(before[todo.cartList[i].proSku]) {
+                                        todo.cartList[i].checked = true;
+                                    }
+                                    // 设置旧的购买量
+                                    todo.cartList[i].oldBuy = todo.cartList[i].buyNum;
+                                    // 左划
+                                    todo.cartList[i].swiper = false;
+                                }
+                            }
+
+
+                        } else {
+                            for ( let todo of list) {
+                                for ( let i = 0; i < todo.cartList.length; i++) {
+                                    // 勾选
+                                    todo.cartList[i].checked = true;
+                                    // 设置旧的购买量
+                                    todo.cartList[i].oldBuy = todo.cartList[i].buyNum;
+                                    // 左划
+                                    todo.cartList[i].swiper = false;
+                                }
                             }
                         }
                         for (let list of res.data.disableList) {
