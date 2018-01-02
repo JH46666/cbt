@@ -1,5 +1,5 @@
 <template>
-    <div class="index">
+    <div class="index" @scroll="scrollTopMethod" ref="box">
         <!-- 搜索框 -->
         <div class="search_wrapper">
             <div class="search_item">
@@ -48,25 +48,23 @@
                     <div class="news_logo">头条</div>
                 </div>
                 <div class="news_item_right">
-                    醉品茶集全国招商大会再度引爆茶业茶业醉品茶集全国招商大会再度引爆茶业茶业
+                    <div class="swiper-container-2">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide" v-for="(item,index) in newsList" :key="index">
+                                {{ item.mainTitle }}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         <!-- 红包茶叶 -->
         <div class="packet_wrapper">
-            <div class="packet_item item_1">
-                <div class="packet_item_left">
-                    <span>签到得现金红包</span>
-                    <span>茶帮通会员抢红包进行中</span>
-                </div>
-                <div class="packet_item_right">去抢红包</div>
-            </div>
+            <div class="packet_item item_1" @click="$router.push({name: '红包馆'})" v-html="packetEnter"></div>
             <div class="packet_item item_2">
                 <router-link class="items" v-html="samllHall" :to="{ path: '/page/branchHall', query: { collectinNo: 'wap-smallcrowd' }}" tag='div'>
-                    <!-- <div></div> -->
                 </router-link>
                 <router-link class="items" v-html="goodHall" :to="{ path: '/page/branchHall', query: { collectinNo: 'wap-seasonal' }}" tag='div'>
-                    <!-- <div></div> -->
                 </router-link>
             </div>
         </div>
@@ -79,20 +77,12 @@
                         <div>交易</div>
                     </div>
                     <div class="seller_pro">
-                        <p>醉品朴茶】特色奇种系列 正山小醉品朴茶】特色奇种系列 正山小</p>
-                        <span>18652.63元</span>
+                        <p>{{ onePro.proName }}</p>
+                        <span>{{ onePro.totalPrice | toFix2 }}元</span>
                     </div>
                 </div>
             </div>
-            <div class="seller_link">
-                <div class="seller_link_logo">
-                    <img src="../../assets/images/img_ruzhu.png" />
-                </div>
-                <div class="seller_link_text">
-                    <p>入驻茶帮通，百万收入不是梦</p>
-                    <p>茶帮通卖家火热招募中</p>
-                </div>
-            </div>
+            <div class="seller_link" v-html="recruit" @click="iSeller"></div>
         </div>
         <!-- 分类 -->
         <div class="cat_wrapper">
@@ -131,7 +121,7 @@
         </div>
         <!-- 关键词 -->
         <div class="keyword_wrapper">
-            <div class="swiper-container">
+            <div class="swiper-container-1">
                 <div class="swiper-wrapper">
                     <div class="swiper-slide" v-for="(item,index) in userSay" :key="index">
                         <div class="user_img">
@@ -173,16 +163,12 @@
         <!-- 到底啦 -->
         <div class="bottom_wrapper">到底啦~</div>
         <!-- 返回顶部 -->
-        <div class="top_wrapper"></div>
+        <div class="top_wrapper" @click="topMethod" :class="{on: topFlag}"></div>
     </div>
 </template>
 
 <script>
-import cbtDate from '../../components/datePicker.vue'
     export default {
-        components: {
-            cbtDate
-        },
         data() {
             return {
                 title: '123',
@@ -195,6 +181,11 @@ import cbtDate from '../../components/datePicker.vue'
                 banner: [],
                 samllHall: '',
                 goodHall: '',
+                recruit: '',
+                newsList: [],
+                onePro: {},
+                packetEnter: '',
+                topFlag: false,
             }
         },
         methods: {
@@ -216,6 +207,109 @@ import cbtDate from '../../components/datePicker.vue'
                         console.log('活动！！！！');
                     }
                 }
+            },
+            getHot() {
+                let data = {
+                    'page.pageSize': 3,
+                    'page.pageNumber': 1,
+                    'hotNewsTag': 1,
+                    'sysId': 1
+                };
+                return new Promise((resolve,reject) => {
+                    this.$api.get('/oteao/newsInfo/getNewsInfoList',data,res => {
+                        resolve(res);
+                    },res=>{
+                        return this.$toast({
+                            message: res.errorMsg,
+                            iconClass: 'icon icon-fail'
+                        });
+                    })
+                })
+            },
+            scrollTopMethod() {
+                let scrollTop = this.$refs.box.scrollTop,
+                    scrollHeight = this.$refs.box.offsetHeight;
+                if(scrollTop-scrollHeight>0){
+                    this.topFlag = true;
+                }else{
+                    this.topFlag = false;
+                }
+            },
+            topMethod() {               // 滚动到顶部
+                this.$refs.box.scrollTop = 0;
+            },
+            getPro() {
+                let data = {
+                    'minPrice': 50,
+                    'count': 1,
+                    'sysId': 1
+                };
+                return new Promise((resolve,reject) => {
+                    this.$api.get('/oteao/productExtInfo/findRandomProduct',data,res => {
+                        resolve(res);
+                    },res=>{
+                        return this.$toast({
+                            message: res.errorMsg,
+                            iconClass: 'icon icon-fail'
+                        });
+                    })
+                })
+
+            },
+            iSeller() {
+                this.$store.dispatch('getMemberData').then(()=>{
+                    let memberStatus = store.state.member.memberAccount.status;
+                    if(!store.state.member.member.id){
+                       return this.$router.push({name: '茶帮通注册2',query:{edit: 'seller'}});
+                    }
+
+                    if(memberStatus === 'ACTIVE' && !store.state.member.shop){
+                        return this.$router.push({name: '卖家招募'});
+                    }
+                    if(memberStatus === 'ACTIVE' && store.state.member.shop){
+                        let status = store.state.member.shop.shopStatus;
+                        if(status != 2 && status != -2){
+                            return this.$router.push({name: '茶帮通注册7'});
+                        }else if(status == 2){
+                            return this.$toast(`您己经是卖家了，不用再申请了哟~`)
+                        }
+                    }
+                    if(store.state.member.shop){
+                        let status = store.state.member.shop.shopStatus;
+                        if(status == -2){
+                            return this.$messageBox({
+                                title:'提示',
+                                message:`您的卖家身份因违规操作而被冻结~若有疑问，请联系客服400-996-3399`,
+                                confirmButtonText: '我知道了'
+                            }).then(res => {
+                                 console.log(`cancel!`);
+                            })
+                        }
+                    }
+                    if(memberStatus === 'FREEZE'){
+                        return this.$messageBox({
+                            title:'提示',
+                            message:`您的账号因违规操作而被冻结~若有疑问，请联系客服400-996-3399`,
+                            confirmButtonText: '我知道了'
+                        }).then(res => {
+                            this.$api.get('/oteao/login/logout',{},res => {
+                                this.$router.push('/');
+                                this.$store.commit('SET_MEMBERDATA',{type:'member',val:{}})
+                            },res => {
+                                this.$router.push('/')
+                                this.$store.commit('SET_MEMBERDATA',{type:'member',val:{}})
+                            })
+                        })
+                    }
+                    if(store.state.member.shop){
+                        let status = store.state.member.shop.shopStatus;
+                        if((memberStatus != 'ACTIVE' || memberStatus != 'FREEZE') && (status != 2 || status != -2)){
+                            return this.$router.push({name: '茶帮通注册3'});
+                        }
+                    }
+                }).catch((res)=>{
+                    return this.$router.push({name: '茶帮通注册2',query:{edit: 'seller'}});
+                })
             }
         },
         created(){
@@ -228,16 +322,22 @@ import cbtDate from '../../components/datePicker.vue'
             this.$store.dispatch('getBlock','WAP_BANNER').then((res)=>{
                 this.banner = JSON.parse(res.data.htmlText);
             })
+            this.$store.dispatch('getBlock','WAP_SELLER').then((res)=>{
+                this.recruit = res.data.htmlText;
+            })
             this.$store.dispatch('getBlock','WAP_SAMLL').then((res)=>{
-                this.samllHall = JSON.parse(res.data.htmlText);
+                this.samllHall = res.data.htmlText;
             })
             this.$store.dispatch('getBlock','WAP_GOOD').then((res)=>{
-                this.goodHall = JSON.parse(res.data.htmlText);
+                this.goodHall = res.data.htmlText;
+            })
+            this.$store.dispatch('getBlock','WAP_PACKET_ENTER').then((res)=>{
+                this.packetEnter = res.data.htmlText;
             })
             this.$store.dispatch('getBlock','USER_SAY').then((res)=>{
                 this.userSay= JSON.parse(res.data.htmlText);
                 this.$nextTick(()=>{
-                    var swiper = new Swiper('.swiper-container', {
+                    var swiper = new Swiper('.swiper-container-1', {
                         slidesPerView: 'auto',
                         spaceBetween: 25,
                         freeMode: true,
@@ -260,6 +360,19 @@ import cbtDate from '../../components/datePicker.vue'
                 'collection.collectionNo': 'wap_hometuijian'
             },res=>{
                 this.listData = res.data.proExtInfoVoList;
+            })
+            this.getHot().then((res)=>{
+                this.newsList = res.data;
+                this.$nextTick(()=>{
+                    var swiper2 = new Swiper('.swiper-container-2', {
+                        direction: 'vertical',
+                        autoplay: true,
+                        loop: true
+                    });
+                })
+            })
+            this.getPro().then((res)=>{
+                this.onePro = res.data[0];
             })
         },
         mounted() {
