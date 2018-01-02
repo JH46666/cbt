@@ -20,7 +20,7 @@
         <!-- 一级 -->
         <div class="first-box" :class="{'wx-first': wxFlag}">
             <ul class="first-cat" ref="wrapper">
-                <li class="cat-item" :class="{on: index==activeCatIndex}" v-for="(cat,index) in firstCat" @click="searchFirstCat(index,cat.id,$event.target)">
+                <li class="cat-item" :class="{on: index==activeCatIndex}" v-for="(cat,index) in firstCat" @click="searchFirstCat(index,cat.id,$event.target)" ref="liwrap">
                     <span>{{cat.catName}}</span>
                 </li>
             </ul>
@@ -198,7 +198,6 @@
         created(){
             // 设置title
             this.$store.commit('SET_TITLE','分类');
-
             this.$api.get('/oteao/proCat/queryCatTree',{sysId: 1},res=>{
                 this.catTree = res.data[0].children;
                 this.subCat = this.catTree[0].children;
@@ -208,8 +207,27 @@
                         'catName': item.catName
                     });
                 }
-                this.activeCatId = this.firstCat[0].id;
-                this.searchSub(0,this.subCat[0].id);
+                if(this.$route.query.parent != undefined){
+                    for(let i=0; i<this.firstCat.length; i++){
+                        if(this.firstCat[i].id == this.$route.query.parent){
+                            let on = Array.from(this.$refs.wrapper.children)
+                            console.log(on);
+                            this.searchFirstCat(i,this.firstCat[i].id,this.$refs.wrapper)
+                        }
+                    }
+                    if(this.$route.query.child != undefined){
+                        for(let i=0; i<this.subCat.length; i++){
+                            if(this.subCat[i].id == this.$route.query.child){
+                                this.searchSub(i,this.subCat[i].id);
+                            }
+                        }
+                    }else{
+                        this.searchSub(0,this.subCat[0].id);
+                    }
+                }else{
+                    this.activeCatId = this.firstCat[0].id;
+                    this.searchSub(0,this.subCat[0].id);
+                }
             },res=>{
                 console.log(res);
             });
