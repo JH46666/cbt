@@ -22,7 +22,7 @@
                     <div class="packet_sign_left_bottom">会员每日签到可获随机现金红包及积分噢</div>
                 </div>
                 <div class="packet_sign_right">
-                    <mt-button :disabled="iSign">{{ sign }}</mt-button>
+                    <mt-button :disabled="member.id ? sign.returnResult : false" @click="signIn">{{ signText }}</mt-button>
                 </div>
             </div>
         </div>
@@ -90,7 +90,7 @@
             </div>
             <div class="no_packet">到底啦~</div>
         </div>
-        <div class="packet_dialog_1">
+        <div class="packet_dialog_1" v-if="signDialog">
             <div class="sign_wrapper">
                 <div class="sign_top">
                     <img src="../../assets/images/img_hbtc.png" />
@@ -185,6 +185,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+import store from 'store';
 export default {
     data() {
         return {
@@ -192,8 +194,9 @@ export default {
             user1: '去使用',
             plain2: false,
             user2: '立即领用',
-            sign: '签到抢现金',
+            signText: '签到抢现金',
             iSign: false,
+            signDialog: false,          // 签到弹窗
             oldUserPacket: [
                 {
                     code: '0000000',    // 红包编码
@@ -221,10 +224,53 @@ export default {
             }
         }
     },
-    created() {
-        this.$store.dispatch('getBlock','PACKET_CODE').then((res)=>{
-            console.log(res);
+    computed: {
+        ...mapState({
+            member: state => state.member.member,
+            memberAccount: state => state.member.memberAccount,
+            sign: state => state.member.sign
         })
+    },
+    methods: {
+        // 签到
+        signIn() {
+            if(!this.member.id) {
+                return this.$router.push('/login');
+            }
+
+            if(!this.memberActive()) {
+                return this.$toast('只有正式会员才可以签到哟~')
+            }
+
+        },
+        // 会员是否激活
+        memberActive() {
+            return this.memberAccount.status === 'ACTIVE' ? true : false;
+        }
+    },
+    created() {
+        // 设置title
+        this.$store.commit('SET_TITLE','茶帮通红包馆');
+        // 获取红包code并拉取红包信息
+        this.$store.dispatch('getBlock','PACKET_CODE').then((res)=>{
+            this.packetCode = JSON.parse(res.data.htmlText);
+        })
+        // 已经登录要判断是否签到
+        if(this.member.id) {
+            this.$store.dispatch('viewSign');
+        }
+    },
+    // 进来先判断登陆与否
+    beforeRouteEnter(to, from, next) {
+        if(!store.state.member.member.id) {
+            store.dispatch('getMemberData').then((res) => {
+                next();
+            }).catch(res => {
+                next();
+            })
+        } else {
+            next();
+        }
     }
 }
 </script>
