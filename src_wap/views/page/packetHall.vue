@@ -17,9 +17,9 @@
                 <div class="packet_sign_left">
                     <div class="packet_sign_left_head">
                         <i class="packet_sign_user_icon iconfont">&#xe69f;</i>
-                        <div class="packet_sign_user_sign">新客专享红包</div>
+                        <div class="packet_sign_user_sign">签到领钱</div>
                     </div>
-                    <div class="packet_sign_left_bottom">会员每日签到可获随机现金红包及积分噢</div>
+                    <div class="packet_sign_left_bottom">会员每日签到可获随机现金红包及积分噢~</div>
                 </div>
                 <div class="packet_sign_right">
                     <mt-button :disabled="member.id ? sign.returnResult : false" @click="signIn">{{ signText }}</mt-button>
@@ -72,7 +72,7 @@
                             <mt-button :plain="item.id" @click="getRed([item.useRuleId],'old')">立即领取</mt-button>
                         </div>
                         <div class="packet_btn" v-else>
-                            <mt-button :plain="item.id" @click="$router.push('/category/')">去使用</mt-button>
+                            <mt-button :plain="Boolean(item.id)" @click="$router.push('/category/')">去使用</mt-button>
                         </div>
                     </div>
                     <div class="packet_old_item_bottom">有效期至{{ item.endTime }}</div>
