@@ -29,27 +29,6 @@
                 </div>
                 <div class="line_2">{{ orderDetailData.detailAddress }}</div>
             </div>
-            <!-- <div class="invoice">
-                <div class="line_1">
-                    <i class="iconfont">&#xe623;</i>
-                    <span>增值税发票</span>
-                </div>
-                <div class="line_2" :class="{ 'on': pullOrDownFlag }">
-                    <div class="line_content">
-                        <div class="line_item">
-                            <span>公司名称</span>
-                            <span>厦门北斗七星科技有限公司厦门北斗七星科技有限公司</span>
-                        </div>
-                        <div class="line_item">
-                            <span>公司名称</span>
-                            <span>厦门北斗七星科技有限公司</span>
-                        </div>
-                    </div>
-                    <div class="line_btn">
-                        <i class="iconfont" @click="pullOrDown" :class="{ 'icon-single-down': !pullOrDownFlag,'icon-shang': pullOrDownFlag }"></i>
-                    </div>
-                </div>
-            </div> -->
         </div>
         <div class="order">
             <!-- 店铺名称 是否自营 -->
@@ -68,18 +47,34 @@
                             <span>{{ order.subOrderNo }}</span>
                         </div>
                         <div class="list_wrapper">
-                            <div class="list_item" v-for="(item,index) in order.products" :key="index"  @click="$router.push({name: '商品详情',query: {proSku: item.proSku}})">
-                                <div class="list_img">
-                                    <img :src="item.imageUrl" />
-                                </div>
-                                <div class="list_content">
-                                    <p>{{ item.productName }}</p>
-                                    <div class="list_price_count">
-                                        <span>￥{{ item.productPrice | toFix2 }}</span>
-                                        <span>x{{ item.productNum | toFix2 }}</span>
+                            <template v-for="(item,index) in order.products">
+                                <div class="list_item" :key="index"  @click="$router.push({name: '商品详情',query: {proSku: item.proSku}})"  v-if="item.premiumEnum === 'NO_PREMIUM'">
+                                    <div class="list_img">
+                                        <img :src="item.imageUrl" />
+                                    </div>
+                                    <div class="list_content">
+                                        <p>{{ item.productName }}</p>
+                                        <div class="list_price_count">
+                                            <span>￥{{ item.productPrice | toFix2 }}</span>
+                                            <span>x{{ item.productNum | toFix2 }}</span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                                <div class="list_item on" :key="index" @click="$router.push({name: '商品详情',query: {proSku: item.proSku}})" v-else>
+                                    <div class="list_img">
+                                        <img :src="item.imageUrl" />
+                                    </div>
+                                    <div class="list_content">
+                                        <p class="freeP"><span>赠品</span><span>{{ item.productName }}</span></p>
+                                        <div class="list_price_count">
+                                            <span>￥0.00</span>
+                                            <del>￥{{ item.productPrice | toFix2 }}</del>
+                                            <span>x{{ item.productNum | toFix2 }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+
                         </div>
                         <div class="order_head order_white">
                             <div class="order_express">
@@ -117,7 +112,8 @@
                                     <div class="list_content">
                                         <p class="freeP"><span>赠品</span><span>{{ item.productName }}</span></p>
                                         <div class="list_price_count">
-                                            <span>￥{{ item.productPrice | toFix2 }}</span>
+                                            <span>￥0.00</span>
+                                            <del>￥{{ item.productPrice | toFix2 }}</del>
                                             <span>x{{ item.productNum | toFix2 }}</span>
                                         </div>
                                     </div>
@@ -179,10 +175,6 @@
                         <span>-￥{{ rule.giveNum | toFix2 }}</span>
                     </div>
                 </template>
-                <!-- <div class="price_detail_item" v-if="orderDetailData.useJfSum != 0">
-                    <span>积分抵扣</span>
-                    <span>-{{ orderDetailData.useJfSum }}积分</span>
-                </div> -->
                 <div class="price_detail_item" v-if="orderDetailData.internalDiscountSum">
                     <span>内部优惠</span>
                     <span>{{ (0-orderDetailData.internalDiscountSum) | toFix2 }}</span>
@@ -245,7 +237,6 @@
         </div>
         <!-- 按钮 -->
         <div class="order_btn"  v-if="orderListDetail.mainOrder != null && orderListDetail.subOrder == null">
-            <!-- <mt-button plain v-if="status === '待审核' || status === '待评价' || status === '待发货'" @click.native="confrimMethod">再次购买</mt-button> -->
             <mt-button plain v-if="orderDetailData.orderStatus === 'FINISH' && orderDetailData.isComment === false" class="pay_now" @click.native="commentMethod(orderDetailData.orderId)">评价</mt-button>
             <mt-button plain v-if="orderDetailData.orderStatus === 'WAIT_PAY' || orderDetailData.orderStatus === 'WAIT_CHECK'" @click.native="cancelMethod">取消订单</mt-button>
             <mt-button plain v-if="orderDetailData.orderStatus === 'WAIT_PAY'" class="pay_now" @click.native="payMethod(orderDetailData.payId)">立即支付</mt-button>
@@ -253,8 +244,6 @@
         </div>
         <!-- 按钮 -->
         <div class="order_btn"  v-if="orderListDetail.subOrder != null && orderListDetail.mainOrder == null">
-            <!-- <mt-button plain v-if="status === '待审核' || status === '待评价' || status === '待发货'" @click.native="confrimMethod">再次购买</mt-button> -->
-            <!-- <mt-button plain v-if="orderDetailData.orderStatus === 'WAIT_PAY'" class="pay_now" @click.native="payMethod">立即支付</mt-button> -->
             <mt-button plain v-if="orderDetailData.orderStatus === 'FINISH' && orderDetailData.isComment === false" class="pay_now" @click.native="commentMethod(orderDetailData.orderId)">评价</mt-button>
         </div>
         <mt-popup v-model="closeUp" position="bottom">
