@@ -296,15 +296,14 @@
         bottom: 0;
         z-index: 1200;
         .bg(rgba(0,0,0,.5));
-        display: none;
+        // display: none;
         &.on{
             display: block;
         }
         .packet_wrapper{
-            &::after{
+            .close{
                 width: 1.06rem;
                 height: 1.06rem;
-                content: '';
                 .position(a);
                 right: 0;
                 top: 0;
@@ -314,8 +313,8 @@
             }
             .position(r);
             .algin(c);
-            width: 6.9rem;
-            height: 10.1rem;
+            width: 6.8rem;
+            height: 10rem;
             .position(a);
             left: 50%;
             top: 50%;

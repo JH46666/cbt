@@ -107,6 +107,16 @@
         <section class="quit">
             <mt-button type="default" @click="quit">退出登录</mt-button>
         </section>
+        <div class="packet_dialog_1" v-if="signDialog">
+            <div class="sign_wrapper">
+                <div class="sign_top">
+                    <img src="../../assets/images/img_hbtc.png" />
+                </div>
+                <p class="sign_success">签到成功</p>
+                <p class="sign_text">获得<span>{{ successSign.balanceGetBySignIn }}</span>元现金+<span>{{ successSign.signInteger }}</span>积分呦~</p>
+                <mt-button @click="signDialog = false">收入囊中</mt-button>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -118,7 +128,9 @@
         data() {
             return {
                 count: {},
-                level: {}
+                level: {},
+                signDialog: false,          // 签到弹窗
+                successSign: {},            // 成功记录
             }
         },
         computed: {
@@ -139,7 +151,9 @@
                     memberId: this.member.id,
                     sysId: 1
                 },res => {
-                    this.$toast(`签到成功,${this.sign.nextSign}积分己放于您的账户~`)
+                    // this.$toast(`签到成功,${this.sign.nextSign}积分己放于您的账户~`)
+                    this.signDialog = true;
+                    this.successSign = res.data;
                     this.$store.dispatch('viewSign');
                     // 从新拉取会员信息
                     this.$store.dispatch('getMemberData')
