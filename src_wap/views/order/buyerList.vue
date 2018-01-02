@@ -28,7 +28,7 @@
                                     <div class="text_item">
                                         <p class="text_wrap">{{ pro.productName }}</p>
                                         <div class="count_price_wrap">
-                                            <span>￥{{ pro.productPrice }}</span>
+                                            <span>￥{{ pro.productPrice  | toFix2  }}</span>
                                             <span>x{{ pro.productNum }}</span>
                                         </div>
                                     </div>
@@ -40,7 +40,8 @@
                                     <div class="text_item">
                                         <p class="text_wrap freeP"><span>赠品</span><span>{{ pro.productName }}</span></p>
                                         <div class="count_price_wrap">
-                                            <span>￥{{ pro.productPrice }}</span>
+                                            <span>￥0.00</span>
+                                            <del>￥{{ pro.productPrice | toFix2 }}</del>
                                             <span>x{{ pro.productNum }}</span>
                                         </div>
                                     </div>

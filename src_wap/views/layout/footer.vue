@@ -81,13 +81,13 @@
             }
         }
         i{
-            .color(#333);
-            .fontSize(.4rem);
+            .color(#424140);
+            .fontSize(.34rem);
             .line(1);
         }
         padding: .1rem 0 0;
-        .fontSize(.18rem);
-        .color(#333);
+        .fontSize(.22rem);
+        .color(#666);
         .position(r);
         .flex-1;
         .flex;

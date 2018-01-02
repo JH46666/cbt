@@ -49,9 +49,7 @@
                 <span>回首页</span>
                 <i class="iconfont">&#xe61b;</i>
             </div>
-            <div class="top" :class="{on: tabFixed || wxFixed}" @click="topMethod">
-                <i class="iconfont">&#xe618;</i>
-            </div>
+            <div class="top" :class="{on: tabFixed || wxFixed}" @click="topMethod"></div>
             <div class="detail_img">
                 <mt-swipe :auto="5000" :show-indicators="false" @change="handleChange">
                     <mt-swipe-item v-for="(item,index) in detailData.productImgList" :key="index">
