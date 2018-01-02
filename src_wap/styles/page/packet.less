@@ -40,9 +40,17 @@
             .packet_user_text{
                 padding-left: .16rem;
                 .flex-1;
-                .bg(#000);
-                .packet_user_text{
+                .swiper-container-2{
+                    height: .72rem;
                     width: 100%;
+                    overflow: hidden;
+                    padding: .05rem 0;
+                    .swiper-slide{
+                        .oneLine;
+                        .color(#333);
+                        .fontSize(.24rem);
+                        height: .36rem;
+                    }
                 }
             }
         }
@@ -231,7 +239,7 @@
         bottom: 0;
         z-index: 1200;
         .bg(rgba(0,0,0,.5));
-        display: none;
+        // display: none;
         &.on{
             display: block;
         }
@@ -296,15 +304,14 @@
         bottom: 0;
         z-index: 1200;
         .bg(rgba(0,0,0,.5));
-        display: none;
+        // display: none;
         &.on{
             display: block;
         }
         .packet_wrapper{
-            &::after{
+            .close{
                 width: 1.06rem;
                 height: 1.06rem;
-                content: '';
                 .position(a);
                 right: 0;
                 top: 0;
@@ -314,8 +321,8 @@
             }
             .position(r);
             .algin(c);
-            width: 6.9rem;
-            height: 10.1rem;
+            width: 6.8rem;
+            height: 10rem;
             .position(a);
             left: 50%;
             top: 50%;

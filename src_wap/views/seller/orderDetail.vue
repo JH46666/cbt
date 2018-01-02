@@ -56,7 +56,7 @@
                     <div class="left">商品金额</div>
                     <div class="right">￥{{ myData.productPaySum | toFix2  }}</div>
                 </div>
-                <div class="item">
+                <div class="item" v-if="myData.internalDiscountSum != 0">
                     <div class="left">内部优惠</div>
                     <div class="right">￥{{  0 - myData.internalDiscountSum | toFix2  }}</div>
                 </div>

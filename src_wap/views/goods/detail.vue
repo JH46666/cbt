@@ -49,9 +49,7 @@
                 <span>回首页</span>
                 <i class="iconfont">&#xe61b;</i>
             </div>
-            <div class="top" :class="{on: tabFixed || wxFixed}" @click="topMethod">
-                <i class="iconfont">&#xe618;</i>
-            </div>
+            <div class="top" :class="{on: tabFixed || wxFixed}" @click="topMethod"></div>
             <div class="detail_img">
                 <mt-swipe :auto="5000" :show-indicators="false" @change="handleChange">
                     <mt-swipe-item v-for="(item,index) in detailData.productImgList" :key="index">
@@ -103,7 +101,6 @@
                     </div>
                     <template  v-if="detailData.productExtInfo.state === 'ON_SHELF'">
                         <div class="detail_active">
-                            <!-- <label>促销</label> -->
                             <div class="detail_active_list">
                                 <!-- <div class="detail_active_item" v-if="detailData.productExtInfo.isSales">
                                     <span>直降</span>
@@ -139,10 +136,8 @@
                     <mt-tab-item id="2">规格</mt-tab-item>
                     <mt-tab-item id="3">评论</mt-tab-item>
                 </mt-navbar>
-                <!-- tab-container -->
                 <mt-tab-container v-model="tabSelected" :swipeable="true">
                     <mt-tab-container-item id="1" ref="tabcontent1">
-                        <!-- <div class="detail_img_title" :class="{'on': tabFixed,'wxon': wxFixed}" ref="imgHeight">图片详情</div> -->
                         <div class="mint_cell_wrapper mint_cell_img_wrapper">
                             <template v-if="imgDetailHtml.length>0">
                                 <div v-html="imgDetailHtml"></div>
@@ -164,26 +159,28 @@
                                 <div>商品编号</div>
                                 <div>{{ detailData.productInfo.proSku }}</div>
                             </div>
-                            <div class="reguler_item" style="height: 1.5rem; padding: 0;" v-if="detailData.productExtInfo.fragrance != null">
-                                <div>香气</div>
-                                <div class="x_star">
-                                    <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '偏淡' || detailData.productExtInfo.fragrance === '一般' || detailData.productExtInfo.fragrance === '香' || detailData.productExtInfo.fragrance === '高香' || detailData.productExtInfo.fragrance === '极香'}">偏淡</span>
-                                    <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '一般' || detailData.productExtInfo.fragrance === '香' || detailData.productExtInfo.fragrance === '高香' || detailData.productExtInfo.fragrance === '极香'}">一般</span>
-                                    <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '香' || detailData.productExtInfo.fragrance === '高香' || detailData.productExtInfo.fragrance === '极香'}">香</span>
-                                    <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '高香' || detailData.productExtInfo.fragrance === '极香'}">高香</span>
-                                    <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '极香'}">极香</span>
+                            <template v-if="isHasFlag">
+                                <div class="reguler_item" style="height: 1.5rem; padding: 0;" v-if="detailData.productExtInfo.fragrance != null">
+                                    <div>香气</div>
+                                    <div class="x_star">
+                                        <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '偏淡' || detailData.productExtInfo.fragrance === '一般' || detailData.productExtInfo.fragrance === '香' || detailData.productExtInfo.fragrance === '高香' || detailData.productExtInfo.fragrance === '极香'}">偏淡</span>
+                                        <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '一般' || detailData.productExtInfo.fragrance === '香' || detailData.productExtInfo.fragrance === '高香' || detailData.productExtInfo.fragrance === '极香'}">一般</span>
+                                        <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '香' || detailData.productExtInfo.fragrance === '高香' || detailData.productExtInfo.fragrance === '极香'}">香</span>
+                                        <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '高香' || detailData.productExtInfo.fragrance === '极香'}">高香</span>
+                                        <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '极香'}">极香</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="reguler_item" style="height: 1.5rem; padding: 0;" v-if="detailData.productExtInfo.taste != null">
-                                <div>滋味</div>
-                                <div class="z_star">
-                                    <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '偏淡' || detailData.productExtInfo.taste === '一般' || detailData.productExtInfo.taste === '浓' || detailData.productExtInfo.taste === '很浓' || detailData.productExtInfo.taste === '极浓'}">偏淡</span>
-                                    <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '一般' || detailData.productExtInfo.taste === '浓' || detailData.productExtInfo.taste === '很浓' || detailData.productExtInfo.taste === '极浓'}">一般</span>
-                                    <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '浓' || detailData.productExtInfo.taste === '很浓' || detailData.productExtInfo.taste === '极浓'}">浓</span>
-                                    <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '很浓' || detailData.productExtInfo.taste === '极浓'}">很浓</span>
-                                    <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '极浓'}">极浓</span>
+                                <div class="reguler_item" style="height: 1.5rem; padding: 0;" v-if="detailData.productExtInfo.taste != null">
+                                    <div>滋味</div>
+                                    <div class="z_star">
+                                        <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '偏淡' || detailData.productExtInfo.taste === '一般' || detailData.productExtInfo.taste === '浓' || detailData.productExtInfo.taste === '很浓' || detailData.productExtInfo.taste === '极浓'}">偏淡</span>
+                                        <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '一般' || detailData.productExtInfo.taste === '浓' || detailData.productExtInfo.taste === '很浓' || detailData.productExtInfo.taste === '极浓'}">一般</span>
+                                        <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '浓' || detailData.productExtInfo.taste === '很浓' || detailData.productExtInfo.taste === '极浓'}">浓</span>
+                                        <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '很浓' || detailData.productExtInfo.taste === '极浓'}">很浓</span>
+                                        <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '极浓'}">极浓</span>
+                                    </div>
                                 </div>
-                            </div>
+                            </template>
                             <template v-for="(item,index) in attrImgDetail.propValList">
                                 <div class="reguler_item" style="height: .98rem; padding: 0;">
                                     <div>{{ item.propName }}</div>
@@ -200,7 +197,7 @@
                         <div class="comment_wrapper" ref="commentTotal" :class="{'on': tabFixed,'wxon': wxFixed}">
                             <div class="comment_title">商品评价</div>
                             <div class="comment_number">
-                                <div class="comment_star">好评 <span>{{ prectent }}%</span></div>
+                                <div class="comment_star">好评 <span>{{ prectent | toFix2 }}%</span></div>
                                 <!-- commentRecond -->
                                 <div class="comment_total">共 <span>{{ commentRecond }}</span> 条</div>
                             </div>
@@ -264,14 +261,10 @@
 </template>
 
 <script>
-// import plusOreduce from '@/components/plusOreduce.vue'
 import { Toast,Indicator,MessageBox  } from 'mint-ui'
 import store from 'store';
 import { mapState } from 'vuex'
 export default {
-    // components: {
-    //     plusOreduce
-    // },
     data() {
         return {
             selected: null,
@@ -322,6 +315,7 @@ export default {
             imgDetailHtml: '',
             commentFlag: false,
             timeData: [],
+            isHasFlag: true,
         }
     },
     computed:{
@@ -338,6 +332,13 @@ export default {
         this.loginId = store.state.member.member.id;
         this.state = store.state.member.memberAccount.status;
         this.proSku = this.$route.query.proSku;
+        this.isHas().then((res)=>{
+            if(res.data){
+                this.isHasFlag = true;
+            }else{
+                this.isHasFlag = false;
+            }
+        })
         this.getDetail().then((res) =>{
             this.detailData = res.data;
             this.maxNum = this.detailData.productExtInfo.stockNum;
@@ -493,6 +494,22 @@ export default {
                     })
                 })
             }
+        },
+        isHas() {
+            let data ={
+                'proSku': this.proSku,
+                'sysId': 1
+            };
+            return new Promise((resolve,reject) => {
+                this.$api.get('/oteao/productInfo/isShowtasteAndFranste',data,res => {
+                    resolve(res);
+                },res=>{
+                    return Toast({
+                        message: res.errorMsg,
+                        iconClass: 'icon icon-fail'
+                    });
+                })
+            })
         },
         getCommentList(extendId) {
             let pageSize = 10;
@@ -816,6 +833,10 @@ export default {
     mounted () {
         // this.setLine();             // 判断超出隐藏或者显示
         this.wxFlag = this.$tool.isWx;
+        let sss = document.querySelectorAll('.mint-tab-container-item');
+        for(let i=0;i<sss.length;i++){
+            sss[i].style['min-height'] = window.screen.height + 'px'
+        }
   　},
     // 进来先判断登陆与否
     beforeRouteEnter(to, from, next) {

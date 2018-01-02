@@ -1,26 +1,7 @@
 <template>
-    <!-- <mt-tabbar v-model="selected" class="cbt-footer">
-        <mt-tab-item id="外卖">
-            <i class="icon-home" slot="icon"></i>
-            首页
-        </mt-tab-item>
-        <mt-tab-item id="订单">
-            <i class="icon-fenlei" slot="icon"></i>
-            分类
-        </mt-tab-item>
-        <mt-tab-item id="发现">
-            <i class="icon-shopcar" slot="icon"></i>
-            购物车
-            <mt-badge type="error" size="small">99+</mt-badge>
-        </mt-tab-item>
-        <mt-tab-item id="我的">
-            <i class="icon-wode" slot="icon"></i>
-            我的
-        </mt-tab-item>
-    </mt-tabbar> -->
     <div class="cbt_footer">
         <router-link v-for="(item,index) in footerData" :class="{on: item.path === classIndex}" :to="item.path" :key="index">
-            <i class="iconfont" :class="item.icon"></i>
+            <i class="iconfont" :class="item.path === classIndex ? item.select : item.icon"></i>
             {{ item.name }}
             <mt-badge type="error" size="small" v-if="index === 2 && id">{{ cartTotal | ninenineAdd }}</mt-badge>
         </router-link>
@@ -35,24 +16,28 @@
                 selected: null,
                 footerData: [
                     {
-                        icon: 'icon-home',
+                        icon: 'icon-shouyeweixuan',
                         name: '首页',
                         path: '/',
+                        select: 'icon-shouye1'
                     },
                     {
-                        icon: 'icon-fenlei',
+                        icon: 'icon-chabangtongzhuanyongfenlei_weixuan',
                         name: '分类',
                         path: '/category/',
+                        select: 'icon-chabangtongzhuanyongfenlei_yixuan'
                     },
                     {
-                        icon: 'icon-shopcar',
+                        icon: 'icon-chabangtongzhuanyongfenlei_gouwuche1',
                         name: '购物车',
                         path: '/cart/',
+                        select: 'icon-chabangtongzhuanyongfenlei_gouwuche'
                     },
                     {
-                        icon: 'icon-wode',
+                        icon: 'icon-chabangtongzhuanyongfenlei_geren1',
                         name: '我的',
                         path: '/center/',
+                        select: 'icon-chabangtongzhuanyongfenlei_geren'
                     }
                 ],
             }
@@ -89,20 +74,19 @@
     .line(1);
     a{
         &.on{
-            .bg(#eaeaea);
             .color(@mainCol);
             i{
                 .color(@mainCol);
             }
         }
         i{
-            .color(#333);
-            .fontSize(.4rem);
+            .color(#424140);
+            .fontSize(.34rem);
             .line(1);
         }
         padding: .1rem 0 0;
-        .fontSize(.18rem);
-        .color(#333);
+        .fontSize(.22rem);
+        .color(#666);
         .position(r);
         .flex-1;
         .flex;
