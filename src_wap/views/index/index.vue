@@ -31,7 +31,7 @@
                 <img src="../../assets/images/ic_mingzhongguan.png" />
                 <span>名枞馆</span>
             </router-link>
-            <router-link  class="four_item" :to="{ path: '/page/branchHall', query: { collectinNo: 'wap-afir' }}">
+            <router-link  class="four_item" :to="{ path: '/center/brandVenue', query: { collectinNo: 'wap-afir' }}">
                 <img src="../../assets/images/ic_pinpaiguan.png" />
                 <span>品牌馆</span>
             </router-link>
@@ -47,7 +47,7 @@
                     茶帮通
                     <div class="news_logo">头条</div>
                 </div>
-                <div class="news_item_right">
+                <div class="news_item_right" @click="$router.push({name: '新闻列表'})">
                     <div class="swiper-container-2">
                         <div class="swiper-wrapper">
                             <div class="swiper-slide" v-for="(item,index) in newsList" :key="index">
