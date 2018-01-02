@@ -7,6 +7,7 @@ import store from 'store';
 import $api from 'api';
 import axios from 'axios';
 import * as utils from 'utils';
+import './styles/base/common.less';
 
 Vue.config.productionTip = false
 
