@@ -105,7 +105,7 @@
                             <div class="packet_old_item_head">
                                 <!-- <div class="packet_logo"><img src="../../assets/images/ic_hbdsf.png" /></div> -->
                                 <div class="packet_logo"><img src="../../assets/images/ic_hbzy.png" /></div>
-                                <div class="packet_price">
+                                <div class="packet_price new">
                                     <div class="packet_sum align_left">
                                         <template v-if="item.amount">
                                             <span>￥</span>
@@ -253,7 +253,7 @@ export default {
                         this.newUserDialog = true;
                     })
                 },res => {
-                    
+                    this.$toast(res.message);
                 })
             }
 
