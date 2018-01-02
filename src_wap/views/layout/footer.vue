@@ -74,7 +74,6 @@
     .line(1);
     a{
         &.on{
-            .bg(#eaeaea);
             .color(@mainCol);
             i{
                 .color(@mainCol);
