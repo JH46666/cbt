@@ -6,7 +6,7 @@
                 <mt-tab-item id="successed">已结算</mt-tab-item>
                 <mt-tab-item id="unFinsh">未结算</mt-tab-item>
             </mt-navbar>
-            <div class="screen-bar" :class="{active: filterVisible}" @click="filterVisible = true">
+            <div class="screen-bar" :class="{active: lightSlect}" @click="filterVisible = true">
                 <i class="iconfont">&#xe674;</i> 筛选
             </div>
         </section>
@@ -73,7 +73,7 @@
         <!-- 日期选择器 -->
         <mt-datetime-picker
             ref="start"
-            :startDate="new Date('2010-01-01 00:00:00')"
+            :startDate="new Date('2017-01-01 00:00:00')"
             :endDate="new Date()"
             type="datetime"
             v-model="startTime">
@@ -137,6 +137,7 @@
                 pageNum: 1,              // 初始页面
                 list: [],                // 订单列表
                 total: 0,                // 订单个数 
+                lightSlect: false,       // 筛选亮起
                 screen: {
                     startTime: '',
                     endTime: '',
@@ -265,7 +266,7 @@
                     name: '',
                     goodName: ''
                 }
-                this.startTime = new Date('2010-01-01 00:00:00');
+                this.startTime = new Date('2017-01-01 00:00:00');
                 this.endTime = new Date();
                 this.name = '';
                 this.goodName = '';
@@ -281,10 +282,11 @@
             },
             // 重置筛选
             restScreen() {
-                this.startTime = new Date('2010-01-01 00:00:00');
+                this.startTime = new Date('2017-01-01 00:00:00');
                 this.endTime = new Date();
                 this.name = '';
                 this.goodName = '';
+                this.lightSlect = false;
             },
             // 确定筛选
             confirm() {
@@ -294,6 +296,11 @@
                 this.list = [];
                 this.total = 0;
                 this.handle();
+                if(this.screen.name || this.screen.goodName) {
+                    this.lightSlect = true;
+                } else {
+                    this.lightSlect = false;
+                }
             }
         },
         created() {
