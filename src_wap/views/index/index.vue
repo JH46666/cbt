@@ -31,7 +31,7 @@
                 <img src="../../assets/images/ic_mingzhongguan.png" />
                 <span>名枞馆</span>
             </router-link>
-            <router-link  class="four_item" :to="{ path: '/page/branchHall', query: { collectinNo: 'wap-afir' }}">
+            <router-link  class="four_item" :to="{ path: '/center/brandVenue', query: { collectinNo: 'wap-afir' }}">
                 <img src="../../assets/images/ic_pinpaiguan.png" />
                 <span>品牌馆</span>
             </router-link>

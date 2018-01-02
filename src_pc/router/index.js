@@ -8,8 +8,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
+      name: '茶帮通商城',
+      component: resolve => require(['@/views/index/index.vue'],resolve)
     }
   ]
 })
