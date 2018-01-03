@@ -77,8 +77,16 @@
                         <div>交易</div>
                     </div>
                     <div class="seller_pro">
-                        <p>{{ onePro.proName }}</p>
-                        <span>{{ onePro.totalPrice | toFix2 }}元</span>
+                        <div class="swiper-container-3">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide" v-for="(item,index) in onePro" :key="index">
+                                    <div class="pro_box">
+                                        <p>{{ item.proName }}</p>
+                                        <span>{{ item.totalPrice | toFix2 }}元</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -157,7 +165,17 @@
                 </div>
             </div>
             <div class="suggest_content">
-                <collection :myProducts="listData"></collection>
+                <div class="suggest_item" v-for="(item,index) in listData" :key="index" @click="$router.push({name: '商品详情',query:{proSku: item.proSku}})">
+                    <div class="sugget_img"><img :src="item.proImg" /></div>
+                    <p class="suggest_text">{{ item.proName }}</p>
+                    <p class="seggest_resaon">{{ item.subTitle }}</p>
+                    <div class="suggest_type">
+                        <span v-if="!$tool.isLogin()">询价</span>
+                        <span v-else>￥{{ item.proPrice | toFix2 }}</span>
+                        <span v-if="item.businessType === 'SELF_SALES'">自营</span>
+                        <span class="on" v-else>茶企</span>
+                    </div>
+                </div>
             </div>
         </div>
         <!-- 到底啦 -->
@@ -183,7 +201,7 @@
                 goodHall: '',
                 recruit: '',
                 newsList: [],
-                onePro: {},
+                onePro: [],
                 packetEnter: '',
                 topFlag: false,
             }
@@ -241,7 +259,7 @@
             getPro() {
                 let data = {
                     'minPrice': 50,
-                    'count': 1,
+                    'count': 50,
                     'sysId': 1
                 };
                 return new Promise((resolve,reject) => {
@@ -258,24 +276,23 @@
             },
             iSeller() {
                 this.$store.dispatch('getMemberData').then(()=>{
-                    let memberStatus = store.state.member.memberAccount.status;
-                    if(!store.state.member.member.id){
-                       return this.$router.push({name: '茶帮通注册2',query:{edit: 'seller'}});
+                    let memberStatus = this.$store.state.member.memberAccount.status;
+                    if(!this.$store.state.member.member.id){
+                       return this.$router.push({name: '茶帮通注册1'});
                     }
-
-                    if(memberStatus === 'ACTIVE' && !store.state.member.shop){
+                    if(memberStatus === 'ACTIVE' && !this.$store.state.member.shop){
                         return this.$router.push({name: '卖家招募'});
                     }
-                    if(memberStatus === 'ACTIVE' && store.state.member.shop){
-                        let status = store.state.member.shop.shopStatus;
+                    if(memberStatus === 'ACTIVE' && this.$store.state.member.shop){
+                        let status = this.$store.state.member.shop.shopStatus;
                         if(status != 2 && status != -2){
                             return this.$router.push({name: '茶帮通注册7'});
                         }else if(status == 2){
                             return this.$toast(`您己经是卖家了，不用再申请了哟~`)
                         }
                     }
-                    if(store.state.member.shop){
-                        let status = store.state.member.shop.shopStatus;
+                    if(this.$store.state.member.shop){
+                        let status = this.$store.state.member.shop.shopStatus;
                         if(status == -2){
                             return this.$messageBox({
                                 title:'提示',
@@ -301,14 +318,12 @@
                             })
                         })
                     }
-                    if(store.state.member.shop){
-                        let status = store.state.member.shop.shopStatus;
+                    if(this.$store.state.member.shop){
+                        let status = this.$store.state.member.shop.shopStatus;
                         if((memberStatus != 'ACTIVE' || memberStatus != 'FREEZE') && (status != 2 || status != -2)){
                             return this.$router.push({name: '茶帮通注册3'});
                         }
                     }
-                }).catch((res)=>{
-                    return this.$router.push({name: '茶帮通注册2',query:{edit: 'seller'}});
                 })
             }
         },
@@ -372,12 +387,27 @@
                 })
             })
             this.getPro().then((res)=>{
-                this.onePro = res.data[0];
+                this.onePro = res.data;
+                this.$nextTick(()=>{
+                    var swiper3 = new Swiper('.swiper-container-3', {
+                        direction: 'vertical',
+                        autoplay: true,
+                        loop: true
+                    });
+                })
             })
         },
-        mounted() {
-
-        }
+        // beforeRouteEnter(to, from, next) {
+        //     if(!store.state.member.member.id) {
+        //         store.dispatch('getMemberData').then((res) => {
+        //             next();
+        //         }).catch(res => {
+        //             next();
+        //         })
+        //     } else {
+        //         next();
+        //     }
+        // }
     }
 </script>
 

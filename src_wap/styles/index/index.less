@@ -52,6 +52,7 @@
         .position(r);
         .mint-swipe-indicator.is-active{
             background: @mainCol;
+            opacity: 1;
         }
         .mint-swipe-item{
             img{
@@ -249,18 +250,29 @@
                     width: 5.2rem;
                     height: 100%;
                     padding-left: .2rem;
-                    .flex;
-                    .flex-dir(row);
-                    p{
-                        width: 3.6rem;
-                        .color(#666);
-                        .fontSize(.26rem);
-                        .oneLine;
-                    }
-                    span{
-                        .flex-1;
-                        .fontSize(.26rem);
-                        .color(@mainCol);
+                    .swiper-container-3{
+                        width: 100%;
+                        height: 100%;
+                        overflow: hidden;
+                        .swiper-slide{
+                            width: 100%;
+                            height: 100%;
+                            .pro_box{
+                                .flex;
+                                .flex-dir(row);
+                                p{
+                                    width: 3.6rem;
+                                    .color(#666);
+                                    .fontSize(.26rem);
+                                    .oneLine;
+                                }
+                                span{
+                                    .flex-1;
+                                    .fontSize(.26rem);
+                                    .color(@mainCol);
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -560,12 +572,60 @@
                 &:nth-child(2n+1){
                     border-right: 1px solid #e5e5e5;
                 }
-                border-top: 1px solid #e5e5e5;
-                &:first-child{
-                    border-top: 0 none;
+                border-bottom: 1px solid #e5e5e5;
+                .sugget_img{
+                    margin: .36rem auto .16rem;
+                    width: 2.58rem;
+                    height: 2.58rem;
+                    background-image: url('../../assets/images/error.jpg');
+                    background-repeat: no-repeat;
+                    background-size: 100%;
+                    .position(r);
+                    img{
+                        width: 100%;
+                    }
                 }
-                &:nth-child(2){
-                    border-top: 0 none;
+                .suggest_text{
+                    width: 2.9rem;
+                    min-height: .82rem;
+                    .color(#333);
+                    .fontSize(.28rem);
+                    .line(1.5);
+                    .moreLine;
+                    margin: 0 auto;
+                }
+                .seggest_resaon{
+                    .color(#999);
+                    .fontSize(.24rem);
+                    width: 100%;
+                    height: .5rem;
+                    .line(.5rem);
+                    .algin(c);
+                    .oneLine;
+                }
+                .suggest_type{
+                    .fontSize(0);
+                    padding: 0 .36rem;
+                    margin-top: .12rem;
+                    span{
+                        display: inline-block;
+                        &:first-child{
+                            .color(@mainCol);
+                            .fontSize(.32rem);
+                        }
+                        &:last-child{
+                            margin-left: .14rem;
+                            padding: .04rem .1rem;
+                            border: 1px solid @mainCol;
+                            .color(@mainCol);
+                            .fontSize(.24rem);
+                            .bg(#fff);
+                            &.on{
+                                .color(@lightGreen);
+                                border-color: @lightGreen;
+                            }
+                        }
+                    }
                 }
             }
         }
