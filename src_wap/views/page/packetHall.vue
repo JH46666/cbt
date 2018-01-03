@@ -69,12 +69,12 @@
                         <div class="packet_price">
                             <div class="packet_sum">
                                 <template v-if="item.amount">
-                                    <span>￥</span>
-                                    <span>{{ item.amount }}</span>
+                                    <span class="small">￥</span>
+                                    <span class="big">{{ item.amount }}</span>
                                 </template>
-                                <template v-if="item.amount">
-                                    <span>{{ item.discount }}</span>
-                                    <span>折</span>
+                                <template v-if="item.discount">
+                                    <span class="big">{{ item.discount }}</span>
+                                    <span class="small">折</span>
                                 </template>
                                 <span>满{{ item.fullAmountUse }}可用</span>
                             </div>
@@ -120,12 +120,12 @@
                                 <div class="packet_price new">
                                     <div class="packet_sum align_left">
                                         <template v-if="item.amount">
-                                            <span>￥</span>
-                                            <span>{{ item.amount }}</span>
+                                            <span class="small">￥</span>
+                                            <span class="big">{{ item.amount }}</span>
                                         </template>
-                                        <template v-if="item.amount">
-                                            <span>{{ item.discount }}</span>
-                                            <span>折</span>
+                                        <template v-if="item.discount">
+                                            <span class="big">{{ item.discount }}</span>
+                                            <span class="small">折</span>
                                         </template>
                                         <span>满{{ item.fullAmountUse }}可用</span>
                                     </div>
@@ -225,7 +225,7 @@ export default {
 
             if(!this.memberActive()) {
                 if(type === 'new') {
-                    return this.$toast('您的等级不允许领取该礼包哦~')
+                    return this.$toast('只有正式注册会员才能领取哟~')
                 } else {
                     return this.$toast('只有10级经销商等级以上会员才能领取哟')
                 }
@@ -237,6 +237,7 @@ export default {
                     sysId: 1,
                     ruleId: list[0]
                 },res => {
+                    this.$toast('领取成功，己放入您的红包账户~')
                     this.getRedLIst();
                 },res => {
                     if(res.code === 3013) {
@@ -246,6 +247,9 @@ export default {
                         this.$toast('红包还未启用~')
                     }
                     if(res.code === 4042) {
+                        this.$toast('只有10级经销商等级以上会员才能领取哟~')
+                    }
+                    if(res.code === 4064) {
                         this.$toast('只有10级经销商等级以上会员才能领取哟~')
                     }
                 })
