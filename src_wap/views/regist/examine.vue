@@ -1,7 +1,11 @@
 <template>
     <div class="seller_wrapper">
         <div class="t_txt" v-if="imgFlag == 0"><p class="color_9">恭喜您成功注册，请填写以下资料等待审核，审核后才可以询价和下单，如需帮助，请拨打 400-996-3399</p></div>
-        <div class="t_txt red" v-else><p class="color_9">审核不通过，{{ remark }}，如需帮助请拨打400-996-3399</p></div>
+        <div class="t_txt red" v-else>
+            <p class="color_9" :class="{on: !flhdh}">审核不通过，{{ remark }}，如需帮助请拨打400-996-3399</p>
+            <i class="iconfont icon-single-down" @click="clickPr" v-if="flhdh"></i>
+            <i class="iconfont icon-shang" @click="clickPr" v-else></i>
+        </div>
         <div class="seller_content">
             <div class="shop_info">
                 <form>
@@ -127,6 +131,7 @@
                flag: '',
                remark: '',
                formFlag: null,
+               flhdh: true,
             }
         },
         computed: {
@@ -139,6 +144,9 @@
             })
         },
         methods: {
+            clickPr() {
+                this.flhdh = !this.flhdh;
+            },
             goEdit() {
                 if(this.formFlag === 'shut'){
                     this.$router.push({
