@@ -173,7 +173,7 @@
                         <span v-if="!$tool.isLogin()">询价</span>
                         <span v-else>￥{{ item.proPrice | toFix2 }}</span>
                         <span v-if="item.businessType === 'SELF_SALES'">自营</span>
-                        <span class="on" v-else>{{ item.tagName }}</span>
+                        <span class="on" v-else>{{ sellerType[item.tagNum-1] }}</span>
                     </div>
                 </div>
             </div>
@@ -204,6 +204,7 @@
                 onePro: [],
                 packetEnter: '',
                 topFlag: false,
+                sellerType: ['茶厂','合作社','茶企','批发商'],
             }
         },
         methods: {
