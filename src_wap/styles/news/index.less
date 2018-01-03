@@ -1,0 +1,77 @@
+@import '~@/styles/base/tools.less';
+
+.news-list-wrap{
+    .big-news{
+        margin-bottom: .2rem;
+        .hd{
+            .h(4.55rem);
+            .position(r);
+            img{
+                .w(100%);
+                .h(100%);
+            }
+            .text-wrap{
+                .w(100%);
+                .position(a);
+                .color(#fff);
+                .fontSize(.24rem);
+                .paddingRow(.3rem);
+                .line(.8rem);
+                font-weight: normal;
+                bottom: 0;
+                background: url('../../assets/images/liner.png') no-repeat;
+                background-size: 100% .8rem ;
+            }
+        }
+        .bd{
+            padding: .3rem;
+            .bg(#fff);
+            .title{
+                .oneLine;
+                .fontSize(.34rem);
+                .line(.34rem);
+                margin-bottom: .2rem;
+            }
+            .detail{
+                .fontSize(.24rem);
+                .line(1.5);
+                .color(@b-9);
+                .moreLine(2);
+            }
+        }
+    }
+    .news-list{
+        .item{
+            padding: .4rem .3rem;
+            border-bottom: 1px solid #e5e5e5;
+            .bg(#fff);
+            .flex;
+            .left{
+                .position(r);
+                .h(1.46rem);
+                .flex-1;
+                .paddingR(.2rem);
+                .title{
+                    .fontSize(.3rem);
+                    .line(1.5);
+                    .moreLine(2);
+                }
+                .date{
+                    .position(a);
+                    .fontSize(.24rem);
+                    .line(.24rem);
+                    .color(@b-9);
+                    bottom: 0;
+                }
+            }
+            .right{
+                .w(2.4rem);
+                .h(1.46rem);
+                img{
+                    .w(100%);
+                    .h(100%);
+                }
+            }
+        }
+    }
+}

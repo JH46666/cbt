@@ -1,5 +1,5 @@
 <template>
-    <div class="freight_wrapper">
+    <div class="freight_wrapper add">
         <div class="caption flex">
             <p>全国包邮，除以下省份</p>
         </div>
@@ -311,7 +311,7 @@ import $api from 'api';
                     "orgFreightTemplateVoList": []
                 }
                 for(let i=0;i<this.postArray.length;i++){
-                    if(this.postArray[i].sweight !='' && this.postArray[i].xweight != '' && this.postArray[i].buyer != '' && this.postArray[i].area.length > 0){
+                    if(this.postArray[i].sweight !='' && this.postArray[i].xweight != '' && this.postArray[i].area.length > 0){
                         data.orgFreightTemplateVoList.push({
                             "baseRegionVoList": [],
                             "continuedHeavyCost": this.postArray[i].xweight,
@@ -332,7 +332,7 @@ import $api from 'api';
                             data.orgFreightTemplateVoList[i].baseRegionVoList.regionName = obj;
                         }
                     }else{
-                        if(this.postArray[i].sweight !='' || this.postArray[i].xweight != '' || this.postArray[i].buyer != ''){
+                        if(this.postArray[i].sweight !='' || this.postArray[i].xweight != ''){
                             if(this.postArray[i].area.length == 0){
                                 return Toast({
                                     message: '请先选择省份',
@@ -516,6 +516,11 @@ import $api from 'api';
             }
         },
         beforeRouteEnter(to, from, next) {
+            if(from.name === '卖家中心'){
+                next(vm => {
+                    vm.$router.go(0);
+                })
+            }
             if(store.state.member.member.id) {
                 next();
             } else {

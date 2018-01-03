@@ -3,7 +3,9 @@
     .ipScroll;
     .bg(#fff);
     .position(r);
-    padding-bottom: .98rem;
+    &.add{
+        padding-bottom: .98rem;
+    }
     &.edit{
         padding-bottom: .98rem;
     }
@@ -40,7 +42,7 @@
         }
         .add_text{
             .color(#333);
-            .line(1);
+            .line(.32rem);
             margin-left: .2rem;
         }
     }
@@ -107,7 +109,7 @@
                     }
                     input{
                         padding-left: .24rem;
-                        width: 2rem;
+                        width: 1.8rem;
                         border: 0 none;
                         .bg(#fafafa);
                     }
@@ -115,7 +117,7 @@
                     .line(.8rem);
                     &:nth-child(2){
                         label{
-                            width: 1.2rem;
+                            width: 1.4rem;
                         }
                     }
                 }
@@ -203,24 +205,50 @@
                .search_wrapper{
                    width: 5.6rem;
                    height: .6rem;
+                   margin-left: -1rem;
                    .flex;
                    .flex-dir(row);
+                   .position(r);
                    input{
                        .flex-1;
                        border-radius: .4rem 0 0 .4rem;
                        padding: 0 .3rem;
                        border: 1px solid #e5e5e5;
                        border-right: 0 none;
+                       height: 100%;
                    }
                    i{
-                       width: .76rem;
-                       height: 100%;
-                       border-radius: 0 .4rem .4rem 0;
-                       .bg(@mainCol);
-                       .color(#fff);
+                       &:nth-child(2){
+                           width: .76rem;
+                           height: 100%;
+                           border-radius: 0 .4rem .4rem 0;
+                           .bg(@mainCol);
+                           .color(#fff);
+                           .line(.6rem);
+                           .algin(c);
+                           .fontSize(.36rem);
+                       }
+                       &:last-child{
+                           .position(a);
+                           right: .96rem;
+                           top: .15rem;
+                           .color(#999);
+                           display: none;
+                           &.on{
+                               display: block;
+                           }
+                       }
+                   }
+                   span{
+                       width: 1rem;
+                       height: .6rem;
+                       .position(a);
+                       right: -1rem;
+                       .color(@mainCol);
+                       .fontSize(.28rem);
+                       top: 0;
                        .line(.6rem);
                        .algin(c);
-                       .fontSize(.36rem);
                    }
                }
            }

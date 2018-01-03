@@ -45,7 +45,7 @@
                     </div>
                     <div class="bd">
                         <p class="tips" :class="{onlyone:!item.showMore}">{{ item.limitExplain }}</p>
-                        <div class="direction" @click="showMore(index)" v-if="item.limitExplain ? item.limitExplain.length > 24 : false">
+                        <div class="direction" @click="showMore(index)" v-if="item.limitExplain ? item.limitExplain.length > 50 : false">
                             <i class="icon-single-down" v-if="!item.showMore"></i>
                             <i class="icon-shang" v-else="item.showMore"></i>
                         </div>

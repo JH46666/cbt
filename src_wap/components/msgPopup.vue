@@ -17,13 +17,11 @@
             <a class="close_popup"  @click="close"><i class="iconfont">&#xe79a;</i></a>
             <p class="error_tips" v-show="errorTxt != ''"><i class="iconfont">&#xe667;</i>{{errorTxt}}</p>
             <div class="flex img_box">
-                <div class="img_code" ref="imgcode">
-                    <img src="" alt="">
-                </div>
+                <div class="img_code" ref="imgcode"></div>
                 <a class="refresh" @click="reset"><i class="iconfont">&#xe665;</i></a>
             </div>
             <div class="flex img_code_input" ref="forms">
-                <input class="flex-1" :class="{on: i==curIndex}" v-for="(c,i) in codes" type="number" pattern="\d*" :name="i" v-model="c.code" maxlength="1" @click="setIndex(i)" @input="setFocus(i,$event.target.value)">
+                <input class="flex-1" :id="'input'+i" :class="{on: i==curIndex}" v-for="(c,i) in codes" :key="i" type="number" v-model="c.code" :maxlength="1" @click="setIndex(i)" @keyup.delete="dele(i)" @input="setFocus(i,$event.target.value)">
             </div>
         </div>
     </div>
@@ -49,9 +47,7 @@
             }
         },
         mounted(){
-            this.$nextTick(()=>{
-                this.getCode();
-            });
+            this.getCode();
         },
         methods:{
             close(){
@@ -90,6 +86,16 @@
                 this.curIndex = 0;
                 this.codes = [{code:''},{code:''},{code:''},{code:''}];
                 this.getCode();
+            },
+            //backspace事件
+            dele(i){
+                if(i===0){
+                    return true;
+                }else{
+                    this.codes[i-1].code = '';
+                    this.curIndex = i-1;
+                    this.$refs.forms.childNodes[i-1].focus();
+                }
             }
         },
         watch:{

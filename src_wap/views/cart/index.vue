@@ -60,21 +60,21 @@
                                 <div class="pro-delete"><a href="##"><i class="iconfont">&#xe60d;</i></a></div>
                             </div>
                             <!-- 提示信息 -->
-                            <div class="tips_div" v-if="!!item.buyUpperLimit && item.buyNum > item.buyUpperLimit">
+                            <div class="tips_div" v-if="!!item.buyUpperLimit && item.buyNum > item.buyUpperLimit && !item.limitMsg">
                                 <p>每单限购{{item.buyUpperLimit}}，您超出最高购买数量啦~</p>
                             </div>
-                            <div class="tips_div" v-if="!!item.buyLowLimit && item.buyNum < item.buyLowLimit">
+                            <div class="tips_div" v-if="!!item.buyLowLimit && item.buyNum < item.buyLowLimit && !item.limitMsg">
                                 <p>每单最低购{{item.buyLowLimit}}，您低于最低购买数量啦~</p>
                             </div>
                             <div class="tips_div" v-if="!!item.limitMsg">
-                                <p>{{ limitMsg }}</p>
+                                <p>{{ item.limitMsg }}</p>
                             </div>
                             <div class="del-block" v-if="$tool.isiOS" @click="delItem(item,true)">
                                 <i class="iconfont">&#xe60d;</i>
                             </div>
                         </div>
                         <!-- 活动&赠品 -->
-                        <template v-if="list.giftList ? list.giftList.length > 0 : false">
+                        <template v-if="list.giftList ? list.giftList.length > 0 && !edit  : false">
                             <div class="pro_item"  v-for="todo in arrayGift(list.giftList)" :key="todo.proId">
                                 <!-- 活动&赠品caption -->
                                 <div class="pro_free_caption">
@@ -131,14 +131,18 @@
                         <div class="right_info flex-1">
                             <div class="pro_info flex">
                                 <div class="pro_img">
-                                    <a href="javascript:void(0);"><goods-img imgWidth="1.6rem" :imgUrl="item.imageUrl"></goods-img></a>
+                                    <router-link :to="{name: '商品详情',query:{proSku: item.proSku}}" v-if="item.isOnShelves == 1"><goods-img imgWidth="1.6rem" :tagUrl="item.tagImage" :imgUrl="item.imageUrl"></goods-img></router-link>
+                                    <a href="javascript:void(0);" v-else><goods-img imgWidth="1.6rem" :imgUrl="item.imageUrl"></goods-img></a>
                                     <div class="expired_txt">
                                         <p>失效</p>
                                     </div>
                                 </div>
                                 <div class="flex-1 pro_detail">
                                     <div class="flex flex_col detail_inner">
-                                        <a href="javascript:void(0);">
+                                        <router-link :to="{name: '商品详情',query:{proSku: item.proSku}}" v-if="item.isOnShelves == 1">
+                                            <h4>{{item.proName}}</h4>
+                                        </router-link>
+                                        <a href="javascript:void(0);" v-else>
                                             <h4>{{item.proName}}</h4>
                                         </a>
                                         <div class="flex-1 flex align_items_end">
@@ -379,7 +383,8 @@
                         item.buyLowLimit = res.data.buyLowLimit;
                         item.buyUpperLimit = res.data.buyUpperLimit;
                         // 更新购物车数量
-                        this.$store.dispatch('queryCartTotal');
+                        // this.$store.dispatch('queryCartTotal');
+                        this.getData(true);
                         resolve(res);
                     },res => {
                         reject(res);
@@ -402,7 +407,7 @@
                 this.updateSeleNum(item,newVal,oldVal).then(res => {
                     // 禁用商品直接重新拉取数据
                     if(res.data.isDisable) {
-                        return this.getData();
+                        return this.getData(true);
                     }
                     item.buyNum = res.data.buyNum;
                     item.oldBuy = res.data.buyNum;
@@ -421,7 +426,7 @@
 
                 this.updateSeleNum(item,newVal,oldVal).then(res => {
                     if(res.data.isDisable) {
-                        return this.getData();
+                        return this.getData(true);
                     }
                     item.buyNum = res.data.buyNum;
                     item.oldBuy = res.data.buyNum;
@@ -449,7 +454,7 @@
                     }
                     this.updateSeleNum(item,item.buyNum).then(res => {
                         if(res.data.isDisable) {
-                            return this.getData();
+                            return this.getData(true);
                         }
                         item.buyNum = res.data.buyNum;
                         item.oldBuy = res.data.buyNum;
@@ -518,19 +523,55 @@
                     this.$refs.mayLike.getData();
                 })
             },
+            // 获取全部的sku的勾选状态
+            getProsku() {
+                let result = {};
+                for (let todo of this.listPannel) {
+                    for (let i = 0; i < todo.cartList.length; i++) {
+                        result[todo.cartList[i].proSku] = todo.cartList[i].checked;
+                    }
+                }
+                return result;
+            },
             // 查询购物车
-            getData() {
+            getData(beforeCheck) {
                 return new Promise((resolve,reject) => {
                     this.$store.dispatch('queryCart',{}).then(res=>{
                         let list = res.data.oteaoCart;
-                        for ( let todo of list) {
-                            for ( let i = 0; i < todo.cartList.length; i++) {
-                                // 勾选
-                                todo.cartList[i].checked = false;
-                                // 设置旧的购买量
-                                todo.cartList[i].oldBuy = todo.cartList[i].buyNum;
-                                // 左划
-                                todo.cartList[i].swiper = false;
+                        
+                        // 保留之前勾选状态
+                        if(beforeCheck) {
+                            let before = this.getProsku();
+                            for ( let todo of list) {
+                                for ( let i = 0; i < todo.cartList.length; i++) {
+                                    // 勾选
+                                    if(before[todo.cartList[i].proSku] === undefined) {
+                                        todo.cartList[i].checked = true;
+                                    }
+                                    if(before[todo.cartList[i].proSku] === false) {
+                                        todo.cartList[i].checked = false;
+                                    }
+                                    if(before[todo.cartList[i].proSku]) {
+                                        todo.cartList[i].checked = true;
+                                    }
+                                    // 设置旧的购买量
+                                    todo.cartList[i].oldBuy = todo.cartList[i].buyNum;
+                                    // 左划
+                                    todo.cartList[i].swiper = false;
+                                }
+                            }
+
+
+                        } else {
+                            for ( let todo of list) {
+                                for ( let i = 0; i < todo.cartList.length; i++) {
+                                    // 勾选
+                                    todo.cartList[i].checked = true;
+                                    // 设置旧的购买量
+                                    todo.cartList[i].oldBuy = todo.cartList[i].buyNum;
+                                    // 左划
+                                    todo.cartList[i].swiper = false;
+                                }
                             }
                         }
                         for (let list of res.data.disableList) {

@@ -116,6 +116,9 @@
                             border-bottom: 1px solid #e5e5e5;
                             .flex;
                             .flex-dir(row);
+                            &.on{
+                                border-bottom: 0 none;
+                            }
                             &:last-child{
                                 border-bottom: 0 none;
                             }
@@ -141,6 +144,27 @@
                                     .fontSize(.26rem);
                                     .line(1.5);
                                     .moreLine;
+                                    &.freeP{
+                                        .flex;
+                                        .flex-dir(row);
+                                    }
+                                    span:first-child{
+                                        width: .8rem;
+                                        height: .36rem;
+                                        border: 1px solid @mainCol;
+                                        .color(@mainCol);
+                                        .fontSize(.28rem);
+                                        .line(.36rem);
+                                        .algin(c);
+                                        margin-top: .05rem;
+                                    }
+                                    span:last-child{
+                                        .fontSize(.26rem);
+                                        .line(1.5);
+                                        .moreLine;
+                                        .flex-1;
+                                        padding-left: .05rem;
+                                    }
                                 }
                                 .count_price_wrap{
                                     .flex;
@@ -152,6 +176,10 @@
                                         &:first-child{
                                             .color(#f08200);
                                         }
+                                    }
+                                    del{
+                                        .color(#ccc);
+                                        margin-left: -1.6rem;
                                     }
                                 }
                             }
@@ -184,7 +212,7 @@
                                 border: 1px solid #999;
                                 color: #333;
                                 font-size: .26rem;
-                                width: 1.56rem;
+                                width: 1.64rem;
                                 height: .56rem;
                                 .line(.56rem);
                                 border-radius: 20px;

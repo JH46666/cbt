@@ -67,6 +67,14 @@
                     <input type="text" id="5" v-model="formData.shopAddress" placeholder="必填项，请填写详细地址" maxlength="50" />
                 </div>
             </div>
+            <div class="select_item" v-if="registClass === 1">
+                <div class="select_item_label">
+                    <label for="8">服务电话</label>
+                </div>
+                <div class="select_item_content">
+                    <input type="number" id="8" v-model="formData.shopResTel" placeholder="必填项，请填写服务电话" maxlength="11" />
+                </div>
+            </div>
             <div class="select_item pay_item" v-if="registClass === 1">
                 <div class="select_item_label">
                     <label for="7">支付宝</label>
@@ -134,7 +142,10 @@
         <div class="f5_2"></div>
         <div class="select_bottom_wrapper">
             <div class="select_bottom_btn">
-                <mt-button type="primary" :disabled="iSubmit" @click="submitMethod">提交资料</mt-button>
+                <mt-button type="primary" :disabled="iSubmit || loading" @click="submitMethod">
+                    <img src="../../assets/images/loading3.gif" height="20" width="20" slot="icon" v-if="loading">
+                    提交资料
+                </mt-button>
             </div>
             <mt-button type="primary" class="to_index" @click="$router.push({name:'首页'})">去首页</mt-button>
         </div>
@@ -185,7 +196,8 @@ export default {
                 shopTel: '',
                 shopArea: '',
                 shopAddress: '',
-                shopPayNumber: ''
+                shopPayNumber: '',
+                shopResTel: ''
             },
             shopImg: [],
             licenseImg: [],
@@ -224,6 +236,7 @@ export default {
             bucket: 'imgcbt',
             flag: true,
             onlyName: '成为会员',
+            loading: false,
         }
     },
     created() {
@@ -238,8 +251,13 @@ export default {
         this.addressObj.cityCode = store.state.member.orgDTO.cityID;
         this.addressObj.areaCode = store.state.member.orgDTO.countyID;
         if(this.$route.query.edit === 'seller'){
+            if(store.state.member.orgDTO){
+                this.shopImg = [{imgUrl: store.state.member.orgDTO.facadePics}];
+                this.shopImgUrl = [store.state.member.orgDTO.facadePics];
+            }
             this.registClass = 1;
             this.getData(store.state.member.orgDTO.orgID);
+
             if(store.state.member.shop.shopStatus == 1){
                 this.flag = false;
                 this.onlyName = '成为卖家';
@@ -271,6 +289,30 @@ export default {
                 this.onlyName = '成为会员';
             }else{
                 this.registClass = 0;
+            }
+            if(store.state.member.shop){
+                this.getData(store.state.member.orgDTO.orgID);
+                this.sellerClass = store.state.member.shop.shopType - 1;
+                if(store.state.member.shop.shopType == 1){
+                    this.licenseImg = [{imgUrl: store.state.member.shop.businessLicensePic}];
+                    this.productImg = [{imgUrl: store.state.member.shop.produceLicensePic}];
+                    this.licenseImgUrl = [store.state.member.shop.businessLicensePic];
+                    this.productImgUrl = [store.state.member.shop.produceLicensePic];
+                }
+                if(store.state.member.shop.shopType == 2){
+                    this.licenseImg = [{imgUrl: store.state.member.shop.businessLicensePic}];
+                    this.productImg = [{imgUrl: store.state.member.shop.qsLicensePic}];
+                    this.licenseImgUrl = [store.state.member.shop.businessLicensePic];
+                    this.productImgUrl = [store.state.member.shop.qsLicensePic];
+                }
+                if(store.state.member.shop.shopType == 3){
+                    this.licenseImg = [{imgUrl: store.state.member.shop.businessLicensePic}];
+                    this.licenseImgUrl = [store.state.member.shop.businessLicensePic];
+                }
+                if(store.state.member.shop.shopType == 4){
+                    this.licenseImg = [{imgUrl: store.state.member.shop.businessLicensePic}];
+                    this.licenseImgUrl = [store.state.member.shop.businessLicensePic];
+                }
             }
             this.shopImg = [{imgUrl: store.state.member.orgDTO.facadePics}];
             this.shopImgUrl = [store.state.member.orgDTO.facadePics];
@@ -309,6 +351,7 @@ export default {
                 sysId: 1
             },res => {
                 this.formData.shopPayNumber = res.data.alipayAccount;
+                this.formData.shopResTel = res.data.businessTelephone;
             })
         },
         getAddress(obj) {
@@ -431,6 +474,7 @@ export default {
             })
         },
         submitMethod() {
+            this.loading = true;
             if(this.shopImgFile.length==0 && this.licenseImgFile.length==0 && this.productImgFile.length==0){
                 this.postMember();
             }else{
@@ -470,6 +514,7 @@ export default {
                 data = {
                     'alipayAccount': this.formData.shopPayNumber,
                     "areaCode": this.addressObj.areaCode,
+                    'businessTelephone': this.formData.shopResTel,
                     "cityCode": this.addressObj.cityCode,
                     "contactor": this.formData.shopTel,
                     "detailAddress": this.formData.shopAddress,

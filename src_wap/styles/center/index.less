@@ -119,6 +119,8 @@
             }
             h3{
                 font-weight: normal;
+                .color(@b-3);
+                .fontSize(.24rem);
             }
             .all-order{
                 .color(@b-9);
@@ -150,12 +152,12 @@
                 .mint-badge{
                     .position(a);
                     .fontSize(.18rem);
-                    .line(.3rem);
+                    .line(.24rem);
                     .bg(#fff);
                     .color(#f44336);
                     border: 1px solid #f44336;
                     top: -.13rem;
-                    right: .4rem;                   
+                    left: 50%;
                     padding: 0 .1rem;
                     &.one{
                         right: .46rem;   
@@ -204,6 +206,77 @@
             .fontSize(.24rem);
             box-shadow: none;
             border: none;
+        }
+    }
+}
+
+
+
+
+// 红包签到样式
+
+.packet_dialog_1{
+    width: 100%;
+    height: 100%;
+    .position(f);
+    top: 0;
+    bottom: 0;
+    z-index: 1200;
+    .bg(rgba(0,0,0,.5));
+    // display: none;
+    &.on{
+        display: block;
+    }
+    .sign_wrapper{
+        .algin(c);
+        width: 4.8rem;
+        height: 5.72rem;
+        .position(a);
+        left: 50%;
+        top: 50%;
+        margin-left: -2.4rem;
+        margin-top: -2.86rem;
+        .bg(#fff);
+        border-radius: 8px;
+        .sign_top{
+            width: 100%;
+            height: 2.64rem;
+            .flex;
+            .flex-dir;
+            .align-items;
+            .justify-content;
+            img{
+                width: 1.52rem;
+            }
+        }
+        .sign_success{
+            .color(#333);
+            .fontSize(.36rem);
+            .algin(c);
+            padding-bottom: .3rem;
+            .line(1);
+        }
+        .sign_text{
+            width: 100%;
+            .algin(c);
+            .line(1);
+            .color(#666);
+            .fontSize(.28rem);
+            span{
+                .color(@mainCol);
+            }
+        }
+        .mint-button--default{
+            width: 3rem;
+            height: .8rem;
+            border: 1px solid @mainCol;
+            .color(#fff);
+            .algin(c);
+            .line(.8rem);
+            .bg(@mainCol);
+            padding: 0;
+            .fontSize(.3rem);
+            margin: .56rem auto 0;
         }
     }
 }

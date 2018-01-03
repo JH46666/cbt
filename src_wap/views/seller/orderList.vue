@@ -184,10 +184,10 @@
             },
             noOrder() {
                 try {
-                    if(this.list.length === this.$store.state.seller.orderList[this.selected].orderNum) {
-                        return true
-                    } else {
+                    if(this.$store.state.seller.orderList[this.selected].orderNum) {
                         return false
+                    } else {
+                        return true
                     }
                     
                 } catch (error) {
@@ -211,7 +211,11 @@
                     orderNo: this.activeOrder.orderNo,
                     closeReason: way
                 },res => {
-                    this.$toast('关闭成功')
+                    if(this.activeOrder.orderStatus === 'PACKING' || this.activeOrder.orderStatus === 'DELIVERED') {
+                        this.$toast('订单关闭，退款成功~')
+                    } else {
+                        this.$toast('关闭成功')
+                    }
                     this.closeUp = false;
                     this.closeConfirm = false;
                     this.activeOrder.orderStatus = 'CLOSE'

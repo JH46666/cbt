@@ -1,6 +1,6 @@
 <template>
     <!-- 您可能喜欢 -->
-    <div class="may_like">
+    <div class="may_like" v-if="mayProducts.length > 0">
         <h4 class="tit_like"><span>您可能喜欢</span></h4>
         <div class="search_pros">
             <ul class="may_pros_list clearfix">
@@ -10,7 +10,7 @@
                         <div class="pro_txt">
                             <h4>{{mayItem.proTitle}}</h4>
                             <p>{{mayItem.subTitle}}</p>
-                            <p class="pro_price">￥{{ mayItem.proPrice | toFix2}}</p> 
+                            <p class="pro_price">￥{{   mayItem.activityPrice || mayItem.proPrice | toFix2}}</p> 
                         </div>
                     </router-link>
                     <span class="cart_cir" @click.self="addCart(mayItem)"></span>
@@ -37,7 +37,9 @@
                     'pageSize': 10
                 },res => {
                     this.mayProducts = res.data || []
-                },res => {})
+                },res => {
+                    this.mayProducts = []
+                })
             },
             // 加入购物车
             addCart(item) {

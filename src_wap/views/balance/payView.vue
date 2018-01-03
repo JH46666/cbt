@@ -60,9 +60,13 @@
                 <div class="left">已付金额：</div>
                 <div class="right"><span class="gold">￥{{ order.onlinePayAmount | toFix2 }}</span></div>
             </div>
-            <div class="text-item" v-if="$route.name === '货到付款成功' || $route.query.fail">
+            <div class="text-item" v-if="$route.name === '货到付款成功'">
                 <div class="left">待付金额：</div>
                 <div class="right"><span class="gold">￥{{ order.orderSum | toFix2 }}</span></div>
+            </div>
+            <div class="text-item" v-if="$route.query.fail">
+                <div class="left">待付金额：</div>
+                <div class="right"><span class="gold">￥{{ order.orderSum - order.cashDeliverySum | toFix2 }}</span></div>
             </div>
             <div class="text-item">
                 <div class="left">支付方式：</div>
@@ -71,6 +75,9 @@
         </div>
         <!-- 猜你喜欢 -->
         <may-like v-if="$route.name === '结算显示' && !$route.query.fail || $route.name === '货到付款成功'"></may-like>
+        <div class="go-index" v-if="$route.query.fail">
+            <mt-button type="default" @click="$router.push('/')" class="goback-index">返回首页</mt-button>
+        </div>
     </div>
 </template>
 

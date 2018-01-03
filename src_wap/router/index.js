@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import store from 'store'
+import * as $tool from 'utils/index.js';
 
 Vue.use(Router)
 
@@ -59,6 +60,14 @@ const router = new Router({
 					name: '购物车',
 					component: resolve => require(['@/views/cart/index.vue'],resolve),
 
+				},
+				{
+					path: 'block',
+					name: '静态块页面',
+					component: resolve => require(['@/views/block/index.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
 				}
 			]
 		},
@@ -126,6 +135,14 @@ const router = new Router({
 					meta: {
 						hideFooter: true
 					}
+				},
+				{
+					path: 'brandVenue',
+					name: '品牌馆',
+					component: resolve => require(['@/views/center/brandVenue.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
 				}
 			]
 		},
@@ -170,6 +187,22 @@ const router = new Router({
 					path: 'selecter',
 					name: '茶帮通注册5',
 					component: resolve => require(['@/views/regist/selectEdit.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+				{
+					path: 'selleredit',
+					name: '茶帮通注册6',
+					component: resolve => require(['@/views/regist/sellerEdit.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+				{
+					path: 'sellerexamine',
+					name: '茶帮通注册7',
+					component: resolve => require(['@/views/regist/sellerExamine.vue'],resolve),
 					meta: {
 						hideFooter: true
 					}
@@ -418,14 +451,93 @@ const router = new Router({
 					}
 				},
 			]
-		}
+		},
+		{
+			path: 'wxlogin',
+			name: '微信登录第三页面',
+			component: resolve => require(['@/views/login/wxLogin.vue'],resolve),
+			meta: {
+				hideFooter: true
+			}
+		},
+		{
+			path: '/page',
+			component: resolve => require(['@/views/layout/mainWrap.vue'],resolve),
+			children: [
+				{
+					path: 'branchHall',
+					name: '分馆',
+					component: resolve => require(['@/views/page/branchHall.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				}
+			]
+		},
+		{
+			path: '/news',
+			component: resolve => require(['@/views/layout/mainWrap.vue'],resolve),
+			children: [
+				{
+					path: 'list',
+					name: '新闻列表',
+					component: resolve => require(['@/views/news/index.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+				{
+					path: 'detail',
+					name: '新闻详情',
+					component: resolve => require(['@/views/news/detail.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+			],
+		},
+		{
+			path: '/packet',
+			component: resolve => require(['@/views/layout/mainWrap.vue'],resolve),
+			children: [
+				{
+					path: '/',
+					name: '红包馆',
+					component: resolve => require(['@/views/page/packetHall.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+			],
+		},
 	]
 })
 
+let count = 0;
 router.beforeEach((to,from,next) => {
 	store.commit('RECORD_ROUTER',{type:'to',data:to})
 	store.commit('RECORD_ROUTER',{type:'from',data:from})
-	next()
+	// 计数，为1才去执行微信的登录
+	count++;
+	// 需要判断是否在微信内部，是的话要授权登录
+	if($tool.isWx && count === 1) {
+
+		// 从 localStorage 获取数据并删除
+		window.isWxLogin = Boolean(localStorage.isWxLogin)
+		delete localStorage.isWxLogin;
+
+		if(! window.isWxLogin) {
+			localStorage.setItem('isWxLogin',true);
+			// chiputaobutuputaopi 与文哥商量的 key 值
+			// console.log(encodeURI(location.origin + `/api/wap/wechatAutoLogin?chiputaobutuputaopi=${location.origin}/#/${to.fullPath}`))
+			location.href = encodeURI(location.origin + `/api/wap/wechatAutoLogin?chiputaobutuputaopi=${location.origin}`) + `/%23` + encodeURI(to.fullPath)
+		} else {
+			next()
+		}
+	} else {
+		next()
+	}
+
 })
 
 

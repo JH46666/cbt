@@ -85,7 +85,7 @@
                     <mt-spinner type="fading-circle" color="#f08200"></mt-spinner>
                     <span class="loading-text">正在努力加载中~</span>
                 </div>
-                <div class="no-more" v-if="onShelf.listData.length == onShelf.totalPage">没有更多了呦~</div>
+                <div class="no-more" v-if="onShelf.listData.length == onShelf.totalPage && onShelf.totalPage > 0">没有更多了呦~</div>
                 <div v-if="onShelf.totalPage==0">
                     <div class="no-item">
                         <img src="../../assets/images/wusousoushuju.jpg" alt="">
@@ -127,7 +127,7 @@
                     <mt-spinner type="fading-circle" color="#f08200"></mt-spinner>
                     <span class="loading-text">正在努力加载中~</span>
                 </div>
-                <div class="no-more" v-if="offShelf.listData.length == offShelf.totalPage">没有更多了呦~</div>
+                <div class="no-more" v-if="offShelf.listData.length == offShelf.totalPage && offShelf.totalPage > 0">没有更多了呦~</div>
                 <div v-if="offShelf.totalPage==0">
                     <div class="no-item">
                         <img src="../../assets/images/wusousoushuju.jpg" alt="">
@@ -363,28 +363,12 @@ import $api from 'api';
                 })
             },
             goCreate() {
-                let status = store.state.member.memberAccount.status;
-                if(status === 'FREEZE') {
-                    return this.$messageBox({
-                        title:'提示',
-                        message:`您的账号因违规操作而被冻结无法买买买~若有疑问，请联系客服400-996-3399`,
-                        confirmButtonText: '我知道了'
-                    })
-                }
                 this.$store.commit('SET_RESIZE');
                 this.$router.push({
                     name: '新品上架-1'
                 })
             },
             goBrect() {
-                let status = store.state.member.memberAccount.status;
-                if(status === 'FREEZE') {
-                    return this.$messageBox({
-                        title:'提示',
-                        message:`您的账号因违规操作而被冻结无法买买买~若有疑问，请联系客服400-996-3399`,
-                        confirmButtonText: '我知道了'
-                    })
-                }
                 if(this.tabId === 'yes'){
                     this.$router.push({
                         name: '批量处理',
@@ -418,11 +402,11 @@ import $api from 'api';
                 }
             },
             plusMethod() {
-                let status = store.state.member.memberAccount.status;
-                if(status === 'FREEZE') {
+                let status = store.state.member.shop.shopStatus;
+                if(status == -2) {
                     return this.$messageBox({
                         title:'提示',
-                        message:`您的账号因违规操作而被冻结无法买买买~若有疑问，请联系客服400-996-3399`,
+                        message:`您因违规操作而被冻结无法操作商品，若有疑问，请联系客服400-996-3399`,
                         confirmButtonText: '我知道了'
                     })
                 }
@@ -500,13 +484,15 @@ import $api from 'api';
                 })
             },
             stateMethod(id,type) {
-                let status = store.state.member.memberAccount.status;
-                if(status === 'FREEZE') {
-                    return this.$messageBox({
-                        title:'提示',
-                        message:`您的账号因违规操作而被冻结无法买买买~若有疑问，请联系客服400-996-3399`,
-                        confirmButtonText: '我知道了'
-                    })
+                if(type === 'up'){
+                    let status = store.state.member.shop.shopStatus;
+                    if(status == -2) {
+                        return this.$messageBox({
+                            title:'提示',
+                            message:`您因违规操作而被冻结无法上架商品，若有疑问，请联系客服400-996-3399`,
+                            confirmButtonText: '我知道了'
+                        })
+                    }
                 }
                 let data = {
                     proExtIds: id,
@@ -520,7 +506,7 @@ import $api from 'api';
                 }
                 this.$api.post('/oteao/productInfo/modifyOrgProInfoState',data,res => {
                     Toast({
-                        message: res.message,
+                        message: type == 'down' ? '商品下架成功！' : '商品上架成功！',
                         iconClass: 'icon icon-success'
                     });
                     setTimeout(() => {
@@ -534,19 +520,38 @@ import $api from 'api';
                 })
             },
             searchMethod() {
-                if(this.$route.query.state == undefined || this.$route.query.state == 'ON_SHELF'){
-                    this.getList(this.onShelf.orderBy,this.onShelf.sorts,this.onShelf.currentPage,'ON_SHELF').then((res) => {
-                        this.onShelf.listData = res.data;
-                        this.onShelf.totalPage = res.total_record;
-                    })
+                if(this.searchTxt.length==0){
+                    return Toast({
+                        message: `找不到该商品哦~`,
+                        iconClass: 'icon icon-fail'
+                    });
                 }else{
-                    this.getList(this.offShelf.orderBy,this.offShelf.sorts,this.offShelf.currentPage,'OFF_SHELF').then((res) => {
-                        this.offShelf.listData = res.data;
-                        this.offShelf.totalPage = res.total_record;
-                        for(let obj of this.offShelf.listData){
-                            this.$set(obj,'checked',false)
-                        }
-                    })
+                    if(this.$route.query.state == undefined || this.$route.query.state == 'ON_SHELF'){
+                        this.getList(this.onShelf.orderBy,this.onShelf.sorts,this.onShelf.currentPage,'ON_SHELF').then((res) => {
+                            if(res.total_record==0){
+                                return Toast({
+                                    message: `找不到该商品哦~`,
+                                    iconClass: 'icon icon-fail'
+                                });
+                            }
+                            this.onShelf.listData = res.data;
+                            this.onShelf.totalPage = res.total_record;
+                        })
+                    }else{
+                        this.getList(this.offShelf.orderBy,this.offShelf.sorts,this.offShelf.currentPage,'OFF_SHELF').then((res) => {
+                            if(res.total_record==0){
+                                return Toast({
+                                    message: `找不到该商品哦~`,
+                                    iconClass: 'icon icon-fail'
+                                });
+                            }
+                            this.offShelf.listData = res.data;
+                            this.offShelf.totalPage = res.total_record;
+                            for(let obj of this.offShelf.listData){
+                                this.$set(obj,'checked',false)
+                            }
+                        })
+                    }
                 }
             },
             selTab(str) {

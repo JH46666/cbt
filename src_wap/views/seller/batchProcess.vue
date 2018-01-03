@@ -51,7 +51,10 @@
     </div>
 </template>
 <script>
-import { Toast } from 'mint-ui';
+import { Toast,MessageBox } from 'mint-ui';
+import { mapState } from 'vuex'
+import store from 'store';
+import $api from 'api';
     export default{
         data(){
             return {
@@ -134,6 +137,15 @@ import { Toast } from 'mint-ui';
                 let states = 'ON_SHELF';
                 if(this.state === 'ON_SHELF'){
                     states = 'OFF_SHELF';
+                }else{
+                    let status = store.state.member.shop.shopStatus;
+                    if(status == -2) {
+                        return this.$messageBox({
+                            title:'提示',
+                            message:`您因违规操作而被冻结无法上架商品，若有疑问，请联系客服400-996-3399`,
+                            confirmButtonText: '我知道了'
+                        })
+                    }
                 }
                 let data = {
                     sysId: 1,

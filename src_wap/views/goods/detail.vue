@@ -49,11 +49,9 @@
                 <span>回首页</span>
                 <i class="iconfont">&#xe61b;</i>
             </div>
-            <div class="top" :class="{on: tabFixed || wxFixed}" @click="topMethod">
-                <i class="iconfont">&#xe618;</i>
-            </div>
+            <div class="top" :class="{on: tabFixed || wxFixed}" @click="topMethod"></div>
             <div class="detail_img">
-                <mt-swipe :auto="2000" :show-indicators="false" @change="handleChange">
+                <mt-swipe :auto="5000" :show-indicators="false" @change="handleChange">
                     <mt-swipe-item v-for="(item,index) in detailData.productImgList" :key="index">
                         <img :src="item.imgUrl" :key="index">
                     </mt-swipe-item>
@@ -91,7 +89,7 @@
                                 暂无报价
                             </div>
                         </template>
-                        <template  v-if="!loginId && state != 'ACTIVE'">
+                        <template  v-if="!loginId || state != 'ACTIVE'">
                             <div class="off_shelf_tips">
                                 询价
                             </div>
@@ -103,7 +101,6 @@
                     </div>
                     <template  v-if="detailData.productExtInfo.state === 'ON_SHELF'">
                         <div class="detail_active">
-                            <!-- <label>促销</label> -->
                             <div class="detail_active_list">
                                 <!-- <div class="detail_active_item" v-if="detailData.productExtInfo.isSales">
                                     <span>直降</span>
@@ -116,7 +113,7 @@
                                         <p v-else-if="detailData.orgFreightTemplateVoList && detailData.orgFreightTemplateVoList.length > 0">邮费依实际重量计算运费</p>
                                     </template>
                                     <template v-else>
-                                        <p>全场茶叶在线支付满500免包邮</p>
+                                        <p>全场茶叶在线支付满500包邮</p>
                                     </template>
                                 </div>
                             </div>
@@ -139,18 +136,21 @@
                     <mt-tab-item id="2">规格</mt-tab-item>
                     <mt-tab-item id="3">评论</mt-tab-item>
                 </mt-navbar>
-                <!-- tab-container -->
                 <mt-tab-container v-model="tabSelected" :swipeable="true">
                     <mt-tab-container-item id="1" ref="tabcontent1">
-                        <!-- <div class="detail_img_title" :class="{'on': tabFixed,'wxon': wxFixed}" ref="imgHeight">图片详情</div> -->
                         <div class="mint_cell_wrapper mint_cell_img_wrapper">
-                            <mt-cell v-for="(item,index) in imgDetail" :key="index" v-if="item.content != '' && item.imgArray.length != 0">
-                                <div class="mint_cell_img_title">{{ item.title }}</div>
-                                <div class="mint_cell_img">
-                                    <img :src="ur.imgUrl" v-for="(ur,k) in item.imgArray" :key="k" />
-                                </div>
-                                <p class="mint_cell_img_content">{{ item.content }}</p>
-                            </mt-cell>
+                            <template v-if="imgDetailHtml.length>0">
+                                <div v-html="imgDetailHtml"></div>
+                            </template>
+                            <template v-else>
+                                <mt-cell v-for="(item,index) in imgDetail" :key="index" v-if="item.content != '' && item.imgArray.length != 0">
+                                    <div class="mint_cell_img_title">{{ item.title }}</div>
+                                    <div class="mint_cell_img">
+                                        <img :src="ur.imgUrl" v-for="(ur,k) in item.imgArray" :key="k" />
+                                    </div>
+                                    <p class="mint_cell_img_content">{{ item.content }}</p>
+                                </mt-cell>
+                            </template>
                         </div>
                     </mt-tab-container-item>
                     <mt-tab-container-item id="2" ref="tabcontent2">
@@ -159,26 +159,28 @@
                                 <div>商品编号</div>
                                 <div>{{ detailData.productInfo.proSku }}</div>
                             </div>
-                            <div class="reguler_item" style="height: 1.5rem; padding: 0;" v-if="detailData.productExtInfo.fragrance != null">
-                                <div>详情</div>
-                                <div class="x_star">
-                                    <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '偏淡' || detailData.productExtInfo.fragrance === '一般' || detailData.productExtInfo.fragrance === '香' || detailData.productExtInfo.fragrance === '高香' || detailData.productExtInfo.fragrance === '极香'}">偏淡</span>
-                                    <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '一般' || detailData.productExtInfo.fragrance === '香' || detailData.productExtInfo.fragrance === '高香' || detailData.productExtInfo.fragrance === '极香'}">一般</span>
-                                    <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '香' || detailData.productExtInfo.fragrance === '高香' || detailData.productExtInfo.fragrance === '极香'}">香</span>
-                                    <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '高香' || detailData.productExtInfo.fragrance === '极香'}">高香</span>
-                                    <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '极香'}">极香</span>
+                            <template v-if="isHasFlag">
+                                <div class="reguler_item" style="height: 1.5rem; padding: 0;" v-if="detailData.productExtInfo.fragrance != null">
+                                    <div>香气</div>
+                                    <div class="x_star">
+                                        <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '偏淡' || detailData.productExtInfo.fragrance === '一般' || detailData.productExtInfo.fragrance === '香' || detailData.productExtInfo.fragrance === '高香' || detailData.productExtInfo.fragrance === '极香'}">偏淡</span>
+                                        <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '一般' || detailData.productExtInfo.fragrance === '香' || detailData.productExtInfo.fragrance === '高香' || detailData.productExtInfo.fragrance === '极香'}">一般</span>
+                                        <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '香' || detailData.productExtInfo.fragrance === '高香' || detailData.productExtInfo.fragrance === '极香'}">香</span>
+                                        <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '高香' || detailData.productExtInfo.fragrance === '极香'}">高香</span>
+                                        <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '极香'}">极香</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="reguler_item" style="height: 1.5rem; padding: 0;" v-if="detailData.productExtInfo.taste != null">
-                                <div>滋味</div>
-                                <div class="z_star">
-                                    <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '偏淡' || detailData.productExtInfo.taste === '一般' || detailData.productExtInfo.taste === '浓' || detailData.productExtInfo.taste === '很浓' || detailData.productExtInfo.taste === '极浓'}">偏淡</span>
-                                    <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '一般' || detailData.productExtInfo.taste === '浓' || detailData.productExtInfo.taste === '很浓' || detailData.productExtInfo.taste === '极浓'}">一般</span>
-                                    <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '浓' || detailData.productExtInfo.taste === '很浓' || detailData.productExtInfo.taste === '极浓'}">浓</span>
-                                    <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '很浓' || detailData.productExtInfo.taste === '极浓'}">很浓</span>
-                                    <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '极浓'}">极浓</span>
+                                <div class="reguler_item" style="height: 1.5rem; padding: 0;" v-if="detailData.productExtInfo.taste != null">
+                                    <div>滋味</div>
+                                    <div class="z_star">
+                                        <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '偏淡' || detailData.productExtInfo.taste === '一般' || detailData.productExtInfo.taste === '浓' || detailData.productExtInfo.taste === '很浓' || detailData.productExtInfo.taste === '极浓'}">偏淡</span>
+                                        <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '一般' || detailData.productExtInfo.taste === '浓' || detailData.productExtInfo.taste === '很浓' || detailData.productExtInfo.taste === '极浓'}">一般</span>
+                                        <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '浓' || detailData.productExtInfo.taste === '很浓' || detailData.productExtInfo.taste === '极浓'}">浓</span>
+                                        <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '很浓' || detailData.productExtInfo.taste === '极浓'}">很浓</span>
+                                        <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '极浓'}">极浓</span>
+                                    </div>
                                 </div>
-                            </div>
+                            </template>
                             <template v-for="(item,index) in attrImgDetail.propValList">
                                 <div class="reguler_item" style="height: .98rem; padding: 0;">
                                     <div>{{ item.propName }}</div>
@@ -195,13 +197,13 @@
                         <div class="comment_wrapper" ref="commentTotal" :class="{'on': tabFixed,'wxon': wxFixed}">
                             <div class="comment_title">商品评价</div>
                             <div class="comment_number">
-                                <div class="comment_star">好评 <span>{{ prectent }}%</span></div>
+                                <div class="comment_star">好评 <span>{{ prectent | toFix2 }}%</span></div>
                                 <!-- commentRecond -->
                                 <div class="comment_total">共 <span>{{ commentRecond }}</span> 条</div>
                             </div>
                         </div>
                         <div class="mint_cell_wrapper">
-                            <template v-if="commentList.length > 0">
+                            <template>
                                 <mt-cell v-for="(item,index) in commentList" :key="index">
                                     <div class="comment_head">
                                         <div class="comment_head_wrapper">
@@ -218,9 +220,14 @@
                                 </mt-cell>
                             </template>
                         </div>
-                        <template v-if="commentRecond > 3">
-                            <div class="comment_more_btn" @click="getMoreComment" v-if="commentRecond > commentList.length">
+                        <template v-if="commentList.length < commentRecond">
+                            <div class="comment_more_btn" @click="getMoreComment">
                                 查看更多评论<i class="iconfont">&#xe619;</i>
+                            </div>
+                        </template>
+                        <template v-if="commentList.length >= commentRecond">
+                            <div class="comment_more_btn">
+                                没有更多了呦~
                             </div>
                         </template>
                     </mt-tab-container-item>
@@ -231,7 +238,7 @@
             该商品已下架哦~
         </div>
         <mt-tabbar v-model="selected" class="cbt-footer detail_footer" :isZiYing="isThird" ref="footers">
-            <mt-tab-item id="1" @click.native="openDialog" v-if="detailData.productInfo.businessType != 'ORG_SALES'">
+            <mt-tab-item id="1" @click.native="openKfDialog" v-if="detailData.productInfo.businessType != 'ORG_SALES'">
                 <i class="icon-kefu1" slot="icon"></i>
                 客服
             </mt-tab-item>
@@ -254,14 +261,10 @@
 </template>
 
 <script>
-// import plusOreduce from '@/components/plusOreduce.vue'
 import { Toast,Indicator,MessageBox  } from 'mint-ui'
 import store from 'store';
 import { mapState } from 'vuex'
 export default {
-    // components: {
-    //     plusOreduce
-    // },
     data() {
         return {
             selected: null,
@@ -309,6 +312,10 @@ export default {
             loginId: null,
             state: '',
             maxNum: 0,
+            imgDetailHtml: '',
+            commentFlag: false,
+            timeData: [],
+            isHasFlag: true,
         }
     },
     computed:{
@@ -325,19 +332,35 @@ export default {
         this.loginId = store.state.member.member.id;
         this.state = store.state.member.memberAccount.status;
         this.proSku = this.$route.query.proSku;
+        this.isHas().then((res)=>{
+            if(res.data){
+                this.isHasFlag = true;
+            }else{
+                this.isHasFlag = false;
+            }
+        })
         this.getDetail().then((res) =>{
             this.detailData = res.data;
             this.maxNum = this.detailData.productExtInfo.stockNum;
             if(res.data.orgShopCenterVo){
                 this.shopTel = `tel://${res.data.orgShopCenterVo.businessTelephone}`;
             }
-            this.getAttrOrImg().then((res) => {
-                this.attrImgDetail = res.data;
-                this.imgDetail =  JSON.parse(res.data.content)
-                this.getCommentList(this.detailData.productExtInfo.id).then((res) => {
-                    this.commentList = res.data.evaluations;
-                    this.commentRecond = res.total_record;
-                    this.prectent = res.data.praiseRate == null ? 0 : res.data.praiseRate;
+            this.getAttrOrImg().then((attr) => {
+                this.attrImgDetail = attr.data;
+                try {
+                    this.imgDetail =  JSON.parse(attr.data.content)
+                } catch (e) {
+                    this.imgDetailHtml = attr.data.content;
+                }
+                this.getCommentList(res.data.productExtInfo.id).then((comment) => {
+                    this.timeData = comment.data.evaluations;
+                    this.commentRecond = comment.total_record;
+                    this.prectent = comment.data.praiseRate == null ? 0 : comment.data.praiseRate;
+                    if(this.commentRecond<=3){
+                        this.commentList  = this.timeData;
+                    }else{
+                        this.commentList = this.timeData.slice(0,3);
+                    }
                 })
             })
         })
@@ -402,77 +425,94 @@ export default {
             }
         },
         addCartInfo() {
-            let status = store.state.member.memberAccount.status;
-            if(!store.state.member.member.id){
-               return this.$router.push({name: '账户登录'});
-            }
-            if(status === 'WAIT_AUDIT') {
-                return this.$messageBox({
-                    title:'提示',
-                    message:`您的账号审核中，只有正式会员才以买买买，若有疑问，请联系客服400-996-3399`,
-                    confirmButtonText: '我知道了'
-                }).then(res => {
-                     this.selected = null;
-                });
-            }
-            if(status === 'INACTIVE' || status == 'AUDIT_NO_PASS') {
-                return this.$messageBox({
-                    title:'提示',
-                    message:`您的账号审核未通过，只有正式会员才可以买买买，若有疑问，请联系客服400-996-3399`,
-                    showCancelButton: true,
-                    cancelButtonText: '取消',
-                    confirmButtonText: '完善资料'
-                }).then(res => {
-                    if(res === 'cancel') {
-                        this.selected = null;
-                        return;
-                    } else {
-                        if(store.state.member.orgDTO){
-                            vm.$router.push({
-                                name: '茶帮通注册3',
-                                query: {
-                                    edit: 'buyer'
-                                }
-                            })
-                        }else{
-                            vm.$router.push({
-                                name: '茶帮通注册2'
-                            })
+            this.$store.dispatch('getMemberData').then(()=>{
+                let status = store.state.member.memberAccount.status;
+                if(!store.state.member.member.id){
+                   return this.$router.push({name: '账户登录'});
+                }
+                if(status === 'WAIT_AUDIT') {
+                    return this.$messageBox({
+                        title:'提示',
+                        message:`您的账号审核中，只有正式会员才以买买买，若有疑问，请联系客服400-996-3399`,
+                        confirmButtonText: '我知道了'
+                    }).then(res => {
+                         this.selected = null;
+                    });
+                }
+                if(status === 'INACTIVE' || status == 'AUDIT_NO_PASS') {
+                    return this.$messageBox({
+                        title:'提示',
+                        message:`您的账号审核未通过，只有正式会员才可以买买买，若有疑问，请联系客服400-996-3399`,
+                        showCancelButton: true,
+                        cancelButtonText: '取消',
+                        confirmButtonText: '完善资料'
+                    }).then(res => {
+                        if(res === 'cancel') {
+                            this.selected = null;
+                            return;
+                        } else {
+                            if(store.state.member.orgDTO){
+                                this.$router.push({
+                                    name: '茶帮通注册3',
+                                    query: {
+                                        edit: 'buyer'
+                                    }
+                                })
+                            }else{
+                                this.$router.push({
+                                    name: '茶帮通注册2'
+                                })
+                            }
                         }
-                    }
-                })
-            }
-            if(status === 'FREEZE') {
-                return this.$messageBox({
-                    title:'提示',
-                    message:`您的账号因违规操作而被冻结无法买买买~若有疑问，请联系客服400-996-3399`,
-                    confirmButtonText: '我知道了'
-                }).then(res => {
-                     this.selected = null;
-                });
-            }
-            this.$store.dispatch('addCart',{proId:this.detailData.productExtInfo.proId,buyNum:this.goodsCount}).then(res=>{
-                console.log(res);
-            },res=>{});
+                    })
+                }
+                if(status === 'FREEZE') {
+                    return this.$messageBox({
+                        title:'提示',
+                        message:`您的账号因违规操作而被冻结无法买买买~若有疑问，请联系客服400-996-3399`,
+                        confirmButtonText: '我知道了'
+                    }).then(res => {
+                         this.selected = null;
+                    });
+                }
+                this.$store.dispatch('addCart',{proId:this.detailData.productExtInfo.proId,buyNum:this.goodsCount}).then(res=>{
+                    console.log(res);
+                },res=>{});
+            }).catch((res)=>{
+                return this.$router.push({name: '账户登录'});
+            })
         },
         getMoreComment() {
-            this.page++;
-            this.getCommentList(this.detailData.productExtInfo.id).then((res) => {
-                this.commentList = this.commentList.concat(res.data.evaluations);
-                this.$nextTick(()=>{
-                    this.setLine();
+            if(this.page == 1 && this.commentList.length<=10){
+                this.commentList = this.timeData;
+            }else{
+                this.page++;
+                this.getCommentList(this.detailData.productExtInfo.id).then((res) => {
+                    this.commentList = this.commentList.concat(res.data.evaluations);
+                    this.$nextTick(()=>{
+                        this.setLine();
+                    })
+                })
+            }
+        },
+        isHas() {
+            let data ={
+                'proSku': this.proSku,
+                'sysId': 1
+            };
+            return new Promise((resolve,reject) => {
+                this.$api.get('/oteao/productInfo/isShowtasteAndFranste',data,res => {
+                    resolve(res);
+                },res=>{
+                    return Toast({
+                        message: res.errorMsg,
+                        iconClass: 'icon icon-fail'
+                    });
                 })
             })
         },
         getCommentList(extendId) {
             let pageSize = 10;
-            if(this.page == 1){
-                pageSize = 3;
-            }else if(this.page == 2){
-                pageSize = 7;
-            }else{
-                pageSize = 10;
-            }
             let data ={
                 'eval.proExtId': extendId,
                 'page.pageNumber': this.page,
@@ -624,123 +664,132 @@ export default {
            }
        },
        openCart() {
-           let status = store.state.member.memberAccount.status;
-           if(!store.state.member.member.id){
-              return this.$router.push({name: '账户登录'});
-           }
-           if(status === 'WAIT_AUDIT') {
-               return this.$messageBox({
-                   title:'提示',
-                   message:`您的账号审核中，只有正式会员才以买买买，若有疑问，请联系客服400-996-3399`,
-                   confirmButtonText: '我知道了'
-               }).then(res => {
-                    this.selected = null;
-               })
-           }
-           if(status === 'INACTIVE' || status == 'AUDIT_NO_PASS') {
-               return this.$messageBox({
-                   title:'提示',
-                   message:`您的账号审核未通过，只有正式会员才可以买买买，若有疑问，请联系客服400-996-3399`,
-                   showCancelButton: true,
-                   cancelButtonText: '取消',
-                   confirmButtonText: '完善资料'
-               }).then(res => {
-                   if(res === 'cancel') {
-                       this.selected = null;
-                       return ;
-                   } else {
-                       if(store.state.member.orgDTO){
-                           vm.$router.push({
-                               name: '茶帮通注册3',
-                               query: {
-                                   edit: 'buyer'
-                               }
-                           })
-                       }else{
-                           vm.$router.push({
-                               name: '茶帮通注册2'
-                           })
+           this.$store.dispatch('getMemberData').then(()=>{
+               let status = store.state.member.memberAccount.status;
+               if(!store.state.member.member.id){
+                  return this.$router.push({name: '账户登录'});
+               }
+               if(status === 'WAIT_AUDIT') {
+                   return this.$messageBox({
+                       title:'提示',
+                       message:`您的账号审核中，只有正式会员才以买买买，若有疑问，请联系客服400-996-3399`,
+                       confirmButtonText: '我知道了'
+                   }).then(res => {
+                        this.selected = null;
+                   })
+               }
+               if(status === 'INACTIVE' || status == 'AUDIT_NO_PASS') {
+                   return this.$messageBox({
+                       title:'提示',
+                       message:`您的账号审核未通过，只有正式会员才可以买买买，若有疑问，请联系客服400-996-3399`,
+                       showCancelButton: true,
+                       cancelButtonText: '取消',
+                       confirmButtonText: '完善资料'
+                   }).then(res => {
+                       if(res === 'cancel') {
+                           this.selected = null;
+                           return ;
+                       } else {
+                           if(store.state.member.orgDTO){
+                               this.$router.push({
+                                   name: '茶帮通注册3',
+                                   query: {
+                                       edit: 'buyer'
+                                   }
+                               })
+                           }else{
+                               this.$router.push({
+                                   name: '茶帮通注册2'
+                               })
+                           }
                        }
-                   }
+                   })
+               }
+               if(status === 'FREEZE') {
+                   return this.$messageBox({
+                       title:'提示',
+                       message:`您的账号因违规操作而被冻结无法买买买~若有疑问，请联系客服400-996-3399`,
+                       confirmButtonText: '我知道了'
+                   }).then(res => {
+                        this.selected = null;
+                   })
+               }
+               this.$router.push({
+                   name: '购物车'
                })
-           }
-           if(status === 'FREEZE') {
-               return this.$messageBox({
-                   title:'提示',
-                   message:`您的账号因违规操作而被冻结无法买买买~若有疑问，请联系客服400-996-3399`,
-                   confirmButtonText: '我知道了'
-               }).then(res => {
-                    this.selected = null;
-               })
-           }
-           this.$router.push({
-               name: '购物车'
+           }).catch((res)=>{
+               return this.$router.push({name: '账户登录'});
            })
        },
-       openDialog() {
-           let status = store.state.member.memberAccount.status;
-           if(!store.state.member.member.id){
-               return this.$messageBox({
-                   title:'提示',
-                   message:`您尚未登录，无法查看商家信息`,
-                   showCancelButton: true,
-                   cancelButtonText: '取消',
-                   confirmButtonText: '去登录'
-               }).then(res => {
-                   if(res === 'cancel') {
-                       this.selected = null;
-                       return;
-                   } else {
-                       this.$router.push({name: '账户登录'})
-                   }
-               })
-           }
-           if(status === 'WAIT_AUDIT') {
-               return this.$messageBox({
-                   title:'提示',
-                   message:`您的账号审核中，无法查看商家信息~若有疑问，请联系客服400-996-3399`,
-                   confirmButtonText: '我知道了'
-               }).then(res => {
-                    this.selected = null;
-               });
-           }
-           if(status === 'INACTIVE' || status == 'AUDIT_NO_PASS') {
-               return this.$messageBox({
-                   title:'提示',
-                   message:`您的账号审核未通过，只有正式会员才可查看，若有疑问，请联系客服400-996-3399`,
-                   showCancelButton: true,
-                   cancelButtonText: '取消',
-                   confirmButtonText: '完善资料'
-               }).then(res => {
-                   if(res === 'cancel') {
-                       this.selected = null;
-                       return;
-                   } else {
-                       if(store.state.member.orgDTO){
-                           vm.$router.push({
-                               name: '茶帮通注册3',
-                               query: {
-                                   edit: 'buyer'
-                               }
-                           })
-                       }else{
-                           vm.$router.push({
-                               name: '茶帮通注册2'
-                           })
-                       }
-                   }
-               })
-           }
-           if(status === 'FREEZE') {
-               return this.$messageBox({
-                   title:'提示',
-                   message:`您的账号因违规操作而被冻结无法查看商家信息~若有疑问，请联系客服400-996-3399`,
-                   confirmButtonText: '我知道了'
-               }).then(res => {
-                    this.selected = null;
-               });
-           }
+       openKfDialog() {
            this.showOrHide = true;
+       },
+       openDialog() {
+           this.$store.dispatch('getMemberData').then(()=>{
+               let status = store.state.member.memberAccount.status;
+               if(!store.state.member.member.id){
+                   return this.$messageBox({
+                       title:'提示',
+                       message:`您尚未登录，无法查看商家信息`,
+                       showCancelButton: true,
+                       cancelButtonText: '取消',
+                       confirmButtonText: '去登录'
+                   }).then(res => {
+                       if(res === 'cancel') {
+                           this.selected = null;
+                           return;
+                       } else {
+                           this.$router.push({name: '账户登录'})
+                       }
+                   })
+               }
+               if(status === 'WAIT_AUDIT') {
+                   return this.$messageBox({
+                       title:'提示',
+                       message:`您的账号审核中，无法查看商家信息~若有疑问，请联系客服400-996-3399`,
+                       confirmButtonText: '我知道了'
+                   }).then(res => {
+                        this.selected = null;
+                   });
+               }
+               if(status === 'INACTIVE' || status == 'AUDIT_NO_PASS') {
+                   return this.$messageBox({
+                       title:'提示',
+                       message:`您的账号审核未通过，只有正式会员才可查看，若有疑问，请联系客服400-996-3399`,
+                       showCancelButton: true,
+                       cancelButtonText: '取消',
+                       confirmButtonText: '完善资料'
+                   }).then(res => {
+                       if(res === 'cancel') {
+                           this.selected = null;
+                           return;
+                       } else {
+                           if(store.state.member.orgDTO){
+                               this.$router.push({
+                                   name: '茶帮通注册3',
+                                   query: {
+                                       edit: 'buyer'
+                                   }
+                               })
+                           }else{
+                               this.$router.push({
+                                   name: '茶帮通注册2'
+                               })
+                           }
+                       }
+                   })
+               }
+               if(status === 'FREEZE') {
+                   return this.$messageBox({
+                       title:'提示',
+                       message:`您的账号因违规操作而被冻结无法查看商家信息~若有疑问，请联系客服400-996-3399`,
+                       confirmButtonText: '我知道了'
+                   }).then(res => {
+                        this.selected = null;
+                   });
+               }
+               this.showOrHide = true;
+           })
        }
     },
     watch: {
@@ -784,6 +833,10 @@ export default {
     mounted () {
         // this.setLine();             // 判断超出隐藏或者显示
         this.wxFlag = this.$tool.isWx;
+        let sss = document.querySelectorAll('.mint-tab-container-item');
+        for(let i=0;i<sss.length;i++){
+            sss[i].style['min-height'] = window.screen.height + 'px'
+        }
   　},
     // 进来先判断登陆与否
     beforeRouteEnter(to, from, next) {

@@ -1,5 +1,5 @@
 <template lang="html">
-    <div class="activity" :style="style">
+    <div class="activity add">
         <div class="f5-2"></div>
         <div class="activity_name">
             <label for="activeName">活动名称</label>
@@ -59,6 +59,8 @@
                     <div class="search_wrapper">
                         <input type="text" placeholder="搜索商品" v-model="searchKeyWord" />
                         <i class="iconfont" @click="searchMethod">&#xe649;</i>
+                        <span @click="resetList">取消</span>
+                        <i class="iconfont icon-guanbi2" :class="{on: searchKeyWord.length>0}" @click="resetSeachText"></i>
                     </div>
                 </div>
                 <div class="dialig_list">
@@ -122,6 +124,19 @@ export default {
         }
     },
     methods: {
+        resetSeachText() {
+            this.searchKeyWord = '';
+        },
+        resetList() {
+            this.searchKeyWord = '';
+            this.getSearchList(this.searchKeyWord).then((res) => {
+                this.proList = res.data;
+                for(let obj of this.proList){
+                    this.$set(obj,'checked',false);
+                }
+            })
+            this.selectPro = false;
+        },
         getPriceOrDiscount(index,type) {
             if(type === 'discount'){
                 this.selProList[index].discount = parseFloat(this.selProList[index].discount).toFixed(2);
@@ -163,7 +178,7 @@ export default {
                     obj.discountPrice = ((parseFloat(obj.discount)/10)*obj.proPrice).toFixed(2);
                 }else if(obj.discountPrice == '' && obj.discount == ''){
                     return Toast ({
-                        message:`请填写特价商品的折扣折或折扣`,
+                        message:`请填写特价商品的折扣价或折扣`,
                         iconClass: 'icon icon-fail'
                     })
                 }
@@ -273,12 +288,6 @@ export default {
 
     },
     computed: {
-        style() {
-            let h = document.body.scrollHeight;
-            return {
-                height: this.$tool.isWx ? `calc(${h}px)` : `calc(${h}px - .88rem)`
-            }
-        },
         selectNum() {
             let num = 0;
             for(let obj of this.proList){
@@ -315,6 +324,11 @@ export default {
         }
     },
     beforeRouteEnter(to, from, next) {
+        if(from.name === '活动列表'){
+            next(vm => {
+                vm.$router.go(0);
+            })
+        }
         if(store.state.member.member.id) {
             next();
         } else {

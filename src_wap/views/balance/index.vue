@@ -1,19 +1,23 @@
 <template>
     <div id="balance">
         <div class="main-top" ref="main">
-            <div class="address">
+            <div class="address" @click="editAddress">
                 <div class="left"><i class="icon-dizhi"></i></div>
-                <div class="center">
+                <div class="center" v-if="Object.keys(address).length > 0">
                     <p class="user">{{ address.recName }} &nbsp;&nbsp; {{ address.mobilePhone }}</p>
                     <p>{{ (address.provinceName + address.cityName + address.areaName + address.detailAddress) || '&nbsp;' }}</p>
                 </div>
-                <div class="right" @click="editAddress"><i class="icon-icon07"></i></div>
+                <div class="center" v-else>
+                    <p>您还没有收货地址哦~</p>
+                </div>
+                <div class="right"><i class="icon-icon07"></i></div>
             </div>
 
             <template v-for="(item,index) in pannel">
                 <section class="goods-pannel">
                     <div class="title">
                         <img src="../../assets/images/small_logo.png" alt="" v-if="item.selfSupport === true">
+                        <img src="../../assets/images/shop_icon.png" class="third-shop" alt="" v-else >
                         {{ item.shopName }}
                     </div>
                     <template v-for="(todo,i) in item.cartList">
@@ -58,7 +62,7 @@
                         <div class="center">
                             <p>{{ payMethods[item.currentPayMethod] }}  {{ expressName[item.currentDeliveryMethod] }}</p>
                             <!-- 运费 -->
-                            <p v-if="item.selfSupport === true">运费： 
+                            <p>运费： 
                                 <template v-if="item.currentPayMethod === 'ONLINE'">
                                     <span class="gold">{{ item.payAndDeliveryAndfreightMap.ONLINE[item.currentDeliveryMethod] | toFix2  }}</span>
                                 </template> 
@@ -66,7 +70,14 @@
                                     <span class="gold">{{ item.payAndDeliveryAndfreightMap.CASH_DELIVERY[item.currentDeliveryMethod] | toFix2  }}</span>
                                 </template>
                             </p>
-                            <p v-else>运费： <span class="gold">{{ item.shopExpress | toFix2  }}</span></p>
+                            <!-- <p v-else>运费：  
+                                <template v-if="item.currentPayMethod === 'ONLINE'">
+                                    <span class="gold">{{ item.payAndDeliveryAndfreightMap.ONLINE[item.currentDeliveryMethod] | toFix2  }}</span>
+                                </template> 
+                                <template v-else>
+                                    <span class="gold">{{ item.payAndDeliveryAndfreightMap.CASH_DELIVERY[item.currentDeliveryMethod] | toFix2  }}</span>
+                                </template>
+                            </p> -->
                         </div>
                         <div class="right">
                             <i class="icon-xiangyou"></i>
@@ -77,7 +88,9 @@
                             红包
                         </div>
                         <div class="center">
+                        <template v-if="item.redPacketDeduction > 0">
                             - {{ item.redPacketDeduction | toFix2   }}
+                        </template>
                         </div>
                         <div class="right">
                             <i class="icon-xiangyou"></i>
@@ -124,12 +137,15 @@
             </section> -->
 
 
-            <section class="bd-address" @click="gotoTop">
+            <section class="bd-address" @click="gotoTop" v-if="Object.keys(address).length > 0">
                 收货地址：{{ (address.provinceName + address.cityName + address.areaName + address.detailAddress) || '&nbsp;' }}&nbsp;&nbsp;&nbsp;&nbsp;{{ address.recName }} {{ address.mobilePhone }}
             </section>
         </div>
         <section class="save-order">
-            <p class="price">应付：<span class="gold">￥{{ totalPrice | toFix2 }}</span></p>
+            <div class="left" :class="{serverPrice: serverPrice > 0}">
+                <p class="price">应付：<span class="gold">￥{{ totalPrice | toFix2 }}</span></p>
+                <p class="tips" v-if="serverPrice > 0">含手续费： ￥{{ serverPrice | toFix2 }}</p>
+            </div>
             <mt-button type="default" :disabled="disabled" @click="upOrder">提交订单</mt-button>
         </section>
 
@@ -207,6 +223,16 @@
                 let obj = {};
                 data.forEach(val => obj[val.ruleSetId] = val.showType)
                 return obj;
+            },
+            // 手续费
+            serverPrice() {
+                let result = 0;
+                this.pannel.forEach(val => {
+                    if(val.selfSupport && val.currentPayMethod === 'CASH_DELIVERY') {
+                        result = val.payAndDeliveryAndfreightMap.feeForCashDeliveryMap[val.currentDeliveryMethod];
+                    }
+                })
+                return result;
             },
             ...mapState({
                 id: state => state.member.member.id,
@@ -348,7 +374,7 @@
             upOrder() {
                 // 先判断是否选择地址
                 if(!this.address.id) {
-                    this.$toast('请选择一个地址')
+                    return this.$toast('请选择一个地址')
                 }
                 let orgSettleRequestList = [];
 

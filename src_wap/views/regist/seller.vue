@@ -20,7 +20,15 @@
                     <div class="mumber_type" v-for="(item,index) in sellerType" :key="index" :class="{on: index === sellerClass}" @click="selectSellerType(index)">{{ item }}</div>
                 </div>
             </div>
-            <div class="select_item pay_item" v-if="registClass === 1" style="border-top: 1px solid #e5e5e5;">
+            <div class="select_item" v-if="registClass === 1">
+                <div class="select_item_label">
+                    <label for="8">服务电话</label>
+                </div>
+                <div class="select_item_content">
+                    <input type="number" id="8" v-model="formData.shopResTel" placeholder="必填项，请填写服务电话" maxlength="11" />
+                </div>
+            </div>
+            <div class="select_item pay_item" v-if="registClass === 1">
                 <div class="select_item_label">
                     <label for="7">支付宝</label>
                 </div>
@@ -66,7 +74,10 @@
         <div class="f5_2"></div>
         <div class="select_bottom_wrapper">
             <div class="select_bottom_btn">
-                <mt-button type="primary" :disabled="iSubmit" @click="submitMethod">立即注册</mt-button>
+                <mt-button type="primary" :disabled="iSubmit || loading" @click="submitMethod">
+                    <img src="../../assets/images/loading3.gif" height="20" width="20" slot="icon" v-if="loading" >
+                    立即注册
+                </mt-button>
             </div>
             <mt-button type="primary" class="to_index" @click="$router.push({name:'首页'})">去首页</mt-button>
         </div>
@@ -89,7 +100,8 @@ export default {
                 shopTel: '',
                 shopArea: '',
                 shopAddress: '',
-                shopPayNumber: ''
+                shopPayNumber: '',
+                shopResTel: ''
             },
             shopImg: [],
             licenseImg: [],
@@ -125,15 +137,12 @@ export default {
             path: 'test_path/',
             eximain: false,
             registText: '立即注册',
+            loading: false,
         }
     },
     created() {
         // 设置title
         this.$store.commit('SET_TITLE','茶帮通注册');
-
-        if(process.env.NODE_ENV != 'development'){
-            this.path = 'online_img/';
-        }
         this.loginNumber = store.state.member.member.memberAccount;
         this.formData.shopName = store.state.member.member.unitName;
     },
@@ -149,10 +158,6 @@ export default {
         }
     },
     methods: {
-        changeText() {
-            this.eximain = false;
-            this.registText = '提交资料';
-        },
         selectSellerType(index) {
             this.sellerClass = index;
         },
@@ -265,6 +270,7 @@ export default {
             })
         },
         submitMethod() {
+            this.loading = true;
             this.doUpload().then(() => {
                 this.postMember();
             })
@@ -272,6 +278,7 @@ export default {
         postMember() {
             let data = {
                 'alipayAccount': this.formData.shopPayNumber,
+                'businessTelephone': this.formData.shopResTel,
                 "areaCode": store.state.member.member.areaCode,
                 "cityCode": store.state.member.member.cityCode,
                 "contactor": store.state.member.member.contactName,
@@ -313,7 +320,8 @@ export default {
                     this.$router.push({
                         name: '茶帮通注册3',
                         query: {
-                            edit: 'seller'
+                            edit: 'seller',
+                            flag: 'shut'
                         }
                     })
                 },200)

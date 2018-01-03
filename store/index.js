@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import getters from './getters';
+import $api from '../api'
 // 模块
 import app from './modules/app';
 import seo from './modules/seo'
@@ -16,11 +17,24 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        device: '',
+        device: ''
     },
     mutations: {
         SET_DEVICE(state,val) {
             state.device = val
+        }
+    },
+    actions: {
+        getBlock({commit,dispatch},code) {
+            return new Promise((resolve,reject) => {
+                $api.post('/htmlModuleManage/seachByNo',{
+                    'htmlModuleManage.htmlNo': code
+                },res => {
+                    resolve(res);
+                },res => {
+                    reject(res);
+                })
+            })
         }
     },
     getters,

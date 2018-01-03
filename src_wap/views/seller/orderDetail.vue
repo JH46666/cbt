@@ -54,7 +54,11 @@
             <section class="price-pannel">
                 <div class="item">
                     <div class="left">商品金额</div>
-                    <div class="right">￥{{ orderPrice | toFix2  }}</div>
+                    <div class="right">￥{{ myData.productPaySum | toFix2  }}</div>
+                </div>
+                <div class="item" v-if="myData.internalDiscountSum != 0">
+                    <div class="left">内部优惠</div>
+                    <div class="right">￥{{  0 - myData.internalDiscountSum | toFix2  }}</div>
                 </div>
                 <div class="item">
                     <div class="left">运费</div>
@@ -196,15 +200,6 @@
                 list: [],                       // 商品列表
             }
         },
-        computed: {
-            orderPrice() {
-                try {
-                    return this.$tool.math.eval(`${this.myData.orderAllSum} - ${this.myData.freightSum}`)
-                } catch (error) {
-                    return 0
-                }
-            }
-        },
         methods: {
             // 填写备注
             showRemark() {
@@ -231,7 +226,11 @@
                     orderNo: this.myData.orderNo,
                     closeReason: way
                 },res => {
-                    this.$toast('关闭成功')
+                    if(this.myData.orderStatus === 'PACKING' || this.myData.orderStatus === 'DELIVERED') {
+                        this.$toast('订单关闭，退款成功~')
+                    } else {
+                        this.$toast('关闭成功')
+                    }
                     this.closeUp = false;
                     this.closeConfirm = false;
                     this.myData.orderStatus = 'CLOSE'
@@ -282,7 +281,6 @@
                 },res =>{
                     this.myData = res.data || {};
                     this.remark = this.myData.customerRemark || '';
-                    // this.orderPrice = this.$tool.math.eval(`${this.myData.orderSum} - ${this.myData.freightSum}`);
 
                     this.$api.post('/oteao/order/sellerOrderProductList',{orderId: this.myData.orderId,device: 'WAP'},res => {
                         this.list = res.data.mainOrder.products

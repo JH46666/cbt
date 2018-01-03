@@ -7,11 +7,11 @@
         <div class="floor1" v-if="totalAmount > 0">
             <p class="remaining color_6">余额 <span class="color_9">￥{{ totalAmount | toFix2 }}</span></p>
             <ul class="flex use_box">
-                <li class="flex-1" @click="isUse = true" :class="{'on': isUse}">使用 ￥{{ totalAmount > myData.orderSum ? myData.orderSum : totalAmount | toFix2 }}</li>
+                <li class="flex-1" @click="isUse = true" :class="{'on': isUse}">使用 ￥{{ totalAmount > usePrice ? usePrice : totalAmount | toFix2 }}</li>
                 <li class="flex-1" @click="isUse = false" :class="{'on': !isUse}">不使用</li>
             </ul>
         </div>
-        <div class="floor2" :class="{iswx: $tool.isWx}" v-if="(totalAmount < myData.orderSum || isUse === false) && $route.query.type !== 'delivery'">
+        <div class="floor2" :class="{iswx: $tool.isWx}" v-if="( ($route.query.type === 'onlineanddelivery' ?  totalAmount < myData.orderSum - myData.cashDeliverySum : totalAmount < myData.orderSum) || isUse === false) && $route.query.type !== 'delivery'">
             <mt-radio
                 align="right"
                 title="选择支付方式"
@@ -22,6 +22,10 @@
         <div class="floor3"><button class="confirm-pay" @click="pay" :disabled="disabled">确定支付 <span>￥{{ comfirnPrice | toFix2 }}</span></button></div>
         <div id="form" v-html="form"></div>
         <a :href="wxhost" ref="wxhost"></a>
+        <div class="juhua" v-if="loading">
+            <img src="../../assets/images/loading.gif" alt="">
+            <p>正在提交，请稍等~</p>
+        </div>
     </div>
 </template>
 <script>
@@ -48,7 +52,8 @@
                 ],
                 form: '',
                 wxhost: '',             // 微信回调
-                disabled: false
+                disabled: false,
+                loading: false,         
             }
         },
         computed: {
@@ -60,12 +65,15 @@
             comfirnPrice() {
                 try {
                     let orderSum = this.$route.query.type === 'onlineanddelivery' ? this.myData.orderSum - this.myData.cashDeliverySum : this.myData.orderSum;
-
                     if(this.isUse) {
                         if(this.totalAmount > orderSum) {
                             return orderSum
                         } else {
-                            return orderSum - this.totalAmount
+                            if(this.$route.query.type === 'delivery') {
+                                return this.totalAmount
+                            } else {
+                                return orderSum - this.totalAmount
+                            }
                         }
                     } else {
                         return orderSum
@@ -73,6 +81,10 @@
                 } catch (error) {
                     return 0
                 }
+            },
+            // 要支付的金额
+            usePrice() {
+                return this.$route.query.type === 'onlineanddelivery' ? this.myData.orderSum - this.myData.cashDeliverySum : this.myData.orderSum
             }
         },
         methods:{
@@ -94,7 +106,7 @@
 
 
                     // 使用余额支付的话需要判断当前的余额是否够用，需要配合在线支付
-
+                    this.loading = true;
                     this.$api.post('/oteao/payOrder/modityOrderStoreValue',{
                         payOrderId: this.payId,
                     },res => {
@@ -165,7 +177,6 @@
                                 // return alert(JSON.stringify(res.data.h5pay));
                                 let data = JSON.parse(res.data.h5pay);
                                 let self = this;
-
                                 function onBridgeReady(){
                                     WeixinJSBridge.invoke(
                                         'getBrandWCPayRequest', {
@@ -196,8 +207,7 @@
                                     onBridgeReady();
                                 }
                             },res => {
-                                this.$router.push({name: '结算显示',query:{payId: self.payId,fail:true,type: self.$route.query.type}})
-                                // alert(JSON.stringify(res))
+                                this.$router.push({name: '结算显示',query:{payId: this.payId,fail:true,type: this.$route.query.type}})
                                 // window.location = res.data.mweb_url;
                             })
 
@@ -214,7 +224,28 @@
                                 // 某些浏览器重定向问题，这个地方需要写入session，用来唤醒弹框
                                 // sessionStorage.h5wxpay = true;
                                 // sessionStorage.payId = this.payId;
-                                let src = res.data.mweb_url + `&redirect_url=` + encodeURI(location.origin + `/?wxpaycallback=${this.payId}+${this.$route.query.type}`);
+                                let src = res.data.mweb_url;
+                                if(this.$tool.isiOS) {
+                                    src += `&redirect_url=` + encodeURI(location.origin + `/?wxpaycallback=${this.payId}+${this.$route.query.type}`);
+                                }
+                                if(this.$tool.isAndroid) {
+                                    setTimeout(() => {
+                                        this.$messageBox({
+                                            title:'提示',
+                                            message:`是否完成支付?`,
+                                            showCancelButton: true,
+                                            cancelButtonText: '更换支付方式',
+                                            confirmButtonText: '完成支付'
+                                        }).then(res => {
+                                            if(res === 'cancel') {
+                                                this.loading = false;
+                                                this.disabled = false;
+                                            } else {
+                                                this.$router.push({name: '结算显示',query:{payId: this.payId,wx: 'wxpaycallback',type: this.$route.query.type}})
+                                            }
+                                        })
+                                    },2000)
+                                }
                                 this.wxhost = src;
                                 this.$nextTick(() =>{
                                     this.$refs.wxhost.click();
@@ -250,7 +281,7 @@
                 this.isUse = true;
             }
             this.type = this.$route.query.type;
-            alert(this.payId)
+            // alert(this.payId)
         },
         beforeRouteEnter(to, from, next) {
             if(store.state.member.member.id) {

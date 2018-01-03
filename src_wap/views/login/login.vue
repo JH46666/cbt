@@ -1,6 +1,7 @@
 <template>
     <div class="login_wrapper">
-        <div class="logo_img"><img src="../../assets/images/logo.png" alt=""></div>
+        <router-link to="/" tag="div" class="logo_img" v-if="logoImg === ''"><img src="../../assets/images/logo.png" alt=""></router-link>
+        <router-link to="/" tag="div" class="logo_img" v-else v-html="logoImg"></router-link>
         <div>
             <mt-navbar v-model="selected">
                 <mt-tab-item id="2">密码登录</mt-tab-item>
@@ -70,8 +71,9 @@
                 mescodeFlag: false,                 //短信验证是否
                 getFlag: false,                     //获取短信验证码按钮是否可点击
                 getCount: 0,                        //获取短信的次数
-                errorTips: '',                    //错误提示
-                timeCount: 60,                    //倒计时
+                errorTips: '',                      //错误提示
+                timeCount: 60,                      //倒计时
+                logoImg: '',                        //logo的图片
             }
         },
         computed:{
@@ -144,18 +146,13 @@
                                 this.$store.commit('SET_MEMBERDATA',{type:attr,val:res.data[attr]})
                             }
                             let status = this.$store.state.member.memberAccount.status;
-                            if(res.data.shop){
-                                if(res.data.shop.shopStatus == 1 || res.data.shop.shopStatus == 3){
-                                    return this.$router.push({name: '茶帮通注册3'})
-                                }
-                            }
-                            if(status === 'WAIT_AUDIT' || status === 'AUDIT_NO_PASS') {
+                            if(status === 'WAIT_AUDIT' || status === 'AUDIT_NO_PASS'){
                                 return this.$router.push({name: '茶帮通注册3'})
                             }
                             if(status === 'INACTIVE') {
                                 return this.$router.push({name: '茶帮通注册2'})
                             }
-                            if(this.$store.state.address.from.name === '忘记密码') {
+                            if(this.$store.state.address.from.name === '忘记密码' || this.$store.state.address.from.name === this.$route.name) {
                                 return this.$router.push('/')
                             } else {
                                 return this.$router.push(this.$store.state.address.from.fullPath);
@@ -185,13 +182,13 @@
                             if(status === 'INACTIVE') {
                                 return this.$router.push({name: '茶帮通注册2'})
                             }
-                            if(this.$store.state.address.from.name === '忘记密码') {
+                            if(this.$store.state.address.from.name === '忘记密码' || this.$store.state.address.from.name === this.$route.name) {
                                 return this.$router.push('/')
                             } else {
                                 return this.$router.push(this.$store.state.address.from.fullPath);
                             }
                         },res=>{
-                            if(res.code === 200) {
+                            if(res.code === 2000) {
                                 return Toast('该账户未注册');
                             }
                             Toast('您输入的验证码错误，请核实后重新输入');
@@ -253,6 +250,9 @@
         created() {
             // 设置title
             this.$store.commit('SET_TITLE','账户登录');
+            this.$store.dispatch('getBlock','waplogin').then(res => {
+                this.logoImg = res.data.htmlText;
+            })
 
         },
         watch:{
