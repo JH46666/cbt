@@ -56,6 +56,7 @@
                 // this.curIndex = 0;
                 this.$emit('closePopup');
             },
+            // 由于ios限制，只能通过同步代码控制组件的显示与隐藏
             hide() {
                 this.$el.style.display = 'none';
                 this.$refs.imgcode.innerHTML = `<img src="api/oteao/recaptcha/getReCaptha?v=${Math.random()*100}" alt="">`;
