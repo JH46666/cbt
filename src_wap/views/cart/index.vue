@@ -676,7 +676,7 @@
                 next(vm);
             }).catch(res => {
                 next(vm => {
-                    vm.$router.push('/login');
+                    vm.$router.replace('/login');
                 })
             })
         }
