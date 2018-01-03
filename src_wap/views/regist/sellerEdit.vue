@@ -147,7 +147,6 @@ export default {
         this.getData(store.state.member.orgDTO.orgID);
         this.loginNumber = store.state.member.member.memberAccount;
         this.formData.shopName = store.state.member.member.unitName;
-
     },
     computed: {
         iSubmit() {
@@ -171,12 +170,28 @@ export default {
                 this.formData.shopResTel = res.data.businessTelephone;
                 this.formData.shopPayNumber = res.data.alipayAccount;
                 this.sellerClass = res.data.shopType-1;
-                this.licenseImgUrl = [res.data.businessLicensePic];
-                this.productImgUrl = [res.data.facadePics];
-                this.licenseImg = [{imgUrl: res.data.businessLicensePic}];
-                this.productImg = [{imgUrl: res.data.facadePics}];
-                this.licenseImgFile = [null];
-                this.productImgFile = [null];
+                if(res.data.shopType == 1){
+                    this.licenseImgUrl = [res.data.businessLicensePic];
+                    this.productImgUrl = [res.data.produceLicensePic];
+                    this.licenseImg = [{imgUrl: res.data.businessLicensePic}];
+                    this.productImg = [{imgUrl: res.data.produceLicensePic}];
+                    this.licenseImgFile = [null];
+                    this.productImgFile = [null];
+                }else if(res.data.shopType == 2){
+                    this.licenseImgUrl = [res.data.businessLicensePic];
+                    this.productImgUrl = [res.data.qsLicensePic];
+                    this.licenseImg = [{imgUrl: res.data.businessLicensePic}];
+                    this.productImg = [{imgUrl: res.data.qsLicensePic}];
+                    this.licenseImgFile = [null];
+                    this.productImgFile = [null];
+                }else{
+                    this.licenseImgUrl = [res.data.businessLicensePic];
+                    this.productImgUrl = [null];
+                    this.licenseImg = [{imgUrl: res.data.businessLicensePic}];
+                    this.productImg = [{imgUrl: null}];
+                    this.licenseImgFile = [null];
+                    this.productImgFile = [null];
+                }
             })
         },
         selectSellerType(index) {
