@@ -101,45 +101,38 @@
         padding: .32rem .3rem;
         width: 100%;
         .news_item{
-            height: .34rem;
+            height: .36rem;
             width: 100%;
-            .flex;
-            .flex-dir(row);
-            .align-items;
             .news_item_left{
-                .flex-1;
                 .fontSize(.32rem);
                 .color(#333);
-                .flex;
-                .flex-dir(row);
-                .align-items;
-                .line(.34rem);
+                .fl(l);
+                .line(.36rem);
                 .news_logo{
                     width: .72rem;
-                    height: .34rem;
+                    height: .36rem;
                     .color(#fff);
                     .fontSize(.26rem);
                     background-image: url('../../assets/images/l_toutiao.png');
                     background-repeat: no-repeat;
                     background-size: 100%;
-                    .flex;
-                    .flex-dir;
-                    .align-items;
-                    .justify-content;
+                    display: inline-block;
+                    text-align: center;
                 }
             }
             .news_item_right{
+                .fl(r);
                 width: 5rem;
                 padding: 0 .2rem;
                 .fontSize(.26rem);
                 .color(#666);
                 overflow: hidden;
                 .swiper-container-2{
-                    height: .34rem;
+                    height: .36rem;
                     width: 100%;
                     .swiper-slide{
                         width: 100%;
-                        height: .34rem;
+                        height: .36rem;
                         .oneLine;
                     }
                 }
@@ -222,31 +215,26 @@
             .seller_pro_item{
                 width: 100%;
                 height: .34rem;
-                .flex;
-                .flex-dir(row);
-                .line(.34rem);
+                .line(.36rem);
                 .seller_pro_logo{
-                    .flex-1;
-                    .flex;
-                    .flex-dir(row);
+                    .fl(l);
                     .color(#333);
                     .fontSize(.32rem);
-                    height: .34rem;
+                    height: .36rem;
                     div{
                         width: .71rem;
-                        height: .34rem;
+                        height: .36rem;
                         background-image: url('../../assets/images/l_jiaoyi.png');
                         background-repeat: no-repeat;
                         background-size: 100%;
                         .color(#fff);
                         .fontSize(.26rem);
-                        .flex;
-                        .flex-dir;
-                        .align-items;
-                        .justify-content;
+                        display: inline-block;
+                        text-align: center;
                     }
                 }
                 .seller_pro{
+                    .fl(r);
                     width: 5.2rem;
                     height: 100%;
                     padding-left: .2rem;
@@ -281,10 +269,8 @@
             width: 100%;
             height: 1.44rem;
             .bg(#f7f7f7);
-            .flex;
-            .flex-dir(row);
-            .align-items;
             .seller_link_logo{
+                .fl(l);
                 width: 2.34rem;
                 height: 1.28rem;
                 margin-left: .08rem;
@@ -293,7 +279,7 @@
                 }
             }
             .seller_link_text{
-                .flex-1;
+                .fl(r);
                 padding-left: .1rem;
                 p{
                     width: 100%;
@@ -365,6 +351,8 @@
                         border-bottom: 1px solid #e5e5e5;
                         img{
                             width: 1.6rem;
+                            position: relative;
+                            top: 1px;
                         }
                         i{
                             display: inline-block;

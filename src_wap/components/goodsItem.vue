@@ -1,4 +1,4 @@
-<!-- 
+<!--
     props           type            default
     link`           String          #               跳转的链接
     businessType    String          self/join       自营or联营
@@ -36,7 +36,7 @@
             <div class="goods-title one-line" v-if="subTit">
                 {{subTit}}
             </div>
-            <div class="goods-attr-wrap">
+            <div class="goods-attr-wrap" v-if="isShowAttr == 1">
                 <div class="goods-attr">
                     <div class="attr-left">香气{{aromaName}}</div>
                     <div class="attr-right">
@@ -77,6 +77,10 @@
     export default{
         name: 'goodsItem',
         props: {
+            isShowAttr: {
+                type: Number,
+                default: 1
+            },
             mainTit: {
                 type: String,
                 default: ''

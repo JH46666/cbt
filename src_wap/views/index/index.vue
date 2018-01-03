@@ -42,7 +42,7 @@
         </div>
         <!-- 新闻 -->
         <div class="news_wrapper">
-            <div class="news_item">
+            <div class="news_item clearfix">
                 <div class="news_item_left">
                     茶帮通
                     <div class="news_logo">头条</div>
@@ -71,7 +71,7 @@
         <!-- 卖家招募 -->
         <div class="seller_wrapper">
             <div class="seller_pro_wrapper">
-                <div class="seller_pro_item">
+                <div class="seller_pro_item clearfix">
                     <div class="seller_pro_logo">
                         最新
                         <div>交易</div>
@@ -90,7 +90,7 @@
                     </div>
                 </div>
             </div>
-            <div class="seller_link" v-html="recruit" @click="iSeller"></div>
+            <div class="seller_link clearfix" v-html="recruit" @click="iSeller"></div>
         </div>
         <!-- 分类 -->
         <div class="cat_wrapper">
@@ -186,6 +186,8 @@
 </template>
 
 <script>
+import store from 'store';
+import { mapState } from 'vuex'
     export default {
         data() {
             return {
@@ -273,19 +275,33 @@
                         });
                     })
                 })
-
             },
             iSeller() {
-                this.$store.dispatch('getMemberData').then(()=>{
-                    let memberStatus = this.$store.state.member.memberAccount.status;
-                    if(!this.$store.state.member.member.id){
+                store.dispatch('getMemberData').then(()=>{
+                    let memberStatus = store.state.member.memberAccount.status;
+                    if(memberStatus === 'FREEZE'){
+                        return this.$messageBox({
+                            title:'提示',
+                            message:`您的账号因违规操作而被冻结~若有疑问，请联系客服400-996-3399`,
+                            confirmButtonText: '我知道了'
+                        }).then(res => {
+                            this.$api.get('/oteao/login/logout',{},res => {
+                                this.$router.push('/login');
+                                store.commit('SET_MEMBERDATA',{type:'member',val:{}})
+                            },res => {
+                                this.$router.push('/login')
+                                store.commit('SET_MEMBERDATA',{type:'member',val:{}})
+                            })
+                        })
+                    }
+                    if(!store.state.member.member.id){
                         return this.$router.push({name: '茶帮通注册1'});
                     }else{
-                       if(memberStatus === 'ACTIVE' && !this.$store.state.member.shop){
+                       if(memberStatus === 'ACTIVE' && !store.state.member.shop){
                            return this.$router.push({name: '卖家招募'});
                        }
-                       if(this.$store.state.member.shop){
-                           let status = this.$store.state.member.shop.shopStatus;
+                       if(store.state.member.shop){
+                           let status = store.state.member.shop.shopStatus;
                            if(memberStatus === 'ACTIVE' && status != 2 && status != -2){
                                 return this.$router.push({name: '茶帮通注册7'});
                            }
@@ -305,50 +321,38 @@
                                return this.$router.push({name: '茶帮通注册3'});
                            }
                        }else{
-                           if(memberStatus === 'FREEZE'){
-                               return this.$messageBox({
-                                   title:'提示',
-                                   message:`您的账号因违规操作而被冻结~若有疑问，请联系客服400-996-3399`,
-                                   confirmButtonText: '我知道了'
-                               }).then(res => {
-                                   this.$api.get('/oteao/login/logout',{},res => {
-                                       this.$router.push('/');
-                                       this.$store.commit('SET_MEMBERDATA',{type:'member',val:{}})
-                                   },res => {
-                                       this.$router.push('/')
-                                       this.$store.commit('SET_MEMBERDATA',{type:'member',val:{}})
-                                   })
-                               })
-                           }
                            return this.$router.push({name: '卖家招募'});
                        }
                     }
+                    return;
+                }).catch((res)=>{
+                    return this.$router.push({name: '茶帮通注册1'});
                 })
             }
         },
         created(){
             // 设置title
-            this.$store.commit('SET_TITLE','茶帮通商城');
-            this.$store.dispatch('getBlock','WAP_CAT').then((res)=>{
+            store.commit('SET_TITLE','茶帮通商城');
+            store.dispatch('getBlock','WAP_CAT').then((res)=>{
                 this.catList = JSON.parse(res.data.htmlText);
                 this.childCat = this.catList[0].chidren;
             })
-            this.$store.dispatch('getBlock','WAP_BANNER').then((res)=>{
+            store.dispatch('getBlock','WAP_BANNER').then((res)=>{
                 this.banner = JSON.parse(res.data.htmlText);
             })
-            this.$store.dispatch('getBlock','WAP_SELLER').then((res)=>{
+            store.dispatch('getBlock','WAP_SELLER').then((res)=>{
                 this.recruit = res.data.htmlText;
             })
-            this.$store.dispatch('getBlock','WAP_SAMLL').then((res)=>{
+            store.dispatch('getBlock','WAP_SAMLL').then((res)=>{
                 this.samllHall = res.data.htmlText;
             })
-            this.$store.dispatch('getBlock','WAP_GOOD').then((res)=>{
+            store.dispatch('getBlock','WAP_GOOD').then((res)=>{
                 this.goodHall = res.data.htmlText;
             })
-            this.$store.dispatch('getBlock','WAP_PACKET_ENTER').then((res)=>{
+            store.dispatch('getBlock','WAP_PACKET_ENTER').then((res)=>{
                 this.packetEnter = res.data.htmlText;
             })
-            this.$store.dispatch('getBlock','USER_SAY').then((res)=>{
+            store.dispatch('getBlock','USER_SAY').then((res)=>{
                 this.userSay= JSON.parse(res.data.htmlText);
                 this.$nextTick(()=>{
                     var swiper = new Swiper('.swiper-container-1', {
@@ -396,17 +400,17 @@
                 })
             })
         },
-        // beforeRouteEnter(to, from, next) {
-        //     if(!store.state.member.member.id) {
-        //         store.dispatch('getMemberData').then((res) => {
-        //             next();
-        //         }).catch(res => {
-        //             next();
-        //         })
-        //     } else {
-        //         next();
-        //     }
-        // }
+        beforeRouteEnter(to, from, next) {
+            if(!store.state.member.member.id) {
+                store.dispatch('getMemberData').then((res) => {
+                    next();
+                }).catch(res => {
+                    next();
+                })
+            } else {
+                next();
+            }
+        }
     }
 </script>
 
