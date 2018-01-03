@@ -25,7 +25,7 @@
             </div>
         </div>
         <!-- 验证码弹窗 -->
-        <msg-popup v-if="verifyFlag" @closePopup="closePopup" @getMsgCode="getMsgCode" :errorTxt="errorTips" ref="imgCode"></msg-popup>
+        <msg-popup @closePopup="closePopup" @getMsgCode="getMsgCode" :errorTxt="errorTips" ref="imgCode"></msg-popup>
     </div>
 </template>
 <script>
@@ -85,6 +85,7 @@
             closePopup(){
                 this.verifyFlag = false;
                 this.errorTips = "";
+                this.$refs.imgCode.hide();
             },
             //提交图片验证码获取短信验证码
             getMsgCode(val){
@@ -96,6 +97,8 @@
                 this.$api.get('/oteao/login/doSendSms',data,res=>{
                     this.verifyFlag = false;
                     this.getFlag = false;
+                    this.$refs.imgCode.hide();
+                    this.errorTips = "";
                     Toast('验证码己发至您的手机，5分钟内有效，请注意查收');
                     this.getCount++;
                     this.countTime();
@@ -164,12 +167,15 @@
                 if(this.getFlag && this.phoneFlag){
                     this.$api.get('/oteao/memberAccount/searchIsExist',{memberAccount:this.regInfo.phone},res=>{
                         if(res.data.returnResult) {
+                            this.$refs.imgCode.hide();
                             return Toast('您输入的手机号已注册，请重新输入');
                         }
                         this.verifyFlag = true;
                     },res=>{
+                        this.$refs.imgCode.hide();
                         Toast('您输入的手机号已注册，请重新输入');
                     });
+                    this.$refs.imgCode.show();
                 }
             },
             //倒计时
