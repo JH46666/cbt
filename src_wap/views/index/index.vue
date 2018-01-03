@@ -323,6 +323,9 @@
                            return this.$router.push({name: '卖家招募'});
                        }
                     }
+                    return;
+                }).catch((res)=>{
+                    return this.$router.push({name: '茶帮通注册1'});
                 })
             }
         },

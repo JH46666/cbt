@@ -1,7 +1,7 @@
 <template>
     <div class="detail">
         <mt-popup v-model="showOrHide" position="bottom">
-            <div class="dialog_wrapper_2" v-if="detailData.productInfo.businessType == 'ORG_SALES'">
+            <div class="dialog_wrapper_2" v-if="detailData.productInfo.businessType === 'ORG_SALES'">
                 <div class="dialog_title">
                     <i class="iconfont icon-dianpu"></i>
                     <span>{{ detailData.orgShopCenterVo.shopName }}</span>
@@ -29,7 +29,7 @@
                     </div>
                 </div>
             </div>
-            <div class="dialog_wrapper_1"  v-else>
+            <div class="dialog_wrapper_1" v-else>
                 <div class="dialog_title">
                     <i class="iconfont icon-kefu1"></i>
                     <span>茶帮通客服</span>
@@ -242,7 +242,7 @@
                 <i class="icon-kefu1" slot="icon"></i>
                 客服
             </mt-tab-item>
-            <mt-tab-item id="1" @click.native="openDialog" v-if="detailData.productInfo.businessType == 'ORG_SALES'">
+            <mt-tab-item id="1" @click.native="openDialog" v-else>
                 <i class="icon-dianpu" slot="icon"></i>
                 店铺
             </mt-tab-item>
