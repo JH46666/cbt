@@ -36,7 +36,7 @@
             <div class="goods-title one-line" v-if="subTit">
                 {{subTit}}
             </div>
-            <div class="goods-attr-wrap" v-if="isShowAttr == 1">
+            <div class="goods-attr-wrap" v-if="isShowAttr">
                 <div class="goods-attr">
                     <div class="attr-left">香气{{aromaName}}</div>
                     <div class="attr-right">

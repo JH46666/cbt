@@ -731,73 +731,92 @@ export default {
            this.showOrHide = true;
        },
        openDialog() {
-           this.$store.dispatch('getMemberData').then(()=>{
-               let status = store.state.member.memberAccount.status;
-               if(!store.state.member.member.id){
-                   return this.$messageBox({
-                       title:'提示',
-                       message:`您尚未登录，无法查看商家信息`,
-                       showCancelButton: true,
-                       cancelButtonText: '取消',
-                       confirmButtonText: '去登录'
-                   }).then(res => {
-                       if(res === 'cancel') {
-                           this.selected = null;
-                           return;
-                       } else {
-                           this.$router.push({name: '账户登录'})
-                       }
-                   })
-               }
-               if(status === 'WAIT_AUDIT') {
-                   return this.$messageBox({
-                       title:'提示',
-                       message:`您的账号审核中，无法查看商家信息~若有疑问，请联系客服400-996-3399`,
-                       confirmButtonText: '我知道了'
-                   }).then(res => {
-                        this.selected = null;
-                   });
-               }
-               if(status === 'INACTIVE' || status == 'AUDIT_NO_PASS') {
-                   return this.$messageBox({
-                       title:'提示',
-                       message:`您的账号审核未通过，只有正式会员才可查看，若有疑问，请联系客服400-996-3399`,
-                       showCancelButton: true,
-                       cancelButtonText: '取消',
-                       confirmButtonText: '完善资料'
-                   }).then(res => {
-                       if(res === 'cancel') {
-                           this.selected = null;
-                           return;
-                       } else {
-                           if(store.state.member.orgDTO){
-                               this.$router.push({
-                                   name: '茶帮通注册3',
-                                   query: {
-                                       edit: 'buyer'
-                                   }
-                               })
-                           }else{
-                               this.$router.push({
-                                   name: '茶帮通注册2'
-                               })
+           try {
+               store.dispatch('getMemberData').then(()=>{
+                   let status = store.state.member.memberAccount.status;
+                   if(!store.state.member.member.id){
+                       return this.$messageBox({
+                           title:'提示',
+                           message:`您尚未登录，无法查看商家信息`,
+                           showCancelButton: true,
+                           cancelButtonText: '取消',
+                           confirmButtonText: '去登录'
+                       }).then(res => {
+                           if(res === 'cancel') {
+                               this.selected = null;
+                               return;
+                           } else {
+                               this.$router.push({name: '账户登录'})
                            }
-                       }
-                   })
-               }
-               if(status === 'FREEZE') {
-                   return this.$messageBox({
-                       title:'提示',
-                       message:`您的账号因违规操作而被冻结无法查看商家信息~若有疑问，请联系客服400-996-3399`,
-                       confirmButtonText: '我知道了'
-                   }).then(res => {
-                        this.selected = null;
-                   });
-               }
-               this.showOrHide = true;
-           }).catch((res)=>{
-               console.log(1111111111);
-           })
+                       })
+                   }
+                   if(status === 'WAIT_AUDIT') {
+                       return this.$messageBox({
+                           title:'提示',
+                           message:`您的账号审核中，无法查看商家信息~若有疑问，请联系客服400-996-3399`,
+                           confirmButtonText: '我知道了'
+                       }).then(res => {
+                            this.selected = null;
+                       });
+                   }
+                   if(status === 'INACTIVE' || status == 'AUDIT_NO_PASS') {
+                       return this.$messageBox({
+                           title:'提示',
+                           message:`您的账号审核未通过，只有正式会员才可查看，若有疑问，请联系客服400-996-3399`,
+                           showCancelButton: true,
+                           cancelButtonText: '取消',
+                           confirmButtonText: '完善资料'
+                       }).then(res => {
+                           if(res === 'cancel') {
+                               this.selected = null;
+                               return;
+                           } else {
+                               if(store.state.member.orgDTO){
+                                   this.$router.push({
+                                       name: '茶帮通注册3',
+                                       query: {
+                                           edit: 'buyer'
+                                       }
+                                   })
+                               }else{
+                                   this.$router.push({
+                                       name: '茶帮通注册2'
+                                   })
+                               }
+                           }
+                       })
+                   }
+                   if(status === 'FREEZE') {
+                       return this.$messageBox({
+                           title:'提示',
+                           message:`您的账号因违规操作而被冻结无法查看商家信息~若有疑问，请联系客服400-996-3399`,
+                           confirmButtonText: '我知道了'
+                       }).then(res => {
+                            this.selected = null;
+                       });
+                   }
+                   this.showOrHide = true;
+               }).catch((res)=>{
+                   if(!store.state.member.member.id){
+                       return this.$messageBox({
+                           title:'提示',
+                           message:`您尚未登录，无法查看商家信息`,
+                           showCancelButton: true,
+                           cancelButtonText: '取消',
+                           confirmButtonText: '去登录'
+                       }).then(res => {
+                           if(res === 'cancel') {
+                               this.selected = null;
+                               return;
+                           } else {
+                               this.$router.push({name: '账户登录'})
+                           }
+                       })
+                   }
+               })
+           } catch (e) {
+               
+           }
        }
     },
     watch: {
