@@ -342,7 +342,7 @@
         created(){
             this.$nextTick(()=>{
                 jQuery(".slideBox").slide({mainCell:".bd ul",autoPlay:true});
-                jQuery(".picScroll-left").slide({titCell:".hd ul",mainCell:".bd ul",autoPage:true,effect:"left",autoPlay:false,vis:3,trigger:"click"});
+                jQuery(".picScroll-left").slide({titCell:".hd ul",mainCell:".bd ul",autoPage:true,effect:"left",autoPlay:true,vis:3,trigger:"click"});
             });
         },
         methods:{

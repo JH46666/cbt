@@ -90,7 +90,7 @@
                     </div>
                 </div>
             </div>
-            <div class="seller_link" v-html="recruit" @click="iSeller"></div>
+            <div class="seller_link clearfix" v-html="recruit" @click="iSeller"></div>
         </div>
         <!-- 分类 -->
         <div class="cat_wrapper">
