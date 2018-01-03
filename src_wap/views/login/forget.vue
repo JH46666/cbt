@@ -32,7 +32,7 @@
             </div>
         </div>
         <!-- 验证码弹窗 -->
-        <msg-popup v-if="verifyFlag" @closePopup="closePopup" @getMsgCode="getMsgCode" :errorTxt="errorTips" ref="imgCode"></msg-popup>
+        <msg-popup @closePopup="closePopup" @getMsgCode="getMsgCode" :errorTxt="errorTips" ref="imgCode"></msg-popup>
     </div>
 </template>
 <script>
@@ -96,6 +96,7 @@
             closePopup(){
                 this.verifyFlag = false;
                 this.errorTips = "";
+                this.$refs.imgCode.hide();
             },
             //提交图片验证码获取短信验证码
             getMsgCode(val){
@@ -107,7 +108,9 @@
                 this.$api.get('/oteao/login/doSendSms',data,res=>{
                     this.verifyFlag = false;   
                     this.getFlag = false;
-                    this.errorTips = "";        
+                    this.errorTips = "";  
+                    this.$refs.imgCode.hide(); 
+                    this.errorTips = "";     
                     Toast('验证码己发至您的手机，5分钟内有效，请注意查收');
                     this.getCount++;
                     this.countTime();
@@ -193,12 +196,15 @@
                         if(res.data.returnResult) {
                             this.verifyFlag = true;
                         } else {
+                            this.$refs.imgCode.hide();
                             Toast('您输入的手机号未注册，请重新输入');
                         }
                     },res=>{
-                         Toast(res.cnMessage);
+                        this.$refs.imgCode.hide();
+                        Toast(res.cnMessage);
                     });
                 }
+                this.$refs.imgCode.show();
             },
             //倒计时
             countTime(){
