@@ -3,7 +3,7 @@
         <div class="hall-banner" v-html="bannerImg"></div>
         <collection :myProducts="listData"></collection>
          <!-- 到底啦 -->
-        <div class="bottom_wrapper">到底啦~</div>
+        <div class="bottom_wrapper">没有更多了哟~</div>
     </div>
 </template>
 

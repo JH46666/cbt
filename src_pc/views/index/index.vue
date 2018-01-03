@@ -1,14 +1,34 @@
 <template>
     <div class="index-wrapper">
         <!-- floor1 -->
-        <div class="floor floor1">
+        <div class="floor floor1" id="floor1">
             <div class="cbt_wrapper">
                 <div class="top clearfix">
                     <ul class="f_l">
-                        <li><i class="logo"></i></li>
-                        <li><i class="wap"></i>茶帮通手机端</li>
-                        <li><i class="concern"></i>关注茶帮通</li>
-                        <li><i class="we"></i>联系我们</li>
+                        <li>
+                            <i class="logo"></i>
+                        </li>
+                        <li class="hover-li w130">
+                            <i class="wap"></i>茶帮通手机端
+                            <div class="hover-box">
+                                <p class="code-img code1"></p>
+                            </div>
+                        </li>
+                        <li class="hover-li w130">
+                            <i class="concern"></i>关注茶帮通
+                            <div class="hover-box">
+                                <p class="code-img code2"></p>
+                            </div>
+                        </li>
+                        <li class="hover-li w200">
+                            <i class="we"></i>联系我们
+                            <div class="hover-box concat">
+                                <p><i class="qq"></i>QQ客服</p>
+                                <a class="online" href="javscript:void(0);"><i></i></a>
+                                <p><i class="wx"></i>微信客服</p>
+                                <i class="cbt-code"></i>
+                            </div>
+                        </li>
                     </ul>
                     <div class="f_r">
                         <p class="tele"><i></i>4006-996-339</p>
@@ -38,7 +58,7 @@
                         </li>
                     </ul>
                 </div>
-                <a class="become-member" href="javascript:void(0);">成为会员</a>
+                <a class="become-member" href="javascript:void(0);" @click="memeberFlag=true">成为会员</a>
             </div>
         </div>
         <!-- floor2 -->
@@ -130,15 +150,44 @@
                         <ul>
                             <li>
                                 <img src="../../assets/img_lb01.jpg">
-                                <div class="txt">ddd</div>
+                                <div class="txt">
+                                    <h5>降低采购成本<span>30%~50%</span></h5>
+                                    <div>
+                                        <p>全面整合茶业碎片化资源，做到真正的渠道整合，资源共享</p>
+                                        <p>优化产业链冗长空间产销直供，减少流通层级真正实现利益最大化</p>
+                                    </div>
+                                </div>
                             </li>
                             <li>
                                 <img src="../../assets/img_lb02.jpg">
-                                <div class="txt">gfgf</div>
+                                <div class="txt">
+                                    <h5>覆盖名优品种<span>90%</span></h5>
+                                    <div>
+                                        <p>50多万亩茶园直供</p>
+                                        <p>1000家茶叶合作社联盟</p>
+                                        <p>100%正宗原产地供应</p>
+                                        <p>品类丰富，满足您多样化需求</p>
+                                    </div>
+                                </div>
                             </li>
                             <li>
                                 <img src="../../assets/img_lb03.jpg">
-                                <div class="txt">gdgdg</div>
+                                <div class="txt">
+                                    <h5><span>0</span>经营风险，无需囤货</h5>
+                                    <div>
+                                        <p>最低1斤起批，卖多少进多少，无需囤货</p>
+                                        <p>可货到付款，交易0风险</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <img src="../../assets/img_lb04.jpg">
+                                <div class="txt">
+                                    <h5><span>超长</span>退换货周期</h5>
+                                    <div>
+                                        <p>提供绿茶最长15天，黑茶最长3个月其他茶类2个月的退换货服务</p>
+                                    </div>
+                                </div>
                             </li>
                         </ul>
                     </div>
@@ -175,11 +224,109 @@
             </div>
         </div>
         <!-- floor7 -->
-        <div class="floor floor7">
+        <div class="floor floor7" id="floor7">
             <div class="cbt_wrapper">
                 <h3>卖家招募中，欢迎入驻茶帮通</h3>
                 <h4>百万收入不是梦</h4>
-                
+                <div class="picScroll-left">
+                    <div class="hd">
+                        <a class="next"></a>
+                        <a class="prev"></a>
+                    </div>
+                    <div class="bd">
+                        <ul class="list">
+                            <li>
+                                <div class="top-txt head1">
+                                    <p class="title">杨老板  茶帮通9级经销商</p>
+                                    <p class="addr">厦门市思明区某茶叶店</p>
+                                </div>
+                                <div class="txt-info">
+                                    <p>以前买茶都要自己跑茶企茶厂，一次采购下来要三四天，费事有费力。自从用了茶帮通，平台上的茶叶资源应有尽有，一键采购，极大地节约了采购成本，而且多了很多时间可以陪家人！</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="top-txt head2">
+                                    <p class="title">杨老板 茶帮通9级经销商</p>
+                                    <p class="addr">厦门市思明区某茶叶店</p>
+                                </div>
+                                <div class="txt-info">
+                                    <p>我们买茶很怕买到以次充好的茶叶，而茶帮通很好地解决了这一点，平台上不仅汇聚了全国茶业资源，而且可以查看对方的信用认证，还有最高长达三个月的退换货周期，极大地保障了我们采购的利益！</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="top-txt head3">
+                                    <p class="title">杨老板 茶帮通9级经销商</p>
+                                    <p class="addr">厦门市思明区某茶叶店</p>
+                                </div>
+                                <div class="txt-info">
+                                    <p>茶帮通对于我来说，最大的改变就是平台透明，茶叶产地、质量等全部都在明细中写得清清楚楚，供应商的资质等都可以查看，一点也不用担心买到质量不好的产品。</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="top-txt head4">
+                                    <p class="title">杨老板 茶帮通9级经销商</p>
+                                    <p class="addr">厦门市思明区某茶叶店</p>
+                                </div>
+                                <div class="txt-info">
+                                    <p>做茶叶其实很累，靠的就是一颗喜欢茶的心。而“卖“茶更是劳心劳力，市场上各种真假难辨的分销商、茶铺总是好茶坏茶掺着卖，我不想自己辛苦做的茶卖给”黑心商人“，而茶帮通很好地帮我筛选分销商，让我能把好茶卖给好的客户！</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="top-txt head5">
+                                    <p class="title">杨老板 茶帮通9级经销商</p>
+                                    <p class="addr">厦门市思明区某茶叶店</p>
+                                </div>
+                                <div class="txt-info">
+                                    <p>做茶叶其实很累，靠的就是一颗喜欢茶的心。而“卖“茶更是劳心劳力，市场上各种真假难辨的分销商、茶铺总是好茶坏茶掺着卖，我不想自己辛苦做的茶卖给”黑心商人“，而茶帮通很好地帮我筛选分销商，让我能把好茶卖给好的客户！</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <a class="become-seller" href="javascript:void(0);"  @click="sellerFlag=true">成为卖家</a>
+                <address>Copyright 2010 - 2017 oteao.com All Rights Reserved 闽ICP备10200063号-3  厦门醉品春秋网络科技有限公司</address>
+            </div>
+        </div>
+        <!-- 右边悬浮 -->
+        <div>
+            <div class="fixed-right">
+                <a href="#floor1" class="first"></a>
+                <a href="#floor7" class="second"></a>
+            </div>
+            <a href="#floor1" class="go-top"></a>
+        </div>
+        <!-- 成为会员 -->
+        <div class="popup pop-member" v-show="memeberFlag">
+            <div class="inner member-innner">
+                <a class="close" href="javascript:void(0);" @click="memeberFlag=false"></a>
+                <h5>注册茶帮通会员</h5>
+                <p>1、扫码二维码，进入注册页面</p>
+                <p><i class="wap-regist"></i></p>
+                <p>2、选择【成为会员】并完善注册资料</p>
+            </div>
+        </div>
+        <!-- 成为卖家 -->
+        <div class="popup pop-seller" v-show="sellerFlag">
+            <div class="inner seller-innner">
+                <a class="close" href="javascript:void(0);" @click="sellerFlag=false"></a>
+                <h5>注册茶帮通卖家</h5>
+                <div class="user-box clearfix">
+                    <div class="user member">
+                        <p><i class="icon-user1"></i></p>
+                        <p class="bold-txt">您已是茶帮通会员</p>
+                        <p class="tips">申请卖家步骤</p>
+                        <p>登录茶帮通 > 我的中心  >  申请为卖家</p>
+                        <p><i class="icon-seller"></i></p>
+                    </div>
+                    <div class="user not-member">
+                        <p><i class="icon-user2"></i></p>
+                        <p class="bold-txt">未注册用户</p>
+                        <p class="tips">申请卖家步骤</p>
+                        <p>1、扫码二维码进入注册页面</p>
+                        <p><i class="wap-regist"></i></p>
+                        <p>2、选择【成为会员】并完善注册资料</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -188,12 +335,14 @@
     export default{
         data(){
             return {
-
+                memeberFlag: false,  
+                sellerFlag: false,  
             }
         },
         created(){
             this.$nextTick(()=>{
                 jQuery(".slideBox").slide({mainCell:".bd ul",autoPlay:true});
+                jQuery(".picScroll-left").slide({titCell:".hd ul",mainCell:".bd ul",autoPage:true,effect:"left",autoPlay:true,vis:3,trigger:"click"});
             });
         },
         methods:{

@@ -432,7 +432,8 @@ export default {
                         accessKeyId: res.data.accessKeyId,
                         accessKeySecret: res.data.accessKeySecret,
                         stsToken: res.data.securityToken,
-                        bucket: this.bucket
+                        bucket: this.bucket,
+                        secure:true
                     })
                     for(let i=0; i<this.shopImgFile.length; i++){            // 主图
                         let random_name =res.data.basePath + 'shop/' + this.random_string(6) + '_' + new Date().getTime() + '.' + this.shopImgFile[i].name.split('.').pop()

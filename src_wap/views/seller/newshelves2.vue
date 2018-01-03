@@ -306,7 +306,8 @@ import $api from 'api';
                             accessKeyId: res.data.accessKeyId,
                             accessKeySecret: res.data.accessKeySecret,
                             stsToken: res.data.securityToken,
-                            bucket: this.bucket
+                            bucket: this.bucket,
+                            secure:true
                         })
                         for(let i=0; i<this.resize.mainImgFile.length; i++){            // 主图
                             let random_name =res.data.basePath +'goods/' + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.mainImgFile[i].name.split('.').pop()

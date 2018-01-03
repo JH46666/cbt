@@ -20,7 +20,7 @@
                     <p class="price-box">
                         <span class="pro-price">￥{{item.proPrice}}</span>
                         <!-- 其他的类型加other  class就行   ['茶厂','合作社','茶企','批发商','自营','联营']-->
-                        <span class="type">{{bussinessType[item.tagNum-1]}}</span>
+                        <span class="type" :class="{'other':item.tagNum !== 5}">{{bussinessType[item.tagNum-1]}}</span>
                     </p>
                 </div>
             </router-link>
