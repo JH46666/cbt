@@ -312,7 +312,7 @@ import $api from 'api';
                         for(let i=0; i<this.resize.mainImgFile.length; i++){            // 主图
                             let random_name =res.data.basePath +'goods/' + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.mainImgFile[i].name.split('.').pop()
                             client.multipartUpload(random_name, this.resize.mainImgFile[i]).then((results) => {
-                                const url = '//img0.oteao.com/'+ results.name;
+                                const url = '//img3.oteao.com/'+ results.name;
                                 this.urls.main.push(url);
                                 flags.main++;
                                 isFlag(resolve,reject);

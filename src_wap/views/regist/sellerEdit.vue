@@ -256,7 +256,7 @@ export default {
                         if(this.shopImgFile[i]){
                             let random_name =res.data.basePath + this.random_string(6) + '_' + new Date().getTime() + '.' + this.shopImgFile[i].name.split('.').pop()
                             client.multipartUpload(random_name, this.shopImgFile[i]).then((results) => {
-                                const url = '//img0.oteao.com/'+ results.name;
+                                const url = '//img3.oteao.com/'+ results.name;
                                 this.shopImgUrl = [url];
                                 flag.shop++;
                                 isFlag(resolve,reject);
@@ -273,7 +273,7 @@ export default {
                         if(this.licenseImgFile[i]){
                             let random_name =res.data.basePath + this.random_string(6) + '_' + new Date().getTime() + '.' + this.licenseImgFile[i].name.split('.').pop()
                             client.multipartUpload(random_name, this.licenseImgFile[i]).then((results) => {
-                                const url = '//img0.oteao.com/'+ results.name;
+                                const url = '//img3.oteao.com/'+ results.name;
                                 this.licenseImgUrl = [url];
                                 flag.lic++;
                                 isFlag(resolve,reject);
@@ -290,7 +290,7 @@ export default {
                         if(this.productImgFile[i]){
                             let random_name =res.data.basePath + this.random_string(6) + '_' + new Date().getTime() + '.' + this.productImgFile[i].name.split('.').pop()
                             client.multipartUpload(random_name, this.productImgFile[i]).then((results) => {
-                                const url = '//img0.oteao.com/'+ results.name;
+                                const url = '//img3.oteao.com/'+ results.name;
                                 this.productImgUrl = [url];
                                 flag.pro++;
                                 isFlag(resolve,reject);

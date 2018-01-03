@@ -438,7 +438,7 @@ export default {
                     for(let i=0; i<this.shopImgFile.length; i++){            // 主图
                         let random_name =res.data.basePath + 'shop/' + this.random_string(6) + '_' + new Date().getTime() + '.' + this.shopImgFile[i].name.split('.').pop()
                         client.multipartUpload(random_name, this.shopImgFile[i]).then((results) => {
-                            const url = '//img0.oteao.com/'+ results.name;
+                            const url = '//img3.oteao.com/'+ results.name;
                             this.shopImgUrl = [url];
                             flag.shop++;
                             isFlag(resolve,reject);
