@@ -64,7 +64,9 @@
                 :unit="item.unint"
                 :imgUrl="item.proImg"
                 :businessType="item.tagNum"
+                :tasteStar="item.tasteStar"
                 :tagUrl="item.tagImgUrl"
+                :aromaStar="item.aromaStar"
                 :isLogin="$tool.isLogin()">
                 </goods-item>
             </div>
@@ -176,6 +178,7 @@
                 try {
                     this.handle().then(res => {
                         let data = this.list.concat(res.data);
+                        console.log(data);
                         if(data.length === 0) {
                             this.noList = true;
                         }
@@ -277,51 +280,42 @@
                         historyData['searchProductRecord.memberId'] = this.id
                     }
                     this.$api.post('/oteao/searchProductRecord/insert',historyData,res => {})
-                    
-
-
 
                     return new Promise((resolve,reject) => {
                         this.$api.post(`/oteao/productInfo/seachProduct?page.pageNumber=${page}&page.pageSize=20`,JSON.stringify(data),res => {
                             let tempArr = res.data;
                             for(let item of tempArr){
-                                for(let prop of item.proInfoPropertyVos){
-                                    if(prop.propName === '香气'){
-                                        let star = 0;
-                                        if(prop.propertyVal === '偏淡'){
-                                            star = 1;
-                                        }else if(prop.propertyVal === '一般'){
-                                            star = 2;
-                                        }else if(prop.propertyVal === '香'){
-                                            star = 3;
-                                        }else if(prop.propertyVal === '高香'){
-                                            star = 4;
-                                        }else if(prop.propertyVal === '极香'){
-                                            star = 5;
-                                        }else {
-                                            star = 0;
-                                        }
-                                        item.aromaVal = prop.propertyVal;
-                                        item.aromaStar = star;
-                                    }else if(prop.propName === '滋味'){
-                                        let star = 0;
-                                        if(prop.propertyVal === '偏淡'){
-                                            star = 1;
-                                        }else if(prop.propertyVal === '一般'){
-                                            star = 2;
-                                        }else if(prop.propertyVal === '浓'){
-                                            star = 3;
-                                        }else if(prop.propertyVal === '很浓'){
-                                            star = 4;
-                                        }else if(prop.propertyVal === '极浓'){
-                                            star = 5;
-                                        }else {
-                                            star = 0;
-                                        }
-                                        item.tasteVal = prop.prpertyVal;
-                                        item.tasteStar = star;
-                                    }
+                                let star = 0;
+                                if(item.fragrance === '偏淡'){
+                                    star = 1;
+                                }else if(item.fragrance === '一般'){
+                                    star = 2;
+                                }else if(item.fragrance === '香'){
+                                    star = 3;
+                                }else if(item.fragrance === '高香'){
+                                    star = 4;
+                                }else if(item.fragrance === '极香'){
+                                    star = 5;
+                                }else {
+                                    star = 0;
                                 }
+                                item.aromaStar = star;
+
+                                let stars = 0;
+                                if(item.taste === '偏淡'){
+                                    stars = 1;
+                                }else if(item.taste === '一般'){
+                                    stars = 2;
+                                }else if(item.taste === '浓'){
+                                    stars = 3;
+                                }else if(item.taste === '很浓'){
+                                    stars = 4;
+                                }else if(item.taste === '极浓'){
+                                    stars = 5;
+                                }else {
+                                    stars = 0;
+                                }
+                                item.tasteStar = stars;
                             }
                             resolve(res)
                         })
