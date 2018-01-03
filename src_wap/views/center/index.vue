@@ -10,7 +10,7 @@
                             <span>+ {{ sign.returnResult ? sign.signed : sign.nextSign }}积分</span>
                             <mt-button size="small" @click="signTo" :disabled="sign.returnResult">
                                 <template v-if="!sign.returnResult">
-                                    签到领取
+                                    签到领现金
                                 </template>
                                 <template v-else>
                                     已签到
