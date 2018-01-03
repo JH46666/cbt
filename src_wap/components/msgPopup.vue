@@ -23,7 +23,7 @@
                 <a class="refresh" @click="reset"><i class="iconfont">&#xe665;</i></a>
             </div>
             <div class="flex img_code_input" ref="forms">
-                <input class="flex-1" :class="{on: i==curIndex}" v-for="(c,i) in codes" type="number" :name="i" v-model="c.code" maxlength="1" @click="setIndex(i)" @input="setFocus(i,$event.target.value)">
+                <input class="flex-1" :class="{on: i==curIndex}" v-for="(c,i) in codes" type="number" pattern="\d*" :name="i" v-model="c.code" maxlength="1" @click="setIndex(i)" @input="setFocus(i,$event.target.value)">
             </div>
         </div>
     </div>
