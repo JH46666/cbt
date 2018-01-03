@@ -465,9 +465,11 @@
                 .flex-1;
                 padding: 0 .18rem;
                 height: 1.08rem;
+                .w(~'calc(100% - 2.4rem)');
                 &.new{
                     .w(~'calc(100% - .8rem)');
                 }
+                
                 .packet_sum{
                     &.align_left{
                         .algin(l);
@@ -477,11 +479,11 @@
                     .fontSize(0);
                     span{
                         display: inline-block;
-                        &:nth-child(1){
+                        &.small{
                             .color(@mainCol);
                             .fontSize(.26rem);
                         }
-                        &:nth-child(2){
+                        &.big{
                             .color(@mainCol);
                             .fontSize(.44rem);
                         }

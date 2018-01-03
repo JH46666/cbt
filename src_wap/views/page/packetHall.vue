@@ -10,14 +10,8 @@
                 <div class="packet_user_text">
                     <div class="swiper-container-2">
                         <div class="swiper-wrapper">
-                            <div class="swiper-slide">
-                                111111111111111111111111111
-                            </div>
-                            <div class="swiper-slide">
-                                222222222222222222222222222
-                            </div>
-                            <div class="swiper-slide">
-                                33333333333333333333333333
+                            <div class="swiper-slide" v-for="item in getList">
+                                {{ item }}
                             </div>
                         </div>
                     </div>
@@ -69,12 +63,12 @@
                         <div class="packet_price">
                             <div class="packet_sum">
                                 <template v-if="item.amount">
-                                    <span>￥</span>
-                                    <span>{{ item.amount }}</span>
+                                    <span class="small">￥</span>
+                                    <span class="big">{{ item.amount }}</span>
                                 </template>
-                                <template v-if="item.amount">
-                                    <span>{{ item.discount }}</span>
-                                    <span>折</span>
+                                <template v-if="item.discount">
+                                    <span class="big">{{ item.discount }}</span>
+                                    <span class="small">折</span>
                                 </template>
                                 <span>满{{ item.fullAmountUse }}可用</span>
                             </div>
@@ -120,12 +114,12 @@
                                 <div class="packet_price new">
                                     <div class="packet_sum align_left">
                                         <template v-if="item.amount">
-                                            <span>￥</span>
-                                            <span>{{ item.amount }}</span>
+                                            <span class="small">￥</span>
+                                            <span class="big">{{ item.amount }}</span>
                                         </template>
-                                        <template v-if="item.amount">
-                                            <span>{{ item.discount }}</span>
-                                            <span>折</span>
+                                        <template v-if="item.discount">
+                                            <span class="big">{{ item.discount }}</span>
+                                            <span class="small">折</span>
                                         </template>
                                         <span>满{{ item.fullAmountUse }}可用</span>
                                     </div>
@@ -168,6 +162,7 @@ export default {
             newList: [],                // 新客红包列表
             oldList: [],                // 老客红包列表
             successNew: [],             // 新客成功的列表
+            getList: [],                // 随机签到记录
         }
     },
     computed: {
@@ -176,17 +171,22 @@ export default {
             memberAccount: state => state.member.memberAccount,
             sign: state => state.member.sign
         }),
-        showNewList() {
-
-        }
     },
     mounted() {
-        var swiper2 = new Swiper('.swiper-container-2', {
-            direction: 'vertical',
-            autoplay: true,
-            loop: true,
-            slidesPerView :2 
-        });
+        this.$api.post('/oteao/member/redPacket/findRandomSignInMember',{
+            count: 10,
+            sysId:1
+        },res => {
+            this.getList = res.data;
+            this.$nextTick(() => {
+                var swiper2 = new Swiper('.swiper-container-2', {
+                    direction: 'vertical',
+                    autoplay: true,
+                    loop: true,
+                    slidesPerView :2 
+                });
+            })
+        })
     },
     methods: {
         // 签到
@@ -225,7 +225,7 @@ export default {
 
             if(!this.memberActive()) {
                 if(type === 'new') {
-                    return this.$toast('您的等级不允许领取该礼包哦~')
+                    return this.$toast('只有正式注册会员才能领取哟~')
                 } else {
                     return this.$toast('只有10级经销商等级以上会员才能领取哟')
                 }
@@ -233,10 +233,12 @@ export default {
 
             if(type === 'old') {
 
+                if(this.memberAccount.memberLevelId === 28) return this.$toast('只有10级经销商等级以上会员才能领取哟~')
                 this.$api.post('/oteao/member/redPacket/doActivateByRuleId',{
                     sysId: 1,
                     ruleId: list[0]
                 },res => {
+                    this.$toast('领取成功，己放入您的红包账户~')
                     this.getRedLIst();
                 },res => {
                     if(res.code === 3013) {
@@ -248,9 +250,13 @@ export default {
                     if(res.code === 4042) {
                         this.$toast('只有10级经销商等级以上会员才能领取哟~')
                     }
+                    if(res.code === 4064) {
+                        this.$toast('只有10级经销商等级以上会员才能领取哟~')
+                    }
                 })
 
             } else {
+                if(this.memberAccount.memberLevelId !== 28) return this.$toast('只有正式注册会员才能领取哟~')
                 this.$api.post('/oteao/member/redPacket/doActivateByRuleIdList?sysId=1',JSON.stringify(list),res => {
                     this.successNew = [];
                     let limitList = [];

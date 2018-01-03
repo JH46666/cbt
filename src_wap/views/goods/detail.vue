@@ -1,7 +1,7 @@
 <template>
     <div class="detail">
         <mt-popup v-model="showOrHide" position="bottom">
-            <div class="dialog_wrapper_2" v-if="detailData.productInfo.businessType == 'ORG_SALES'">
+            <div class="dialog_wrapper_2" v-if="detailData.productInfo.businessType === 'ORG_SALES'">
                 <div class="dialog_title">
                     <i class="iconfont icon-dianpu"></i>
                     <span>{{ detailData.orgShopCenterVo.shopName }}</span>
@@ -29,7 +29,7 @@
                     </div>
                 </div>
             </div>
-            <div class="dialog_wrapper_1"  v-else>
+            <div class="dialog_wrapper_1" v-else>
                 <div class="dialog_title">
                     <i class="iconfont icon-kefu1"></i>
                     <span>茶帮通客服</span>
@@ -50,81 +50,83 @@
                 <i class="iconfont">&#xe61b;</i>
             </div>
             <div class="top" :class="{on: tabFixed || wxFixed}" @click="topMethod"></div>
-            <div class="detail_img">
-                <mt-swipe :auto="5000" :show-indicators="false" @change="handleChange">
-                    <mt-swipe-item v-for="(item,index) in detailData.productImgList" :key="index">
-                        <img :src="item.imgUrl" :key="index">
-                    </mt-swipe-item>
-                </mt-swipe>
-                <!--   -->
-                <div class="detail_special" v-if="detailData.productExtInfo.isSales && detailData.productExtInfo.state === 'ON_SHELF' && loginId && state === 'ACTIVE'">
-                    <div class="detail_special_wrapper">
-                        <div class="detail_special_price">
-                            <span>特价</span>
-                            <span>￥</span>
-                            <span>{{ detailData.productExtInfo.salesPrice | toFix2 }}</span>
-                            <del>{{ detailData.productPrice[0].price | toFix2 }}</del>
-                        </div>
-                        <div class="detail_special_date">
-                            <span class="date_num date_none">{{ special.day }}</span>
-                            <span class="date_icon date_10">天</span>
-                            <span class="date_num">{{ special.hour }}</span>
-                            <span class="date_icon">:</span>
-                            <span class="date_num">{{ special.min }}</span>
-                            <span class="date_icon">:</span>
-                            <span class="date_num">{{ special.sec }}</span>
+            <div ref="hel">
+                <div class="detail_img">
+                    <mt-swipe :auto="5000" :show-indicators="false" @change="handleChange">
+                        <mt-swipe-item v-for="(item,index) in detailData.productImgList" :key="index">
+                            <img :src="item.imgUrl" :key="index">
+                        </mt-swipe-item>
+                    </mt-swipe>
+                    <!--   -->
+                    <div class="detail_special" v-if="detailData.productExtInfo.isSales && detailData.productExtInfo.state === 'ON_SHELF' && loginId && state === 'ACTIVE'">
+                        <div class="detail_special_wrapper">
+                            <div class="detail_special_price">
+                                <span>特价</span>
+                                <span>￥</span>
+                                <span>{{ detailData.productExtInfo.salesPrice | toFix2 }}</span>
+                                <del>{{ detailData.productPrice[0].price | toFix2 }}</del>
+                            </div>
+                            <div class="detail_special_date">
+                                <span class="date_num date_none">{{ special.day }}</span>
+                                <span class="date_icon date_10">天</span>
+                                <span class="date_num">{{ special.hour }}</span>
+                                <span class="date_icon">:</span>
+                                <span class="date_num">{{ special.min }}</span>
+                                <span class="date_icon">:</span>
+                                <span class="date_num">{{ special.sec }}</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="detail_img_index">
-                    <span>{{ imgIndex }}</span>/{{ detailData.productImgList.length }}
-                </div>
-            </div>
-            <div class="detail_describe">
-                <div class="detail_describe_wrapper">
-                    <div class="detail_describe_text">
-                        <p class="detail_text">{{ detailData.productInfo.proName }}</p>
-                        <template  v-if="detailData.productExtInfo.state === 'OFF_SHELF' && loginId && state === 'ACTIVE'">
-                            <div class="off_shelf_tips">
-                                暂无报价
-                            </div>
-                        </template>
-                        <template  v-if="!loginId || state != 'ACTIVE'">
-                            <div class="off_shelf_tips">
-                                询价
-                            </div>
-                        </template>
-                        <template v-if="detailData.productPrice.length != 0 && detailData.productExtInfo.state === 'ON_SHELF' && loginId && state === 'ACTIVE'">
-                            <p class="detail_now_price" v-if="!detailData.productExtInfo.isSales">￥{{ detailData.productPrice[0].price | toFix2 }}</p>
-                            <p class="detail_suggest_price">建议零售价：￥{{ detailData.productPrice[1].price | toFix2 }}</p>
-                        </template>
+                    <div class="detail_img_index">
+                        <span>{{ imgIndex }}</span>/{{ detailData.productImgList.length }}
                     </div>
-                    <template  v-if="detailData.productExtInfo.state === 'ON_SHELF'">
-                        <div class="detail_active">
-                            <div class="detail_active_list">
-                                <!-- <div class="detail_active_item" v-if="detailData.productExtInfo.isSales">
-                                    <span>直降</span>
-                                    <p>已优惠￥{{  (detailData.productPrice[0].price-detailData.productExtInfo.salesPrice)  | toFix2 }}</p>
-                                </div> -->
-                                <div class="detail_active_item">
-                                    <span>运费</span>
-                                    <template v-if="detailData.productInfo.businessType == 'ORG_SALES'">
-                                        <p v-if="!detailData.orgFreightTemplateVoList || detailData.orgFreightTemplateVoList.length == 0">本店商品全国包邮</p>
-                                        <p v-else-if="detailData.orgFreightTemplateVoList && detailData.orgFreightTemplateVoList.length > 0">邮费依实际重量计算运费</p>
-                                    </template>
-                                    <template v-else>
-                                        <p>全场茶叶在线支付满500包邮</p>
-                                    </template>
+                </div>
+                <div class="detail_describe">
+                    <div class="detail_describe_wrapper">
+                        <div class="detail_describe_text">
+                            <p class="detail_text">{{ detailData.productInfo.proName }}</p>
+                            <template  v-if="detailData.productExtInfo.state === 'OFF_SHELF' && loginId && state === 'ACTIVE'">
+                                <div class="off_shelf_tips">
+                                    暂无报价
+                                </div>
+                            </template>
+                            <template  v-if="!loginId || state != 'ACTIVE'">
+                                <div class="off_shelf_tips">
+                                    询价
+                                </div>
+                            </template>
+                            <template v-if="detailData.productPrice.length != 0 && detailData.productExtInfo.state === 'ON_SHELF' && loginId && state === 'ACTIVE'">
+                                <p class="detail_now_price" v-if="!detailData.productExtInfo.isSales">￥{{ detailData.productPrice[0].price | toFix2 }}</p>
+                                <p class="detail_suggest_price">建议零售价：￥{{ detailData.productPrice[1].price | toFix2 }}</p>
+                            </template>
+                        </div>
+                        <template  v-if="detailData.productExtInfo.state === 'ON_SHELF'">
+                            <div class="detail_active">
+                                <div class="detail_active_list">
+                                    <!-- <div class="detail_active_item" v-if="detailData.productExtInfo.isSales">
+                                        <span>直降</span>
+                                        <p>已优惠￥{{  (detailData.productPrice[0].price-detailData.productExtInfo.salesPrice)  | toFix2 }}</p>
+                                    </div> -->
+                                    <div class="detail_active_item">
+                                        <span>运费</span>
+                                        <template v-if="detailData.productInfo.businessType == 'ORG_SALES'">
+                                            <p v-if="!detailData.orgFreightTemplateVoList || detailData.orgFreightTemplateVoList.length == 0">本店商品全国包邮</p>
+                                            <p v-else-if="detailData.orgFreightTemplateVoList && detailData.orgFreightTemplateVoList.length > 0">邮费依实际重量计算运费</p>
+                                        </template>
+                                        <template v-else>
+                                            <p>全场茶叶在线支付满500包邮</p>
+                                        </template>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </template>
-                    <div class="detail_describe_count">
-                        <label class="label_text">采购量</label>
-                        <div class="plusOreduce">
-                            <span class="reduce btn" @click="reduceMethod">-</span>
-                            <input v-model="goodsCount" type="number" class="countNum" @blur="limit">
-                            <span class="plus btn" @click="plusMethod">+</span>
+                        </template>
+                        <div class="detail_describe_count">
+                            <label class="label_text">采购量</label>
+                            <div class="plusOreduce">
+                                <span class="reduce btn" @click="reduceMethod">-</span>
+                                <input v-model="goodsCount" type="number" class="countNum" @blur="limit">
+                                <span class="plus btn" @click="plusMethod">+</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -183,7 +185,7 @@
                             </template>
                             <template v-for="(item,index) in attrImgDetail.propValList">
                                 <div class="reguler_item" style="height: .98rem; padding: 0;">
-                                    <div>{{ item.propName }}</div>
+                                    <div>{{ item.atrName }}</div>
                                     <div>{{ item.propertiesVal.propVal }}</div>
                                 </div>
                             </template>
@@ -242,7 +244,7 @@
                 <i class="icon-kefu1" slot="icon"></i>
                 客服
             </mt-tab-item>
-            <mt-tab-item id="1" @click.native="openDialog" v-if="detailData.productInfo.businessType == 'ORG_SALES'">
+            <mt-tab-item id="1" @click.native="openDialog" v-else>
                 <i class="icon-dianpu" slot="icon"></i>
                 店铺
             </mt-tab-item>
@@ -347,6 +349,10 @@ export default {
             }
             this.getAttrOrImg().then((attr) => {
                 this.attrImgDetail = attr.data;
+                for(let obj of this.attrImgDetail.propValList){
+                    let str = obj.propName.substr(0,4);
+                    this.$set(obj,'atrName',str);
+                }
                 try {
                     this.imgDetail =  JSON.parse(attr.data.content)
                 } catch (e) {
@@ -725,71 +731,92 @@ export default {
            this.showOrHide = true;
        },
        openDialog() {
-           this.$store.dispatch('getMemberData').then(()=>{
-               let status = store.state.member.memberAccount.status;
-               if(!store.state.member.member.id){
-                   return this.$messageBox({
-                       title:'提示',
-                       message:`您尚未登录，无法查看商家信息`,
-                       showCancelButton: true,
-                       cancelButtonText: '取消',
-                       confirmButtonText: '去登录'
-                   }).then(res => {
-                       if(res === 'cancel') {
-                           this.selected = null;
-                           return;
-                       } else {
-                           this.$router.push({name: '账户登录'})
-                       }
-                   })
-               }
-               if(status === 'WAIT_AUDIT') {
-                   return this.$messageBox({
-                       title:'提示',
-                       message:`您的账号审核中，无法查看商家信息~若有疑问，请联系客服400-996-3399`,
-                       confirmButtonText: '我知道了'
-                   }).then(res => {
-                        this.selected = null;
-                   });
-               }
-               if(status === 'INACTIVE' || status == 'AUDIT_NO_PASS') {
-                   return this.$messageBox({
-                       title:'提示',
-                       message:`您的账号审核未通过，只有正式会员才可查看，若有疑问，请联系客服400-996-3399`,
-                       showCancelButton: true,
-                       cancelButtonText: '取消',
-                       confirmButtonText: '完善资料'
-                   }).then(res => {
-                       if(res === 'cancel') {
-                           this.selected = null;
-                           return;
-                       } else {
-                           if(store.state.member.orgDTO){
-                               this.$router.push({
-                                   name: '茶帮通注册3',
-                                   query: {
-                                       edit: 'buyer'
-                                   }
-                               })
-                           }else{
-                               this.$router.push({
-                                   name: '茶帮通注册2'
-                               })
+           try {
+               store.dispatch('getMemberData').then(()=>{
+                   let status = store.state.member.memberAccount.status;
+                   if(!store.state.member.member.id){
+                       return this.$messageBox({
+                           title:'提示',
+                           message:`您尚未登录，无法查看商家信息`,
+                           showCancelButton: true,
+                           cancelButtonText: '取消',
+                           confirmButtonText: '去登录'
+                       }).then(res => {
+                           if(res === 'cancel') {
+                               this.selected = null;
+                               return;
+                           } else {
+                               this.$router.push({name: '账户登录'})
                            }
-                       }
-                   })
-               }
-               if(status === 'FREEZE') {
-                   return this.$messageBox({
-                       title:'提示',
-                       message:`您的账号因违规操作而被冻结无法查看商家信息~若有疑问，请联系客服400-996-3399`,
-                       confirmButtonText: '我知道了'
-                   }).then(res => {
-                        this.selected = null;
-                   });
-               }
-               this.showOrHide = true;
-           })
+                       })
+                   }
+                   if(status === 'WAIT_AUDIT') {
+                       return this.$messageBox({
+                           title:'提示',
+                           message:`您的账号审核中，无法查看商家信息~若有疑问，请联系客服400-996-3399`,
+                           confirmButtonText: '我知道了'
+                       }).then(res => {
+                            this.selected = null;
+                       });
+                   }
+                   if(status === 'INACTIVE' || status == 'AUDIT_NO_PASS') {
+                       return this.$messageBox({
+                           title:'提示',
+                           message:`您的账号审核未通过，只有正式会员才可查看，若有疑问，请联系客服400-996-3399`,
+                           showCancelButton: true,
+                           cancelButtonText: '取消',
+                           confirmButtonText: '完善资料'
+                       }).then(res => {
+                           if(res === 'cancel') {
+                               this.selected = null;
+                               return;
+                           } else {
+                               if(store.state.member.orgDTO){
+                                   this.$router.push({
+                                       name: '茶帮通注册3',
+                                       query: {
+                                           edit: 'buyer'
+                                       }
+                                   })
+                               }else{
+                                   this.$router.push({
+                                       name: '茶帮通注册2'
+                                   })
+                               }
+                           }
+                       })
+                   }
+                   if(status === 'FREEZE') {
+                       return this.$messageBox({
+                           title:'提示',
+                           message:`您的账号因违规操作而被冻结无法查看商家信息~若有疑问，请联系客服400-996-3399`,
+                           confirmButtonText: '我知道了'
+                       }).then(res => {
+                            this.selected = null;
+                       });
+                   }
+                   this.showOrHide = true;
+               }).catch((res)=>{
+                   if(!store.state.member.member.id){
+                       return this.$messageBox({
+                           title:'提示',
+                           message:`您尚未登录，无法查看商家信息`,
+                           showCancelButton: true,
+                           cancelButtonText: '取消',
+                           confirmButtonText: '去登录'
+                       }).then(res => {
+                           if(res === 'cancel') {
+                               this.selected = null;
+                               return;
+                           } else {
+                               this.$router.push({name: '账户登录'})
+                           }
+                       })
+                   }
+               })
+           } catch (e) {
+               
+           }
        }
     },
     watch: {
@@ -827,7 +854,13 @@ export default {
             deep:true
         },
         tabSelected(val) {
-            this.$refs.wrapper.scrollTop = screen.height;
+            this.$refs.wrapper.scrollTop = this.$refs.hel.offsetHeight;
+            this.tabFixed = true;
+            if(!this.wxFlag){
+                this.tabFixed = true;
+            }else{
+                this.wxFixed = true;
+            }
         }
     },
     mounted () {
