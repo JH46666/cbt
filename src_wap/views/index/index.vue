@@ -173,7 +173,7 @@
                         <span v-if="!$tool.isLogin()">询价</span>
                         <span v-else>￥{{ item.proPrice | toFix2 }}</span>
                         <span v-if="item.businessType === 'SELF_SALES'">自营</span>
-                        <span class="on" v-else>茶企</span>
+                        <span class="on" v-else>{{ item.tagName }}</span>
                     </div>
                 </div>
             </div>
