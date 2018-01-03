@@ -13,17 +13,27 @@ let isLogin = () => {
     return Boolean(store.state.member.member.id) && store.state.member.memberAccount.status === 'ACTIVE'
 }
 
+
+// 判断设备
+var u = navigator.userAgent;
+var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+
 // 格式化日期
 let formatDate = (date) => {
+    if(date === null) return '2000-01-01 00:00:00'
     let d = new Date(date);
     let year = d.getFullYear();
     let month = d.getMonth() + 1 >= 10 ? d.getMonth() + 1 : '0' + (d.getMonth() + 1);
-    let day = d.getDate() > 10 ? d.getDate() : '0' + d.getDate();
+    let day = d.getDate() >= 10 ? d.getDate() : '0' + d.getDate();
     let hours = d.getHours() >= 10 ? d.getHours() : '0' + d.getHours();
     let min = d.getMinutes() >= 10 ? d.getMinutes() : '0' + d.getMinutes();
     let second = d.getSeconds() >= 10 ? d.getSeconds() : '0' + d.getSeconds();
-
-    return `${year}-${month}-${day} ${hours}:${min}:${second}`
+    // if(isiOS) {
+    //     return `${new Date("2017-06-01T20:00:00.000Z")}`
+    // } else {
+        return `${year}-${month}-${day} ${hours}:${min}:${second}`
+    // }
 }
 // 等级
 let levelNum = (val) => {
@@ -47,11 +57,6 @@ let levelNum = (val) => {
     return l;
 }
 
-
-// 判断设备
-var u = navigator.userAgent;
-var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
-var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
 
 
 
