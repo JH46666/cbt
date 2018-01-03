@@ -795,6 +795,8 @@ export default {
                    });
                }
                this.showOrHide = true;
+           }).catch((res)=>{
+               console.log(1111111111);
            })
        }
     },
@@ -835,6 +837,11 @@ export default {
         tabSelected(val) {
             this.$refs.wrapper.scrollTop = this.$refs.hel.offsetHeight;
             this.tabFixed = true;
+            if(!this.wxFlag){
+                this.tabFixed = true;
+            }else{
+                this.wxFixed = true;
+            }
         }
     },
     mounted () {
