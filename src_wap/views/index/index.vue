@@ -294,6 +294,9 @@ import { mapState } from 'vuex'
                             })
                         })
                     }
+                    if(memberStatus === 'INACTIVE'){
+                        return this.$router.push({name: '茶帮通注册2'});
+                    }
                     if(!store.state.member.member.id){
                         return this.$router.push({name: '茶帮通注册1'});
                     }else{
@@ -317,7 +320,7 @@ import { mapState } from 'vuex'
                                     console.log(`cancel!`);
                                })
                            }
-                           if((memberStatus != 'ACTIVE' || memberStatus != 'FREEZE') && (status != 2 || status != -2)){
+                           if((memberStatus != 'ACTIVE' && memberStatus != 'FREEZE') && (status != 2 && status != -2)){
                                return this.$router.push({name: '茶帮通注册3'});
                            }
                        }else{
