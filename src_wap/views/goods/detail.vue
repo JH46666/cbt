@@ -830,6 +830,7 @@ export default {
         },
         tabSelected(val) {
             this.$refs.wrapper.scrollTop = this.$refs.hel.offsetHeight;
+            this.tabFixed = true;
         }
     },
     mounted () {
