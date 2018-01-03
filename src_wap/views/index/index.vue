@@ -173,7 +173,7 @@
                         <span v-if="!$tool.isLogin()">询价</span>
                         <span v-else>￥{{ item.proPrice | toFix2 }}</span>
                         <span v-if="item.businessType === 'SELF_SALES'">自营</span>
-                        <span class="on" v-else>茶企</span>
+                        <span class="on" v-else>{{ sellerType[item.tagNum-1] }}</span>
                     </div>
                 </div>
             </div>
@@ -204,6 +204,7 @@
                 onePro: [],
                 packetEnter: '',
                 topFlag: false,
+                sellerType: ['茶厂','合作社','茶企','批发商'],
             }
         },
         methods: {
@@ -278,51 +279,49 @@
                 this.$store.dispatch('getMemberData').then(()=>{
                     let memberStatus = this.$store.state.member.memberAccount.status;
                     if(!this.$store.state.member.member.id){
-                       return this.$router.push({name: '茶帮通注册1'});
-                    }
-                    if(memberStatus === 'ACTIVE' && !this.$store.state.member.shop){
-                        return this.$router.push({name: '卖家招募'});
-                    }
-                    if(memberStatus === 'ACTIVE' && this.$store.state.member.shop){
-                        let status = this.$store.state.member.shop.shopStatus;
-                        if(status != 2 && status != -2){
-                            return this.$router.push({name: '茶帮通注册7'});
-                        }else if(status == 2){
-                            return this.$toast(`您己经是卖家了，不用再申请了哟~`)
-                        }
-                    }
-                    if(this.$store.state.member.shop){
-                        let status = this.$store.state.member.shop.shopStatus;
-                        if(status == -2){
-                            return this.$messageBox({
-                                title:'提示',
-                                message:`您的卖家身份因违规操作而被冻结~若有疑问，请联系客服400-996-3399`,
-                                confirmButtonText: '我知道了'
-                            }).then(res => {
-                                 console.log(`cancel!`);
-                            })
-                        }
-                    }
-                    if(memberStatus === 'FREEZE'){
-                        return this.$messageBox({
-                            title:'提示',
-                            message:`您的账号因违规操作而被冻结~若有疑问，请联系客服400-996-3399`,
-                            confirmButtonText: '我知道了'
-                        }).then(res => {
-                            this.$api.get('/oteao/login/logout',{},res => {
-                                this.$router.push('/');
-                                this.$store.commit('SET_MEMBERDATA',{type:'member',val:{}})
-                            },res => {
-                                this.$router.push('/')
-                                this.$store.commit('SET_MEMBERDATA',{type:'member',val:{}})
-                            })
-                        })
-                    }
-                    if(this.$store.state.member.shop){
-                        let status = this.$store.state.member.shop.shopStatus;
-                        if((memberStatus != 'ACTIVE' || memberStatus != 'FREEZE') && (status != 2 || status != -2)){
-                            return this.$router.push({name: '茶帮通注册3'});
-                        }
+                        return this.$router.push({name: '茶帮通注册1'});
+                    }else{
+                       if(memberStatus === 'ACTIVE' && !this.$store.state.member.shop){
+                           return this.$router.push({name: '卖家招募'});
+                       }
+                       if(this.$store.state.member.shop){
+                           let status = this.$store.state.member.shop.shopStatus;
+                           if(memberStatus === 'ACTIVE' && status != 2 && status != -2){
+                                return this.$router.push({name: '茶帮通注册7'});
+                           }
+                           if(status == 2){
+                               return this.$toast(`您己经是卖家了，不用再申请了哟~`)
+                           }
+                           if(status == -2){
+                               return this.$messageBox({
+                                   title:'提示',
+                                   message:`您的卖家身份因违规操作而被冻结~若有疑问，请联系客服400-996-3399`,
+                                   confirmButtonText: '我知道了'
+                               }).then(res => {
+                                    console.log(`cancel!`);
+                               })
+                           }
+                           if((memberStatus != 'ACTIVE' || memberStatus != 'FREEZE') && (status != 2 || status != -2)){
+                               return this.$router.push({name: '茶帮通注册3'});
+                           }
+                       }else{
+                           if(memberStatus === 'FREEZE'){
+                               return this.$messageBox({
+                                   title:'提示',
+                                   message:`您的账号因违规操作而被冻结~若有疑问，请联系客服400-996-3399`,
+                                   confirmButtonText: '我知道了'
+                               }).then(res => {
+                                   this.$api.get('/oteao/login/logout',{},res => {
+                                       this.$router.push('/');
+                                       this.$store.commit('SET_MEMBERDATA',{type:'member',val:{}})
+                                   },res => {
+                                       this.$router.push('/')
+                                       this.$store.commit('SET_MEMBERDATA',{type:'member',val:{}})
+                                   })
+                               })
+                           }
+                           return this.$router.push({name: '卖家招募'});
+                       }
                     }
                 })
             }

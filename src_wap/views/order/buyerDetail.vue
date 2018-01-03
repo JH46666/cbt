@@ -152,7 +152,7 @@
                         提货地址：{{ orderDetailData.shopAddress }}
                     </div>
                     <div class="order_addrss_tel">
-                        联系电话：<a :href="linkShopTel">{{ orderDetailData.shopPhone }}</a>
+                        联系电话：<a :href="linkShopTel">{{ orderDetailData.businessTelephone }}</a>
                     </div>
                 </div>
             </div>
