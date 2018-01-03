@@ -13,7 +13,7 @@
                                     签到领取
                                 </template>
                                 <template v-else>
-                                    已领取
+                                    已签到
                                 </template>
                             </mt-button>
                         </div>
@@ -158,7 +158,7 @@
                     // 从新拉取会员信息
                     this.$store.dispatch('getMemberData')
                 },res=> {
-                    this.$toast(`今天已经签到过了，请明天再来签到~`)
+                    this.$toast(res.cnMessage)
                 })
             },
             // 推出登陆
