@@ -233,6 +233,7 @@ export default {
 
             if(type === 'old') {
 
+                if(this.memberAccount.memberLevelId === 28) return this.$toast('只有10级经销商等级以上会员才能领取哟~')
                 this.$api.post('/oteao/member/redPacket/doActivateByRuleId',{
                     sysId: 1,
                     ruleId: list[0]
