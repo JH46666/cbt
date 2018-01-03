@@ -114,6 +114,70 @@ export default {
         }
     },
     methods: {
+        confirmGoodAll(child,parent) {
+            let data = {
+                    subOrderNo: child,
+                    orderNo: parent
+                }
+            return new Promise((resolve,reject) => {
+                this.$api.post('/oteao/order/subOrderConfimReceipt',data,res => {
+                    this.$toast({
+                        message: `订单【${child}】已确认收货`,
+                        iconClass: 'icon icon-success'
+                    });
+                    return setTimeout(()=>{
+                        location.reload();
+                    },200)
+                },res=>{
+                    this.$toast({
+                        message: res.errorMsg,
+                        iconClass: 'icon icon-fail'
+                    });
+                    return setTimeout(()=>{
+                        location.reload();
+                    },200)
+                })
+            })
+        },
+        confrimMethodsMoreChild(child,parent) {
+            this.$messageBox({
+                title:'提示',
+                message:`确定确认收货?`,
+                showCancelButton: true,
+                cancelButtonText: '取消',
+                confirmButtonText: '确定'
+            }).then(res => {
+                if(res === 'cancel') {
+                    console.log('cancel!');
+                } else {
+                    this.confirmGoodAll(child,parent).then(()=>{})
+                }
+            })
+        },
+        confrimMethod(orderCode) {
+            let data = {
+                orderNo: orderCode
+            }
+            return new Promise((resolve,reject) => {
+                this.$api.post('/oteao/order/confimReceipt',data,res => {
+                    this.$toast({
+                        message: `订单【${orderCode}】已确认收货`,
+                        iconClass: 'icon icon-success'
+                    });
+                    return setTimeout(()=>{
+                        location.reload();
+                    },200)
+                },res=>{
+                    this.$toast({
+                        message: res.errorMsg,
+                        iconClass: 'icon icon-fail'
+                    });
+                    return setTimeout(()=>{
+                        location.reload();
+                    },200)
+                })
+            })
+        },
         toListDetail(orderNo) {
             this.$router.push({
                 path: '/order/buyerdetail',
@@ -167,40 +231,6 @@ export default {
                     type: 'online'
                 }
             })
-        },
-        confrimMethod(orderNo) {
-            let data = {
-                orderNo: orderNo
-            }
-            MessageBox.confirm('确定确认收货?').then(action => {
-                this.$api.post('/oteao/order/confimReceipt',data,res => {
-                    this.$toast({
-                        message: `订单【${orderNo}】已确认收货`,
-                        iconClass: 'icon icon-success'
-                    });
-                    return location.reload();
-                },res=>{
-                    return this.$toast(res.errorMsg);
-                })
-            },action => {
-                console.log('cancel!');
-            });
-        },
-        confrimMethodsMoreChild(child,parent) {
-            let data = {
-                subOrderNo: child,
-                orderNo: parent
-            }
-            MessageBox.confirm('确定确认收货?').then(action => {
-                this.$api.post('/oteao/order/subOrderConfimReceipt',data,res => {
-                    this.$toast(`订单【${orderNo}】已确认收货`);
-                    return location.reload();
-                },res=>{
-                    return this.$toast(res.errorMsg);
-                })
-            },action => {
-                console.log('cancel!');
-            });
         },
         toIndex() {
             this.$router.push({
