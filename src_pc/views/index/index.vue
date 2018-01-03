@@ -1,5 +1,5 @@
 <template>
-    <div class="index-wrapper">
+    <div class="index-wrapper" ref="wrapper" @scroll="scrollFun">
         <!-- floor1 -->
         <div class="floor floor1" id="floor1">
             <div class="cbt_wrapper">
@@ -236,7 +236,7 @@
                     <div class="bd">
                         <ul class="list">
                             <li>
-                                <div class="top-txt head1">
+                                <div class="top-txt head2">
                                     <p class="title">叶老板 茶帮通5级经销商</p>
                                     <p class="addr">陕西省西安市某茶叶店</p>
                                 </div>
@@ -245,7 +245,7 @@
                                 </div>
                             </li>
                             <li>
-                                <div class="top-txt head2">
+                                <div class="top-txt head5">
                                     <p class="title">文老板 茶帮通6级经销商</p>
                                     <p class="addr">湖北省武汉市某茶馆</p>
                                 </div>
@@ -254,7 +254,7 @@
                                 </div>
                             </li>
                             <li>
-                                <div class="top-txt head3">
+                                <div class="top-txt head4">
                                     <p class="title">邱老板 茶帮通7级经销商</p>
                                     <p class="addr">湖北省武汉市某茶叶店</p>
                                 </div>
@@ -263,7 +263,7 @@
                                 </div>
                             </li>
                             <li>
-                                <div class="top-txt head4">
+                                <div class="top-txt head1">
                                     <p class="title">陈老板 茶帮通7级经销商</p>
                                     <p class="addr">福建省龙岩市某茶叶店</p>
                                 </div>
@@ -272,7 +272,7 @@
                                 </div>
                             </li>
                             <li>
-                                <div class="top-txt head5">
+                                <div class="top-txt head3">
                                     <p class="title">温老板 茶帮通1级供应商</p>
                                     <p class="addr">陕西省西安市某茶企</p>
                                 </div>
@@ -290,10 +290,10 @@
         <!-- 右边悬浮 -->
         <div>
             <div class="fixed-right">
-                <a href="#floor1" class="first"></a>
-                <a href="#floor7" class="second"></a>
+                <a href="javascript:void(0);" class="first" @click="memeberFlag=true"></a>
+                <a href="javascript:void(0);" class="second" @click="sellerFlag=true"></a>
             </div>
-            <a href="#floor1" class="go-top"></a>
+            <a v-show="showTop" href="javascript:void(0);" @click="goTop" class="go-top"></a>
         </div>
         <!-- 成为会员 -->
         <div class="popup pop-member" v-show="memeberFlag">
@@ -337,6 +337,7 @@
             return {
                 memeberFlag: false,  
                 sellerFlag: false,  
+                showTop: false,  
             }
         },
         created(){
@@ -346,7 +347,17 @@
             });
         },
         methods:{
-
+            scrollFun(){
+                let top = this.$refs.wrapper.scrollTop;
+                if(top>700){
+                    this.showTop = true;
+                }else{
+                    this.showTop = false;
+                }
+            },
+            goTop(){
+                this.$refs.wrapper.scrollTop = 0;
+            }
         }
     }
 </script>
