@@ -1,53 +1,50 @@
 <template>
     <div class="freight_wrapper add">
-        <div :style="style" class="wrapper-inner">
-            <div class="top">
-                <div class="caption flex">
-                    <p>全国包邮，除以下省份</p>
-                </div>
-                <div class="f5-2"></div>
-                <div class="input-box" v-for="(item,index) in postArray" :key="index" v-if="!item.delFlag">
-                    <div class="input-item">
-                        <div class="input-inner no-free clearfix">
-                            <span class="color_6 lab" style="float:left;">不包邮省份</span>
-                            <p class="cities empty" v-if="item.areaText.length === 0">请选择</p>
-                            <p class="cities" v-else>{{ item.areaText }}</p>
-                            <a class="r-select" href="javascript:void(0);" @click="showDialog(index)"><i class="iconfont color_ad">&#xe744;</i></a>
-                        </div>
-                    </div>
-                    <div class="input-item">
-                        <div class="flex input-inner">
-                            <span class="flex-1 color_6">首重(1kg)</span>
-                            <input class="algin_r" type="number" placeholder="请输入首重运费" v-model="item.sweight" @blur="toFixedTwo(item.sweight,'sweight',index)" />
-                            <span>元</span>
-                        </div>
-                    </div>
-                    <div class="input-item">
-                        <div class="flex input-inner">
-                            <span class="flex-1 color_6">续重(每增加1kg增加)</span>
-                            <input class="algin_r" type="number" placeholder="请输入金额" v-model="item.xweight" />
-                            <span>元</span>
-                        </div>
-                    </div>
-                    <div class="input-item">
-                        <div class="flex input-inner no-border">
-                            <span class="flex-1 color_6">购满包邮</span>
-                            <input class="algin_r" type="number" placeholder="不填默认不包邮"  v-model="item.buyer" />
-                            <span>元</span>
-                        </div>
-                    </div>
-                    <div class="deleted-item" v-if="index>0" @click="delectMethod(index)">
-                        <i class="iconfont">&#xe60d;</i>
-                    </div>
-                    <div class="f5-2"></div>
-                </div>
-                <div class="add-box" @click="addFree">
-                    <a class="add-btns" href="javascript:void(0);"><i class="iconfont">&#xe67a;</i>添加指定省份运费</a>
+        <div class="caption flex">
+            <p>全国包邮，除以下省份</p>
+        </div>
+        <div class="f5-2"></div>
+        <div class="input-box" v-for="(item,index) in postArray" :key="index" v-if="!item.delFlag">
+            <div class="input-item">
+                <div class="input-inner no-free clearfix">
+                    <span class="color_6 lab" style="float:left;">不包邮省份</span>
+                    <p class="cities empty" v-if="item.areaText.length === 0">请选择</p>
+                    <p class="cities" v-else>{{ item.areaText }}</p>
+                    <a class="r-select" href="javascript:void(0);" @click="showDialog(index)"><i class="iconfont color_ad">&#xe744;</i></a>
                 </div>
             </div>
-            <div class="save-box">
-                <mt-button type="primary" :disabled="saveDisable" @click.native="savePost">保存</mt-button>
+            <div class="input-item">
+                <div class="flex input-inner">
+                    <span class="flex-1 color_6">首重(1kg)</span>
+                    <input class="algin_r" type="number" placeholder="请输入首重运费" v-model="item.sweight" @blur="toFixedTwo(item.sweight,'sweight',index)" />
+                    <span>元</span>
+                </div>
             </div>
+            <div class="input-item">
+                <div class="flex input-inner">
+                    <span class="flex-1 color_6">续重(每增加1kg增加)</span>
+                    <input class="algin_r" type="number" placeholder="请输入金额" v-model="item.xweight" />
+                    <span>元</span>
+                </div>
+            </div>
+            <div class="input-item">
+                <div class="flex input-inner no-border">
+                    <span class="flex-1 color_6">购满包邮</span>
+                    <input class="algin_r" type="number" placeholder="不填默认不包邮"  v-model="item.buyer" />
+                    <span>元</span>
+                </div>
+            </div>
+            <div class="deleted-item" v-if="index>0" @click="delectMethod(index)">
+                <i class="iconfont">&#xe60d;</i>
+            </div>
+            <div class="f5-2"></div>
+        </div>
+
+        <div class="add-box" @click="addFree">
+            <a class="add-btns" href="javascript:void(0);"><i class="iconfont">&#xe67a;</i>添加指定省份运费</a>
+        </div>
+        <div class="save-box">
+            <mt-button type="primary" :disabled="saveDisable" @click.native="savePost">保存</mt-button>
         </div>
         <!-- 选择省份弹窗 -->
         <mt-popup v-model="popupVisible" position="right" class="popup-city">
@@ -237,12 +234,6 @@ import $api from 'api';
             //     }
             //     return true;
             // },
-            style() {
-                let h = document.body.scrollHeight;
-                return {
-                    height: this.$tool.isWx ? `calc(${h}px)` : `calc(${h}px - .98rem)`
-                } 
-            },
             checkedNum() {
                 let arr = this.addressType.one.concat(this.addressType.two,this.addressType.three,this.addressType.four);
                 let num = 0;
