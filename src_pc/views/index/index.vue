@@ -237,44 +237,44 @@
                         <ul class="list">
                             <li>
                                 <div class="top-txt head1">
-                                    <p class="title">杨老板  茶帮通9级经销商</p>
-                                    <p class="addr">厦门市思明区某茶叶店</p>
+                                    <p class="title">叶老板 茶帮通5级经销商</p>
+                                    <p class="addr">陕西省西安市某茶叶店</p>
+                                </div>
+                                <div class="txt-info">
+                                    <p>采购茶叶一直是我最为头疼的事情，我们小店是小本经营，采购量其实不大，导致很多茶厂茶企都不愿意小量批发给我们。但是茶帮通就很好，1斤都可以批发，卖多少进多少，不用囤货，而且价格也比市场上便宜，真正的物美价廉！</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="top-txt head2">
+                                    <p class="title">文老板 茶帮通6级经销商</p>
+                                    <p class="addr">湖北省武汉市某茶馆</p>
                                 </div>
                                 <div class="txt-info">
                                     <p>以前买茶都要自己跑茶企茶厂，一次采购下来要三四天，费事有费力。自从用了茶帮通，平台上的茶叶资源应有尽有，一键采购，极大地节约了采购成本，而且多了很多时间可以陪家人！</p>
                                 </div>
                             </li>
                             <li>
-                                <div class="top-txt head2">
-                                    <p class="title">杨老板 茶帮通9级经销商</p>
-                                    <p class="addr">厦门市思明区某茶叶店</p>
+                                <div class="top-txt head3">
+                                    <p class="title">邱老板 茶帮通7级经销商</p>
+                                    <p class="addr">湖北省武汉市某茶叶店</p>
                                 </div>
                                 <div class="txt-info">
                                     <p>我们买茶很怕买到以次充好的茶叶，而茶帮通很好地解决了这一点，平台上不仅汇聚了全国茶业资源，而且可以查看对方的信用认证，还有最高长达三个月的退换货周期，极大地保障了我们采购的利益！</p>
                                 </div>
                             </li>
                             <li>
-                                <div class="top-txt head3">
-                                    <p class="title">杨老板 茶帮通9级经销商</p>
-                                    <p class="addr">厦门市思明区某茶叶店</p>
+                                <div class="top-txt head4">
+                                    <p class="title">陈老板 茶帮通7级经销商</p>
+                                    <p class="addr">福建省龙岩市某茶叶店</p>
                                 </div>
                                 <div class="txt-info">
                                     <p>茶帮通对于我来说，最大的改变就是平台透明，茶叶产地、质量等全部都在明细中写得清清楚楚，供应商的资质等都可以查看，一点也不用担心买到质量不好的产品。</p>
                                 </div>
                             </li>
                             <li>
-                                <div class="top-txt head4">
-                                    <p class="title">杨老板 茶帮通9级经销商</p>
-                                    <p class="addr">厦门市思明区某茶叶店</p>
-                                </div>
-                                <div class="txt-info">
-                                    <p>做茶叶其实很累，靠的就是一颗喜欢茶的心。而“卖“茶更是劳心劳力，市场上各种真假难辨的分销商、茶铺总是好茶坏茶掺着卖，我不想自己辛苦做的茶卖给”黑心商人“，而茶帮通很好地帮我筛选分销商，让我能把好茶卖给好的客户！</p>
-                                </div>
-                            </li>
-                            <li>
                                 <div class="top-txt head5">
-                                    <p class="title">杨老板 茶帮通9级经销商</p>
-                                    <p class="addr">厦门市思明区某茶叶店</p>
+                                    <p class="title">温老板 茶帮通1级供应商</p>
+                                    <p class="addr">陕西省西安市某茶企</p>
                                 </div>
                                 <div class="txt-info">
                                     <p>做茶叶其实很累，靠的就是一颗喜欢茶的心。而“卖“茶更是劳心劳力，市场上各种真假难辨的分销商、茶铺总是好茶坏茶掺着卖，我不想自己辛苦做的茶卖给”黑心商人“，而茶帮通很好地帮我筛选分销商，让我能把好茶卖给好的客户！</p>
@@ -342,7 +342,7 @@
         created(){
             this.$nextTick(()=>{
                 jQuery(".slideBox").slide({mainCell:".bd ul",autoPlay:true});
-                jQuery(".picScroll-left").slide({titCell:".hd ul",mainCell:".bd ul",autoPage:true,effect:"left",autoPlay:true,vis:3,trigger:"click"});
+                jQuery(".picScroll-left").slide({titCell:".hd ul",mainCell:".bd ul",autoPage:true,effect:"left",autoPlay:false,vis:3,trigger:"click"});
             });
         },
         methods:{
