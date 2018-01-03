@@ -10,14 +10,8 @@
                 <div class="packet_user_text">
                     <div class="swiper-container-2">
                         <div class="swiper-wrapper">
-                            <div class="swiper-slide">
-                                111111111111111111111111111
-                            </div>
-                            <div class="swiper-slide">
-                                222222222222222222222222222
-                            </div>
-                            <div class="swiper-slide">
-                                33333333333333333333333333
+                            <div class="swiper-slide" v-for="item in getList">
+                                {{ item }}
                             </div>
                         </div>
                     </div>
@@ -168,6 +162,7 @@ export default {
             newList: [],                // 新客红包列表
             oldList: [],                // 老客红包列表
             successNew: [],             // 新客成功的列表
+            getList: [],                // 随机签到记录
         }
     },
     computed: {
@@ -176,17 +171,22 @@ export default {
             memberAccount: state => state.member.memberAccount,
             sign: state => state.member.sign
         }),
-        showNewList() {
-
-        }
     },
     mounted() {
-        var swiper2 = new Swiper('.swiper-container-2', {
-            direction: 'vertical',
-            autoplay: true,
-            loop: true,
-            slidesPerView :2 
-        });
+        this.$api.post('/oteao/member/redPacket/findRandomSignInMember',{
+            count: 10,
+            sysId:1
+        },res => {
+            this.getList = res.data;
+            this.$nextTick(() => {
+                var swiper2 = new Swiper('.swiper-container-2', {
+                    direction: 'vertical',
+                    autoplay: true,
+                    loop: true,
+                    slidesPerView :2 
+                });
+            })
+        })
     },
     methods: {
         // 签到
@@ -255,6 +255,7 @@ export default {
                 })
 
             } else {
+                if(this.memberAccount.memberLevelId !== 28) return this.$toast('只有正式注册会员才能领取哟~')
                 this.$api.post('/oteao/member/redPacket/doActivateByRuleIdList?sysId=1',JSON.stringify(list),res => {
                     this.successNew = [];
                     let limitList = [];

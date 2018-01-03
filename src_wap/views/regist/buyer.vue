@@ -169,13 +169,15 @@
                         if(res.data.returnResult) {
                             this.$refs.imgCode.hide();
                             return Toast('您输入的手机号已注册，请重新输入');
+                        }else{
+                            this.$refs.imgCode.show();
                         }
                         this.verifyFlag = true;
                     },res=>{
                         this.$refs.imgCode.hide();
                         Toast('您输入的手机号已注册，请重新输入');
                     });
-                    this.$refs.imgCode.show();
+                    
                 }
             },
             //倒计时

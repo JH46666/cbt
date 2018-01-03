@@ -73,7 +73,7 @@
         <!-- 日期选择器 -->
         <mt-datetime-picker
             ref="start"
-            :startDate="new Date('2017-01-01 00:00:00')"
+            :startDate="new Date('2017/01/01 00:00:00')"
             :endDate="new Date()"
             type="datetime"
             v-model="startTime">
@@ -114,8 +114,8 @@
                 </div>
             </div>
             <div class="pop-btns flex">
-                <a class="flex-1" href="javscript:void(0)" @click="restScreen">重置</a>
-                <a class="flex-1 confirm" href="javscript:void(0)" @click="confirm">确定</a>
+                <div class="flex-1" href="javscript:void(0)" @click="restScreen">重置</div>
+                <div class="flex-1 confirm" href="javscript:void(0)" @click="confirm">确定</div>
             </div>
         </mt-popup>
     </div>
@@ -266,7 +266,7 @@
                     name: '',
                     goodName: ''
                 }
-                this.startTime = new Date('2017-01-01 00:00:00');
+                this.startTime = new Date('2017/01/01 00:00:00');
                 this.endTime = new Date();
                 this.name = '';
                 this.goodName = '';
@@ -282,7 +282,7 @@
             },
             // 重置筛选
             restScreen() {
-                this.startTime = new Date('2017-01-01 00:00:00');
+                this.startTime = new Date('2017/01/01 00:00:00');
                 this.endTime = new Date();
                 this.name = '';
                 this.goodName = '';
