@@ -42,7 +42,7 @@
         </div>
         <!-- 新闻 -->
         <div class="news_wrapper">
-            <div class="news_item">
+            <div class="news_item clearfix">
                 <div class="news_item_left">
                     茶帮通
                     <div class="news_logo">头条</div>
@@ -71,7 +71,7 @@
         <!-- 卖家招募 -->
         <div class="seller_wrapper">
             <div class="seller_pro_wrapper">
-                <div class="seller_pro_item">
+                <div class="seller_pro_item clearfix">
                     <div class="seller_pro_logo">
                         最新
                         <div>交易</div>
