@@ -60,7 +60,7 @@
                                     :businessType="item.tagNum"
                                     :tasteName="item.tasteVal"
                                     :isLogin="$tool.isLogin()"
-                                    :isShowAttr="item.isShowtasteAndFranste"
+                                    :isShowAttr="item.isShowTasteFragance"
                                     imgWidth="1.56rem">
                                 </goods-item>
                             </div>
