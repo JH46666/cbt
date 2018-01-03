@@ -50,81 +50,83 @@
                 <i class="iconfont">&#xe61b;</i>
             </div>
             <div class="top" :class="{on: tabFixed || wxFixed}" @click="topMethod"></div>
-            <div class="detail_img">
-                <mt-swipe :auto="5000" :show-indicators="false" @change="handleChange">
-                    <mt-swipe-item v-for="(item,index) in detailData.productImgList" :key="index">
-                        <img :src="item.imgUrl" :key="index">
-                    </mt-swipe-item>
-                </mt-swipe>
-                <!--   -->
-                <div class="detail_special" v-if="detailData.productExtInfo.isSales && detailData.productExtInfo.state === 'ON_SHELF' && loginId && state === 'ACTIVE'">
-                    <div class="detail_special_wrapper">
-                        <div class="detail_special_price">
-                            <span>特价</span>
-                            <span>￥</span>
-                            <span>{{ detailData.productExtInfo.salesPrice | toFix2 }}</span>
-                            <del>{{ detailData.productPrice[0].price | toFix2 }}</del>
-                        </div>
-                        <div class="detail_special_date">
-                            <span class="date_num date_none">{{ special.day }}</span>
-                            <span class="date_icon date_10">天</span>
-                            <span class="date_num">{{ special.hour }}</span>
-                            <span class="date_icon">:</span>
-                            <span class="date_num">{{ special.min }}</span>
-                            <span class="date_icon">:</span>
-                            <span class="date_num">{{ special.sec }}</span>
+            <div ref="hel">
+                <div class="detail_img">
+                    <mt-swipe :auto="5000" :show-indicators="false" @change="handleChange">
+                        <mt-swipe-item v-for="(item,index) in detailData.productImgList" :key="index">
+                            <img :src="item.imgUrl" :key="index">
+                        </mt-swipe-item>
+                    </mt-swipe>
+                    <!--   -->
+                    <div class="detail_special" v-if="detailData.productExtInfo.isSales && detailData.productExtInfo.state === 'ON_SHELF' && loginId && state === 'ACTIVE'">
+                        <div class="detail_special_wrapper">
+                            <div class="detail_special_price">
+                                <span>特价</span>
+                                <span>￥</span>
+                                <span>{{ detailData.productExtInfo.salesPrice | toFix2 }}</span>
+                                <del>{{ detailData.productPrice[0].price | toFix2 }}</del>
+                            </div>
+                            <div class="detail_special_date">
+                                <span class="date_num date_none">{{ special.day }}</span>
+                                <span class="date_icon date_10">天</span>
+                                <span class="date_num">{{ special.hour }}</span>
+                                <span class="date_icon">:</span>
+                                <span class="date_num">{{ special.min }}</span>
+                                <span class="date_icon">:</span>
+                                <span class="date_num">{{ special.sec }}</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="detail_img_index">
-                    <span>{{ imgIndex }}</span>/{{ detailData.productImgList.length }}
-                </div>
-            </div>
-            <div class="detail_describe">
-                <div class="detail_describe_wrapper">
-                    <div class="detail_describe_text">
-                        <p class="detail_text">{{ detailData.productInfo.proName }}</p>
-                        <template  v-if="detailData.productExtInfo.state === 'OFF_SHELF' && loginId && state === 'ACTIVE'">
-                            <div class="off_shelf_tips">
-                                暂无报价
-                            </div>
-                        </template>
-                        <template  v-if="!loginId || state != 'ACTIVE'">
-                            <div class="off_shelf_tips">
-                                询价
-                            </div>
-                        </template>
-                        <template v-if="detailData.productPrice.length != 0 && detailData.productExtInfo.state === 'ON_SHELF' && loginId && state === 'ACTIVE'">
-                            <p class="detail_now_price" v-if="!detailData.productExtInfo.isSales">￥{{ detailData.productPrice[0].price | toFix2 }}</p>
-                            <p class="detail_suggest_price">建议零售价：￥{{ detailData.productPrice[1].price | toFix2 }}</p>
-                        </template>
+                    <div class="detail_img_index">
+                        <span>{{ imgIndex }}</span>/{{ detailData.productImgList.length }}
                     </div>
-                    <template  v-if="detailData.productExtInfo.state === 'ON_SHELF'">
-                        <div class="detail_active">
-                            <div class="detail_active_list">
-                                <!-- <div class="detail_active_item" v-if="detailData.productExtInfo.isSales">
-                                    <span>直降</span>
-                                    <p>已优惠￥{{  (detailData.productPrice[0].price-detailData.productExtInfo.salesPrice)  | toFix2 }}</p>
-                                </div> -->
-                                <div class="detail_active_item">
-                                    <span>运费</span>
-                                    <template v-if="detailData.productInfo.businessType == 'ORG_SALES'">
-                                        <p v-if="!detailData.orgFreightTemplateVoList || detailData.orgFreightTemplateVoList.length == 0">本店商品全国包邮</p>
-                                        <p v-else-if="detailData.orgFreightTemplateVoList && detailData.orgFreightTemplateVoList.length > 0">邮费依实际重量计算运费</p>
-                                    </template>
-                                    <template v-else>
-                                        <p>全场茶叶在线支付满500包邮</p>
-                                    </template>
+                </div>
+                <div class="detail_describe">
+                    <div class="detail_describe_wrapper">
+                        <div class="detail_describe_text">
+                            <p class="detail_text">{{ detailData.productInfo.proName }}</p>
+                            <template  v-if="detailData.productExtInfo.state === 'OFF_SHELF' && loginId && state === 'ACTIVE'">
+                                <div class="off_shelf_tips">
+                                    暂无报价
+                                </div>
+                            </template>
+                            <template  v-if="!loginId || state != 'ACTIVE'">
+                                <div class="off_shelf_tips">
+                                    询价
+                                </div>
+                            </template>
+                            <template v-if="detailData.productPrice.length != 0 && detailData.productExtInfo.state === 'ON_SHELF' && loginId && state === 'ACTIVE'">
+                                <p class="detail_now_price" v-if="!detailData.productExtInfo.isSales">￥{{ detailData.productPrice[0].price | toFix2 }}</p>
+                                <p class="detail_suggest_price">建议零售价：￥{{ detailData.productPrice[1].price | toFix2 }}</p>
+                            </template>
+                        </div>
+                        <template  v-if="detailData.productExtInfo.state === 'ON_SHELF'">
+                            <div class="detail_active">
+                                <div class="detail_active_list">
+                                    <!-- <div class="detail_active_item" v-if="detailData.productExtInfo.isSales">
+                                        <span>直降</span>
+                                        <p>已优惠￥{{  (detailData.productPrice[0].price-detailData.productExtInfo.salesPrice)  | toFix2 }}</p>
+                                    </div> -->
+                                    <div class="detail_active_item">
+                                        <span>运费</span>
+                                        <template v-if="detailData.productInfo.businessType == 'ORG_SALES'">
+                                            <p v-if="!detailData.orgFreightTemplateVoList || detailData.orgFreightTemplateVoList.length == 0">本店商品全国包邮</p>
+                                            <p v-else-if="detailData.orgFreightTemplateVoList && detailData.orgFreightTemplateVoList.length > 0">邮费依实际重量计算运费</p>
+                                        </template>
+                                        <template v-else>
+                                            <p>全场茶叶在线支付满500包邮</p>
+                                        </template>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </template>
-                    <div class="detail_describe_count">
-                        <label class="label_text">采购量</label>
-                        <div class="plusOreduce">
-                            <span class="reduce btn" @click="reduceMethod">-</span>
-                            <input v-model="goodsCount" type="number" class="countNum" @blur="limit">
-                            <span class="plus btn" @click="plusMethod">+</span>
+                        </template>
+                        <div class="detail_describe_count">
+                            <label class="label_text">采购量</label>
+                            <div class="plusOreduce">
+                                <span class="reduce btn" @click="reduceMethod">-</span>
+                                <input v-model="goodsCount" type="number" class="countNum" @blur="limit">
+                                <span class="plus btn" @click="plusMethod">+</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -827,7 +829,7 @@ export default {
             deep:true
         },
         tabSelected(val) {
-            this.$refs.wrapper.scrollTop = screen.height;
+            this.$refs.wrapper.scrollTop = this.$refs.hel.offsetHeight;
         }
     },
     mounted () {
