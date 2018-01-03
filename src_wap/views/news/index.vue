@@ -59,6 +59,7 @@
                 this.$api.get('/oteao/newsInfo/getNewsInfoList',{
                     'page.pageSize': 1,
                     'page.pageNumber': 1,
+                    'newsTypeId': 402,
                     'hotNewsTag': 1,
                     'sysId': 1
                 },res => {
@@ -71,6 +72,7 @@
                     this.$api.get('/oteao/newsInfo/getNewsInfoList',{
                         'page.pageNumber': page,
                         'page.pageSize': 10,
+                        'newsTypeId': 402,
                         'hotNewsTag': 0,
                         'sysId': 1,
                     },res => {
@@ -109,7 +111,7 @@
             }
         },
         created() {
-            this.$store.commit('SET_TITLE','茶帮通头条');
+            this.$store.commit('SET_TITLE','茶帮通新闻列表');
             this.getHot();
             this.getData();
         }

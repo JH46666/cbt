@@ -51,18 +51,25 @@
         },
         methods:{
             close(){
+                // this.$refs.imgcode.innerHTML = `<img src="api/oteao/recaptcha/getReCaptha?v=${Math.random()*100}" alt="">`;
+                // this.codes = [{code:''},{code:''},{code:''},{code:''}];
+                // this.curIndex = 0;
+                this.$emit('closePopup');
+            },
+            hide() {
+                this.$el.style.display = 'none';
                 this.$refs.imgcode.innerHTML = `<img src="api/oteao/recaptcha/getReCaptha?v=${Math.random()*100}" alt="">`;
                 this.codes = [{code:''},{code:''},{code:''},{code:''}];
                 this.curIndex = 0;
-                this.$emit('closePopup');
+            },
+            show() {
+                this.$el.style.display = 'block';
+                document.getElementById('input0').focus();
             },
             //获取图片验证码
             getCode(){
                 let str = `<img src="api/oteao/recaptcha/getReCaptha?v=${Math.random()*100}" alt="">`;
                 this.$refs.imgcode.innerHTML = str;
-                this.$nextTick(() => {
-                    this.$refs.forms.childNodes[this.curIndex].focus();
-                })
             },
             //设置curIndex
             setIndex(i){
@@ -86,6 +93,7 @@
                 this.curIndex = 0;
                 this.codes = [{code:''},{code:''},{code:''},{code:''}];
                 this.getCode();
+                document.getElementById('input0').focus();
             },
             //backspace事件
             dele(i){
