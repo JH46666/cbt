@@ -185,7 +185,7 @@
                             </template>
                             <template v-for="(item,index) in attrImgDetail.propValList">
                                 <div class="reguler_item" style="height: .98rem; padding: 0;">
-                                    <div>{{ item.propName }}</div>
+                                    <div>{{ item.atrName }}</div>
                                     <div>{{ item.propertiesVal.propVal }}</div>
                                 </div>
                             </template>
@@ -349,6 +349,10 @@ export default {
             }
             this.getAttrOrImg().then((attr) => {
                 this.attrImgDetail = attr.data;
+                for(let obj of this.attrImgDetail.propValList){
+                    let str = obj.propName.substr(0,4);
+                    this.$set(obj,'atrName',str);
+                }
                 try {
                     this.imgDetail =  JSON.parse(attr.data.content)
                 } catch (e) {

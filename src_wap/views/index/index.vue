@@ -275,7 +275,6 @@ import { mapState } from 'vuex'
                         });
                     })
                 })
-
             },
             iSeller() {
                 store.dispatch('getMemberData').then(()=>{
