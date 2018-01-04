@@ -43,7 +43,7 @@
                 <div class="dialog" v-if="editTel">
                     <div class="title">修改服务电话</div>
                     <div class="input-row">
-                        <input type="tel" maxlength="13" v-model="cloneTel" res="tel">
+                        <input type="tel" maxlength="13" v-model="cloneTel" ref="tel">
                     </div>
                     <p class="tips">用于买家联系您使用，请填写您常用的号码</p>
                     <div class="btn-bar">
@@ -53,7 +53,7 @@
                 <div class="dialog" v-if="editAlipay">
                     <div class="title">修改支付宝</div>
                     <div class="input-row">
-                        <input type="tel" maxlength="13" v-model="clonePay" res="pay">
+                        <input type="tel" maxlength="13" v-model="clonePay" ref="pay">
                     </div>
                     <p class="tips">后续交易金额将转入此账户，请务必填写正确</p>
                     <div class="btn-bar">
