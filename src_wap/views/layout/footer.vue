@@ -1,6 +1,6 @@
 <template>
     <div class="cbt_footer">
-        <router-link v-for="(item,index) in footerData" :class="{on: item.path === classIndex}" :to="item.path" :key="index">
+        <router-link v-for="(item,index) in footerData" :class="{on: item.routeName === $route.name}" :to="item.path" :key="index">
             <i class="iconfont" :class="item.path === classIndex ? item.select : item.icon"></i>
             {{ item.name }}
             <mt-badge type="error" size="small" v-if="index === 2 && id">{{ cartTotal | ninenineAdd }}</mt-badge>
@@ -18,24 +18,28 @@
                     {
                         icon: 'icon-shouyeweixuan',
                         name: '首页',
+                        routeName: '首页',
                         path: '/',
                         select: 'icon-shouye1'
                     },
                     {
                         icon: 'icon-chabangtongzhuanyongfenlei_weixuan',
                         name: '分类',
+                        routeName: '分类',
                         path: '/category/',
                         select: 'icon-chabangtongzhuanyongfenlei_yixuan'
                     },
                     {
                         icon: 'icon-chabangtongzhuanyongfenlei_gouwuche1',
                         name: '购物车',
+                        routeName: '购物车',
                         path: '/cart/',
                         select: 'icon-chabangtongzhuanyongfenlei_gouwuche'
                     },
                     {
                         icon: 'icon-chabangtongzhuanyongfenlei_geren1',
                         name: '我的',
+                        routeName: '个人中心',
                         path: '/center/',
                         select: 'icon-chabangtongzhuanyongfenlei_geren'
                     }

@@ -175,7 +175,7 @@
             },
             nomore() {
                 try {
-                    if(this.resultData.length === this.totalSize) {
+                    if(this.resultData.length === this.totalSize && this.resultData.length !== 0) {
                         return true
                     } else {
                         return false
@@ -237,7 +237,7 @@
             activeSubId(val){
                 this.resultData = [];
                 this.pageNumber = 1;
-                this.totalSize = 0;
+                this.totalSize = 1;
                 this.sort = 1;
                 this.sortDesc = true;
                 let data = {

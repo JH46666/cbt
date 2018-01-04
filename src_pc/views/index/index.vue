@@ -1,6 +1,42 @@
 <template>
     <div class="index-wrapper" ref="wrapper" @scroll="scrollFun">
         <!-- floor1 -->
+        <section class="fixed-block" v-if="hasFixed">
+            <div class="fixed-wrap">
+                <div class="top clearfix">
+                    <ul class="f_l">
+                        <li>
+                            <i class="logo"></i>
+                        </li>
+                        <li class="hover-li w130">
+                            <i class="wap"></i>茶帮通手机端
+                            <div class="hover-box">
+                                <p class="code-img code1"></p>
+                            </div>
+                        </li>
+                        <li class="hover-li w130">
+                            <i class="concern"></i>关注茶帮通
+                            <div class="hover-box">
+                                <p class="code-img code2"></p>
+                            </div>
+                        </li>
+                        <li class="hover-li w200">
+                            <i class="we"></i>联系我们
+                            <div class="hover-box concat">
+                                <p><i class="qq"></i>QQ客服</p>
+                                <a class="online" href="javscript:void(0);"><i></i></a>
+                                <p><i class="wx"></i>微信客服</p>
+                                <i class="cbt-code"></i>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="f_r">
+                        <p class="tele"><i></i>4006-996-339</p>
+                        <p>周一至周日8:45-22:30</p>
+                    </div>
+                </div>
+            </div>
+        </section>
         <div class="floor floor1" id="floor1">
             <div class="cbt_wrapper">
                 <div class="top clearfix">
@@ -338,6 +374,7 @@
                 memeberFlag: false,  
                 sellerFlag: false,  
                 showTop: false,  
+                hasFixed: false,
             }
         },
         created(){
@@ -353,6 +390,11 @@
                     this.showTop = true;
                 }else{
                     this.showTop = false;
+                }
+                if(top>1080) {
+                    this.hasFixed = true;
+                } else {
+                    this.hasFixed = false;
                 }
             },
             goTop(){
