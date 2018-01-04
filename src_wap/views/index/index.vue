@@ -324,6 +324,9 @@ import { mapState } from 'vuex'
                                return this.$router.push({name: '茶帮通注册3'});
                            }
                        }else{
+                           if(memberStatus != 'ACTIVE' && memberStatus != 'FREEZE'){
+                               return this.$router.push({name: '茶帮通注册3'});
+                           }
                            return this.$router.push({name: '卖家招募'});
                        }
                     }

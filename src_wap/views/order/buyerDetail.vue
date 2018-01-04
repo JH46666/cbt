@@ -76,8 +76,8 @@
                             </template>
 
                         </div>
-                        <div class="order_head order_white">
-                            <div class="order_express">
+                        <div class="order_head order_white" :class="{right_btn: order.expressCode === 'get_self'}">
+                            <div class="order_express" v-if="order.expressCode != 'get_self'">
                                 <img src="../../assets/images/sfkd.png" v-if="order.expressCode == 'ship_sf'" />
                                 <img src="../../assets/images/stkd.png" v-if="order.expressCode == 'ship_sto'" />
                                 <img src="../../assets/images/emskd.png" v-if="order.expressCode == 'ship_ems'" /> {{ order.expressName }}
