@@ -4,7 +4,6 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 
 const path = require('path')
-const path = require('path')
 function getIPAdress(){
   var interfaces = require('os').networkInterfaces();
   for(var devName in interfaces){
