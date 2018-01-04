@@ -20,7 +20,7 @@
         },
         data() {
             return {
-                model: 'move',
+                model: 'fade',
             }
         },
         computed: {
@@ -33,7 +33,7 @@
             if(to.meta.transition !== undefined || from.meta.transition !== undefined) {
                 this.model = to.meta.transition || from.meta.transition;
             } else {
-                this.model ='move';
+                this.model ='fade';
             }
             next();
         },
@@ -41,7 +41,7 @@
             if(to.meta.transition !== undefined || from.meta.transition !== undefined) {
                 this.model = to.meta.transition || from.meta.transition;
             } else {
-                this.model ='move';
+                this.model ='fade';
             }
             next();
         }
