@@ -1,5 +1,5 @@
 #!/bin/bash
-cp MP* wap/
+
 cnpm install
 
 
@@ -9,3 +9,4 @@ npm run build:pc
 npm run build:wap
 # build for production and view the bundle analyzer report
 # npm run build --report
+cp MP* wap/
