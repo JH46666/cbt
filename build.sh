@@ -1,5 +1,5 @@
 #!/bin/bash
-
+cp MP* wap/
 cnpm install
 
 
