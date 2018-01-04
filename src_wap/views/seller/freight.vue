@@ -16,14 +16,14 @@
             <div class="input-item">
                 <div class="flex input-inner">
                     <span class="flex-1 color_6">首重(1kg)</span>
-                    <input class="algin_r" type="number" placeholder="请输入首重运费" v-model="item.sweight" @blur="toFixedTwo(item.sweight,'sweight',index)" />
+                    <input class="algin_r" type="number" :readonly="item.iSeclectCity" placeholder="请输入首重运费" v-model="item.sweight" @blur="toFixedTwo(item.sweight,'sweight',index)" />
                     <span>元</span>
                 </div>
             </div>
             <div class="input-item">
                 <div class="flex input-inner">
                     <span class="flex-1 color_6">续重(每增加1kg增加)</span>
-                    <input class="algin_r" type="number" placeholder="请输入金额" v-model="item.xweight" />
+                    <input class="algin_r" type="number" :readonly="item.iSeclectCity" placeholder="请输入金额" v-model="item.xweight" />
                     <span>元</span>
                 </div>
             </div>
@@ -200,7 +200,8 @@ import $api from 'api';
                         xweight: '',
                         buyer: '',
                         delFlag: 0,
-                        templateId: null
+                        templateId: null,
+                        iSeclectCity: true,
                     })
                 }else{
                     this.flag = true;
@@ -212,7 +213,8 @@ import $api from 'api';
                             sweight: result[i].firstHeavyCost,
                             xweight: result[i].continuedHeavyCost,
                             buyer: result[i].freeCost,
-                            templateId: result[i].templateId
+                            templateId: result[i].templateId,
+                            iSeclectCity: true,
                         })
                         let newArray = [];
                         for(let j=0;j<result[i].baseRegionVoList.length;j++){
@@ -426,7 +428,8 @@ import $api from 'api';
                     sweight: '',
                     xweight: '',
                     buyer: '',
-                    delFlag: 0
+                    delFlag: 0,
+                    iSeclectCity: true,
                 })
             },
             selectAll(type) {
@@ -510,6 +513,16 @@ import $api from 'api';
                         this.checkedAll.four = true;
                     }else{
                         this.checkedAll.four = false;
+                    }
+    　　　　　　　},
+    　　　　　　　deep:true
+            },
+            'postArray': {
+                handler(curVal,oldVal){
+                    for(let obj of curVal){
+                        if(obj.area.length>0){
+                            obj.iSeclectCity = false;
+                        }
                     }
     　　　　　　　},
     　　　　　　　deep:true

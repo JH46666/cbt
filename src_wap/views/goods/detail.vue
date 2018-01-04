@@ -132,13 +132,13 @@
                 </div>
             </div>
             <div class="detail_tab" ref="tab">
-                <mt-navbar v-model="tabSelected" :class="{'on': tabFixed , 'wxon': wxFixed}">
+                <mt-navbar v-model="tabSelected" :class="{'on': tabFixed , 'wxon': wxFixed}" ref='heihghj'>
                     <i class="iconfont fixIndex" :class="{'on': tabFixed || wxFixed }" v-if="tabFixed || wxFixed" @click="$router.push({name: '首页'})">&#xe61b;</i>
                     <mt-tab-item id="1">详情</mt-tab-item>
                     <mt-tab-item id="2">规格</mt-tab-item>
                     <mt-tab-item id="3">评论</mt-tab-item>
                 </mt-navbar>
-                <mt-tab-container v-model="tabSelected" :swipeable="true">
+                <mt-tab-container v-model="tabSelected" :swipeable="false">
                     <mt-tab-container-item id="1" ref="tabcontent1">
                         <div class="mint_cell_wrapper mint_cell_img_wrapper">
                             <template v-if="imgDetailHtml.length>0">
@@ -210,7 +210,7 @@
                                     <div class="comment_head">
                                         <div class="comment_head_wrapper">
                                             <div class="comment_head_mumber">{{ regStar(item.nickName) }}</div>
-                                            <div class="comment_head_mumberlevel">{{ item.level }}级营销商</div>
+                                            <div class="comment_head_mumberlevel">{{ item.levelName }}营销商</div>
                                         </div>
                                         <div class="comment_head_time">{{ item.createTime }}</div>
                                     </div>
@@ -630,6 +630,9 @@ export default {
             }else if(scrollTop + allHideHeight - tabTop < 0){
                 this.tabFixed = false;
                 this.wxFixed = false;
+                this.$refs.tabcontent1.$el.style['padding-top'] = 0;
+                this.$refs.tabcontent2.$el.style['padding-top'] = 0;
+                this.$refs.tabcontent3.$el.style['padding-top'] = 0;
                 return;
             }
         },
@@ -815,7 +818,7 @@ export default {
                    }
                })
            } catch (e) {
-               
+
            }
        }
     },
@@ -856,6 +859,10 @@ export default {
         tabSelected(val) {
             this.$refs.wrapper.scrollTop = this.$refs.hel.offsetHeight;
             this.tabFixed = true;
+            console.log(this.$refs.heihghj.$el.offsetHeight);
+            this.$refs.tabcontent1.$el.style['padding-top'] = this.$refs.heihghj.$el.offsetHeight + 'px';
+            this.$refs.tabcontent2.$el.style['padding-top'] = this.$refs.heihghj.$el.offsetHeight + 'px';
+            this.$refs.tabcontent3.$el.style['padding-top'] = this.$refs.heihghj.$el.offsetHeight + 'px';
             if(!this.wxFlag){
                 this.tabFixed = true;
             }else{
