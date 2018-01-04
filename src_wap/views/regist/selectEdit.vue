@@ -489,13 +489,16 @@ export default {
             if(this.registClass === 0){
                 data = {
                     "areaCode": this.addressObj.areaCode,
+                    "areaName": this.addressObj.areaName,
                     "cityCode": this.addressObj.cityCode,
+                    "cityName": this.addressObj.cityName,
                     "contactor": this.formData.shopTel,
                     "detailAddress": this.formData.shopAddress,
                     "device": 'WAP',
                     "facadePics": this.shopImgUrl[0],
                     "orgName": this.formData.shopName,
                     "provinceCode": this.addressObj.provinceCode,
+                    "provinceName": this.addressObj.provinceName
                 }
                 this.$api.post('/oteao/login/fillOrgInfo',JSON.stringify(data),res => {
                     this.$toast({
