@@ -18,168 +18,7 @@
         .w(100%);
         .h(1080px);
         background: url('../../assets/img_bg01.jpg') center center; 
-        //顶部
-        .top {
-            padding: 16px 0;
-            i {
-                display: inline-block;
-                background: url('../../assets/spirte.png');
-                vertical-align: middle;
-                margin-right: 3px;
-            }
-            li {
-                display: inline-block;
-                margin-right: 32px;
-                line-height: 40px;
-                .align(c);
-                .position(r);
-
-                &.hover-li{
-                    margin-right: 20px;
-                    .hover-box{
-                        display: none;
-                        .w(100%);
-                        .h(120px);
-                        .position(a);
-                        top: 40px;
-                        left: 0;
-                        .bg(#fff);
-                        box-sizing: border-box;
-                        -webkit-box-sizing: border-box;
-                    }
-                    .concat{
-                        padding-left: 25px;
-                        padding-top: 10px;
-                        .line(32px);
-                        .h(230px);
-                        .color(#999);
-                        .fontSize(14px);
-                        border-top: 1px solid #e6e6e6;
-                    }
-                    &:hover{
-                        .bg(#fff);
-                        .color(#333);
-                        .wap{
-                            background-position: -170px -249px;
-                        }
-                        .concern{
-                            background-position: -188px -249px;
-                        }
-                        .we {
-                            background-position: -217px -248px;
-                        }
-                        .hover-box{
-                            display: block;
-                        }
-                    }
-                }
-                &.w130{
-                    .w(130px);
-                }
-                &.w200{
-                    .align(l);
-                    .w(175px);
-                    padding-left: 25px;
-                    left: -10px;
-                }
-                .logo {
-                    .w(150px);
-                    .h(39px);
-                    margin-left: 22px;
-                    background-position: 0 -215px;
-                    &:hover{
-                        background-position: 0 -274px;
-                    }
-                }
-                .wap {
-                    .w(10px);
-                    .h(15px);
-                    background-position: -170px -224px;
-                }
-                .concern {
-                    .w(20px);
-                    .h(15px);
-                    background-position: -188px -224px;
-                }
-                .we {
-                    .w(21px);
-                    .h(16px);
-                    background-position: -217px -224px;
-                }
-                .qq{
-                    .w(13px);
-                    .h(13px);
-                    background-position: -244px -251px;
-                    position: relative;
-                    top: -2px;
-                    margin-right: 8px;
-                }
-                .wx{
-                    .w(18px);
-                    .h(15px);
-                    background-position: -264px -251px;
-                    position: relative;
-                    top: -2px;
-                }
-                .online{
-                    margin-bottom: 5px;
-                    display: block;
-                    &:hover{
-                        i{
-                            background-position: -298px -250px;
-                        }
-                    }
-                    i{
-                        .w(88px);
-                        .h(20px);
-                        background-position: -298px -222px;
-                        display: block;
-                        margin-left: 22px;
-                    }
-                }
-                .cbt-code{
-                    .w(104px);
-                    .h(104px);
-                    background-position: -750px -367px;
-                    margin-left: 22px;
-                }
-                .code-img{
-                    .w(105px);
-                    .h(105px);
-                    .position(r);
-                    top: 3px;
-                    left: 12px;
-                    background: #fff url('../../assets/spirte.png') center center no-repeat;
-                }
-                .code1{
-                    background-position: -505px -367px;
-                }
-                .code2{
-                    background-position: -627px -367px;
-                }
-            }
-            .f_r {
-                p {
-                    .line(20px);
-                    .fontSize(14px);
-                    .align(r);
-                }
-                .tele {
-                    font-weight: bold;
-                    &:hover{
-                        .color(#f08200);
-                        i{
-                            background-position: -266px -225px; 
-                        }
-                    }
-                    i {
-                        .w(16px);
-                        .h(16px);
-                        background-position: -244px -225px;
-                    }
-                }
-            }
-        } //中间logo
+         //中间logo
         .big-logo {
             .w(674px);
             .h(172px);
@@ -795,5 +634,200 @@
                 }
             }
         }
+    }
+}
+
+
+// 吸顶导航条
+//顶部
+.top {
+    padding: 16px 0;
+    i {
+        display: inline-block;
+        background: url('../../assets/spirte.png');
+        vertical-align: middle;
+        margin-right: 3px;
+    }
+    li {
+        display: inline-block;
+        margin-right: 32px;
+        line-height: 40px;
+        .align(c);
+        .position(r);
+
+        &.hover-li{
+            margin-right: 20px;
+            .hover-box{
+                display: none;
+                .w(100%);
+                .h(120px);
+                .position(a);
+                top: 40px;
+                left: 0;
+                .bg(#fff);
+                box-sizing: border-box;
+                -webkit-box-sizing: border-box;
+            }
+            .concat{
+                padding-left: 25px;
+                padding-top: 10px;
+                .line(32px);
+                .h(230px);
+                .color(#999);
+                .fontSize(14px);
+                border-top: 1px solid #e6e6e6;
+            }
+            &:hover{
+                .bg(#fff);
+                .color(#333);
+                .wap{
+                    background-position: -170px -249px;
+                }
+                .concern{
+                    background-position: -188px -249px;
+                }
+                .we {
+                    background-position: -217px -248px;
+                }
+                .hover-box{
+                    display: block;
+                }
+            }
+        }
+        &.w130{
+            .w(130px);
+        }
+        &.w200{
+            .align(l);
+            .w(175px);
+            padding-left: 25px;
+            left: -10px;
+        }
+        .logo {
+            .w(150px);
+            .h(39px);
+            margin-left: 22px;
+            background-position: 0 -215px;
+            &:hover{
+                background-position: 0 -274px;
+            }
+        }
+        .wap {
+            .w(10px);
+            .h(15px);
+            background-position: -170px -224px;
+        }
+        .concern {
+            .w(20px);
+            .h(15px);
+            background-position: -188px -224px;
+        }
+        .we {
+            .w(21px);
+            .h(16px);
+            background-position: -217px -224px;
+        }
+        .qq{
+            .w(13px);
+            .h(13px);
+            background-position: -244px -251px;
+            position: relative;
+            top: -2px;
+            margin-right: 8px;
+        }
+        .wx{
+            .w(18px);
+            .h(15px);
+            background-position: -264px -251px;
+            position: relative;
+            top: -2px;
+        }
+        .online{
+            margin-bottom: 5px;
+            display: block;
+            &:hover{
+                i{
+                    background-position: -298px -250px;
+                }
+            }
+            i{
+                .w(88px);
+                .h(20px);
+                background-position: -298px -222px;
+                display: block;
+                margin-left: 22px;
+            }
+        }
+        .cbt-code{
+            .w(104px);
+            .h(104px);
+            background-position: -750px -367px;
+            margin-left: 22px;
+        }
+        .code-img{
+            .w(105px);
+            .h(105px);
+            .position(r);
+            top: 3px;
+            left: 12px;
+            background: #fff url('../../assets/spirte.png') center center no-repeat;
+        }
+        .code1{
+            background-position: -505px -367px;
+        }
+        .code2{
+            background-position: -627px -367px;
+        }
+    }
+    .f_r {
+        p {
+            .line(20px);
+            .fontSize(14px);
+            .align(r);
+        }
+        .tele {
+            font-weight: bold;
+            &:hover{
+                .color(#f08200);
+                i{
+                    background-position: -266px -225px; 
+                }
+            }
+            i {
+                .w(16px);
+                .h(16px);
+                background-position: -244px -225px;
+            }
+        }
+    }
+}
+.fixed-block{
+    .w(100%);
+    .position(f);
+    .bg(#fff);
+    top: 0;
+    left: 0;
+    z-index: 200;
+    animation: toFixed .5s;
+    box-shadow: 2px 0 5px rgba(0,0,0,.5);
+    .fixed-wrap{
+        .w(1226px);
+        margin: 0 auto;
+        .logo {
+            .w(150px);
+            .h(39px);
+            margin-left: 22px;
+            background-position: 0 -274px;
+        }
+    }
+}
+
+
+@keyframes toFixed {
+    from {
+        transform: translateY(-100%);
+    }
+    to {
+        transform: translateY(0%);
     }
 }
