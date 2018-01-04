@@ -177,7 +177,8 @@
                 </template>
                 <div class="price_detail_item" v-if="orderDetailData.internalDiscountSum">
                     <span>内部优惠</span>
-                    <span>{{ (0-orderDetailData.internalDiscountSum) | toFix2 }}</span>
+                    <span v-if="Number(orderDetailData.internalDiscountSum)>0">-￥{{ orderDetailData.internalDiscountSum | toFix2 }}</span>
+                    <span v-else>￥{{ orderDetailData.internalDiscountSum | toFix2 }}</span>
                 </div>
                 <div class="price_detail_item">
                     <span>运费</span>
