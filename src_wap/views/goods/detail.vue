@@ -210,7 +210,7 @@
                                     <div class="comment_head">
                                         <div class="comment_head_wrapper">
                                             <div class="comment_head_mumber">{{ regStar(item.nickName) }}</div>
-                                            <div class="comment_head_mumberlevel">{{ item.level }}级营销商</div>
+                                            <div class="comment_head_mumberlevel">{{ item.levelName }}营销商</div>
                                         </div>
                                         <div class="comment_head_time">{{ item.createTime }}</div>
                                     </div>
