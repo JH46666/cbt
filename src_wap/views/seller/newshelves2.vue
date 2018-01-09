@@ -426,7 +426,7 @@ import $api from 'api';
                         `<div class="mint-cell-value">`+
                             `<div class="mint_cell_img_title">${twoImg.title}</div>`+
                             `<div class="mint_cell_img">${twoImgSrc}</div>`+
-                            `<p class="mint_cell_img_content">1</p>`+
+                            // `<p class="mint_cell_img_content">1</p>`+
                         `</div>`+
                     `</div>`+
                     `<div class="mint-cell-right"></div>`+
@@ -452,7 +452,7 @@ import $api from 'api';
                         `<div class="mint-cell-value">`+
                             `<div class="mint_cell_img_title">${threeImg.title}</div>`+
                             `<div class="mint_cell_img">${threeImgSrc}</div>`+
-                            `<p class="mint_cell_img_content">1</p>`+
+                            // `<p class="mint_cell_img_content">1</p>`+
                         `</div>`+
                     `</div>`+
                     `<div class="mint-cell-right"></div>`+
@@ -480,7 +480,7 @@ import $api from 'api';
                         `<div class="mint-cell-value">`+
                             `<div class="mint_cell_img_title">${fourImg.title}</div>`+
                             `<div class="mint_cell_img">${fourImgSrc}</div>`+
-                            `<p class="mint_cell_img_content">1</p>`+
+                            // `<p class="mint_cell_img_content">1</p>`+
                         `</div>`+
                     `</div>`+
                     `<div class="mint-cell-right"></div>`+
