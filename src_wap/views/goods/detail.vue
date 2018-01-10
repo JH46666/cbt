@@ -255,7 +255,7 @@
             </mt-tab-item>
             <mt-tab-item id="3">
                 <mt-button type="default" disabled v-if="detailData.productExtInfo.state === 'OFF_SHELF'">加入购物车</mt-button>
-                <mt-button type="default" v-else-if="detailData.productExtInfo.isSoldOut == 1" @click.native="addCartInfo">加入购物车</mt-button>
+                <mt-button type="default" v-else-if="detailData.productExtInfo.isSoldOut == 1 && detailData.productExtInfo.compelOutStock == 0" @click.native="addCartInfo">加入购物车</mt-button>
                 <mt-button type="default" disabled v-else>缺货</mt-button>
             </mt-tab-item>
         </mt-tabbar>
