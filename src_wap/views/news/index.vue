@@ -26,7 +26,7 @@
                         {{ item.mainTitle}}
                     </div>
                     <div class="date">
-                        {{ hotNews.createdTime }}
+                        {{ item.createdTime }}
                     </div>
                 </div>
                 <div class="right">
