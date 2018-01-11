@@ -34,11 +34,11 @@
                 </div>
             </router-link>
         </section>
-        <div class="goods-loading" v-if="list.length < total">
+        <div class="goods-loading" v-if="list.length + 1 < total">
             <mt-spinner type="fading-circle" color="#f08200"></mt-spinner>
             <span class="loading-text">正在努力加载中</span>
         </div>
-        <div class="no-more" v-if="list.length === total">没有更多了呦~</div>
+        <div class="no-more" v-if="list.length + 1 === total">没有更多了呦~</div>
     </div>
 </template>
 
@@ -51,33 +51,38 @@
                 hotNews: {},
                 total: 0,
                 pageNum: 1,
+                count: 0
             }
         },
         methods: {
             // 获取热讯
-            getHot() {
-                this.$api.get('/oteao/newsInfo/getNewsInfoList',{
-                    'page.pageSize': 1,
-                    'page.pageNumber': 1,
-                    'newsTypeId': 402,
-                    'hotNewsTag': 1,
-                    'sysId': 1
-                },res => {
-                    this.hotNews = res.data[0] || {};
-                })
-            },
+            // getHot() {
+            //     this.$api.get('/oteao/newsInfo/getNewsInfoList',{
+            //         'page.pageSize': 1,
+            //         'page.pageNumber': 1,
+            //         'newsTypeId': 402,
+            //         'hotNewsTag': 1,
+            //         'sysId': 1
+            //     },res => {
+            //         this.hotNews = res.data[0] || {};
+            //     })
+            // },
             // 获取新闻
             getData(page = 1) {
+                this.count++;
                 return new Promise((resolve,reject) => {
                     this.$api.get('/oteao/newsInfo/getNewsInfoList',{
                         'page.pageNumber': page,
                         'page.pageSize': 10,
                         'newsTypeId': 402,
-                        'hotNewsTag': 0,
+                        // 'hotNewsTag': 0,
                         'sysId': 1,
                     },res => {
                         this.total = res.total_record
                         let data = this.list.concat(res.data || []);
+                        if(this.count === 1) {
+                            this.hotNews = data.splice(0,1)[0];
+                        }
                         this.list = data;
                         resolve(res)
                     })
@@ -112,7 +117,7 @@
         },
         created() {
             this.$store.commit('SET_TITLE','茶帮通新闻列表');
-            this.getHot();
+            // this.getHot();
             this.getData();
         }
     }
