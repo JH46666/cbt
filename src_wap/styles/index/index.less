@@ -567,12 +567,16 @@
                     margin: .36rem auto .16rem;
                     width: 2.58rem;
                     height: 2.58rem;
-                    background-image: url('../../assets/images/error.jpg');
+                    // background-image: url('../../assets/images/error.jpg');
                     background-repeat: no-repeat;
                     background-size: 100%;
                     .position(r);
                     img{
                         width: 100%;
+                        position: relative;
+                        top: 50%;
+                        -webkit-transform: translateY(-50%);
+                        transform: translateY(-50%);
                     }
                 }
                 .suggest_text{
