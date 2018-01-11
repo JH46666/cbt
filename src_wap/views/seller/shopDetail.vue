@@ -53,7 +53,7 @@
                 <div class="dialog" v-if="editAlipay">
                     <div class="title">修改支付宝</div>
                     <div class="input-row">
-                        <input type="text" maxlength="20" v-model="clonePay" ref="pay">
+                        <input type="text" maxlength="25" v-model="clonePay" ref="pay">
                     </div>
                     <p class="tips">后续交易金额将转入此账户，请务必填写正确</p>
                     <div class="btn-bar">
