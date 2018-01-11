@@ -15,7 +15,7 @@
                     {{ hotNews.mainTitle }}
                 </div>
                 <div class="detail">
-                    {{ sliceTag(hotNews.content) }}
+                    {{ hotNews.remark || sliceTag(hotNews.content) }}
                 </div>
             </div>
         </router-link>
