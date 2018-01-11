@@ -117,6 +117,9 @@
                         device: 'WAP'
                     }
                     this.$api.post('/oteao/login/doRegister',data,res=>{
+                        for (let attr in res.data) {
+                            this.$store.commit('SET_MEMBERDATA',{type:attr,val:res.data[attr]})
+                        }
                         this.$router.push('/regist/select')
                     },res=>{
                         if(res.code === 3005) {
