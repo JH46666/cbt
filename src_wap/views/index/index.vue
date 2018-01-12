@@ -51,7 +51,7 @@
                     <div class="swiper-container-2">
                         <div class="swiper-wrapper">
                             <div class="swiper-slide" v-for="(item,index) in newsList" :key="index">
-                                {{ item.mainTitle }}
+                                {{ item.remark || sliceTag(item.content) }}
                             </div>
                         </div>
                     </div>
@@ -210,6 +210,12 @@ import { mapState } from 'vuex'
             }
         },
         methods: {
+            // 去除标签
+            sliceTag(str) {
+                let div = document.createElement('div');
+                div.innerHTML = str;
+                return div.innerText.trim();
+            },
             selectCat(item,index) {
                 this.catIndex = index;
                 this.catId = item.catId;

@@ -9,7 +9,7 @@
                     <label for="1">登录账号</label>
                 </div>
                 <div class="select_item_content">
-                    <input type="text" readonly v-model="loginNumber" />
+                    <input type="text" disabled v-model="loginNumber" />
                 </div>
             </div>
             <div class="select_item">
@@ -20,7 +20,7 @@
                     <div class="mumber_type" v-for="(item,index) in registType" :key="index" :class="{on: index === registClass}" @click="selectRegistType(index)">{{ item }}</div>
                 </div>
                 <div class="select_item_content" v-else>
-                    <input type="text" readonly v-model="onlyName" />
+                    <input type="text" disabled v-model="onlyName" />
                 </div>
             </div>
         </div>
@@ -55,7 +55,7 @@
                     <label for="4">地区</label>
                 </div>
                 <div class="select_item_content" @click="addressShowOrHide = true">
-                    <input type="text" id="4" readonly v-model="formData.shopArea" placeholder="必填项，请选择地区" />
+                    <input type="text" id="4" disabled v-model="formData.shopArea" placeholder="必填项，请选择地区" />
                 </div>
                 <i class="iconfont" @click="addressShowOrHide = true">&#xe744;</i>
             </div>
