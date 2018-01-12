@@ -3,7 +3,7 @@
         <div class="hall-banner" v-html="bannerImg"></div>
         <collection :myProducts="listData"></collection>
          <!-- 到底啦 -->
-        <div class="bottom_wrapper">没有更多了哟~</div>
+        <div v-show="showTip" class="bottom_wrapper">没有更多了哟~</div>
     </div>
 </template>
 
@@ -13,7 +13,8 @@
         data() {
             return {
                 listData:[],
-                bannerImg: ''
+                bannerImg: '',
+                showTip: false,
             }
         },
         computed: {
@@ -84,6 +85,7 @@
                 'collection.collectionNo': str
             },res=>{
                 this.listData = res.data.proExtInfoVoList;
+                this.showTip = true;
             },res=>{
                 return this.$messageBox({
                     title:'提示',

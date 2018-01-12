@@ -12,7 +12,7 @@
                     <textarea rows="2" id="2" v-model="formData.shopName" placeholder="必填项，请填写店铺名称"></textarea>
                 </div>
             </div>
-            <div class="select_item seller_type" v-if="registClass === 1" style="padding-bottom: .28rem;">
+            <div class="select_item seller_type" v-if="registClass === 1" style="padding-bottom: .28rem;border-bottom:1px solid #e5e5e5;">
                 <div class="select_item_label">
                     <label for="6">卖家类型</label>
                 </div>
@@ -25,7 +25,7 @@
                     <label for="8">服务电话</label>
                 </div>
                 <div class="select_item_content">
-                    <input type="number" id="8" v-model="formData.shopResTel" placeholder="必填项，请填写服务电话" maxlength="11" />
+                    <input type="tel" id="8" v-model="formData.shopResTel" placeholder="必填项，请填写服务电话" :maxlength="11" />
                 </div>
             </div>
             <div class="select_item pay_item" v-if="registClass === 1">
@@ -33,7 +33,7 @@
                     <label for="7">支付宝</label>
                 </div>
                 <div class="select_item_content">
-                    <input type="text" id="7" v-model="formData.shopPayNumber" placeholder="必填项，请填写支付宝账号" maxlength="50" />
+                    <input type="text" id="7" v-model="formData.shopPayNumber" placeholder="必填项，请填写支付宝账号" :maxlength="50" />
                 </div>
             </div>
         </div>
@@ -151,7 +151,7 @@ export default {
     computed: {
         iSubmit() {
             if(this.registClass === 1){
-                if(this.licenseImg.length === 1 && this.formData.shopPayNumber != ''){
+                if(this.licenseImg.length === 1 && this.formData.shopPayNumber != '' && this.formData.shopResTel != '' && this.formData.shopName != ''){
                     return false;
                 }else{
                     return true;
