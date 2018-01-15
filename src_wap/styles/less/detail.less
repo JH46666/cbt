@@ -153,8 +153,8 @@
                 width: .8rem;
                 height: .8rem;
                 .reduis(50%);
-                .bg(rgba(0,0,0,.3));
-                opacity: 0.302;
+                .bg(rgba(0,0,0,.5));
+                opacity: 0.5;
                 position: absolute;
                 right: .2rem;
                 bottom: .6rem;
@@ -512,17 +512,17 @@
                     }
                 }
                 .mint-cell{
-                    .paddingAll(0,0,.4rem,0);
+                    .paddingAll(.4rem,0,.4rem,0);
                     border-top: 1px solid #e5e5e5;
-                    min-height: 1.47rem;
+                    min-height: .98rem;
                     &:nth-child(1){
                         border-top: 0 none;
-                        min-height: 1.46rem;
+                        min-height: .98rem;
                     }
                     .mint-cell-value{
                         .flex;
                         .flex-dir;
-                        .fontSize(.26rem);
+                        .fontSize(.24rem);
                         width: 100%;
                         .comment_head{
                             .flex;
@@ -551,7 +551,8 @@
                             .line(1.5);
                             max-height: none;
                             width: 100%;
-                            text-indent: .48rem;
+                            .fontSize(.28rem);
+                            // text-indent: .48rem;
                             .position(r);
                             &.on{
                                 max-height: 1.9rem;

@@ -19,6 +19,9 @@ html,body,#app,#container{
 :-ms-input-placeholder { /* Internet Explorer 10+ */
     color:#adadad;
 }
+input{
+    color: #333 !important;
+}
 // 主色
 .color_f08{color: #f08200;}
 // 点缀色
@@ -365,3 +368,12 @@ html,body,#app,#container{
     z-index: 2500;
     // .position(a);
 }
+
+// 按钮不可用
+#app{
+    .mint-button.is-disabled{
+        background-color: #e6e6e6;
+        color: #adadad;
+        opacity: 1;
+    }
+} 

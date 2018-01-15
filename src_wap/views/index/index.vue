@@ -172,8 +172,8 @@
                     <div class="suggest_type">
                         <span v-if="!$tool.isLogin()">询价</span>
                         <span v-else>￥{{ item.proPrice | toFix2 }}</span>
-                        <span v-if="item.businessType === 'SELF_SALES'">自营</span>
-                        <span class="on" v-else>{{ sellerType[item.tagNum-1] }}</span>
+                        <!-- <span v-if="item.businessType === 'SELF_SALES'">自营</span> -->
+                        <span :class="{'other':item.tagNum <= 4}">{{ sellerType[item.tagNum-1] }}</span>
                     </div>
                 </div>
             </div>
@@ -206,7 +206,7 @@ import { mapState } from 'vuex'
                 onePro: [],
                 packetEnter: '',
                 topFlag: false,
-                sellerType: ['茶厂','合作社','茶企','批发商'],
+                sellerType: ['茶厂','合作社','茶企','批发商','自营','自营'],
             }
         },
         methods: {
@@ -370,10 +370,10 @@ import { mapState } from 'vuex'
                     var swiper = new Swiper('.swiper-container-1', {
                         slidesPerView: 'auto',
                         spaceBetween: 25,
-                        freeMode: true,
+                        // freeMode: true,
                         centeredSlides: true
                     });
-                    swiper.slideTo(2, 200, false);
+                    swiper.slideTo(1, 200, false);
                 })
             })
             if(location.href.indexOf('?wxpaycallback=') !== -1 ){
