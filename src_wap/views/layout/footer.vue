@@ -3,7 +3,7 @@
         <router-link v-for="(item,index) in footerData" :class="{on: item.routeName === $route.name}" :to="item.path" :key="index">
             <i class="iconfont" :class="item.path === classIndex ? item.select : item.icon"></i>
             {{ item.name }}
-            <mt-badge type="error" size="small" v-if="index === 2 && id">{{ cartTotal | ninenineAdd }}</mt-badge>
+            <mt-badge type="error" size="small" v-if="index === 2 && id" v-show="Number(cartTotal)>0">{{ cartTotal | ninenineAdd }}</mt-badge>
         </router-link>
     </div>
 </template>

@@ -123,7 +123,7 @@
                         .position(r);
                         h4{
                             .color(#333);
-                            .fontSize(.268rem);
+                            .fontSize(.28rem);
                             .moreLine(2);
                             .h(.8rem);
                             .line(.4rem);

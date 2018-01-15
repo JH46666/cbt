@@ -251,7 +251,7 @@
             <mt-tab-item id="2" @click.native="openCart">
                 <i class="icon-jiarugouwuche" slot="icon"></i>
                 购物车
-                <mt-badge type="error" size="small">{{ cartTotal | ninenineAdd }}</mt-badge>
+                <mt-badge type="error" size="small" v-show="Number(cartTotal)>0">{{ cartTotal | ninenineAdd }}</mt-badge>
             </mt-tab-item>
             <mt-tab-item id="3">
                 <mt-button type="default" disabled v-if="detailData.productExtInfo.state === 'OFF_SHELF'">加入购物车</mt-button>

@@ -11,7 +11,7 @@
             :infinite-scroll-disabled="false"
             infinite-scroll-distance="10">
                 <div class="active-red" v-if="selected === 'active'">
-                    <mt-button type="default" @click="showActiveRed">激活红包</mt-button>
+                    <mt-button type="default" @click="showActiveRed" style="font-size:.28rem;">激活红包</mt-button>
                 </div>
                 <template v-for="(item,index) in list">
                     <div class="redpacket-item" :class="{active: item.id === activeRed,disabled:selected === 'disabled' }" v-if="index < listNum" @click="pick(item)">
