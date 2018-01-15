@@ -96,18 +96,18 @@
                             <i class="icon-xiangyou"></i>
                         </div>
                     </div>
-                    <div class="redpacket-list-wrap" v-if="item.selfSupport === true">
-                        <div class="redpacket-list" v-for="(todo,i) in item.canUseRuleSetList">
-                            <template v-if="todo.showType === 'SUB_AMOUNT'">
+                    <div class="redpacket-list-wrap" v-if="item.selfSupport === true && item.canUseRuleSetList.length">
+                        <template v-for="(todo,i) in item.canUseRuleSetList">
+                            <div class="redpacket-list" v-if="todo.showType === 'SUB_AMOUNT'">
                                 <div class="left">{{ todo.showName }}</div>
                                 <div class="right">- {{ todo.giveNum | toFix2 }}</div>
-                            </template>
-                        </div>
+                            </div>
+                        </template>
                     </div>
                     <div class="remark">
                         <div class="left">备注</div>
                         <div class="right">
-                            <input type="text" placeholder="对订单特殊要求进行描述" maxlength="50" v-model="item.remark">
+                            <textarea class="textarea" rows="2" placeholder="对订单特殊要求进行描述" maxlength="50" v-model="item.remark"></textarea>
                             <p class="count">{{ item.remark.length }}/50</p>
                         </div>
                     </div>
