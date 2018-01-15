@@ -304,7 +304,12 @@
     // 备注
     .remark{
         .flex;
-        padding: .2rem .35rem;
+        padding: .3rem .35rem .2rem;
+        .textarea{
+            border: none;
+            .w(5.6rem);
+            resize: none;
+        }
         .left{
             margin-right: .6rem;
         }
@@ -585,6 +590,7 @@
             padding: .08rem .2rem;
             .color(@b-9);
             .tips{
+                min-height: .28rem;
                 .flex-1;
                 .fontSize(.24rem);
                 .line(1.5);
