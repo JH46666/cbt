@@ -63,7 +63,7 @@
                     询价
                 </template>
                 </div>
-                <div class="goods-type" :class="{self: businessType > 4}">
+                <div class="goods-type" :class="{'other': businessType && businessType <= 4}">
                     {{ businessName[businessType - 1] || businessName[4] }}
                 </div>
             </div>
@@ -102,7 +102,8 @@
                 default: '#'
             },
             businessType: {
-                default: '5'
+                type: Number,
+                default: 5
             },
             imgUrl: {
                 type: String,
