@@ -98,10 +98,10 @@
             <div class="mup_bg" @click="sortVisible = false"></div>
             <div class="mupop_dialog_wrapper">
                 <div class="popup-content">
-                    <div class="con-item" v-for="list in sortData">
+                    <div class="con-item" v-for="(list,listIndex) in sortData" :key="listIndex">
                         <h4>{{list.sortName}}</h4>
                         <ul class="clearfix">
-                            <li :class="{on:index == list.sortIndex}" v-for="(item,index) in list.sortConditions" @click="selectSort(list,item,index)" v-if="item.propVal!='库存'">{{item.propVal}}</li>
+                            <li :class="{on:index == list.sortIndex}" v-for="(item,index) in list.sortConditions" :key="index" @click="selectSort(list,item,index)" v-if="item.propVal!='库存'">{{item.propVal}}</li>
                         </ul>
                     </div>
                 </div>

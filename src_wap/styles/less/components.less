@@ -179,16 +179,17 @@
             .line(.3rem);
         }
         .goods-type{
-            border: 1px solid #0ec416;
+            border: 1px solid #f08200;
+            border-color: @mainCol;
+            .color(@mainCol);
             .paddingL(.04rem);
             .paddingR(.04rem);
             .reduis(4px);
-            .color(#0ec416);
             .fontSize(.2rem);
             .line(.28rem);
-            &.self{
-                border-color: @mainCol;
-                .color(@mainCol);
+            &.other{
+                border-color: #0ec416;
+                .color(#0ec416);
             }
         }
     }

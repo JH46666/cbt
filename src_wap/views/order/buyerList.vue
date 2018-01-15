@@ -54,10 +54,10 @@
                                 <div class="count">共{{ item.products.length }}件</div>
                             </div>
                             <div class="btn_wrapper">
-                                <mt-button plain v-if="item.isComment === false && item.orderStatus === 'FINISH'" class="pay_now" @click.native="commentMethod(item)">评价</mt-button>
+                                <mt-button plain v-if="!item.isComment && item.orderStatus === 'FINISH'" class="pay_now" @click.native="commentMethod(item)">评价</mt-button>
                                 <mt-button plain v-if="item.orderStatus === 'WAIT_PAY' || item.orderStatus === 'WAIT_CHECK'" @click.native="cancelMethod(item)">取消订单</mt-button>
                                 <mt-button plain v-if="item.orderStatus === 'WAIT_PAY'" class="pay_now" @click.native="payMethod(item.payId)">立即支付</mt-button>
-                                <mt-button plain v-if="(item.orderStatus === 'DELIVERED' || item.orderStatus === 'CBT_BUYER') && item.sellerOrgId!=null||(item.sellerOrgId==null && !item.subOrderSize)" class="pay_now" @click.native="confrimMethod(item.orderNo)">确认收货</mt-button>
+                                <mt-button plain v-if="(item.orderStatus === 'DELIVERED' || item.orderStatus === 'CBT_BUYER') && (item.sellerOrgId!=null||(item.sellerOrgId==null && !item.subOrderSize))" class="pay_now" @click.native="confrimMethod(item.orderNo)">确认收货</mt-button>
                                 <mt-button plain v-if="(item.orderStatus === 'DELIVERED' || item.orderStatus === 'CBT_BUYER') && item.sellerOrgId==null&&item.subOrderSize > 0" class="pay_now" @click.native="confrimMethodsMoreChild(item.subOrderNo,item.orderNo)">确认收货</mt-button>
                             </div>
                         </div>
