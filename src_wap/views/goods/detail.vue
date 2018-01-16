@@ -36,7 +36,7 @@
                 </div>
                 <div class="dialog_content">
                     <div class="item_1">
-                        客服热线：<span><a href="tel://400-996-3399">400-996-3399</a></span>
+                        客服热线：<span><a href="tel:400-996-3399">400-996-3399</a></span>
                     </div>
                     <div class="item_2">
                         服务时间：<span>08:40 - 22:30（周一至周日</span>）
