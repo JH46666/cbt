@@ -12,7 +12,7 @@
                                 <template v-if="!sign.returnResult">
                                     签到领取
                                 </template>
-                                <template v-else>
+                                <template v-else style="background:#fff;opacity:.6;">
                                     已签到
                                 </template>
                             </mt-button>
