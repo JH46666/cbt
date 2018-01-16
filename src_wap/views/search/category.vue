@@ -146,6 +146,7 @@
                 filterFlag: false,
                 sessionFlag: false,  // 是否有session
                 scrollTop: 0,
+                filterIndexs: [],
                 sortData:[{
                     sortName: '排序',
                     sortIndex: 0,
@@ -207,7 +208,6 @@
             if(sessionStorage.category){
                 this.sessionFlag = true;
                 let data = JSON.parse(sessionStorage.category);
-                console.log(data);
                 this.activeCatIndex = data.activeCatIndex;
                 this.activeSubIndex = data.activeSubIndex;
                 this.activeCatId = data.activeCatId;
@@ -217,6 +217,7 @@
                 this.propertiesValList = data.propertiesValList;
                 this.pageSize = data.total;
                 this.scrollTop = data.top;
+                this.filterIndexs = data.filterIndexs;
                 let sortIndex = data.sortIndex;
                 this.queryCatTree().then((res)=>{
                     this.catTree = res.data[0].children;
@@ -263,6 +264,10 @@
                         this.searchSub(0,this.subCat[0].id);
                     }
                 },res=>{
+                    return Toast({
+                        message: res.errorMsg,
+                        iconClass: 'icon icon-fail'
+                    });
                     console.log(res);
                 });
             }
@@ -430,6 +435,9 @@
                         }
                     }
                     if(this.sessionFlag){
+                        for(let i=0; i<this.filterIndexs.length; i++){
+                            this.filterConditions[i].filterIndex = this.filterIndexs[i];
+                        }
                         setTimeout(()=>{
                             this.$refs.goodsWrapper.scrollTop = this.scrollTop;
                             this.sessionFlag = false;
@@ -502,6 +510,10 @@
             },
             //去详情时存储当前浏览的分类下标和滚动高度
             setSession(){
+                let filterIndexs = [];
+                for(let item of this.filterConditions){
+                    filterIndexs.push(item.filterIndex);
+                }
                 let data = {
                     activeCatIndex: this.activeCatIndex,
                     activeSubIndex: this.activeSubIndex,
@@ -511,10 +523,10 @@
                     sort: this.sort,
                     sortIndex: this.sortData[0].sortIndex,
                     propertiesValList: this.propertiesValList,
+                    filterIndexs: filterIndexs,
                     total: this.resultData.length,
                     top: this.$refs.goodsWrapper.scrollTop,
                 }
-                console.log(data);
                 if(window.sessionStorage){
                     sessionStorage.setItem('category',JSON.stringify(data));
                 }
