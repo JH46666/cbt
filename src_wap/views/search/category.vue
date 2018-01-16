@@ -20,7 +20,7 @@
         <!-- 一级 -->
         <div class="first-box" :class="{'wx-first': wxFlag}">
             <ul class="first-cat" ref="wrapper">
-                <li class="cat-item" :class="{on: index==activeCatIndex}" v-for="(cat,index) in firstCat" @click="searchFirstCat(index,cat.id,$event.target)" ref="liwrap">
+                <li class="cat-item" :class="{on: index==activeCatIndex}" v-for="(cat,index) in firstCat" :key="index" @click="searchFirstCat(index,cat.id,$event.target)" ref="liwrap">
                     <span>{{cat.catName}}</span>
                 </li>
             </ul>
@@ -32,14 +32,14 @@
             <div class="sub-box clearfix">
                 <div class="sub-left ipScroll">
                     <ul>
-                        <li v-for="(subItem,index) in subCat" class="sub-item flex align_items_c" :class="{'on':index==activeSubIndex}" @click="searchSub(index,subItem.id)">
+                        <li v-for="(subItem,index) in subCat" :key="index" class="sub-item flex align_items_c" :class="{'on':index==activeSubIndex}" @click="searchSub(index,subItem.id)">
                             <span>{{subItem.catName}}</span>
                         </li>
                     </ul>
                 </div>
                 <div class="flex-1 content-r">
                     <div class="content-inner ipScroll" style="overflow: hidden;">
-                        <div style="height: 100%; overflow-y: auto;">
+                        <div style="height: 100%; overflow-y: auto;" ref="goodsWrapper">
                             <div class="condition-box">
                                 <ul class="flex">
                                     <li @click="filterVisible = true" :class="{on: filterFlag}"><i class="iconfont">&#xe674;</i>筛选</li>
@@ -47,22 +47,25 @@
                                 </ul>
                             </div>
                             <div v-infinite-scroll="loadMore" infinite-scroll-disabled="true" infinite-scroll-distance="10">
-                                <goods-item v-for="item of resultData" :key="item.id"
-                                    :link="item.proSku"
-                                    :mainTit="item.proTitle"
-                                    :subTit="item.subTitle"
-                                    :price="item.proPrice"
-                                    :imgUrl="item.proImg"
-                                    :tagUrl="item.tagImgUrl"
-                                    :aromaStar="item.aromaStar"
-                                    :aromaName="item.aromaVal"
-                                    :tasteStar="item.tasteStar"
-                                    :businessType="item.tagNum"
-                                    :tasteName="item.tasteVal"
-                                    :isLogin="$tool.isLogin()"
-                                    :isShowAttr="item.isShowTasteFragance"
-                                    imgWidth="1.56rem">
-                                </goods-item>
+                                <div v-for="item of resultData" :key="item.id" @click="setSession">
+                                    <goods-item
+                                        :link="item.proSku"
+                                        :mainTit="item.proTitle"
+                                        :subTit="item.subTitle"
+                                        :price="item.proPrice"
+                                        :imgUrl="item.proImg"
+                                        :tagUrl="item.tagImgUrl"
+                                        :aromaStar="item.aromaStar"
+                                        :aromaName="item.aromaVal"
+                                        :tasteStar="item.tasteStar"
+                                        :businessType="item.tagNum"
+                                        :tasteName="item.tasteVal"
+                                        :isLogin="$tool.isLogin()"
+                                        :isShowAttr="item.isShowTasteFragance"
+                                        imgWidth="1.56rem">
+                                    </goods-item>
+                                </div>
+                                
                             </div>
                             <div class="goods-loading" v-if="loading">
                                 <mt-spinner type="fading-circle" color="#f08200"></mt-spinner>
@@ -80,10 +83,10 @@
             <div class="mup_bg" @click="filterVisible = false"></div>
             <div class="mupop_dialog_wrapper">
                 <div class="popup-content">
-                    <div class="con-item" v-for="list in filterConditions">
+                    <div class="con-item" v-for="(list,listIndex) in filterConditions" :key="listIndex">
                         <h4>{{list.propName}}</h4>
                         <ul class="clearfix">
-                            <li :class="{on:index == list.filterIndex}" v-for="(item,index) in list.propValList" @click="selectFilter(list,item,index)">{{item.propVal}}</li>
+                            <li :class="{on:index == list.filterIndex}" v-for="(item,index) in list.propValList" :key="index" @click="selectFilter(list,item,index)">{{item.propVal}}</li>
                         </ul>
                     </div>
                 </div>
@@ -141,6 +144,8 @@
                 sortDesc: true,      //排序
                 sort: 1,
                 filterFlag: false,
+                sessionFlag: false,  // 是否有session
+                scrollTop: 0,
                 sortData:[{
                     sortName: '排序',
                     sortIndex: 0,
@@ -199,47 +204,78 @@
         created(){
             // 设置title
             this.$store.commit('SET_TITLE','分类');
-            this.$api.get('/oteao/proCat/queryCatTree',{sysId: 1},res=>{
-                this.catTree = res.data[0].children;
-                this.subCat = this.catTree[0].children;
-                for(let item of this.catTree){
-                    this.firstCat.push({
-                        'id': item.id,
-                        'catName': item.catName
-                    });
-                }
-                if(this.$route.query.parent != undefined){
-                    for(let i=0; i<this.firstCat.length; i++){
-                        if(this.firstCat[i].id == this.$route.query.parent){
-                            let on = Array.from(this.$refs.wrapper.children)
-                            console.log(on);
-                            this.searchFirstCat(i,this.firstCat[i].id,this.$refs.wrapper)
-                        }
+            if(sessionStorage.category){
+                this.sessionFlag = true;
+                let data = JSON.parse(sessionStorage.category);
+                console.log(data);
+                this.activeCatIndex = data.activeCatIndex;
+                this.activeSubIndex = data.activeSubIndex;
+                this.activeCatId = data.activeCatId;
+                this.activeSubId = data.activeSubId;
+                this.sortDesc = data.sortDesc;
+                this.sort = data.sort;
+                this.propertiesValList = data.propertiesValList;
+                this.pageSize = data.total;
+                this.scrollTop = data.top;
+                let sortIndex = data.sortIndex;
+                this.queryCatTree().then((res)=>{
+                    this.catTree = res.data[0].children;
+                    this.subCat = this.catTree[0].children;
+                    for(let item of this.catTree){
+                        this.firstCat.push({
+                            'id': item.id,
+                            'catName': item.catName
+                        });
                     }
-                    if(this.$route.query.child != undefined){
-                        for(let i=0; i<this.subCat.length; i++){
-                            if(this.subCat[i].id == this.$route.query.child){
-                                this.searchSub(i,this.subCat[i].id);
+                    this.setFirstCat(this.activeCatIndex,this.activeCatId,this.$refs.wrapper);
+                    this.setSubCat(this.activeSubIndex,this.activeSubId);
+                    this.sortData[0].sortIndex = sortIndex;
+                    this.clearSession();
+                });
+            }else{
+                this.$api.get('/oteao/proCat/queryCatTree',{sysId: 1},res=>{
+                    this.catTree = res.data[0].children;
+                    this.subCat = this.catTree[0].children;
+                    for(let item of this.catTree){
+                        this.firstCat.push({
+                            'id': item.id,
+                            'catName': item.catName
+                        });
+                    }
+                    if(this.$route.query.parent != undefined){
+                        for(let i=0; i<this.firstCat.length; i++){
+                            if(this.firstCat[i].id == this.$route.query.parent){
+                                let on = Array.from(this.$refs.wrapper.children)
+                                this.searchFirstCat(i,this.firstCat[i].id,this.$refs.wrapper)
                             }
                         }
+                        if(this.$route.query.child != undefined){
+                            for(let i=0; i<this.subCat.length; i++){
+                                if(this.subCat[i].id == this.$route.query.child){
+                                    this.searchSub(i,this.subCat[i].id);
+                                }
+                            }
+                        }else{
+                            this.searchSub(0,this.subCat[0].id);
+                        }
                     }else{
+                        this.activeCatId = this.firstCat[0].id;
                         this.searchSub(0,this.subCat[0].id);
                     }
-                }else{
-                    this.activeCatId = this.firstCat[0].id;
-                    this.searchSub(0,this.subCat[0].id);
-                }
-            },res=>{
-                console.log(res);
-            });
+                },res=>{
+                    console.log(res);
+                });
+            }
         },
         watch:{
             activeSubId(val){
                 this.resultData = [];
                 this.pageNumber = 1;
-                this.totalSize = 1;
-                this.sort = 1;
-                this.sortDesc = true;
+                this.totalSize = 0;
+                if(!this.sessionFlag){
+                    this.sort = 1;
+                    this.sortDesc = true;
+                }
                 let data = {
                     catId: val,
                     sysId: 1,
@@ -283,6 +319,16 @@
             this.wxFlag = this.$tool.isWx;
         },
         methods:{
+            queryCatTree(){
+                return new Promise((resolve,reject) => {
+                    this.$api.get('/oteao/proCat/queryCatTree',{sysId: 1},res=>{
+                        resolve(res);
+                    },res=>{
+                        console.log(res);
+                    });
+                });
+                
+            },
             //清空搜索内容
             clearTxt(){
                 this.searchTxt = "";
@@ -379,12 +425,42 @@
                     this.resultData = this.resultData.concat(tempArr);
                     this.totalSize = res.total_record;
                     if(this.resultData.length === this.totalSize){
-                        this.pageNumber--;
+                        if(this.pageNumber > 1){
+                            this.pageNumber--;
+                        }
+                    }
+                    if(this.sessionFlag){
+                        setTimeout(()=>{
+                            this.$refs.goodsWrapper.scrollTop = this.scrollTop;
+                            this.sessionFlag = false;
+                        },100);
                     }
                 });
             },
+            // 设置一级分类
+            setFirstCat(index,id,e){
+                let o_w = e.parentNode.offsetWidth;
+                let o_l = e.parentNode.offsetLeft;
+                this.activeCatIndex = index;
+                this.activeCatId = id;
+                if(index>=3){
+                    this.$refs.wrapper.scrollLeft = o_l-2*o_w;
+                }
+                for(let item of this.catTree){
+                    if(id == item.id){
+                        this.subCat = item.children;
+                        break;
+                    }
+                }
+            },
+            // 设置二级分类
+            setSubCat(index,id,e){
+                this.activeSubIndex = index;
+                this.activeSubId = id;
+            },
             // 搜索一级分类
             searchFirstCat(index,id,e){
+                this.scrollTop = 0;
                 let o_w = e.parentNode.offsetWidth;
                 let o_l = e.parentNode.offsetLeft;
                 this.activeCatIndex = index;
@@ -404,6 +480,7 @@
             searchSub(index,id){
                 this.activeSubIndex = index;
                 this.activeSubId = id;
+                this.pageSize = 20;
             },
             // 筛选
             selectFilter(list,item,index){
@@ -422,6 +499,29 @@
                 }else if(index === 2){
                     this.sortDesc = false;
                 }
+            },
+            //去详情时存储当前浏览的分类下标和滚动高度
+            setSession(){
+                let data = {
+                    activeCatIndex: this.activeCatIndex,
+                    activeSubIndex: this.activeSubIndex,
+                    activeCatId: this.activeCatId,
+                    activeSubId: this.activeSubId,
+                    sortDesc: this.sortDesc,
+                    sort: this.sort,
+                    sortIndex: this.sortData[0].sortIndex,
+                    propertiesValList: this.propertiesValList,
+                    total: this.resultData.length,
+                    top: this.$refs.goodsWrapper.scrollTop,
+                }
+                console.log(data);
+                if(window.sessionStorage){
+                    sessionStorage.setItem('category',JSON.stringify(data));
+                }
+            },
+            //清除sessionStorage
+            clearSession(){
+                sessionStorage.removeItem("category");
             }
         },
         // 判断登陆
