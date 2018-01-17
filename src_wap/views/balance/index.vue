@@ -345,7 +345,7 @@
                         "orderRemark": val.remark,
                         "payMethodCode": val.currentPayMethod,
                         "sellerOrgId": val.orgId,
-                        "useRedPacketId": val.useRedPacketId || -1
+                        "useRedPacketId": val.useRedPacketId === null ? -1 : val.useRedPacketId
                     })
                 })
 
@@ -391,7 +391,7 @@
                         "orderRemark": val.remark,
                         "payMethodCode": val.currentPayMethod,
                         "sellerOrgId": val.orgId,
-                        "useRedPacketId": val.useRedPacketId
+                        "useRedPacketId": val.useRedPacketId === null ? -1 : val.useRedPacketId
                     })
 
                     // 获取支付状态 在线or货到付款
