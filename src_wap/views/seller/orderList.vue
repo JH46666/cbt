@@ -287,7 +287,7 @@
         },
         created() {
             // 设置title
-            this.$store.commit('SET_TITLE','卖家订单列表');
+            this.$store.commit('SET_TITLE','卖家订单');
             
             // 进入页面拉取数据
             this.$store.dispatch('getSellerOrder',{type: this.selected}).then(res => {

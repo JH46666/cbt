@@ -297,7 +297,7 @@ export default {
     },
     created() {
         // 设置title
-        this.$store.commit('SET_TITLE','茶帮通红包馆');
+        this.$store.commit('SET_TITLE','红包馆');
         // 获取红包code并拉取红包信息
         this.$store.dispatch('getBlock','PACKET_CODE').then((res)=>{
             this.packetCode = JSON.parse(res.data.htmlText);
