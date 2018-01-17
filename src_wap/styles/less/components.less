@@ -404,6 +404,16 @@
                 -o-transform: translateY(-50%);
                 transform: translateY(-50%);
             }
+            img[lazy=loading]{
+                max-width: 100%;
+                max-height: 100%;
+            }
+            img[lazy=error]{
+                .w(100%);
+                .h(100%);
+                background: #f5f5f5 url('~@/assets/images/error.jpg') no-repeat;
+                background-size: 100% 100%;
+            }
         }
         .pro-txt {
             color: #999;
