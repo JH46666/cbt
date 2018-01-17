@@ -312,6 +312,7 @@
                 return new Promise((resolve,reject) => {
                     this.$api.post('/oteao/shoppingCart/del',{ids},res => {
                         this.getData();
+                        this.$store.dispatch('queryCartTotal');
                         resolve(res);
                     })
                 })
@@ -441,7 +442,8 @@
                     // 需要进行最大购买与最小购买判断
                     if(!!item.buyLowLimit) {
                         if(item.buyNum < item.buyLowLimit) {
-                            item.buyNum = item.oldBuy;
+                            item.buyNum = item.buyLowLimit;
+                            item.oldBuy = item.buyLowLimit;
                             return Toast('小于最低购买量')
                         }
                     }

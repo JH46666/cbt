@@ -204,7 +204,7 @@
         },
         created(){
             // 设置title
-            this.$store.commit('SET_TITLE','分类');
+            this.$store.commit('SET_TITLE','全部分类');
             if(sessionStorage.category){
                 this.sessionFlag = true;
                 let data = JSON.parse(sessionStorage.category);

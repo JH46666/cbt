@@ -116,7 +116,7 @@
             }
         },
         created() {
-            this.$store.commit('SET_TITLE','茶帮通新闻列表');
+            this.$store.commit('SET_TITLE','茶帮通头条');
             // this.getHot();
             this.getData();
         }

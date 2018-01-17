@@ -345,7 +345,7 @@
                         "orderRemark": val.remark,
                         "payMethodCode": val.currentPayMethod,
                         "sellerOrgId": val.orgId,
-                        "useRedPacketId": val.useRedPacketId
+                        "useRedPacketId": val.useRedPacketId || -1
                     })
                 })
 
