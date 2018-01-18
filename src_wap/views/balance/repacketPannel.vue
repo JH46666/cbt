@@ -27,7 +27,7 @@
                                         <span class="type">折</span>
                                     </template>
                                 </p>
-                                <p class="limit-text">满 {{ item.fullAmount | toFix2 }} 可用</p>
+                                <p class="limit-text">满 {{ item.fullAmount | toFix2 }} 元可用</p>
                             </div>
                             <div class="right">
                                 <p class="title">
