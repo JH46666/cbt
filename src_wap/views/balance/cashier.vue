@@ -284,17 +284,13 @@
             // alert(this.payId)
         },
         beforeRouteEnter(to, from, next) {
-            if(store.state.member.member.id) {
+            store.dispatch('getMemberData').then(res => {
                 next();
-            } else {
-                store.dispatch('getMemberData').then(res => {
-                    next();
-                }).catch(res =>{
-                    next(vm => {
-                        vm.router.push('/login')
-                    })
+            }).catch(res =>{
+                next(vm => {
+                    vm.router.push('/login')
                 })
-            }
+            })
         }
     }
 </script>
