@@ -12,8 +12,8 @@
                                 <template v-if="!sign.returnResult">
                                     签到领取
                                 </template>
-                                <template v-else style="background:#fff;opacity:.6;">
-                                    已签到反对党的
+                                <template v-else>
+                                    <span style="background:#fff;opacity:.6;">已签到</span> 
                                 </template>
                             </mt-button>
                         </div>
