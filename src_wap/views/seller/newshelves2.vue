@@ -124,7 +124,7 @@
             </div>
             <div class="upload-step up-step4">
                 <h4><span class="serial-num">4</span>其他商品细节，最多可上传<span class="color_f33">3</span>张</h4>
-                <div class="step4-img-box" :class="{on: resize.imgs.imgsStep4.length > 0}">
+                <div class="step4-img-box" :class="{on: resize.imgs.imgsStep4.length > 0}" style="margin-bottom:.25rem;">
                     <mt-swipe :show-indicators="false" :auto="0" @change="handleChangeFour">
                         <mt-swipe-item  v-for="(item,index) in resize.imgs.imgsStep4" :key="index">
                             <img :src="item" />

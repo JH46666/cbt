@@ -56,7 +56,7 @@
             </div>
             <div class="order-entry">
                 <router-link :to="{name: '订单列表',query: {orderStatus:'waitPay'}}" class="item">
-                    <mt-badge size="small" type="error" :class="{one:count.waitSend < 10}" v-if="count.waitPay > 0">{{ count.waitPay | ninenineAdd }}</mt-badge>
+                    <mt-badge size="small" type="error" :class="{one:count.waitPay < 10}" v-if="count.waitPay > 0">{{ count.waitPay | ninenineAdd }}</mt-badge>
                     <span><i class="icon-gerenzhongxin_daifukuan"></i></span>
                     <p>待付款</p>
                 </router-link>
@@ -66,12 +66,12 @@
                     <p>待发货</p>
                 </router-link>
                 <router-link :to="{name: '订单列表',query: {orderStatus:'waitRec'}}" class="item">
-                    <mt-badge size="small" type="error" :class="{one:count.waitSend < 10}" v-if="count.send > 0">{{ count.send | ninenineAdd }}</mt-badge>
+                    <mt-badge size="small" type="error" :class="{one:count.send < 10}" v-if="count.send > 0">{{ count.send | ninenineAdd }}</mt-badge>
                     <span><i class="icon-gerenzhongxin_yifahuo"></i></span>
                     <p>待收货</p>
                 </router-link>
                 <router-link :to="{name: '订单列表',query: {orderStatus:'waitComment'}}" class="item">
-                    <mt-badge size="small" type="error" :class="{one:count.waitSend < 10}" v-if="count.waitCommentNum > 0">{{ count.waitCommentNum | ninenineAdd }}</mt-badge>
+                    <mt-badge size="small" type="error" :class="{one:count.waitCommentNum < 10}" v-if="count.waitCommentNum > 0">{{ count.waitCommentNum | ninenineAdd }}</mt-badge>
                     <span><i class="icon-shangpinpingjia"></i></span>
                     <p>待评价</p>
                 </router-link>
