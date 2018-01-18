@@ -14,7 +14,7 @@
             }
         },
         created() {
-            this.$store.commit('SET_TITLE','静态页');
+            // this.$store.commit('SET_TITLE','静态页');
             try {
                 this.$store.dispatch('getBlock',this.$route.query.blockNo).then(res => {
                     this.$store.commit('SET_TITLE',res.data.htmlName);

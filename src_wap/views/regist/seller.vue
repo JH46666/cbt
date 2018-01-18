@@ -142,7 +142,7 @@ export default {
     },
     created() {
         // 设置title
-        this.$store.commit('SET_TITLE','茶帮通注册');
+        this.$store.commit('SET_TITLE','卖家注册');
         this.loginNumber = store.state.member.member.memberAccount;
         this.formData.shopName = store.state.member.member.unitName;
     },

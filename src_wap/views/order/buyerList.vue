@@ -332,7 +332,7 @@ export default {
   　},
     created() {
         // 设置title
-        this.$store.commit('SET_TITLE','订单列表');
+        this.$store.commit('SET_TITLE','买家订单');
 
         this.getList().then((res) =>{
             this.orderList = res.data.order;
