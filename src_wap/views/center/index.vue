@@ -13,7 +13,7 @@
                                     签到领取
                                 </template>
                                 <template v-else style="background:#fff;opacity:.6;">
-                                    已签到
+                                    已签到反对党的
                                 </template>
                             </mt-button>
                         </div>
