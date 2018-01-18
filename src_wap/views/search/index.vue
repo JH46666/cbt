@@ -177,8 +177,8 @@
                 this.reset();
                 try {
                     this.handle().then(res => {
+                        this.list = [];
                         let data = this.list.concat(res.data);
-                        console.log(data);
                         if(data.length === 0) {
                             this.noList = true;
                         }
@@ -198,7 +198,7 @@
             // 重置
             reset() {
                 this.pageNum = 1;
-                this.list = [];
+                // this.list = [];
                 this.total = 0;
                 this.noList = false;
             },

@@ -44,6 +44,9 @@
         },
         methods: {
             save() {
+                if(this.oldPassword.length < 6) {
+                    return this.$toast('旧密码长度不能小于6位')
+                }
                 let exp = /[^0-9A-Za-z\\`~!@#$%\^&*\(\)+=|{}':;,\[\].<>\/?~！@#￥%……&*（）——+{}【】‘；：”“'。，、？]/g;
                 if(exp.test(this.newPassword)) {
                     return  this.$toast('密码格式输入错误')

@@ -70,7 +70,7 @@
                                     <span class="big">{{ item.discount }}</span>
                                     <span class="small">折</span>
                                 </template>
-                                <span>满{{ item.fullAmountUse }}可用</span>
+                                <span>满{{ item.fullAmountUse }}元可用</span>
                             </div>
                             <div class="packet_name">{{ item.limitExplain }}</div>
                         </div>
@@ -121,7 +121,7 @@
                                             <span class="big">{{ item.discount }}</span>
                                             <span class="small">折</span>
                                         </template>
-                                        <span>满{{ item.fullAmountUse }}可用</span>
+                                        <span>满{{ item.fullAmountUse }}元可用</span>
                                     </div>
                                     <div class="packet_name align_left">{{ item.limitExplain }}</div>
                                 </div>
@@ -183,7 +183,7 @@ export default {
                     direction: 'vertical',
                     autoplay: true,
                     loop: true,
-                    slidesPerView :2 
+                    slidesPerView :1.8 
                 });
             })
         })
