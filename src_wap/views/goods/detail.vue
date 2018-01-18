@@ -136,7 +136,7 @@
                     <i class="iconfont fixIndex" :class="{'on': tabFixed || wxFixed }" v-if="tabFixed || wxFixed" @click="$router.push({name: '首页'})">&#xe61b;</i>
                     <mt-tab-item id="1">详情</mt-tab-item>
                     <mt-tab-item id="2">规格</mt-tab-item>
-                    <mt-tab-item id="3">评论</mt-tab-item>
+                    <mt-tab-item id="3"><span @click="showComment">评论</span> </mt-tab-item>
                 </mt-navbar>
                 <mt-tab-container v-model="tabSelected" :swipeable="false">
                     <mt-tab-container-item id="1" ref="tabcontent1">
@@ -220,10 +220,12 @@
                                         </div>
                                         <div class="comment_head_time">{{ item.createTime }}</div>
                                     </div>
-                                    <p class="comment_footer" ref="comment">
+                                    <p class="comment_footer" ref="comment" :class="{on:item.onFlag!==''&& item.onFlag}">
                                         {{ item.content }}
-                                        <i class="iconfont down" @click="pullOrDown(index)" :key="index+'11'">&#xe619;</i>
-                                        <i class="iconfont pull" @click="pullOrDown(index)" :key="index+'12'">&#xe618;</i>
+                                        <span>{{item.pullFlag!=='' && item.pullFlag}}</span>
+                                        <span v-if="item.replyContent"><span style="color:#dac4ab;padding-top:.2rem;display:block;">回复：</span>{{item.replyContent}}</span>
+                                        <i class="iconfont down" :class="{on:item.pullFlag!=='' && item.pullFlag}" @click="pullOrDown(item)" :key="index+'11'">&#xe619;</i>
+                                        <i class="iconfont pull" :class="{on:item.upFlag!=='' && item.upFlag}" @click="pullOrDown(item)" :key="index+'12'">&#xe618;</i>
                                     </p>
                                 </mt-cell>
                             </template>
@@ -329,7 +331,8 @@ export default {
     computed:{
         ...mapState({
             cartTotal: state => state.cart.cartTotal
-        })
+        }),
+        
     },
     created() {
 
@@ -366,6 +369,11 @@ export default {
                 }
                 this.getCommentList(res.data.productExtInfo.id).then((comment) => {
                     this.timeData = comment.data.evaluations;
+                    for(let item of this.timeData){
+                        this.$set(item,'onFlag','');
+                        this.$set(item,'pullFlag','');
+                        this.$set(item,'upFlag','');
+                    }
                     this.commentRecond = comment.total_record;
                     this.prectent = comment.data.praiseRate == null ? 0 : comment.data.praiseRate;
                     if(this.commentRecond<=3){
@@ -494,13 +502,65 @@ export default {
                 return this.$router.push({name: '账户登录'});
             })
         },
+        showComment(){
+            this.$nextTick(()=>{
+                this.initOnFlag();
+                this.initPullFlag();
+                this.initUpFlag();
+            });
+        },
+        //初始化评论是否超出5行
+        initOnFlag(){
+            this.$nextTick(()=>{
+                for(let i=0;i< this.$refs.comment.length; i++){
+                    if(this.$refs.comment[i].offsetHeight > 95){
+                        this.commentList[i].onFlag = true;
+                    }else{
+                        this.commentList[i].onFlag = '';
+                    }
+                }
+            });
+        },
+        initPullFlag(){
+            this.$nextTick(()=>{
+                for(let item of this.commentList){
+                    if(item.onFlag === ''){
+                        item.pullFlag = '';
+                    }else{
+                        item.pullFlag = item.pullFlag;
+                    }
+                }
+            });
+        },
+        initUpFlag(item,index){
+            this.$nextTick(()=>{
+
+                for(let item of this.commentList){
+                    if(item.onFlag === ''){
+                        item.upFlag = '';
+                    }else{
+                        if(item.pullFlag === true){
+                            item.pullFlag = false;
+                        }else{
+                            item.pullFlag = true;
+                        }
+                    }
+                }
+            });
+        },
         getMoreComment() {
             if(this.page == 1 && this.commentList.length<=10){
                 this.commentList = this.timeData;
             }else{
                 this.page++;
                 this.getCommentList(this.detailData.productExtInfo.id).then((res) => {
-                    this.commentList = this.commentList.concat(res.data.evaluations);
+                    let temp = res.data.evaluations;
+                    for(let item of temp){
+                        this.$set(item,'onFlag','');
+                        this.$set(item,'pullFlag','');
+                        this.$set(item,'upFlag','');
+                    }
+                    this.commentList = this.commentList.concat(temp);
                     this.$nextTick(()=>{
                         this.setLine();
                     })
@@ -594,32 +654,35 @@ export default {
             }
         },
         setLine() {                 // 显示与隐藏（超出）
-            for(let obj of this.$refs.comment){
-                if(obj.offsetHeight > 95){
-                    obj.className = obj.className + ' on';
-                    obj.children[0].className = obj.children[0].className + ' on';
-                }
-            }
+            // for(let obj of this.$refs.comment){
+            //     if(obj.offsetHeight > 95){
+            //         obj.className = obj.className + ' on';
+            //         obj.children[0].className = obj.children[0].className + ' on';
+            //     }
+            // }
         },
-        pullOrDown(index) {        // 显示与隐藏（超出）
-            if(this.$refs.comment[index].className.indexOf(' on') != -1){
-                this.$refs.comment[index].className = 'comment_footer';
-            }else{
-                this.$refs.comment[index].className = 'comment_footer on';
-            }
-            for(let i=0; i<this.$refs.comment[index].children.length; i++){
-                if(this.$refs.comment[index].children[i].className.indexOf(' on') != -1){
-                    if(i == 0){
-                        this.$refs.comment[index].children[0].className = 'iconfont down'
-                        this.$refs.comment[index].children[1].className = 'iconfont pull on';
-                        return;
-                    }else{
-                        this.$refs.comment[index].children[0].className = 'iconfont down on'
-                        this.$refs.comment[index].children[1].className = 'iconfont pull';
-                        return;
-                    }
-                }
-            }
+        pullOrDown(item) {        // 显示与隐藏（超出）
+            item.pullFlag = item.pullFlag?false:true;
+            item.onFlag = item.onFlag?false:true;
+            item.upFlag = item.upFlag?false:true;
+            // if(this.$refs.comment[index].className.indexOf(' on') != -1){
+            //     this.$refs.comment[index].className = 'comment_footer';
+            // }else{
+            //     this.$refs.comment[index].className = 'comment_footer on';
+            // }
+            // for(let i=0; i<this.$refs.comment[index].children.length; i++){
+            //     if(this.$refs.comment[index].children[i].className.indexOf(' on') != -1){
+            //         if(i == 0){
+            //             this.$refs.comment[index].children[0].className = 'iconfont down'
+            //             this.$refs.comment[index].children[1].className = 'iconfont pull on';
+            //             return;
+            //         }else{
+            //             this.$refs.comment[index].children[0].className = 'iconfont down on'
+            //             this.$refs.comment[index].children[1].className = 'iconfont pull';
+            //             return;
+            //         }
+            //     }
+            // }
         },
         docScroll() {               // 判断页面滚动
             let scrollTop = this.$refs.wrapper.scrollTop;
