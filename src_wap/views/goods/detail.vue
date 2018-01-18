@@ -114,7 +114,7 @@
                                             <p v-else-if="detailData.orgFreightTemplateVoList && detailData.orgFreightTemplateVoList.length > 0">邮费依实际重量计算运费</p>
                                         </template>
                                         <template v-else>
-                                            <p>全场茶叶在线支付满500包邮</p>
+                                            <p>自营茶叶满500包邮</p>
                                         </template>
                                     </div>
                                 </div>
@@ -205,7 +205,13 @@
                             </div>
                         </div>
                         <div class="mint_cell_wrapper">
-                            <template>
+                            <template v-if="commentList.length === 0 ">
+                                <div class="no-comment">
+                                    <img src="../../assets/images/no-comment.png" alt="">
+                                    <p>暂时还没有评价呦~</p>
+                                </div>
+                            </template>
+                            <template v-else>
                                 <mt-cell v-for="(item,index) in commentList" :key="index">
                                     <div class="comment_head">
                                         <div class="comment_head_wrapper">
