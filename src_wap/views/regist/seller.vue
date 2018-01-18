@@ -9,7 +9,7 @@
                     <label for="2">企业名称</label>
                 </div>
                 <div class="select_item_content">
-                    <textarea rows="2" id="2" v-model="formData.shopName" placeholder="必填项，请填写店铺名称"></textarea>
+                    <textarea rows="2" id="2" disabled v-model="formData.shopName" placeholder="必填项，请填写店铺名称"></textarea>
                 </div>
             </div>
             <div class="select_item seller_type" v-if="registClass === 1" style="padding-bottom: .28rem;border-bottom:1px solid #e5e5e5;">
