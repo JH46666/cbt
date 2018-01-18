@@ -8,12 +8,12 @@
                     <div class="sign">
                         <div class="sign-btn">
                             <span>+ {{ sign.returnResult ? sign.signed : sign.nextSign }}积分</span>
-                            <mt-button size="small" @click="signTo" :disabled="sign.returnResult">
+                            <mt-button size="small" @click="signTo" :disabled="sign.returnResult" :class="{'signed':sign.returnResult}">
                                 <template v-if="!sign.returnResult">
                                     签到领取
                                 </template>
                                 <template v-else>
-                                    <span style="background:#fff;opacity:.6;">已签到</span> 
+                                    已签到
                                 </template>
                             </mt-button>
                         </div>

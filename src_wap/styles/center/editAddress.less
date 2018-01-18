@@ -53,10 +53,19 @@
     .position(f);
     .w(100%);
     .h(100%);
-    .bg(rgba(0,0,0,.3));
+    // .bg(rgba(0,0,0,.3));
     z-index: 200;
     top: 0;
     left: 0;
+    .mask-bg{
+        .position(f);
+        .w(100%);
+        .h(100%);
+        .bg(rgba(0,0,0,.3));
+        z-index: 201;
+        top: 0;
+        left: 0;
+    }
     .select-address{
         .position(a);
         .flex;
@@ -65,6 +74,7 @@
         .h(8rem);
         .bg(#fff);
         bottom: 0;
+        z-index: 300;
     }
     .select-top{
         .flex;

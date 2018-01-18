@@ -1,5 +1,6 @@
 <template>
     <div class="address-pannel">
+        <div class="mask-bg" @click="confirm"></div>
         <div class="select-address">
             <div class="select-top">
                 <div class="left">
