@@ -20,7 +20,7 @@
             <mt-button type="default" :disabled="!disabled" @click="save">保存</mt-button>
         </div>
         <transition name="fadeUp" mode="out-in">
-            <selsect-address v-show="pannel" @getAllData="selectAddress" :provinceCode="detail.provinceCode" :cityCode="detail.cityCode" :areaCode="detail.areaCode"></selsect-address>
+            <selsect-address v-show="pannel" @getAllData="selectAddress" @closePannel="closeAddress" :provinceCode="detail.provinceCode" :cityCode="detail.cityCode" :areaCode="detail.areaCode"></selsect-address>
         </transition>
     </div>
 </template>
@@ -73,6 +73,10 @@
                 this.$nextTick(() => {
                     ev.target.blur();
                 })
+            },
+            //关闭地址弹窗
+            closeAddress() {
+                this.pannel = false;
             },
             // 选择完地址回调
             selectAddress(data) {
