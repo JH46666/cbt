@@ -222,10 +222,9 @@
                                     </div>
                                     <p class="comment_footer" ref="comment" :class="{on:item.onFlag!==''&& item.onFlag}">
                                         {{ item.content }}
-                                        <span>{{item.pullFlag!=='' && item.pullFlag}}</span>
-                                        <span v-if="item.replyContent"><span style="color:#dac4ab;padding-top:.2rem;display:block;">回复：</span>{{item.replyContent}}</span>
-                                        <i class="iconfont down" :class="{on:item.pullFlag!=='' && item.pullFlag}" @click="pullOrDown(item)" :key="index+'11'">&#xe619;</i>
-                                        <i class="iconfont pull" :class="{on:item.upFlag!=='' && item.upFlag}" @click="pullOrDown(item)" :key="index+'12'">&#xe618;</i>
+                                        <span v-if="item.replyContent"><span style="color:#c29e74;display:block;">回复：</span>{{item.replyContent}}</span>
+                                        <span class="bg-white"><i class="iconfont down" :class="{on:item.pullFlag!=='' && item.pullFlag}" @click="pullOrDown(item)" :key="index+'11'">&#xe619;</i></span>
+                                        <span class="bg-white"><i class="iconfont pull" :class="{on:item.upFlag!=='' && item.upFlag}" @click="pullOrDown(item)" :key="index+'12'">&#xe618;</i></span>
                                     </p>
                                 </mt-cell>
                             </template>
@@ -510,9 +509,9 @@ export default {
             });
         },
         //初始化评论是否超出5行
-        initOnFlag(){
+        initOnFlag(start=0){
             this.$nextTick(()=>{
-                for(let i=0;i< this.$refs.comment.length; i++){
+                for(let i=start;i< this.$refs.comment.length; i++){
                     if(this.$refs.comment[i].offsetHeight > 95){
                         this.commentList[i].onFlag = true;
                     }else{
@@ -527,29 +526,29 @@ export default {
                     if(item.onFlag === ''){
                         item.pullFlag = '';
                     }else{
-                        item.pullFlag = item.pullFlag;
+                        item.pullFlag = item.onFlag;
                     }
                 }
             });
         },
-        initUpFlag(item,index){
+        initUpFlag(){
             this.$nextTick(()=>{
-
                 for(let item of this.commentList){
                     if(item.onFlag === ''){
                         item.upFlag = '';
                     }else{
                         if(item.pullFlag === true){
-                            item.pullFlag = false;
+                            item.upFlag = false;
                         }else{
-                            item.pullFlag = true;
+                            item.upFlag = true;
                         }
                     }
                 }
             });
         },
         getMoreComment() {
-            if(this.page == 1 && this.commentList.length<=10){
+            let oldLen = this.commentList.length;
+            if(this.page == 1 && this.commentList.length<10){
                 this.commentList = this.timeData;
             }else{
                 this.page++;
@@ -562,7 +561,9 @@ export default {
                     }
                     this.commentList = this.commentList.concat(temp);
                     this.$nextTick(()=>{
-                        this.setLine();
+                        this.initOnFlag(oldLen);
+                        this.initPullFlag();
+                        this.initUpFlag();
                     })
                 })
             }

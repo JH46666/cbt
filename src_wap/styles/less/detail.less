@@ -564,21 +564,32 @@
                             max-height: none;
                             width: 100%;
                             .fontSize(.28rem);
+                            
                             // text-indent: .48rem;
                             .position(r);
                             &.on{
-                                max-height: 1.9rem;
+                                max-height: 2.1rem;
+                            }
+                            .bg-white{
+                                .position(a);
+                                right: -.2rem;
+                                bottom: 0;
+                                display: inline-block;
+                                background: url('../../assets/images/d1.png') no-repeat 100% 100%;
+                                .w(1.2rem);
+                                .h(.42rem);
+                                .algin(r);
+
                             }
                             i{
-                                .color(#f08200);
-                                .fontSize(.26rem);
-                                width: .3rem;
-                                height: .3rem;
-                                .algin(c);
-                                .line(.3rem);
+                                .color(#666);
+                                .fontSize(.3rem);
+                                .line(.36rem);
                                 .position(a);
-                                right: 0;
+                                right: .2rem;
                                 bottom: 0;
+                                .algin(r);
+                                z-index: 100;
                                 cursor: pointer;
                                 &.down{
                                     display: none;
