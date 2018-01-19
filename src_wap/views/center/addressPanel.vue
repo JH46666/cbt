@@ -1,6 +1,6 @@
 <template>
     <div class="address-pannel">
-        <div class="mask-bg" @click="confirm"></div>
+        <div class="mask-bg" @click="hideAddr"></div>
         <div class="select-address">
             <div class="select-top">
                 <div class="left">
@@ -11,7 +11,7 @@
                     </mt-navbar>
                 </div>
                 <div class="right">
-                    <!-- <span @touchend="confirm">确定</span> -->
+                    <span @touchend="confirm">确定</span>
                 </div>
             </div>
             <div class="select-bottom">
@@ -55,6 +55,7 @@
         data() {
             return {
                 selected: '1',
+                emptyFlag: true,
                 select: {
                     provinceCode: this.provinceCode,
                     cityCode: this.cityCode,
@@ -115,6 +116,7 @@
         },
         methods: {
             check(selected,code) {
+                this.emptyFlag = false;
                 if(selected === '1') {
                     this.select.provinceCode = code;
                     this.selected = '2'
@@ -130,6 +132,13 @@
                 this.$nextTick(() =>{
                     this.$emit('getAllData',this.getData())
                 })
+            },
+            hideAddr() {
+                if(this.emptyFlag){
+                    this.$emit('closePannel');
+                }else{
+                    this.confirm();
+                }
             },
             getData() {
                 let obj = {};

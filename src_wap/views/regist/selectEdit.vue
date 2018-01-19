@@ -172,7 +172,7 @@
                 </div>
             </div>
         </div>
-        <address-panel v-show="addressShowOrHide" @getAllData="getAddress" :provinceCode="provinceNum" :cityCode="cityNum" :areaCode="areaNum"></address-panel>
+        <address-panel v-show="addressShowOrHide" @getAllData="getAddress" @closePannel="closeAddress" :provinceCode="provinceNum" :cityCode="cityNum" :areaCode="areaNum"></address-panel>
     </div>
 </template>
 
@@ -345,6 +345,10 @@ export default {
         }
     },
     methods: {
+        //关闭地址弹窗
+        closeAddress() {
+            this.addressShowOrHide = false;
+        },
         getData(pay) {
             this.$api.post('/orgShop/getOrgShop',{
                 orgId: pay,
