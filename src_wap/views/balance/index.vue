@@ -428,7 +428,7 @@
 
                     // 货到付款
                     if(!online && delivery) {
-                        // 纯货到付款只要有余额，都可以用余额付款
+                        // 门店自提不可使用余额
                         if(this.totalAmount > 0 && this.pannel[0].currentDeliveryMethod !== 'get_self') {
                             this.$router.push({name: '收银台',query: {payId: res.data.payId,type:'delivery'}});
                         } else {

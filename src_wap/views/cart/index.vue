@@ -49,7 +49,7 @@
                                                     <div class="pro_price"><span class="money">{{item.priorityPrice}}</span>元/{{item.unit}}</div>
                                                     <div class="pro_number clearfix">
                                                         <span class="decrease" @click="numDecrease(item)"><i class="iconfont">&#xe851;</i></span>
-                                                        <input class="input-num" type="number" v-model="item.buyNum" @blur="numChange(item)">
+                                                        <input class="input-num" type="number" v-model.lazy="item.buyNum" @blur="numChange(item)">
                                                         <span class="plus" @click="numPlus(item)"><i class="iconfont">&#xe638;</i></span>
                                                     </div>
                                                 </div>
