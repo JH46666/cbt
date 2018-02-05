@@ -150,38 +150,71 @@
             .h(100%);
             float: left;
             overflow: hidden;
-            ul{
+            .sub-menu{
                 .h(100%);
                 overflow-y: scroll;
                 .sub-item{
                     .h(.98rem);
-                    padding-left: .3rem;
+                    overflow: hidden;
+                    text-indent: .3rem;
                     .position(r);
                     font-size: .28rem;
+                    transition: all 1s linear;
+                    &.pull{
+                        height: auto;
+                    }
                     &.on{
-                        // background-color: #f08200;
-                        // color: #fff;
-                        .color(#f08200);
-                        &::before{
-                            content: "";
-                            .w(.08rem);
-                            .h(.24rem);
-                            .position(a);
-                            top: .37rem;
-                            left: 0;
-                            .bg(#f08200);
+                        .subName{
+                            .bg(#fff);
+                            .color(#f08200);
+                            &::before{
+                                content: "";
+                                .w(.08rem);
+                                .h(.32rem);
+                                .position(a);
+                                top: .32rem;
+                                left: 0;
+                                .bg(#f08200);
+                            }
                         }
-                        &::after{
-                            content: "";
-                            .position(a);
-                            right: 0;
-                            top: .37rem;
-                            .w(0);
-                            .h(0);
-                            .fontSize(0);
-                            border-top: .14rem solid transparent;
-                            border-bottom: .14rem solid transparent;
-                            border-right: .14rem solid #fff;
+                        // &::after{
+                        //     content: "";
+                        //     .position(a);
+                        //     right: 0;
+                        //     top: .37rem;
+                        //     .w(0);
+                        //     .h(0);
+                        //     .fontSize(0);
+                        //     border-top: .14rem solid transparent;
+                        //     border-bottom: .14rem solid transparent;
+                        //     border-right: .14rem solid #fff;
+                        // }
+                    }
+                    .subName{
+                        .h(.98rem);
+                        line-height: .98rem;
+                        display: block;
+                    }
+                    
+                }
+                .third-item{
+                    .bg(#f0edeb);
+                    .position(r);
+                    li{
+                        .h(.98rem);
+                        line-height: .98rem;
+                        &.active{
+                            .bg(#fff);
+                            .color(#f08200);
+                            &::before{
+                                content: "";
+                                .w(.08rem);
+                                .h(.32rem);
+                                .position(a);
+                                top: .32rem;
+                                left: 0;
+                                .bg(#f08200);
+                            }
                         }
                     }
                 }

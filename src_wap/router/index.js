@@ -17,6 +17,14 @@ const router = new Router({
 					name: '首页',
 					component: resolve => require(['@/views/index/index.vue'],resolve)
 				},
+				{
+					path: 'layimdemo',
+					name: 'layim测试',
+					component: resolve => require(['@/views/layerim/demo.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+                },
                 {
 					path: 'detail',
 					name: '商品详情',
