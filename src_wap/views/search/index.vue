@@ -7,7 +7,7 @@
         </section>
         <!-- 开始搜索时 -->
         <section class="hot-search" v-if="noSearch">
-            <div class="left">热搜</div>
+            <div class="left">大家都在搜</div>
             <div class="right">
                 <div class="tag-wrap">
                     <router-link :to="todo.path" :key="i" class="tag" tag="div" v-for="(todo,i) in hotList" replace>{{ todo.name }}</router-link>
@@ -18,7 +18,7 @@
             <div class="title"><h3>历史搜索</h3></div>
             <ul class="history-wrap">
                 <template v-for="(item,i) in history">
-                    <router-link :to="{name: '搜索',query: {q: item.searchContent,c: '1',sort: 'desc'}
+                    <router-link :key="i" :to="{name: '搜索',query: {q: item.searchContent,c: '1',sort: 'desc'}
                         }" tag="div" class="history-item">
                         {{ item.searchContent }}
                     </router-link>
@@ -45,6 +45,11 @@
                     <i class="icon-shouqi"></i>
                     <i class="icon-zhankai"></i>
                 </span>
+            </label>
+            <label class="sort-item" :class="{active:sortClass === '4'}" @click.self="filterVisible = true">
+                <i class="iconfont ic-sele">&#xe674;</i>
+                筛选
+                <input  type="radio" value="4" v-model="sortClass">
             </label>
         </section>
         <!-- 商品列表 -->
@@ -90,6 +95,24 @@
                 如有任何意见或者建议，期待您反馈给我们
             </p>
         </section>
+        <!-- 筛选弹窗 -->
+        <div class="mupop_dialog" :class="{on: filterVisible}">
+            <div class="mup_bg" @click="filterVisible = false"></div>
+            <div class="mupop_dialog_wrapper">
+                <div class="popup-content">
+                    <div class="con-item" v-for="(list,listIndex) in filterConditions" :key="listIndex">
+                        <h4>{{list.propName}}</h4>
+                        <ul class="clearfix">
+                            <li :class="{on:index == list.filterIndex}" v-for="(item,index) in list.propValList" :key="index" @click="selectFilter(list,item,index)">{{item.propVal}}</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="pop-btns flex">
+                    <a class="flex-1" href="javscript:void(0)" @click="resetConditions">重置</a>
+                    <a class="flex-1 confirm" href="javscript:void(0)" @click="confirmConditions">确定</a>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -99,6 +122,8 @@
     export default {
         data() {
             return {
+                filterVisible: false,  //筛选弹窗是否显示
+                selectSort: '',
                 text: '',               // 搜索关键字
                 sortClass: '1',         // 排序方式
                 priceSort: false,       // 价格排序，降序
@@ -120,6 +145,17 @@
                             name: '搜索',
                             query: {
                                 q: '金骏眉',
+                                c: '1',
+                                sort: 'desc'
+                            }
+                        }
+                    },
+                    {
+                        name: '大红袍',
+                        path: {
+                            name: '搜索',
+                            query: {
+                                q: '大红袍',
                                 c: '1',
                                 sort: 'desc'
                             }
@@ -165,6 +201,8 @@
                 pageNum: 1,             // 页码
                 noList: false,          // 没有搜索到
                 history: [],            // 历史记录
+                filterConditions:[],
+                propertiesValList:{},  //筛选属性值
             }
         },
         computed: {
@@ -190,11 +228,39 @@
                 }
             },
             sortClass(val) {
-                this.reset();
-                this.$router.replace({name: '搜索',query: {q: this.$route.query.q,c: val,sort: 'desc'}})
+                if(val !== 4){
+                    this.reset();
+                    this.$router.replace({name: '搜索',query: {q: this.$route.query.q,c: val,sort: 'desc'}})
+                }else{
+                    
+                }
             }
         },
         methods: {
+            // 筛选
+            selectFilter(list,item,index){
+                list.filterIndex = index;
+                this.propertiesValList[list.id] = {
+                    propId: item.catPropId,
+                    propValId: item.id
+                };
+            },
+            //重置筛选条件
+            resetConditions(){
+                for(let item of this.filterConditions){
+                    item.filterIndex = 0;
+                }
+                for(let item in this.propertiesValList){
+                    this.propertiesValList[item].propValId = 'all';
+                }
+            },
+            //筛选条件查询
+            confirmConditions(){
+                this.resultData = [];
+                this.pageNumber = 1;
+                this.totalSize = 0;
+                // this.searchResult();
+            },
             // 重置
             reset() {
                 this.pageNum = 1;

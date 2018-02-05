@@ -1,5 +1,6 @@
 <template>
     <div class="category_wrapper">
+        
         <!-- 搜索框 -->
         <div class="flex search-box" :class="{'wx-search': wxFlag}">
             <div class="logo-img">
@@ -31,9 +32,12 @@
             <!-- 二级 -->
             <div class="sub-box clearfix">
                 <div class="sub-left ipScroll">
-                    <ul>
-                        <li v-for="(subItem,index) in subCat" :key="index" class="sub-item flex align_items_c" :class="{'on':index==activeSubIndex}" @click="searchSub(index,subItem.id)">
-                            <span>{{subItem.catName}}</span>
+                    <ul class="sub-menu">
+                        <li v-for="(subItem,index) in subCat" :key="index" class="sub-item" :class="{'pull': subItem.pullFlag,'on':subItem.selectedFlag}">
+                            <span class="subName" @click="searchSub(index,subItem)">{{subItem.catName}}</span>
+                            <ul class="third-item">
+                                <li v-for="thirdItem in subItem.children" :key="thirdItem.id" :class="{active:thirdItem.activeFlag}" @click="searchThird(subItem,thirdItem)">香气</li>
+                            </ul>
                         </li>
                     </ul>
                 </div>
@@ -129,12 +133,15 @@
                 searchTxt: "",        //搜索内容
                 activeCatIndex: 0,   //激活的一级分类下标
                 activeSubIndex: 0,   //激活的二级分类下标
+                activeThirdIndex: 0, //激活的三级分类下标
                 activeCatId: 0,      //激活的一级分类id
                 activeSubId: 0,      //激活的二级分类id
+                activeThirdId: 0,    //激活的三级分类id
                 catTree:[],          //分类树
                 firstCat:[],         //一级分类
                 allSubCat:[],
                 subCat:[],
+                // thirdProp:[],          //三级属性
                 filterConditions:[],   //筛选条件
                 propertiesValList:{},  //筛选属性值
                 resultData:[],         //查询结果
@@ -145,6 +152,7 @@
                 sort: 1,
                 filterFlag: false,
                 sessionFlag: false,  // 是否有session
+                activeSubFlag: false,   //二级菜单是否添加选中样式
                 scrollTop: 0,
                 filterIndexs: [],
                 sortData:[{
@@ -236,13 +244,20 @@
             }else{
                 this.$api.get('/oteao/proCat/queryCatTree',{sysId: 1},res=>{
                     this.catTree = res.data[0].children;
-                    this.subCat = this.catTree[0].children;
                     for(let item of this.catTree){
                         this.firstCat.push({
                             'id': item.id,
                             'catName': item.catName
                         });
+                        for(let subItem of item.children){
+                            this.$set(subItem, 'pullFlag',false);
+                            this.$set(subItem, 'selectedFlag',false);
+                            for(let thirdItem of subItem.children){
+                                this.$set(thirdItem, 'activeFlag',false);
+                            }
+                        }
                     }
+                    this.subCat = this.catTree[0].children;
                     if(this.$route.query.parent != undefined){
                         for(let i=0; i<this.firstCat.length; i++){
                             if(this.firstCat[i].id == this.$route.query.parent){
@@ -253,15 +268,15 @@
                         if(this.$route.query.child != undefined){
                             for(let i=0; i<this.subCat.length; i++){
                                 if(this.subCat[i].id == this.$route.query.child){
-                                    this.searchSub(i,this.subCat[i].id);
+                                    this.searchSub(i,this.subCat[i]);
                                 }
                             }
                         }else{
-                            this.searchSub(0,this.subCat[0].id);
+                            this.searchSub(0,this.subCat[0]);
                         }
                     }else{
                         this.activeCatId = this.firstCat[0].id;
-                        this.searchSub(0,this.subCat[0].id);
+                        this.searchSub(0,this.subCat[0]);
                     }
                 },res=>{
                     return Toast({
@@ -479,16 +494,43 @@
                 for(let item of this.catTree){
                     if(id == item.id){
                         this.subCat = item.children;
-                        this.searchSub(0,this.subCat[0].id);
+                        this.searchSub(0,this.subCat[0]);
                         break;
                     }
                 }
             },
             // 搜索二级分类
-            searchSub(index,id){
+            searchSub(index,item){
+                this.resetPullFlag(item);
+                this.$nextTick(()=>{
+                    item.pullFlag = !item.pullFlag;
+                    item.selectedFlag = true;
+                });
                 this.activeSubIndex = index;
-                this.activeSubId = id;
+                this.activeSubId = item.id;
                 this.pageSize = 20;
+            },
+            // 搜索三级
+            searchThird(subItem,thirdItem){
+                subItem.selectedFlag = false;
+                for(let item of subItem.children){
+                    item.activeFlag = false;
+                }
+                thirdItem.activeFlag = true;
+            },
+            //重置二级菜单是否展开和是否选中状态
+            resetPullFlag(curItem){
+                for(let item of this.subCat){
+                    if(curItem.id === item.id){
+                        item.pullFlag = curItem.pullFlag;
+                    }else{
+                        item.pullFlag = false;
+                        item.selectedFlag = false;
+                    }
+                }
+                for(let item of curItem.children){
+                    item.activeFlag = false;
+                }
             },
             // 筛选
             selectFilter(list,item,index){
