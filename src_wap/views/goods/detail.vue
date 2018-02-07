@@ -355,6 +355,9 @@ export default {
             if(res.data.orgShopCenterVo){
                 this.shopTel = `tel://${res.data.orgShopCenterVo.businessTelephone}`;
             }
+            if(this.detailData.productInfo.orgId){
+                this.visitLog();
+            }
             this.getAttrOrImg().then((attr) => {
                 this.attrImgDetail = attr.data;
                 for(let obj of this.attrImgDetail.propValList){
@@ -386,6 +389,27 @@ export default {
         this.addLike();
     },
     methods: {
+        getCookie(name){
+            var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+            if(arr=document.cookie.match(reg)){
+                return unescape(arr[2]);
+            }
+            else{
+                return null;
+            }
+        },
+        visitLog(){
+            let sid = this.getCookie('oteaoSid');
+            let visitData = {
+                'visitLog.orgId': this.detailData.productInfo.orgId,
+                'visitLog.visitLink': window.location.href,
+                'visitLog.visitSku': this.$route.params.proSku,
+                'visitLog.oteaoSid': sid
+            };
+            this.$api.post("/oteao/visitLog/insert",data,res=>{
+                console.log(res); 
+            });
+        },
         plusMethod() {
             this.goodsCount++;
             if(this.goodsCount > this.maxNum){

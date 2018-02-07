@@ -59,7 +59,7 @@ function apiAxios (method, url, params, success, failure) {
     data: method === 'POST' || method === 'PUT' ? params : null,
     params: method === 'GET' || method === 'DELETE' ? params : null,
     baseURL: root,
-    withCredentials: false
+    withCredentials: true
   }).then(function (res) {
     if (res.data.code === 0) {
       if (success) {
