@@ -5,7 +5,7 @@
         <div class="search_pros">
             <ul class="may_pros_list clearfix">
                 <li class="may_pro_item" v-for="mayItem in mayProducts">
-                    <router-link :to="'/detail?proSku=' + mayItem.proNo">
+                    <router-link :to="'/detail?proSku=' + mayItem.proSku">
                         <goods-img imgWidth="2.6rem" :imgUrl="mayItem.proImg" :tagUrl="mayItem.tagImage"></goods-img>
                         <div class="pro_txt">
                             <h4>{{mayItem.proTitle}}</h4>
