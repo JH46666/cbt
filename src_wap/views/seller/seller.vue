@@ -26,12 +26,12 @@
         </section>
         <section class="count-entry">
             <router-link to="" tag="div" class="count-item">
-                <p class="num">{{ count.monthOrderNum }}</p>
+                <p class="num">{{ visitNums }}</p>
                 <p class="tips">访客数</p>
                 <p class="day">30天</p>
             </router-link>
             <router-link to="" tag="div" class="count-item">
-                <p class="num">{{ count.monthOrderNum }}</p>
+                <p class="num">{{ customerNums}}</p>
                 <p class="tips">成交客户</p>
                 <p class="day">30天</p>
             </router-link>
@@ -125,7 +125,9 @@
         data() {
             return {
                 count: {},
-                sellerData: {}
+                sellerData: {},
+                visitNums:0,
+                customerNums:0
             }
         },
         methods: {
@@ -173,7 +175,14 @@
 
             this.$api.post('/oteao/order/countOrderNumBySeller',{},res => {
                 this.count = res.data;
-                console.table(res.data)
+            })
+            // 30日内店铺成交客户数接口
+            this.$api.post('/oteao/order/countCustomerBySeller',{},res => {
+                this.customerNums = res.data.customerNums;
+            })
+            // 店铺30日内访客统计
+            this.$api.post('/oteao/visitLog/countVisitNums',{},res => {
+                this.visitNums = res.data.visitNums;
             })
             this.$api.post('/orgShop/getShopCenterInfo',{},res => {
                 this.sellerData = res.data;
