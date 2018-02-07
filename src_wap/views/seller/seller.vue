@@ -26,12 +26,24 @@
         </section>
         <section class="count-entry">
             <router-link to="" tag="div" class="count-item">
-                <p class="num">{{ count.monthOrderSum | toFix2}}</p>
-                <p class="tips">当月收入(元)</p>
+                <p class="num">{{ count.monthOrderNum }}</p>
+                <p class="tips">访客数</p>
+                <p class="day">30天</p>
             </router-link>
             <router-link to="" tag="div" class="count-item">
                 <p class="num">{{ count.monthOrderNum }}</p>
-                <p class="tips">当月订单数</p>
+                <p class="tips">成交客户</p>
+                <p class="day">30天</p>
+            </router-link>
+            <router-link to="" tag="div" class="count-item">
+                <p class="num">{{ count.monthOrderNum }}</p>
+                <p class="tips">成交订单</p>
+                <p class="day">30天</p>
+            </router-link>
+            <router-link to="" tag="div" class="count-item">
+                <p class="num">{{ count.monthOrderSum | toFix2}}</p>
+                <p class="tips">收入</p>
+                <p class="day">30天</p>
             </router-link>
         </section>
         <section class="order-wrap">
@@ -71,27 +83,31 @@
         </section>
         <section class="tools-pannel">
             <div class="tools-row">
+                <router-link :to="{name: '我的消息'}" class="item">
+                    <span><i class="icon-xiaoxi blue small"></i></span>
+                    <p>我的消息</p>
+                </router-link>
                 <router-link :to="{name: '商品管理'}" class="item">
-                    <span><i class="icon-zhongxindianpu blue"></i></span>
+                    <span><i class="icon-sales blue"></i></span>
                     <p>商品管理</p>
                 </router-link>
-                <router-link :to="{name: '运费配置'}" class="item">
-                    <span><i class="icon-yunfeipeizhi"></i></span>
-                    <p>运费配置</p>
+                <router-link :to="{name: '店铺详情'}" class="item">
+                    <span><i class="icon-dianpuziliao blue"></i></span>
+                    <p>店铺资料</p>
                 </router-link>
                 <router-link :to="{name: '活动列表'}" class="item">
                     <span><i class="icon-tejiaguanli"></i></span>
                     <p>限时特价</p>
                 </router-link>
+            </div>
+            <div class="tools-row">
+                <router-link :to="{name: '运费配置'}" class="item">
+                    <span><i class="icon-yunfeipeizhi"></i></span>
+                    <p>运费配置</p>
+                </router-link>
                 <router-link :to="{name: '我的收入'}" class="item">
                     <span><i class="icon-shouru small"></i></span>
                     <p>我的收入</p>
-                </router-link>
-            </div>
-            <div class="tools-row">
-                <router-link :to="{name: '店铺详情'}" class="item">
-                    <span><i class="icon-xiaoxi blue small"></i></span>
-                    <p>店铺信息</p>
                 </router-link>
             </div>
         </section>
@@ -157,6 +173,7 @@
 
             this.$api.post('/oteao/order/countOrderNumBySeller',{},res => {
                 this.count = res.data;
+                console.table(res.data)
             })
             this.$api.post('/orgShop/getShopCenterInfo',{},res => {
                 this.sellerData = res.data;

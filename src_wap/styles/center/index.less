@@ -16,11 +16,12 @@
         }
         .user{
             .fontSize(.32rem);
-            .line(1.12rem);
+            .line(.32rem);
+            margin-top:0.44rem;
         }
         .sign{
             .algin(r);;
-            .paddingT(.4rem);
+            .paddingT(.44rem);
             .sign-btn{
                 .flex;
                 .display(inline-block);
@@ -48,13 +49,13 @@
             }
         }
         .level{
-            .fontSize(.24rem);
-            .line(.24rem);
+            .fontSize(.26rem);
+            .line(.26rem);
         }
         .experience-wrap{
             .flex;
             .paddingT(.18rem);
-            .fontSize(.25rem);
+            .fontSize(.24rem);
             .line(1);
         }
         .experience-bar{
@@ -68,14 +69,14 @@
             border: 1px solid #fff;
             .experience{
                 .h(100%);
-                background: linear-gradient(to right, #ff4e00, white);
+                background: #ffca85;
             }
         }
         .bd{
             .bg(#f9991f);
-            .line(.64rem);
-            .h(.64rem);
-            .fontSize(.2rem);
+            .line(.72rem);
+            .h(.72rem);
+            .fontSize(.26rem);
             overflow: hidden;
             .bd-text{
                 .paddingRow(.3rem);
@@ -100,10 +101,11 @@
                 .fontSize(.32rem);
                 .line(1.5);
                 .color(@mainCol);
+                font-weight: bold;
                 margin-bottom: .04rem;
             }
             .count-text{
-                .fontSize(.22rem);
+                .fontSize(.26rem);
                 .line(1.5);
                 .color(@b-6);
             }
@@ -116,15 +118,15 @@
             border-bottom: 1px solid #f5f5f5;
             .paddingRow(.3rem);
             .flex;
-            .fontSize(.24rem);
-            .line(.78rem);
+            .fontSize(.26rem);
+            .line(.88rem);
             &>div,&>h3{
                 .flex-1;
             }
             h3{
                 font-weight: normal;
                 .color(@b-3);
-                .fontSize(.24rem);
+                .fontSize(.3rem);
             }
             .all-order{
                 .color(@b-9);
@@ -135,8 +137,8 @@
             }
         }
         .order-entry{
-            padding: .35rem 0 .25rem;
-            .h(1.3rem);
+            padding: .3rem 0 .25rem;
+            .h(1.48rem);
             .flex;
             .item{
                 .flex-1;
@@ -148,9 +150,9 @@
                     .line(1);
                 }
                 p{
-                    margin-top: .08rem;
+                    margin-top: .2rem;
                     .color(@b-6);
-                    .fontSize(.22rem);
+                    .fontSize(.26rem);
                     .line(1.5);
                 }
                 .mint-badge{
@@ -165,12 +167,12 @@
                     padding: 0 .1rem;
                     height: .26rem;
                     &.one{
-                        right: .46rem; 
+                        right: .46rem;
                         padding: 0;
                         width: .34rem;
                         height: .34rem;
                         line-height: .34rem;
-                        border-radius: 50%;  
+                        border-radius: 50%;
                     }
                 }
             }
@@ -192,11 +194,12 @@
                 .iconfont;
             }
             .left{
-                .color(@b-3);
+                .color(@b-6);
+                .fontSize(.28rem);
                 i {
                     .color(#c2a584);
                     .position(r);
-                    margin-right: .12rem;
+                    margin-right: .16rem;
                     top: .02rem;
                 }
             }
@@ -210,10 +213,11 @@
         margin-bottom: .4rem;
         .mint-button{
             .w(100%);
+            .h(0.98rem);
             .reduis(0);
             .bg(#fff);
             .color(@b-3);
-            .fontSize(.24rem);
+            .fontSize(.3rem);
             box-shadow: none;
             border: none;
         }
