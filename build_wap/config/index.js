@@ -29,6 +29,14 @@ module.exports = {
         pathRewrite:{
           '^/api': ''
         }
+      },
+      '/erp': {
+        target: 'http://192.168.7.68:8080/', // 接口的域名
+        secure: false,
+        changeOrigin: true,
+        pathRewrite:{
+          '^/erp': ''
+        }
       }
     },
 
