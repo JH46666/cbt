@@ -22,7 +22,7 @@
         </div>
         <div class="f5-2"></div>
         <div class="activity_name">
-            <label for="activeLimit">每人限购</label>
+            <label for="activeLimit">每单限购</label>
             <input type="number" id="activeLimit" placeholder="不填表示不限制" v-model="activeLimit" @blur="longInt" />
         </div>
         <div class="f5-2"></div>
