@@ -334,7 +334,6 @@ export default {
         
     },
     created() {
-
         // 设置title
         this.$store.commit('SET_TITLE','商品详情');
         // 获取购物车数量
@@ -389,25 +388,14 @@ export default {
         this.addLike();
     },
     methods: {
-        getCookie(name){
-            var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
-            if(arr=document.cookie.match(reg)){
-                return unescape(arr[2]);
-            }
-            else{
-                return null;
-            }
-        },
         visitLog(){
-            let sid = this.getCookie('oteaoSid');
             let visitData = {
                 'visitLog.orgId': this.detailData.productInfo.orgId,
-                'visitLog.visitLink': window.location.href,
-                'visitLog.visitSku': this.$route.params.proSku,
-                'visitLog.oteaoSid': sid
+                'visitLog.visitLink': this.$route.fullPath,
+                'visitLog.visitSku': this.proSku
             };
-            this.$api.post("/oteao/visitLog/insert",data,res=>{
-                console.log(res); 
+            this.$api.post("/oteao/visitLog/insert",visitData,res=>{
+                // console.log(res); 
             });
         },
         plusMethod() {
