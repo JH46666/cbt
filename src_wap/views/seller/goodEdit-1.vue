@@ -77,7 +77,7 @@
                                 平台售价：
                             </label>
                             <div class="item-right">
-                                <input type="number" id="10" placeholder="必填项，请填写平台售价" v-model="resize.form.goodsSx" @blur="toFixedTwo(resize.form.goodsSx,'goodsSx')" />
+                                <input type="number" id="10" placeholder="必填项，请填写平台售价" v-model="resize.form.goodsSx" @blur="changePtsj(resize.form.goodsSx,'goodsSx')" />
                             </div>
                         </div>
                         <div class="item">
@@ -405,6 +405,16 @@ export default {
             }else if(parseFloat(val) < 0){
                 this.resize.form[str] = Math.abs(parseFloat(delTrim).toFixed(0));
             }
+        },
+        // 平台售价为建议零售价*2
+        changePtsj(val,str){
+            let delTrim = String(val).trim();
+            if(delTrim == ''){
+                this.resize.form[str] = '0.00'
+            }else{
+                this.resize.form[str] = parseFloat(delTrim).toFixed(2);
+            }
+            this.resize.form['goodsPtsj'] = parseFloat(this.resize.form['goodsSx'] * 2).toFixed(2);
         },
         goStep3() {
             this.$router.push({
