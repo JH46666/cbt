@@ -365,13 +365,11 @@ export default {
         changePtsj(val,str){
             let delTrim = String(val).trim();
             if(delTrim == ''){
-                this.resize.form[str] = '0'
-            }else if(parseFloat(val) > 0){
-                this.resize.form[str] = parseFloat(delTrim).toFixed(0);
-            }else if(parseFloat(val) < 0){
-                this.resize.form[str] = Math.abs(parseFloat(delTrim).toFixed(0));
+                this.resize.form[str] = '0.00'
+            }else{
+                this.resize.form[str] = parseFloat(delTrim).toFixed(2);
             }
-            this.resize.form['goodsPtsj'] = this.resize.form['goodsSx'] * 2;
+            this.resize.form['goodsPtsj'] = parseFloat(this.resize.form['goodsSx'] * 2).toFixed(2);
         },
         goStep3() {
             this.$router.push({
