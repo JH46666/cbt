@@ -247,20 +247,26 @@
             该商品已下架哦~
         </div>
         <mt-tabbar v-model="selected" class="cbt-footer detail_footer" :isZiYing="isThird" ref="footers">
-            <mt-tab-item id="1" @click.native="openKfDialog" v-if="detailData.productInfo.businessType != 'ORG_SALES'">
-                <i class="icon-kefu1" slot="icon"></i>
-                客服
+            <mt-tab-item class="self-kefu" id="1" @click.native="openKfDialog" v-if="!detailData.productInfo.orgId">
+                <i class="icon-kefurukousvg" slot="icon"></i>
+                茶帮通客服
             </mt-tab-item>
-            <mt-tab-item id="1" @click.native="openDialog" v-else>
-                <i class="icon-dianpu" slot="icon"></i>
-                店铺
-            </mt-tab-item>
-            <mt-tab-item id="2" @click.native="openCart">
+            <template v-else>
+                <mt-tab-item class="org-item" id="5" @click.native="openKfDialog">
+                    <i class="icon-kefurukousvg" slot="icon"></i>
+                    店铺客服
+                </mt-tab-item>
+                <mt-tab-item class="org-item" id="6" @click.native="openDialog" >
+                    <i class="icon-dianpu" slot="icon"></i>
+                    店铺
+                </mt-tab-item>
+            </template>
+            <mt-tab-item class="org-item" :class="{'cart-btn':!detailData.productInfo.orgId}" id="2" @click.native="openCart">
                 <i class="icon-jiarugouwuche" slot="icon"></i>
                 购物车
                 <mt-badge type="error" size="small" v-show="Number(cartTotal)>0">{{ cartTotal | ninenineAdd }}</mt-badge>
             </mt-tab-item>
-            <mt-tab-item id="3">
+            <mt-tab-item id="3" class="join-cart">
                 <mt-button type="default" disabled v-if="detailData.productExtInfo.state === 'OFF_SHELF'">加入购物车</mt-button>
                 <mt-button type="default" v-else-if="detailData.productExtInfo.isSoldOut == 1 && detailData.productExtInfo.compelOutStock == 0" @click.native="addCartInfo">加入购物车</mt-button>
                 <mt-button type="default" disabled v-else>缺货</mt-button>

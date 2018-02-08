@@ -18,11 +18,11 @@ const router = new Router({
 					component: resolve => require(['@/views/index/index.vue'],resolve)
 				},
 				{
-					path: 'layimdemo',
-					name: 'layim测试',
+					path: 'message',
+					name: '我的消息',
 					component: resolve => require(['@/views/layerim/demo.vue'],resolve),
 					meta: {
-						hideFooter: true
+						hideFooter: false
 					}
                 },
                 {

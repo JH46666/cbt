@@ -3,7 +3,7 @@
         <router-link v-for="(item,index) in footerData" :class="{on: item.routeName === $route.name}" :to="item.path" :key="index">
             <i class="iconfont" :class="item.path === classIndex ? item.select : item.icon"></i>
             {{ item.name }}
-            <mt-badge type="error" size="small" v-if="index === 2 && id" v-show="Number(cartTotal)>0">{{ cartTotal | ninenineAdd }}</mt-badge>
+            <mt-badge type="error" size="small" v-if="index === 3 && id" v-show="Number(cartTotal)>0">{{ cartTotal | ninenineAdd }}</mt-badge>
         </router-link>
     </div>
 </template>
@@ -28,6 +28,13 @@
                         routeName: '分类',
                         path: '/category/',
                         select: 'icon-chabangtongzhuanyongfenlei_yixuan'
+                    },
+                    {
+                        icon: 'icon-chabangtongzhuanyong_xiaoxiweixuan',
+                        name: '消息',
+                        routeName: '消息',
+                        path: '/message/',
+                        select: 'icon-chabangtongzhuanyong_xiaoxiyixuansvg'
                     },
                     {
                         icon: 'icon-chabangtongzhuanyongfenlei_gouwuche1',
