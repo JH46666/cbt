@@ -48,7 +48,7 @@
                                                 <div class="flex-1 flex align_items_end">
                                                     <div class="pro_price"><span class="money">{{item.priorityPrice}}</span>元/{{item.unit}}</div>
                                                     <div class="pro_number clearfix">
-                                                        <span class="decrease" @click="numDecrease(item)"><i class="iconfont">&#xe851;</i></span>
+                                                        <span class="decrease" :class="{isGary:item.buyNum === 1}" @click="numDecrease(item)"><i class="iconfont">&#xe851;</i></span>
                                                         <input class="input-num" type="number" v-model="item.buyNum" @blur="numChange(item)">
                                                         <span class="plus" @click="numPlus(item)"><i class="iconfont">&#xe638;</i></span>
                                                     </div>
