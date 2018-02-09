@@ -83,7 +83,7 @@
         </section>
         <section class="no-search" v-if="!noSearch && noList">
             <div class="sorry-img">
-                <img src="../../assets/images/55.png" alt="">
+                <img src="../../assets/images/cbt_sp_k.png" alt="">
             </div>
             <div class="sorry">
                 抱歉，没有搜索到与<span class="gold">“{{ $route.query.q }}”</span>有关的商品
