@@ -3,7 +3,7 @@
         <div class="f5-2"></div>
         <div class="activity_name">
             <label for="activeName">活动名称</label>
-            <input type="text" id="activeName" placeholder="输入2-15个汉字" maxlength="15" v-model="activeName" />
+            <input type="text" id="activeName" placeholder="输入1-15个汉字" maxlength="15" v-model="activeName" />
         </div>
         <div class="f5-2"></div>
         <div class="activityt_date">
@@ -364,7 +364,7 @@ export default {
             return true;
         },
         isSave() {
-            if(this.activeName.length >= 2 && this.activeStartDate != '' && this.activeEndDate != '' && this.selProList.length > 0){
+            if(this.activeName.length >= 1 && this.activeStartDate != '' && this.activeEndDate != '' && this.selProList.length > 0){
                 return false;
             }else{
                 return true;

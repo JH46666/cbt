@@ -65,7 +65,7 @@
                 :mainTit="item.proTitle"
                 :subTit="item.subTitle"
                 :link="item.proSku"
-                :price="item.proPrice"
+                :price="item.isSales ? item.salesPrice : item.proPrice"
                 :unit="item.unint"
                 :imgUrl="item.proImg"
                 :businessType="item.tagNum"
