@@ -76,6 +76,14 @@
                                 <span class="loading-text">正在努力加载中</span>
                             </div>
                             <div class="no-more" v-if="nomore">没有更多了呦</div>
+                            <div v-if="resultData.length==0">
+                                <div class="sorry-img">
+                                    <img src="../../assets/images/cbt_sp_k.png" alt="">
+                                </div>
+                                <div class="sorry">
+                                    抱歉，没有搜索到您要的商品~
+                                </div>
+                            </div>
                         </div>
 
                     </div>
@@ -457,7 +465,6 @@
                 }
                 this.$api.post(`/oteao/productInfo/seachProduct?page.pageNumber=${this.pageNumber}&page.pageSize=${this.pageSize}`,JSON.stringify(data),res=>{
                     this.filterVisible = false;
-                    console.log(data)
                     this.sortVisible = false;
                     let tempArr = res.data;
                     for(let item of tempArr){
