@@ -252,7 +252,7 @@
                 茶帮通客服
             </mt-tab-item>
             <template v-else>
-                <mt-tab-item class="org-item" id="5" @click.native="openKfDialog">
+                <mt-tab-item class="org-item org-kefu" id="5" @click.native="openKfDialog">
                     <i class="icon-kefurukousvg" slot="icon"></i>
                     店铺客服
                 </mt-tab-item>
