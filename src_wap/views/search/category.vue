@@ -1,6 +1,6 @@
 <template>
     <div class="category_wrapper">
-        
+
         <!-- 搜索框 -->
         <div class="flex search-box" :class="{'wx-search': wxFlag}">
             <div class="logo-img">
@@ -36,7 +36,7 @@
                         <li v-for="(subItem,index) in subCat" :key="index" class="sub-item" :class="{'pull': subItem.pullFlag,'on':subItem.selectedFlag}">
                             <span class="subName" @click="searchSub(index,subItem)">{{subItem.catName}}</span>
                             <ul class="third-item">
-                                <li v-for="thirdItem in subItem.children" :key="thirdItem.id" :class="{active:thirdItem.activeFlag}" @click="searchThird(subItem,thirdItem)">香气</li>
+                                <li v-for="thirdItem in subItem.children" :key="thirdItem.id" :class="{active:thirdItem.activeFlag}" @click="searchThird(subItem,thirdItem)">{{thirdItem.catName}}</li>
                             </ul>
                         </li>
                     </ul>
@@ -46,7 +46,7 @@
                         <div style="height: 100%; overflow-y: auto;" ref="goodsWrapper">
                             <div class="condition-box">
                                 <ul class="flex">
-                                    <li @click="filterVisible = true" :class="{on: filterFlag}"><i class="iconfont">&#xe674;</i>筛选</li>
+                                    <li @click="openFilter()" :class="{on: filterFlag}"><i class="iconfont">&#xe674;</i>筛选</li>
                                     <li @click="sortVisible = true" :class="{on: sortData[0].sortIndex!=0}"><i class="iconfont">&#xe673;</i>排序</li>
                                 </ul>
                             </div>
@@ -69,7 +69,7 @@
                                         imgWidth="1.56rem">
                                     </goods-item>
                                 </div>
-                                
+
                             </div>
                             <div class="goods-loading" v-if="loading">
                                 <mt-spinner type="fading-circle" color="#f08200"></mt-spinner>
@@ -87,10 +87,17 @@
             <div class="mup_bg" @click="filterVisible = false"></div>
             <div class="mupop_dialog_wrapper">
                 <div class="popup-content">
-                    <div class="con-item">
+                    <div class="con-item" v-if="$tool.isLogin()">
                         <h4>供货价</h4>
-                        <input class="price-input" type="number" placeholder="最低价"> — 
-                        <input class="price-input" type="number" placeholder="最高价">
+                        <input class="price-input" type="number" v-model="minSupplyPrice" placeholder="最低价" @blur="toFixedMinZero()"> —
+                        <input class="price-input" type="number" v-model="maxSupplyPrice" placeholder="最高价" @blur="toFixedMaxZero()">
+                    </div>
+                    <div class="con-item">
+                        <h4>品牌</h4>
+                        <ul class="clearfix">
+                            <li :class="{on:'' == selectedBrandId}" @click="selectBrand('')">全部</li>
+                            <li :class="{on:item.id == selectedBrandId}" v-for="(item,index) in brandList" :key="index" @click="selectBrand(item.id)">{{item.brandName}}</li>
+                        </ul>
                     </div>
                     <div class="con-item" v-for="(list,listIndex) in filterConditions" :key="listIndex">
                         <h4>{{list.propName}}</h4>
@@ -129,6 +136,7 @@
     import { mapState } from 'vuex'
     import store from 'store';
     import { InfiniteScroll } from 'mint-ui';
+    import isLogin from '../../../utils/index.js';
     export default{
         data(){
             return {
@@ -159,6 +167,10 @@
                 sessionFlag: false,  // 是否有session
                 activeSubFlag: false,   //二级菜单是否添加选中样式
                 scrollTop: 0,
+                maxSupplyPrice: '', //最大供货价
+                minSupplyPrice: '',//最小供货价
+                brandList:[],//筛选品牌列表
+                selectedBrandId:'', //被选中的品牌
                 filterIndexs: [],
                 sortData:[{
                     sortName: '排序',
@@ -352,7 +364,7 @@
                         console.log(res);
                     });
                 });
-                
+
             },
             //清空搜索内容
             clearTxt(){
@@ -393,6 +405,35 @@
                 this.totalSize = 0;
                 this.searchResult();
             },
+            // 格式化价格
+            toFixedMinZero() {
+                let delTrim = String(this.minSupplyPrice).trim();
+                if(delTrim == ''){
+                    this.minSupplyPrice = '';
+                }else if(parseFloat(delTrim) > 0){
+                    this.minSupplyPrice = parseFloat(delTrim).toFixed(0);
+                }else if(parseFloat(delTrim) < 0){
+                    this.minSupplyPrice = Math.abs(parseFloat(delTrim).toFixed(0));
+                }
+            },
+            toFixedMaxZero() {
+                let delTrim = String(this.maxSupplyPrice).trim();
+                if(delTrim == ''){
+                    this.maxSupplyPrice = '';
+                }else if(parseFloat(delTrim) > 0){
+                    this.maxSupplyPrice = parseFloat(delTrim).toFixed(0);
+                }else if(parseFloat(delTrim) < 0){
+                    this.maxSupplyPrice = Math.abs(parseFloat(delTrim).toFixed(0));
+                }
+            },
+            // 判断最大供货价不得小于最小供货价
+            sortPrice(){
+                if(this.maxSupplyPrice<this.minSupplyPrice){
+                    let temp = this.maxSupplyPrice;
+                    this.maxSupplyPrice = this.minSupplyPrice;
+                    this.minSupplyPrice = temp;
+                }
+            },
             //查询结果
             searchResult(){
                 let propValList = [];
@@ -401,16 +442,22 @@
                         propValList.push(this.propertiesValList[item]);
                     }
                 }
+
+                this.sortPrice()
                 let data = {
+                    brandId:this.selectedBrandId,
                     catId: this.activeSubId,
                     orderBy: this.sortDesc ? 'desc':'asc',
                     sort: this.sort,
                     device: 'WAP',
                     sysId: 1,
-                    propertiesValList: propValList
+                    propertiesValList: propValList,
+                    minSupplyPrice:this.minSupplyPrice,
+                    maxSupplyPrice:this.maxSupplyPrice
                 }
                 this.$api.post(`/oteao/productInfo/seachProduct?page.pageNumber=${this.pageNumber}&page.pageSize=${this.pageSize}`,JSON.stringify(data),res=>{
                     this.filterVisible = false;
+                    console.log(data)
                     this.sortVisible = false;
                     let tempArr = res.data;
                     for(let item of tempArr){
@@ -522,6 +569,9 @@
                     item.activeFlag = false;
                 }
                 thirdItem.activeFlag = true;
+                this.activeSubIndex = thirdItem.id;
+                this.activeSubId = thirdItem.id;
+                this.pageSize = 20;
             },
             //重置二级菜单是否展开和是否选中状态
             resetPullFlag(curItem){
@@ -536,6 +586,22 @@
                 for(let item of curItem.children){
                     item.activeFlag = false;
                 }
+            },
+            // 打开筛选弹窗
+            openFilter(){
+
+                let data = {
+                    catId: this.activeSubId,
+                }
+                // 获取分类品牌列表
+                this.$api.get('/oteao/productBrand/findProductBrandByCatId?',data,res=>{
+                    this.brandList = res.data;
+                    this.filterVisible = true;
+                })
+            },
+            // 品牌筛选
+            selectBrand(id){
+                this.selectedBrandId =id;
             },
             // 筛选
             selectFilter(list,item,index){
@@ -594,7 +660,8 @@
             } else {
                 next();
             }
-        },
+        }
+
     }
 </script>
 <style lang="less">

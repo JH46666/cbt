@@ -100,10 +100,16 @@
             <div class="mup_bg" @click="filterVisible = false"></div>
             <div class="mupop_dialog_wrapper">
                 <div class="popup-content">
-                    <div class="con-item" v-for="(list,listIndex) in filterConditions" :key="listIndex">
-                        <h4>{{list.propName}}</h4>
+                    <div class="con-item">
+                        <h4>供货价</h4>
+                        <input class="price-input" type="number" v-model="minSupplyPrice" placeholder="最低价" @blur="toFixedMinZero()"> —
+                        <input class="price-input" type="number" v-model="maxSupplyPrice" placeholder="最高价" @blur="toFixedMaxZero()">
+                    </div>
+                    <div class="con-item">
+                        <h4>品牌</h4>
                         <ul class="clearfix">
-                            <li :class="{on:index == list.filterIndex}" v-for="(item,index) in list.propValList" :key="index" @click="selectFilter(list,item,index)">{{item.propVal}}</li>
+                            <li :class="{on:'' == selectedBrandId}" @click="selectBrand('')">全部</li>
+                            <li :class="{on:item.id == selectedBrandId}" v-for="(item,index) in brandList" :key="index" @click="selectBrand(item.id)">{{item.brandName}}</li>
                         </ul>
                     </div>
                 </div>
@@ -200,6 +206,10 @@
                 total: 0,               // 总条目
                 pageNum: 1,             // 页码
                 noList: false,          // 没有搜索到
+                maxSupplyPrice: '', //最大供货价
+                minSupplyPrice: '',//最小供货价
+                brandList:[],//筛选品牌列表
+                selectedBrandId:'', //被选中的品牌
                 history: [],            // 历史记录
                 filterConditions:[],
                 propertiesValList:{},  //筛选属性值
@@ -232,7 +242,7 @@
                     this.reset();
                     this.$router.replace({name: '搜索',query: {q: this.$route.query.q,c: val,sort: 'desc'}})
                 }else{
-                    
+
                 }
             }
         },
@@ -393,6 +403,51 @@
                     this.$router.replace({name: '搜索'})
                 }
             },
+            // 格式化价格
+            toFixedMinZero() {
+                let delTrim = String(this.minSupplyPrice).trim();
+                if(delTrim == ''){
+                    this.minSupplyPrice = '';
+                }else if(parseFloat(delTrim) > 0){
+                    this.minSupplyPrice = parseFloat(delTrim).toFixed(0);
+                }else if(parseFloat(delTrim) < 0){
+                    this.minSupplyPrice = Math.abs(parseFloat(delTrim).toFixed(0));
+                }
+            },
+            toFixedMaxZero() {
+                let delTrim = String(this.maxSupplyPrice).trim();
+                if(delTrim == ''){
+                    this.maxSupplyPrice = '';
+                }else if(parseFloat(delTrim) > 0){
+                    this.maxSupplyPrice = parseFloat(delTrim).toFixed(0);
+                }else if(parseFloat(delTrim) < 0){
+                    this.maxSupplyPrice = Math.abs(parseFloat(delTrim).toFixed(0));
+                }
+            },
+            // 判断最大供货价不得小于最小供货价
+            sortPrice(){
+                if(this.maxSupplyPrice<this.minSupplyPrice){
+                    let temp = this.maxSupplyPrice;
+                    this.maxSupplyPrice = this.minSupplyPrice;
+                    this.minSupplyPrice = temp;
+                }
+            },
+            // 打开筛选弹窗
+            openFilter(){
+
+                let data = {
+                    catId: this.activeSubId,
+                }
+                // 获取分类品牌列表
+                this.$api.get('/oteao/productBrand/findProductBrandByCatId?',data,res=>{
+                    this.brandList = res.data;
+                    this.filterVisible = true;
+                })
+            },
+            // 品牌筛选
+            selectBrand(id){
+                this.selectedBrandId =id;
+            },
         },
         created() {
             // 设置title
@@ -424,7 +479,7 @@
                 try {
                     this.hotList = JSON.parse(res.data.htmlText);
                 } catch (error) {
-                    
+
                 }
             })
         },

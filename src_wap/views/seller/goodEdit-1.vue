@@ -588,7 +588,7 @@ export default {
                 this.resize.form.goodsMz = this.detailObj.productInfo.weight;
                 this.resize.form.goodsSx = this.detailObj.productPrice[0].price;
                 this.resize.form.goodTypes = this.detailObj.productInfo.catName;
-                this.resize.form.goodsPtsj = this.detailObj.productPrice[1].price;
+                this.resize.form.goodsPtsj = parseFloat(this.detailObj.productPrice[1].price).toFixed(2);
                 this.resize.form.goodsSell = this.detailObj.productExtInfo.reason;
                 this.resize.form.goodsKc = this.detailObj.productExtInfo.stockNum;
                 this.resize.defaultArray[0].content = this.detailObj.productExtInfo.fragrance;
