@@ -123,7 +123,7 @@
                         <div class="detail_describe_count">
                             <label class="label_text">采购量</label>
                             <div class="plusOreduce">
-                                <span class="reduce btn" @click="reduceMethod">-</span>
+                                <span class="reduce btn" :class="{isGary:goodsCount === 1}" @click="reduceMethod">-</span>
                                 <input v-model="goodsCount" type="number" class="countNum" @blur="limit">
                                 <span class="plus btn" @click="plusMethod">+</span>
                             </div>
