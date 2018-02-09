@@ -2,8 +2,8 @@
     <div class="cbt_footer">
         <router-link v-for="(item,index) in footerData" :class="{on: item.routeName === $route.name}" :to="item.path" :key="index">
             <i class="iconfont" :class="item.path === classIndex ? item.select : item.icon"></i>
-            {{ item.name }}
-            <mt-badge type="error" size="small" v-if="index === 2 && id" v-show="Number(cartTotal)>0">{{ cartTotal | ninenineAdd }}</mt-badge>
+            <span class="nav-name">{{ item.name }}</span>
+            <mt-badge type="error" size="small" v-if="index === 3 && id" v-show="Number(cartTotal)>0">{{ cartTotal | ninenineAdd }}</mt-badge>
         </router-link>
     </div>
 </template>
@@ -28,6 +28,13 @@
                         routeName: '分类',
                         path: '/category/',
                         select: 'icon-chabangtongzhuanyongfenlei_yixuan'
+                    },
+                    {
+                        icon: 'icon-chabangtongzhuanyong_xiaoxiweixuan',
+                        name: '消息',
+                        routeName: '消息',
+                        path: '/message/',
+                        select: 'icon-chabangtongzhuanyong_xiaoxiyixuansvg'
                     },
                     {
                         icon: 'icon-chabangtongzhuanyongfenlei_gouwuche1',
@@ -76,6 +83,10 @@
     height: .98rem;
     border-top: 1px solid #e5e5e5;
     .line(1);
+    .nav-name{
+        .position(r);
+        top: -.05rem;
+    }
     a{
         &.on{
             .color(@mainCol);
@@ -85,7 +96,7 @@
         }
         i{
             .color(#424140);
-            .fontSize(.34rem);
+            .fontSize(.38rem);
             .line(1);
         }
         padding: .1rem 0 0;

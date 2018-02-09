@@ -44,14 +44,10 @@
             for (let it in data) {
                 ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&';
             }
-            this.$http.post("/erp/account/login",ret).then(res=>{
+            // this.$http.post("/erp/account/login",ret).then(res=>{
                 layui.config({
                     version: true,
                     base: '/static/mods/'
-                }).extend({
-                    // socket: 'socket',
-                    // req:'req',
-                    // fly: 'index'
                 }).use(['mobile','socket','req'], function(mobile,socket,req){
                     var layim = mobile.layim,
                         layer = mobile.layer;
@@ -63,6 +59,7 @@
                         //初始化接口
                         init: {
                             url: '/erp/layim/base'
+
                         }
                         //查看群员接口
                         ,members: {
@@ -84,7 +81,7 @@
                     });
                     socket.config({
                         log:true,
-                        token:'/erp/layim/token',
+                        token:'/erp/layim/getToKenById?id=204736',
                         server:'ws://192.168.7.68:8888'
                     });
 
@@ -201,7 +198,7 @@
                         });
                     });
                 });
-            });
+            // });
         },
     }
         

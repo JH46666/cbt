@@ -4,7 +4,7 @@
         <h4 class="tit_like"><span>您可能喜欢</span></h4>
         <div class="search_pros">
             <ul class="may_pros_list clearfix">
-                <li class="may_pro_item" v-for="mayItem in mayProducts">
+                <li class="may_pro_item" v-for="mayItem in mayProducts" :key="mayItem.proSku">
                     <router-link :to="'/detail?proSku=' + mayItem.proSku">
                         <goods-img imgWidth="2.6rem" :imgUrl="mayItem.proImg" :tagUrl="mayItem.tagImage"></goods-img>
                         <div class="pro_txt">

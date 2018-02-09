@@ -50,7 +50,6 @@
                                     <li @click="sortVisible = true" :class="{on: sortData[0].sortIndex!=0}"><i class="iconfont">&#xe673;</i>排序</li>
                                 </ul>
                             </div>
-                            <router-link :to="{name:'layim测试'}">去聊天</router-link>
                             <div v-infinite-scroll="loadMore" infinite-scroll-disabled="true" infinite-scroll-distance="10">
                                 <div v-for="item of resultData" :key="item.id" @click="setSession">
                                     <goods-item
