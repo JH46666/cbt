@@ -573,6 +573,7 @@
                 this.activeSubIndex = index;
                 this.activeSubId = item.id;
                 this.pageSize = 20;
+                this.searchResult();
             },
             // 搜索三级
             searchThird(subItem,thirdItem,index){
