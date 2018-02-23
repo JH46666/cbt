@@ -76,7 +76,7 @@
                                 <span class="loading-text">正在努力加载中</span>
                             </div>
                             <div class="no-more" v-if="nomore">没有更多了呦</div>
-                            <div v-if="resultData.length==0">
+                            <div v-if="noresult">
                                 <div class="sorry-img">
                                     <img src="../../assets/images/cbt_sp_k.png" alt="">
                                 </div>
@@ -180,6 +180,7 @@
                 brandList:[],//筛选品牌列表
                 selectedBrandId:'', //被选中的品牌
                 filterIndexs: [],
+                noresult:false,
                 sortData:[{
                     sortName: '排序',
                     sortIndex: 0,
@@ -390,6 +391,12 @@
                 for(let item in this.propertiesValList){
                     this.propertiesValList[item].propValId = 'all';
                 }
+                this.selectedBrandId = '';
+            },
+            // 重置供货价区间
+            resetSupplyPrice(){
+                this.minSupplyPrice = '';
+                this.maxSupplyPrice = '';
             },
             //重置排序
             resetSort(){
@@ -444,6 +451,7 @@
             },
             //查询结果
             searchResult(thirdProp){
+                this.noresult = false;
                 let propValList = [];
                 for(let item in this.propertiesValList){
                     if(this.propertiesValList[item].propValId != 'all'){
@@ -466,6 +474,9 @@
                     maxSupplyPrice:this.maxSupplyPrice
                 }
                 this.$api.post(`/oteao/productInfo/seachProduct?page.pageNumber=${this.pageNumber}&page.pageSize=${this.pageSize}`,JSON.stringify(data),res=>{
+                    if(!res.data.length){
+                        this.noresult = true;
+                    }
                     this.filterVisible = false;
                     this.sortVisible = false;
                     let tempArr = res.data;
@@ -544,6 +555,7 @@
             },
             // 搜索一级分类
             searchFirstCat(index,id,e){
+                this.resetSupplyPrice();
                 this.scrollTop = 0;
                 let o_w = e.parentNode.offsetWidth;
                 let o_l = e.parentNode.offsetLeft;
@@ -562,6 +574,7 @@
             },
             // 搜索二级分类
             searchSub(index,item){
+                this.resetSupplyPrice();
                 this.resetPullFlag(item);
                 for(let third of item.propVal){
                     third.activeFlag = false;
@@ -614,7 +627,6 @@
             },
             // 打开筛选弹窗
             openFilter(){
-
                 let data = {
                     catId: this.activeSubId,
                 }
