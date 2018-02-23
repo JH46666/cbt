@@ -30,11 +30,9 @@
 <template>
     <router-link :to="'/detail?proSku='+link" class="cbt-goods-item" tag="div">
         <div class="left-text-wrap">
-            <div class="goods-title">
-                {{mainTit}}
+            <div class="goods-title" v-html="mainTit">
             </div>
-            <div class="goods-title one-line" v-if="subTit">
-                {{subTit}}
+            <div class="goods-title one-line" v-if="subTit" v-html="subTit">
             </div>
             <div class="goods-attr-wrap" v-if="isShowAttr">
                 <div class="goods-attr">
