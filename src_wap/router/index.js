@@ -19,7 +19,7 @@ const router = new Router({
 				},
 				{
 					path: 'message',
-					name: '我的消息',
+					name: '消息',
 					component: resolve => require(['@/views/layerim/demo.vue'],resolve),
 					meta: {
 						hideFooter: false
@@ -524,8 +524,14 @@ const router = new Router({
 
 let count = 0;
 router.beforeEach((to,from,next) => {
-	store.commit('RECORD_ROUTER',{type:'to',data:to})
-	store.commit('RECORD_ROUTER',{type:'from',data:from})
+	store.commit('RECORD_ROUTER',{type:'to',data:to});
+	store.commit('RECORD_ROUTER',{type:'from',data:from});
+	if(to.path !== "/message/"){
+		let ele = document.getElementsByClassName("layui-m-layer");
+		for(let i = 0; i<ele.length; i++){
+			ele[i].style.display = "none";
+		}
+	}
 	// 计数，为1才去执行微信的登录
 	count++;
 	// 需要判断是否在微信内部，是的话要授权登录
@@ -547,7 +553,7 @@ router.beforeEach((to,from,next) => {
 		next()
 	}
 
-})
+});
 
 
 export default router
