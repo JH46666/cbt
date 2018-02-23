@@ -36,7 +36,7 @@
                         <li v-for="(subItem,index) in subCat" :key="index" class="sub-item" :class="{'pull': subItem.pullFlag,'on':subItem.selectedFlag}">
                             <span class="subName" @click="searchSub(index,subItem)">{{subItem.catName}}</span>
                             <ul class="third-item">
-                                <li v-for="thirdItem in subItem.children" :key="thirdItem.id" :class="{active:thirdItem.activeFlag}" @click="searchThird(subItem,thirdItem)">{{thirdItem.catName}}</li>
+                                <li v-for="thirdItem in subItem.propVal" :key="thirdItem.id" :class="{active:thirdItem.activeFlag}" @click="searchThird(subItem,thirdItem,index)">{{thirdItem.propVal}}</li>
                             </ul>
                         </li>
                     </ul>
@@ -277,7 +277,7 @@
                         for(let subItem of item.children){
                             this.$set(subItem, 'pullFlag',false);
                             this.$set(subItem, 'selectedFlag',false);
-                            for(let thirdItem of subItem.children){
+                            for(let thirdItem of subItem.propVal){
                                 this.$set(thirdItem, 'activeFlag',false);
                             }
                         }
@@ -443,14 +443,16 @@
                 }
             },
             //查询结果
-            searchResult(){
+            searchResult(thirdProp){
                 let propValList = [];
                 for(let item in this.propertiesValList){
                     if(this.propertiesValList[item].propValId != 'all'){
                         propValList.push(this.propertiesValList[item]);
                     }
                 }
-
+                if(thirdProp){
+                    propValList.push(thirdProp);
+                }
                 this.sortPrice()
                 let data = {
                     brandId:this.selectedBrandId,
@@ -561,6 +563,9 @@
             // 搜索二级分类
             searchSub(index,item){
                 this.resetPullFlag(item);
+                for(let third of item.propVal){
+                    third.activeFlag = false;
+                }
                 this.$nextTick(()=>{
                     item.pullFlag = !item.pullFlag;
                     item.selectedFlag = true;
@@ -568,17 +573,30 @@
                 this.activeSubIndex = index;
                 this.activeSubId = item.id;
                 this.pageSize = 20;
+                this.searchResult();
             },
             // 搜索三级
-            searchThird(subItem,thirdItem){
+            searchThird(subItem,thirdItem,index){
+                this.resultData = [];
+                this.pageNumber = 1;
+                this.totalSize = 0;
+                if(!this.sessionFlag){
+                    this.sort = 1;
+                    this.sortDesc = true;
+                }
                 subItem.selectedFlag = false;
-                for(let item of subItem.children){
+                for(let item of subItem.propVal){
                     item.activeFlag = false;
                 }
                 thirdItem.activeFlag = true;
-                this.activeSubIndex = thirdItem.id;
-                this.activeSubId = thirdItem.id;
+                this.activeSubIndex = index;
+                this.activeSubId = thirdItem.catId;
                 this.pageSize = 20;
+                let temp = {
+                    propId: thirdItem.id,
+                    propValId: thirdItem.propId
+                }
+                this.searchResult(temp);
             },
             //重置二级菜单是否展开和是否选中状态
             resetPullFlag(curItem){
