@@ -115,13 +115,13 @@
                                     <div class="packet_sum align_left">
                                         <template v-if="item.amount">
                                             <span class="small">￥</span>
-                                            <span class="big">{{ item.amount }}</span>
+                                            <span class="big">{{ formatPrice(item.amount) }}</span>
                                         </template>
                                         <template v-if="item.discount">
                                             <span class="big">{{ item.discount }}</span>
                                             <span class="small">折</span>
                                         </template>
-                                        <span>满{{ item.fullAmountUse }}元可用</span>
+                                        <span>满{{ formatPrice(item.fullAmountUse) }}元可用</span>
                                     </div>
                                     <div class="packet_name align_left">{{ item.limitExplain }}</div>
                                 </div>
@@ -293,6 +293,39 @@ export default {
             this.$api.post('/oteao/member/redPacket/findRedPacketListByRuleSetIds?sysId=1',JSON.stringify(this.packetCode.oldUser),res => {
                 this.oldList = res.data || [];
             })
+        },
+        // 强制保留两位小数
+        toDecimal2(x) {
+            var f = parseFloat(x);
+            if (isNaN(f)) {
+                return false;
+            }
+            var f = Math.round(x * 100) / 100;
+            var s = f.toString();
+            var rs = s.indexOf('.');
+            if (rs < 0) {
+                rs = s.length;
+                s += '.';
+            }
+            while (s.length <= rs + 2) {
+                s += '0';
+            }
+            return s;
+        },
+        // 格式化价格
+        formatPrice(val) {
+            // val = val.toString()
+            val = this.toDecimal2(val);
+            if(val.indexOf('.') !== -1){
+                if (val.indexOf('.0') !== -1) {
+                    console.log(val.substring(0, val.length - 3));
+                    return val.substring(0, val.length - 3);
+                }else {
+                    console.log(val.substring(0, val.length - 1));
+                    return val.substring(0, val.length-1);
+                }
+            }
+            // console.log(val);
         }
     },
     created() {

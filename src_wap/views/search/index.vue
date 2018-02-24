@@ -46,7 +46,7 @@
                     <i class="icon-zhankai"></i>
                 </span>
             </label>
-            <label class="sort-item" :class="{active:sortClass === '4'}" @click.self="filterVisible = true">
+            <label class="sort-item" :class="{active:sortClass === '4'}" @click="filterVisible = true">
                 <i class="iconfont ic-sele">&#xe674;</i>
                 筛选
                 <input  type="radio" value="4" v-model="sortClass">
@@ -62,13 +62,13 @@
                 <goods-item
                 v-for="(item,index) in list"
                 :key="index"
-                :mainTit="item.proTitle"
+                :mainTit="item.proName"
                 :subTit="item.subTitle"
                 :link="item.proSku"
-                :price="item.proPrice"
-                :unit="item.unint"
+                :price="item.isSales ? item.salesPrice : item.proPrice"
+                :unit="item.unint ? item.unint : '斤' "
                 :imgUrl="item.proImg"
-                :businessType="item.tagNum"
+                :businessType="sortTagNum(item.tagNum)"
                 :tasteStar="item.tasteStar"
                 :tagUrl="item.tagImgUrl"
                 :aromaStar="item.aromaStar"
@@ -83,7 +83,7 @@
         </section>
         <section class="no-search" v-if="!noSearch && noList">
             <div class="sorry-img">
-                <img src="../../assets/images/55.png" alt="">
+                <img src="../../assets/images/cbt_sp_k.png" alt="">
             </div>
             <div class="sorry">
                 抱歉，没有搜索到与<span class="gold">“{{ $route.query.q }}”</span>有关的商品
@@ -100,16 +100,22 @@
             <div class="mup_bg" @click="filterVisible = false"></div>
             <div class="mupop_dialog_wrapper">
                 <div class="popup-content">
-                    <div class="con-item" v-for="(list,listIndex) in filterConditions" :key="listIndex">
-                        <h4>{{list.propName}}</h4>
+                    <div class="con-item" v-if="$tool.isLogin()">
+                        <h4>供货价</h4>
+                        <input class="price-input" type="number" v-model="minSupplyPrice" placeholder="最低价" @blur="toFixedMinZero()"> —
+                        <input class="price-input" type="number" v-model="maxSupplyPrice" placeholder="最高价" @blur="toFixedMaxZero()">
+                    </div>
+                    <div class="con-item">
+                        <h4>品牌</h4>
                         <ul class="clearfix">
-                            <li :class="{on:index == list.filterIndex}" v-for="(item,index) in list.propValList" :key="index" @click="selectFilter(list,item,index)">{{item.propVal}}</li>
+                            <li :class="{on:'' == selectedBrand}" @click="selectBrand('')">全部</li>
+                            <li :class="{on:item == selectedBrand}" v-for="(item,index) in brandList" :key="index" @click="selectBrand(item)">{{item}}</li>
                         </ul>
                     </div>
                 </div>
                 <div class="pop-btns flex">
                     <a class="flex-1" href="javscript:void(0)" @click="resetConditions">重置</a>
-                    <a class="flex-1 confirm" href="javscript:void(0)" @click="confirmConditions">确定</a>
+                    <a class="flex-1 confirm" href="javscript:void(0)" @click="filter">确定</a>
                 </div>
             </div>
         </div>
@@ -126,6 +132,7 @@
                 selectSort: '',
                 text: '',               // 搜索关键字
                 sortClass: '1',         // 排序方式
+                sortName:'salesNum',
                 priceSort: false,       // 价格排序，降序
                 hotList: [              // 热搜
                     {
@@ -200,6 +207,10 @@
                 total: 0,               // 总条目
                 pageNum: 1,             // 页码
                 noList: false,          // 没有搜索到
+                maxSupplyPrice: '', //最大供货价
+                minSupplyPrice: '',//最小供货价
+                brandList:[],//筛选品牌列表
+                selectedBrand:'', //被选中的品牌
                 history: [],            // 历史记录
                 filterConditions:[],
                 propertiesValList:{},  //筛选属性值
@@ -216,12 +227,12 @@
                 try {
                     this.handle().then(res => {
                         this.list = [];
-                        let data = this.list.concat(res.data);
+                        let data = this.list.concat(res.data.searchResult.result);
                         if(data.length === 0) {
                             this.noList = true;
                         }
                         this.list = data;
-                        this.total = res.total_record;
+                        this.total = res.data.searchResult.total;
                     })
                 } catch (error) {
                     return false;
@@ -232,19 +243,11 @@
                     this.reset();
                     this.$router.replace({name: '搜索',query: {q: this.$route.query.q,c: val,sort: 'desc'}})
                 }else{
-                    
+
                 }
             }
         },
         methods: {
-            // 筛选
-            selectFilter(list,item,index){
-                list.filterIndex = index;
-                this.propertiesValList[list.id] = {
-                    propId: item.catPropId,
-                    propValId: item.id
-                };
-            },
             //重置筛选条件
             resetConditions(){
                 for(let item of this.filterConditions){
@@ -253,13 +256,13 @@
                 for(let item in this.propertiesValList){
                     this.propertiesValList[item].propValId = 'all';
                 }
+                this.resetSupplyPrice();
+                this.selectedBrand = '';
             },
-            //筛选条件查询
-            confirmConditions(){
-                this.resultData = [];
-                this.pageNumber = 1;
-                this.totalSize = 0;
-                // this.searchResult();
+            // 重置供货价区间
+            resetSupplyPrice(){
+                this.minSupplyPrice = '';
+                this.maxSupplyPrice = '';
             },
             // 重置
             reset() {
@@ -288,13 +291,25 @@
                 if(this.list.length < this.total) {
                     this.pageNum++;
                     this.handle(this.pageNum).then(res => {
-                        let data = this.list.concat(res.data);
+                        let data = this.list.concat(res.data.searchResult.result);
                         this.list = data;
-                        this.total = res.total_record;
+                        this.total = res.data.searchResult.total;
                         if(this.list.length === this.total) {
                             this.pageNum--;
                         }
                     })
+                }
+            },
+            // 讲店家类型转为数字
+            sortTagNum(tagNum){
+                switch (tagNum) {
+                    case '自营':return 1;break;
+                    case '联营':return 2;break;
+                    case '茶企':return 3;break;
+                    case '合作社':return 4;break;
+                    case '批发商':return 5;break;
+                    case '茶厂':return 6;break;
+                    case '其他':return 7;break;
                 }
             },
             // 清空历史记录
@@ -308,8 +323,14 @@
             },
             // 搜索
             search() {
+                this.resetConditions();
                 if(this.text === '') return;
-                this.$router.replace({name: '搜索',query: {q: this.text,c: '1',sort: 'desc'}})
+                this.$router.replace({name: '搜索',query: {q: this.text,c: '1',sort: 'desc'}});
+            },
+            // 筛选
+            filter(){
+                this.filterVisible = false;
+                this.$router.replace({name: '搜索',query: {q: this.text,c: '1',sort: 'desc'}});
             },
             // 搜索处理函数
             handle(page = 1) {
@@ -323,16 +344,28 @@
                     // 设置参数
                     this.text = query.q;
                     this.sortClass = query.c;
-
-                    let data = {
-                        "device": "WAP",
-                        "isExchangeIntegral": 0,
-                        "orderBy": query.sort,
-                        "proType": "PRO",
-                        "seachKey": query.q,
-                        "sort": query.c,
-                        "sysId": 1
+                    switch (query.c) {
+                        case '1':this.sortName = 'salesNum';break;
+                        case '2':this.sortName = 'createTime';break;
+                        case '3':this.sortName = 'proPrice';break;
+                        default:this.sortName = 'salesNum'
                     }
+                    let data = {
+                        "brandName":this.selectedBrand?this.selectedBrand:null,
+                        "keyWords": query.q,
+                        "priceRange": {
+                           "end": this.maxSupplyPrice,
+                           "fieldName": "proPrice",
+                           "start": this.minSupplyPrice
+                         },
+                         "sortParamList": [
+                            {
+                              "fieldName": this.sortName,
+                              "sortOrder": query.sort
+                            }
+                          ]
+                    }
+                    console.log(data)
 
 
                     // 储存搜索历史
@@ -348,8 +381,14 @@
                     this.$api.post('/oteao/searchProductRecord/insert',historyData,res => {})
 
                     return new Promise((resolve,reject) => {
-                        this.$api.post(`/oteao/productInfo/seachProduct?page.pageNumber=${page}&page.pageSize=20`,JSON.stringify(data),res => {
-                            let tempArr = res.data;
+                        this.$api.post(`/oteao/productExtInfoSearch/searchProExtByKeyWords?pageIndex=${page}&pageSize=20`,JSON.stringify(data),res => {
+                            let brandlist = []
+                            for(var key in res.data.brandList){
+                                brandlist.push(key)
+                            }
+                            this.brandList = brandlist;
+
+                            let tempArr = res.data.searchResult.result;
                             for(let item of tempArr){
                                 let star = 0;
                                 if(item.fragrance === '偏淡'){
@@ -383,6 +422,7 @@
                                 }
                                 item.tasteStar = stars;
                             }
+                            // this.list = res.data.searchResult.result;
                             resolve(res)
                         })
                     })
@@ -393,6 +433,43 @@
                     this.$router.replace({name: '搜索'})
                 }
             },
+            // 格式化价格
+            toFixedMinZero() {
+                let delTrim = String(this.minSupplyPrice).trim();
+                if(delTrim == ''){
+                    this.minSupplyPrice = '';
+                }else if(parseFloat(delTrim) > 0){
+                    this.minSupplyPrice = parseFloat(delTrim).toFixed(0);
+                }else if(parseFloat(delTrim) < 0){
+                    this.minSupplyPrice = Math.abs(parseFloat(delTrim).toFixed(0));
+                }
+            },
+            toFixedMaxZero() {
+                let delTrim = String(this.maxSupplyPrice).trim();
+                if(delTrim == ''){
+                    this.maxSupplyPrice = '';
+                }else if(parseFloat(delTrim) > 0){
+                    this.maxSupplyPrice = parseFloat(delTrim).toFixed(0);
+                }else if(parseFloat(delTrim) < 0){
+                    this.maxSupplyPrice = Math.abs(parseFloat(delTrim).toFixed(0));
+                }
+            },
+            // 判断最大供货价不得小于最小供货价
+            sortPrice(){
+                if(this.maxSupplyPrice<this.minSupplyPrice){
+                    let temp = this.maxSupplyPrice;
+                    this.maxSupplyPrice = this.minSupplyPrice;
+                    this.minSupplyPrice = temp;
+                }
+            },
+            // 打开筛选弹窗
+            openFilter(){
+                this.filterVisible = true;
+            },
+            // 品牌筛选
+            selectBrand(item){
+                this.selectedBrand =item;
+            },
         },
         created() {
             // 设置title
@@ -401,12 +478,12 @@
             // 根据地址栏获取条件
             try {
                 this.handle().then(res => {
-                    let data = this.list.concat(res.data);
+                    let data = this.list.concat(res.data.searchResult.result);
                     if(data.length === 0) {
                         this.noList = true;
                     }
                     this.list = data;
-                    this.total = res.total_record;
+                    this.total = res.data.searchResult.total;
                 })
             } catch (error) {
                 // 获取搜索历史
@@ -424,7 +501,7 @@
                 try {
                     this.hotList = JSON.parse(res.data.htmlText);
                 } catch (error) {
-                    
+
                 }
             })
         },
@@ -438,6 +515,15 @@
                 })
             } else {
                 next();
+            }
+        },
+        // 获取排序方式
+        getSort(sortNum){
+            switch (sortNum) {
+                case '1':return 'salesNum';break;
+                case '2':return 'createTime';break;
+                case '3':return 'proPrice';break;
+                default:return 'proPrice'
             }
         }
     }
