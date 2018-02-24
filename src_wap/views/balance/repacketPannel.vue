@@ -1,3 +1,9 @@
+<!--
+    props           type            default
+    cartList        Number          false       //结算页面调用
+
+
+-->
 <template>
     <section class="readpacket-pannel">
         <div class="redpacket-wrap">
@@ -70,6 +76,12 @@
 <script>
     import { mapState } from 'vuex'
     export default {
+        props:{
+            cartList:{
+                type:Number,
+                default:0
+            }
+        },
         data(){
             return {
                 selected: 'active',
@@ -115,13 +127,13 @@
                         this.$toast('激活成功，已放入我的红包');
 
                         // 从新拉取数据
-                        this.$store.dispatch('getRedList',{type: this.selected}).then(res => {
-                            for (let i = 0; i < res.data.length; i++) {
-                                res.data[i].showMore = false;
-                            }
-                            this.$store.commit('SET_REDPACKET',{type: this.selected + 'NUM',val: res.total_record})
-                            this.$store.commit('SET_REDPACKET',{type:this.selected,val: res.data})
-                        })
+                        this.$api.post('/oteao/shoppingCart/initSettle',{
+                                cartIds: this.cartList,
+                                device: 'WAP'
+                            },res => {
+                                this.active.canUseRedPacketList = res.data.redPacketList;
+                            },res => {
+                            })
                         this.pageNum = 1;
 
                     },res => {
