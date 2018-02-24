@@ -62,13 +62,13 @@
                 <goods-item
                 v-for="(item,index) in list"
                 :key="index"
-                :mainTit="item.proTitle"
+                :mainTit="item.proName"
                 :subTit="item.subTitle"
                 :link="item.proSku"
                 :price="item.isSales ? item.salesPrice : item.proPrice"
                 :unit="item.unint"
                 :imgUrl="item.proImg"
-                :businessType="item.tagNum"
+                :businessType="sortTagNum(item.tagNum)"
                 :tasteStar="item.tasteStar"
                 :tagUrl="item.tagImgUrl"
                 :aromaStar="item.aromaStar"
@@ -100,7 +100,7 @@
             <div class="mup_bg" @click="filterVisible = false"></div>
             <div class="mupop_dialog_wrapper">
                 <div class="popup-content">
-                    <div class="con-item">
+                    <div class="con-item" v-if="$tool.isLogin()">
                         <h4>供货价</h4>
                         <input class="price-input" type="number" v-model="minSupplyPrice" placeholder="最低价" @blur="toFixedMinZero()"> —
                         <input class="price-input" type="number" v-model="maxSupplyPrice" placeholder="最高价" @blur="toFixedMaxZero()">
@@ -226,12 +226,12 @@
                 try {
                     this.handle().then(res => {
                         this.list = [];
-                        let data = this.list.concat(res.data);
+                        let data = this.list.concat(res.data.searchResult.result);
                         if(data.length === 0) {
                             this.noList = true;
                         }
                         this.list = data;
-                        this.total = res.total_record;
+                        this.total = res.data.searchResult.total;
                     })
                 } catch (error) {
                     return false;
@@ -263,6 +263,12 @@
                 for(let item in this.propertiesValList){
                     this.propertiesValList[item].propValId = 'all';
                 }
+                this.selectedBrandId = '';
+            },
+            // 重置供货价区间
+            resetSupplyPrice(){
+                this.minSupplyPrice = '';
+                this.maxSupplyPrice = '';
             },
             //筛选条件查询
             confirmConditions(){
@@ -298,13 +304,25 @@
                 if(this.list.length < this.total) {
                     this.pageNum++;
                     this.handle(this.pageNum).then(res => {
-                        let data = this.list.concat(res.data);
+                        let data = this.list.concat(res.data.searchResult.result);
                         this.list = data;
-                        this.total = res.total_record;
+                        this.total = res.data.searchResult.total;
                         if(this.list.length === this.total) {
                             this.pageNum--;
                         }
                     })
+                }
+            },
+            // 讲店家类型转为数字
+            sortTagNum(tagNum){
+                switch (tagNum) {
+                    case '自营':return 1;break;
+                    case '联营':return 2;break;
+                    case '茶企':return 3;break;
+                    case '合作社':return 4;break;
+                    case '批发商':return 5;break;
+                    case '茶厂':return 6;break;
+                    case '其他':return 7;break;
                 }
             },
             // 清空历史记录
@@ -335,13 +353,13 @@
                     this.sortClass = query.c;
 
                     let data = {
-                        "device": "WAP",
-                        "isExchangeIntegral": 0,
-                        "orderBy": query.sort,
-                        "proType": "PRO",
-                        "seachKey": query.q,
-                        "sort": query.c,
-                        "sysId": 1
+                        // "device": "WAP",
+                        // "isExchangeIntegral": 0,
+                        // "orderBy": query.sort,
+                        // "proType": "PRO",
+                        "keyWords": query.q,
+                        // "sort": query.c,
+                        // "sysId": 1,
                     }
 
 
@@ -358,41 +376,43 @@
                     this.$api.post('/oteao/searchProductRecord/insert',historyData,res => {})
 
                     return new Promise((resolve,reject) => {
-                        this.$api.post(`/oteao/productInfo/seachProduct?page.pageNumber=${page}&page.pageSize=20`,JSON.stringify(data),res => {
-                            let tempArr = res.data;
-                            for(let item of tempArr){
-                                let star = 0;
-                                if(item.fragrance === '偏淡'){
-                                    star = 1;
-                                }else if(item.fragrance === '一般'){
-                                    star = 2;
-                                }else if(item.fragrance === '香'){
-                                    star = 3;
-                                }else if(item.fragrance === '高香'){
-                                    star = 4;
-                                }else if(item.fragrance === '极香'){
-                                    star = 5;
-                                }else {
-                                    star = 0;
-                                }
-                                item.aromaStar = star;
-
-                                let stars = 0;
-                                if(item.taste === '偏淡'){
-                                    stars = 1;
-                                }else if(item.taste === '一般'){
-                                    stars = 2;
-                                }else if(item.taste === '浓'){
-                                    stars = 3;
-                                }else if(item.taste === '很浓'){
-                                    stars = 4;
-                                }else if(item.taste === '极浓'){
-                                    stars = 5;
-                                }else {
-                                    stars = 0;
-                                }
-                                item.tasteStar = stars;
-                            }
+                        this.$api.post(`/oteao/productExtInfoSearch/searchProExtByKeyWords?pageIndex=${page}&pageSize=20`,JSON.stringify(data),res => {
+                            // let tempArr = res.data;
+                            // for(let item of tempArr){
+                            //     let star = 0;
+                            //     if(item.fragrance === '偏淡'){
+                            //         star = 1;
+                            //     }else if(item.fragrance === '一般'){
+                            //         star = 2;
+                            //     }else if(item.fragrance === '香'){
+                            //         star = 3;
+                            //     }else if(item.fragrance === '高香'){
+                            //         star = 4;
+                            //     }else if(item.fragrance === '极香'){
+                            //         star = 5;
+                            //     }else {
+                            //         star = 0;
+                            //     }
+                            //     item.aromaStar = star;
+                            //
+                            //     let stars = 0;
+                            //     if(item.taste === '偏淡'){
+                            //         stars = 1;
+                            //     }else if(item.taste === '一般'){
+                            //         stars = 2;
+                            //     }else if(item.taste === '浓'){
+                            //         stars = 3;
+                            //     }else if(item.taste === '很浓'){
+                            //         stars = 4;
+                            //     }else if(item.taste === '极浓'){
+                            //         stars = 5;
+                            //     }else {
+                            //         stars = 0;
+                            //     }
+                            //     item.tasteStar = stars;
+                            // }
+                            // this.list = res.data.searchResult.result;
+                            // console.log(thi)
                             resolve(res)
                         })
                     })
@@ -434,15 +454,7 @@
             },
             // 打开筛选弹窗
             openFilter(){
-
-                let data = {
-                    catId: this.activeSubId,
-                }
-                // 获取分类品牌列表
-                this.$api.get('/oteao/productBrand/findProductBrandByCatId?',data,res=>{
-                    this.brandList = res.data;
-                    this.filterVisible = true;
-                })
+                this.filterVisible = true;
             },
             // 品牌筛选
             selectBrand(id){
@@ -456,12 +468,12 @@
             // 根据地址栏获取条件
             try {
                 this.handle().then(res => {
-                    let data = this.list.concat(res.data);
+                    let data = this.list.concat(res.data.searchResult.result);
                     if(data.length === 0) {
                         this.noList = true;
                     }
                     this.list = data;
-                    this.total = res.total_record;
+                    this.total = res.data.searchResult.total;
                 })
             } catch (error) {
                 // 获取搜索历史
