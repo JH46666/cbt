@@ -156,7 +156,7 @@
 
         <!-- 红包窗口 -->
         <transition name="fadeUp" mode="out-in">
-            <redpacket-pannel v-show="showRedpacket" @close="closeRedpacket" ref="redpacket"></redpacket-pannel>
+            <redpacket-pannel :cartList="cartList" v-show="showRedpacket" @redPacketList="redPacketList" @close="closeRedpacket" ref="redpacket"></redpacket-pannel>
         </transition>
     </div>
 </template>
@@ -240,6 +240,10 @@
             })
         },
         methods: {
+            // 激活红包，立即获取红包信息更新
+            redPacketList(list){
+                this.myData.redPacketList = list;
+            },
             // 赠品分组函数
             arrayGift(list) {
                 let data = [];
