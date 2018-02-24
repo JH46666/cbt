@@ -46,7 +46,7 @@
                     <i class="icon-zhankai"></i>
                 </span>
             </label>
-            <label class="sort-item" :class="{active:sortClass === '4'}" @click.self="filterVisible = true">
+            <label class="sort-item" :class="{active:sortClass === '4'}" @click="filterVisible = true">
                 <i class="iconfont ic-sele">&#xe674;</i>
                 筛选
                 <input  type="radio" value="4" v-model="sortClass">
@@ -66,7 +66,7 @@
                 :subTit="item.subTitle"
                 :link="item.proSku"
                 :price="item.isSales ? item.salesPrice : item.proPrice"
-                :unit="item.unint"
+                :unit="item.unint ? item.unint : '斤' "
                 :imgUrl="item.proImg"
                 :businessType="sortTagNum(item.tagNum)"
                 :tasteStar="item.tasteStar"
@@ -108,14 +108,14 @@
                     <div class="con-item">
                         <h4>品牌</h4>
                         <ul class="clearfix">
-                            <li :class="{on:'' == selectedBrandId}" @click="selectBrand('')">全部</li>
-                            <li :class="{on:item.id == selectedBrandId}" v-for="(item,index) in brandList" :key="index" @click="selectBrand(item.id)">{{item.brandName}}</li>
+                            <li :class="{on:'' == selectedBrand}" @click="selectBrand('')">全部</li>
+                            <li :class="{on:item == selectedBrand}" v-for="(item,index) in brandList" :key="index" @click="selectBrand(item)">{{item}}</li>
                         </ul>
                     </div>
                 </div>
                 <div class="pop-btns flex">
                     <a class="flex-1" href="javscript:void(0)" @click="resetConditions">重置</a>
-                    <a class="flex-1 confirm" href="javscript:void(0)" @click="confirmConditions">确定</a>
+                    <a class="flex-1 confirm" href="javscript:void(0)" @click="filter">确定</a>
                 </div>
             </div>
         </div>
@@ -132,6 +132,7 @@
                 selectSort: '',
                 text: '',               // 搜索关键字
                 sortClass: '1',         // 排序方式
+                sortName:'salesNum',
                 priceSort: false,       // 价格排序，降序
                 hotList: [              // 热搜
                     {
@@ -209,7 +210,7 @@
                 maxSupplyPrice: '', //最大供货价
                 minSupplyPrice: '',//最小供货价
                 brandList:[],//筛选品牌列表
-                selectedBrandId:'', //被选中的品牌
+                selectedBrand:'', //被选中的品牌
                 history: [],            // 历史记录
                 filterConditions:[],
                 propertiesValList:{},  //筛选属性值
@@ -247,14 +248,6 @@
             }
         },
         methods: {
-            // 筛选
-            selectFilter(list,item,index){
-                list.filterIndex = index;
-                this.propertiesValList[list.id] = {
-                    propId: item.catPropId,
-                    propValId: item.id
-                };
-            },
             //重置筛选条件
             resetConditions(){
                 for(let item of this.filterConditions){
@@ -263,19 +256,13 @@
                 for(let item in this.propertiesValList){
                     this.propertiesValList[item].propValId = 'all';
                 }
-                this.selectedBrandId = '';
+                this.resetSupplyPrice();
+                this.selectedBrand = '';
             },
             // 重置供货价区间
             resetSupplyPrice(){
                 this.minSupplyPrice = '';
                 this.maxSupplyPrice = '';
-            },
-            //筛选条件查询
-            confirmConditions(){
-                this.resultData = [];
-                this.pageNumber = 1;
-                this.totalSize = 0;
-                // this.searchResult();
             },
             // 重置
             reset() {
@@ -336,8 +323,14 @@
             },
             // 搜索
             search() {
+                this.resetConditions();
                 if(this.text === '') return;
-                this.$router.replace({name: '搜索',query: {q: this.text,c: '1',sort: 'desc'}})
+                this.$router.replace({name: '搜索',query: {q: this.text,c: '1',sort: 'desc'}});
+            },
+            // 筛选
+            filter(){
+                this.filterVisible = false;
+                this.$router.replace({name: '搜索',query: {q: this.text,c: '1',sort: 'desc'}});
             },
             // 搜索处理函数
             handle(page = 1) {
@@ -351,16 +344,28 @@
                     // 设置参数
                     this.text = query.q;
                     this.sortClass = query.c;
-
-                    let data = {
-                        // "device": "WAP",
-                        // "isExchangeIntegral": 0,
-                        // "orderBy": query.sort,
-                        // "proType": "PRO",
-                        "keyWords": query.q,
-                        // "sort": query.c,
-                        // "sysId": 1,
+                    switch (query.c) {
+                        case '1':this.sortName = 'salesNum';break;
+                        case '2':this.sortName = 'createTime';break;
+                        case '3':this.sortName = 'proPrice';break;
+                        default:this.sortName = 'salesNum'
                     }
+                    let data = {
+                        "brandName":this.selectedBrand?this.selectedBrand:null,
+                        "keyWords": query.q,
+                        "priceRange": {
+                           "end": this.maxSupplyPrice,
+                           "fieldName": "proPrice",
+                           "start": this.minSupplyPrice
+                         },
+                         "sortParamList": [
+                            {
+                              "fieldName": this.sortName,
+                              "sortOrder": query.sort
+                            }
+                          ]
+                    }
+                    console.log(data)
 
 
                     // 储存搜索历史
@@ -377,42 +382,47 @@
 
                     return new Promise((resolve,reject) => {
                         this.$api.post(`/oteao/productExtInfoSearch/searchProExtByKeyWords?pageIndex=${page}&pageSize=20`,JSON.stringify(data),res => {
-                            // let tempArr = res.data;
-                            // for(let item of tempArr){
-                            //     let star = 0;
-                            //     if(item.fragrance === '偏淡'){
-                            //         star = 1;
-                            //     }else if(item.fragrance === '一般'){
-                            //         star = 2;
-                            //     }else if(item.fragrance === '香'){
-                            //         star = 3;
-                            //     }else if(item.fragrance === '高香'){
-                            //         star = 4;
-                            //     }else if(item.fragrance === '极香'){
-                            //         star = 5;
-                            //     }else {
-                            //         star = 0;
-                            //     }
-                            //     item.aromaStar = star;
-                            //
-                            //     let stars = 0;
-                            //     if(item.taste === '偏淡'){
-                            //         stars = 1;
-                            //     }else if(item.taste === '一般'){
-                            //         stars = 2;
-                            //     }else if(item.taste === '浓'){
-                            //         stars = 3;
-                            //     }else if(item.taste === '很浓'){
-                            //         stars = 4;
-                            //     }else if(item.taste === '极浓'){
-                            //         stars = 5;
-                            //     }else {
-                            //         stars = 0;
-                            //     }
-                            //     item.tasteStar = stars;
-                            // }
+                            let brandlist = []
+                            for(var key in res.data.brandList){
+                                brandlist.push(key)
+                            }
+                            this.brandList = brandlist;
+
+                            let tempArr = res.data.searchResult.result;
+                            for(let item of tempArr){
+                                let star = 0;
+                                if(item.fragrance === '偏淡'){
+                                    star = 1;
+                                }else if(item.fragrance === '一般'){
+                                    star = 2;
+                                }else if(item.fragrance === '香'){
+                                    star = 3;
+                                }else if(item.fragrance === '高香'){
+                                    star = 4;
+                                }else if(item.fragrance === '极香'){
+                                    star = 5;
+                                }else {
+                                    star = 0;
+                                }
+                                item.aromaStar = star;
+
+                                let stars = 0;
+                                if(item.taste === '偏淡'){
+                                    stars = 1;
+                                }else if(item.taste === '一般'){
+                                    stars = 2;
+                                }else if(item.taste === '浓'){
+                                    stars = 3;
+                                }else if(item.taste === '很浓'){
+                                    stars = 4;
+                                }else if(item.taste === '极浓'){
+                                    stars = 5;
+                                }else {
+                                    stars = 0;
+                                }
+                                item.tasteStar = stars;
+                            }
                             // this.list = res.data.searchResult.result;
-                            // console.log(thi)
                             resolve(res)
                         })
                     })
@@ -457,8 +467,8 @@
                 this.filterVisible = true;
             },
             // 品牌筛选
-            selectBrand(id){
-                this.selectedBrandId =id;
+            selectBrand(item){
+                this.selectedBrand =item;
             },
         },
         created() {
@@ -505,6 +515,15 @@
                 })
             } else {
                 next();
+            }
+        },
+        // 获取排序方式
+        getSort(sortNum){
+            switch (sortNum) {
+                case '1':return 'salesNum';break;
+                case '2':return 'createTime';break;
+                case '3':return 'proPrice';break;
+                default:return 'proPrice'
             }
         }
     }
