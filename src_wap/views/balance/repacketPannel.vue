@@ -1,6 +1,6 @@
 <!--
     props           type            default
-    cartList        Number          false       //结算页面调用
+    cartList        String          false       //结算页面调用
 
 
 -->
@@ -78,8 +78,8 @@
     export default {
         props:{
             cartList:{
-                type:Number,
-                default:0
+                type:String,
+                default:''
             }
         },
         data(){
@@ -131,7 +131,7 @@
                                 cartIds: this.cartList,
                                 device: 'WAP'
                             },res => {
-                                this.active.canUseRedPacketList = res.data.redPacketList;
+                                this.setActive(res.data.oteaoCart[0]);
                             },res => {
                             })
                         this.pageNum = 1;
