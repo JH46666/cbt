@@ -391,6 +391,7 @@
                 for(let item in this.propertiesValList){
                     this.propertiesValList[item].propValId = 'all';
                 }
+                this.resetSupplyPrice();
                 this.selectedBrandId = '';
             },
             // 重置供货价区间
@@ -443,7 +444,7 @@
             },
             // 判断最大供货价不得小于最小供货价
             sortPrice(){
-                if(this.maxSupplyPrice<this.minSupplyPrice){
+                if(parseFloat(this.maxSupplyPrice)<parseFloat(this.minSupplyPrice)){
                     let temp = this.maxSupplyPrice;
                     this.maxSupplyPrice = this.minSupplyPrice;
                     this.minSupplyPrice = temp;
