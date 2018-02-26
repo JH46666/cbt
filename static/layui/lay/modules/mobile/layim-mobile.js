@@ -927,7 +927,8 @@ layui.define(['laytpl', 'upload-mobile', 'layer-mobile', 'zepto'], function(expo
       if(type !== 'history'){
         data.type = type;
       }
-      popchat(data, true);
+      var getIndex = popchat(data, true);
+      $('#layui-m-layer'+ getIndex).addClass('chat-wrapper');
       $('.layim-'+ data.type + data.id).find('.layim-msg-status').removeClass(SHOW);
     }
     
