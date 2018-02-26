@@ -15,7 +15,13 @@
             </div>
         </section>
         <section class="history-pannel" v-if="noSearch">
-            <div class="title"><h3>历史搜索</h3></div>
+            <div style="position: relative">
+                <div class="title"><span style="font-size: .24rem">历史搜索</span></div>
+                <div class="btn-wrap" style="position: absolute; right: .3rem; top: 0; line-height: .68rem;" v-if="history.length > 0">
+                    <span @click="clearHistory"><i class="iconfont icon-shanchu1" style="color: #666"></i>清空</span>
+                </div>
+            </div>
+            <div style="clear: both;"></div>
             <ul class="history-wrap">
                 <template v-for="(item,i) in history">
                     <router-link :key="i" :to="{name: '搜索',query: {q: item.searchContent,c: '1',sort: 'desc'}
@@ -24,9 +30,6 @@
                     </router-link>
                 </template>
             </ul>
-            <div class="btn-wrap" v-if="history.length > 0">
-                <button @click="clearHistory">清空历史搜索</button>
-            </div>
         </section>
         <!-- 搜索列表 -->
         <section class="sort-bar" v-if="!noSearch && list.length">
