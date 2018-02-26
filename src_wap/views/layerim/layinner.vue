@@ -106,8 +106,8 @@
             }
         },
         created(){
-            // this.login();
-            this.flag = true;
+            this.login();
+            // this.flag = true;
         },
         watch:{
             flag(val){
