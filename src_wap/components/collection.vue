@@ -7,8 +7,8 @@
 <template>
     <div class="product_collection clearfix">
         <template v-for="(item,index) in productData">
-            <div class="pro-item" :class="{noPadding: item.isSoldOut == 0}">
-                <router-link v-if="item.isSoldOut != 0" :to="'/detail?proSku='+item.proSku" class="cbt-collection-item">
+            <div class="pro-item" :class="{noPadding: item.isSales == 0}">
+                <router-link v-if="item.isSales != 1" :to="'/detail?proSku='+item.proSku" class="cbt-collection-item">
                     <div class="tag-img" v-if="item.tagImage">
                         <img v-lazy="item.tagImage" :src="item.tagImage">
                     </div>
