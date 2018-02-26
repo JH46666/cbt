@@ -106,11 +106,11 @@
             }
         },
         created(){
-            this.login();
+            // this.login();
+            this.flag = true;
         },
         watch:{
             flag(val){
-                console.log(val);
                 if(val){
                     let that = this;
                     // console.log(this.myData);
@@ -122,8 +122,6 @@
                             layer = mobile.layer;
                         var $ =layui.jquery;
                         var selfFlag = false;
-                        console.log(1111);
-                        console.log(that.myData.mine);
                         //基础配置
                         layim.config({
                             //初始化接口
@@ -299,20 +297,27 @@
     body .layim-title{
         height: .88rem;
         line-height: .88rem;
+        font-size: 14px;
+    }
+    body .chat-wrapper{
+        z-index: 2000;
     }
     body .layim-chat-main,body .layim-content,body .layui-layim{
         top: .88rem;
     }
-    .layui-m-layermain, .layui-m-layershade{
-        height: calc(100% - .98rem) !important;
+    body .layui-m-layermain,body .layui-m-layershade{
+        height: calc(100% - .98rem);
     }
-    .layim-panel,.layim-content{
-        bottom: .98rem !important;
+    body .layim-panel,body .layim-content{
+        bottom: .98rem;
     }
     .layui-layim-tab{
         display: none;
     }
-    .layui-m-anim-lout,.layui-m-anim-left{
-        bottom:0 !important;
+    body .layui-m-anim-lout,body .layui-m-anim-left{
+        bottom:0 ;
+    }
+    body .layim-title .layim-chat-back{
+        font-size: 18px;
     }
 </style>
