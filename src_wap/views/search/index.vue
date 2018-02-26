@@ -353,6 +353,8 @@
                     let data = {
                         "brandName":this.selectedBrand?this.selectedBrand:null,
                         "keyWords": query.q,
+                        "pageIndex":this.pageNum,
+                        "pageSize":20,
                         "priceRange": {
                            "end": this.maxSupplyPrice,
                            "fieldName": "proPrice",
@@ -381,7 +383,7 @@
                     this.$api.post('/oteao/searchProductRecord/insert',historyData,res => {})
 
                     return new Promise((resolve,reject) => {
-                        this.$api.post(`/oteao/productExtInfoSearch/searchProExtByKeyWords?pageIndex=${page}&pageSize=20`,JSON.stringify(data),res => {
+                        this.$api.post(`/oteao/productExtInfoSearch/searchProExtByKeyWords`,JSON.stringify(data),res => {
                             let brandlist = []
                             for(var key in res.data.brandList){
                                 brandlist.push(key)
