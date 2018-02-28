@@ -207,6 +207,12 @@ import store from 'store';
         line-height: .88rem;
         font-size: 14px;
     }
+    body .layim-chat-footer{
+        left: 0;
+        right: 0;
+        background: #eee;
+        padding: 0 10px;
+    }
     body .chat-wrapper{
         z-index: 2000;
     }

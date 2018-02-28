@@ -818,21 +818,14 @@ export default {
                return this.$router.push({name: '账户登录'});
            })
        },
-       openKfDialog() {
-        //    this.showOrHide = true;
-            let kefuId = 1;
+       addFriend(){
             let kefuName = "茶帮通客服";
             if(this.detailData.productInfo.orgId){
-                kefuId = this.detailData.productInfo.orgId;
                 kefuName = this.detailData.orgShopCenterVo.shopName;
             }
-            let data = {username: store.state.member.member.id,password: store.state.member.member.id};
-            let ret = '';
-            for (let it in data) {
-                ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&';
-            }
-            this.$http.post("/erp/account/login",ret).then(res=>{
-                layui.config({
+           this.$http.get(`/erp/layim/addFriend/${store.state.member.member.id}`).then(res=>{
+               let friendId = res.data;
+               layui.config({
                     version: true,
                     base: '/static/mods/'
                 }).use(['mobile','socket','req'], function(mobile,socket,req){
@@ -855,9 +848,9 @@ export default {
                     });
                     //创建一个会话
                     layim.chat({
-                        id: kefuId
+                        id: friendId
                         ,name: kefuName
-                        ,type: 'kefu' //friend、group等字符，如果是group，则创建的是群聊
+                        ,type: 'friend' //friend、group等字符，如果是group，则创建的是群聊
                         ,avatar: 'http://tp1.sinaimg.cn/1571889140/180/40030060651/1'
                     });
                     socket.config({
@@ -980,6 +973,17 @@ export default {
                         });
                     });
                 });
+           });
+       },
+       openKfDialog() {
+        //    this.showOrHide = true;
+            let data = {username: store.state.member.member.id,password: store.state.member.member.id};
+            let ret = '';
+            for (let it in data) {
+                ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&';
+            }
+            this.$http.post("/erp/account/login",ret).then(res=>{
+                this.addFriend();
             });
        },
        openDialog() {
