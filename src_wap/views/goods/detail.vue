@@ -822,9 +822,9 @@ export default {
         //    this.showOrHide = true;
             let kefuId = 1;
             let kefuName = "茶帮通客服";
-            if(detailData.productInfo.orgId){
-                kefuId = detailData.productInfo.orgId;
-                kefuName = detailData.orgShopCenterVo.shopName;
+            if(this.detailData.productInfo.orgId){
+                kefuId = this.detailData.productInfo.orgId;
+                kefuName = this.detailData.orgShopCenterVo.shopName;
             }
             let data = {username: store.state.member.member.id,password: store.state.member.member.id};
             let ret = '';
