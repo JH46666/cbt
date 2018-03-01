@@ -57,6 +57,8 @@
                                         :mainTit="item.proTitle"
                                         :subTit="item.subTitle"
                                         :price="item.proPrice"
+                                        :salesPrice="item.salesPrice"
+                                        :unit="item.unint"
                                         :imgUrl="item.proImg"
                                         :tagUrl="item.tagImgUrl"
                                         :aromaStar="item.aromaStar"
