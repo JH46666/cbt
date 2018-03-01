@@ -206,7 +206,7 @@ import { mapState } from 'vuex'
                 onePro: [],
                 packetEnter: '',
                 topFlag: false,
-                sellerType: ['茶厂','合作社','茶企','批发商','自营','自营'],
+                sellerType: ['茶厂','合作社','茶企','批发商','自营','联营'],
             }
         },
         methods: {
