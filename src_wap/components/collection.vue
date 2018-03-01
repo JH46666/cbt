@@ -48,7 +48,7 @@
         },
         data(){
             return {
-                bussinessType: ['茶厂','合作社','茶企','批发商','自营','自营'],
+                bussinessType: ['茶厂','合作社','茶企','批发商','自营','联营'],
                 productData:[],
             }
         },
