@@ -12,8 +12,9 @@
     price           Number          0               价格
     unit            String          斤              单位
     isLogin         Boolean         false
-
-
+    
+    新增prop
+    salesPrice      Number          0               特价
 
 
 
@@ -54,7 +55,10 @@
             </div>
             <div class="goods-bd">
                 <div class="goods-price">
-                <template v-if="isLogin">
+                <template v-if="isLogin && salesPrice">
+                    {{salesPrice}}元/{{unit}}
+                </template>
+                <template v-else-if="isLogin">
                     {{price}}元/{{unit}}
                 </template>
                 <template v-else>
@@ -88,6 +92,10 @@
                 default: ''
             },
             price:{
+                type: Number,
+                default: 0
+            },
+            salesPrice:{
                 type: Number,
                 default: 0
             },
