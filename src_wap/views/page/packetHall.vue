@@ -64,13 +64,13 @@
                             <div class="packet_sum">
                                 <template v-if="item.amount">
                                     <span class="small">￥</span>
-                                    <span class="big">{{ item.amount }}</span>
+                                    <span class="big">{{ formatPrice( item.amount ) }} </span>
                                 </template>
                                 <template v-if="item.discount">
                                     <span class="big">{{ item.discount }}</span>
                                     <span class="small">折</span>
                                 </template>
-                                <span>满{{ item.fullAmountUse }}元可用</span>
+                                <span>满{{ formatPrice(item.fullAmountUse) }}元可用</span>
                             </div>
                             <div class="packet_name">{{ item.limitExplain }}</div>
                         </div>
