@@ -48,6 +48,20 @@
                             </div>
                             <i class="iconfont" @click="clickSel('pinpai')">&#xe744;</i>
                         </div>
+                        <div class="item" v-for="(item,index) in resize.defaultArray" :key="index">
+                            <label class="item-left" :for="index+2">
+                                {{ item.name }}
+                            </label>
+                            <div class="item-right" @click="selectDefault(index)">
+                                <input type="text" readonly :id="index+2" v-model="item.content" placeholder="非必填" />
+                            </div>
+                            <i class="iconfont" @click="selectDefault(index)">&#xe744;</i>
+                            <mt-popup v-model="item.showOfHide" position="bottom">
+                                <div class="close-wrap">
+                                    <p class="close-tip"  v-for="(secobj,secindex) in item.prop" :class="{on: secindex == item.select}" :key="secindex" @click="selectDefaultProp(item,secindex,secobj)">{{ secobj }}<i class="iconfont">&#xe684;</i></p>
+                                </div>
+                            </mt-popup>
+                        </div>
                         <div class="item">
                             <label class="item-left" for="7">
                                 净重(g)：
@@ -113,7 +127,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="good_type_list">
+                <!-- <div class="good_type_list">
                     <div class="good_type_list_wrapper">
                         <div class="item" v-for="(item,index) in resize.defaultArray" :key="index">
                             <label class="item-left" :for="index+2">
@@ -130,7 +144,7 @@
                             </mt-popup>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
             <div class="btn_wrapper" v-if="showOfHideStep">
                 <mt-button type="primary" :disabled="disabledBol" @click="goStep3">下一步</mt-button>
