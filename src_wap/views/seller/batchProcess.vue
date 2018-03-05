@@ -191,15 +191,21 @@ import $api from 'api';
                 let data = {
                     proExtIds: checkedId.join(',')
                 }
-                this.deleteM(data).then(res => {
+                if(checkedId === []){
                     Toast({
-                        message: '商品删除成功',
-                        iconClass: 'icon icon-success'
+                        message: '请选择商品'
                     });
-                    setTimeout(() => {
-                        window.location.reload();
-                    },500)
-                })
+                }else{
+                    this.deleteM(data).then(res => {
+                        Toast({
+                            message: '商品删除成功',
+                            iconClass: 'icon icon-success'
+                        });
+                        setTimeout(() => {
+                            window.location.reload();
+                        },500)
+                    })
+                }
             },
             deleteM(data) {
                 return new Promise((resolve,reject) => {
