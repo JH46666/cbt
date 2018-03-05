@@ -191,7 +191,7 @@ import $api from 'api';
                 let data = {
                     proExtIds: checkedId.join(',')
                 }
-                if(checkedId === []){
+                if(checkedId.length === 0){
                     Toast({
                         message: '请选择商品'
                     });
