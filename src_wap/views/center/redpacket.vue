@@ -23,14 +23,14 @@
                             <p>
                                 <template v-if="item.redPacketType === 'DISCOUNT_AMOUNT'">
                                     <span class="type">￥</span>
-                                    <span class="num">{{ item.amountOrDiscount  }}</span>
+                                    <span class="num">{{ formatPrice(item.amountOrDiscount) }}</span>
                                 </template>
                                 <template v-else>
                                     <span class="num">{{ item.discount  }}</span>
                                     <span class="type">折</span>
                                 </template>
                             </p>
-                            <p class="limit-text">满 {{ item.fullAmountUse  }} 元可用</p>
+                            <p class="limit-text">满 {{ formatPrice(item.fullAmountUse) }} 元可用</p>
                         </div>
                         <div class="right">
                             <p class="title">
@@ -186,6 +186,39 @@
                         this.$toast(toast[res.code])
                     })
                 }).catch(() =>{})
+            },
+            // 强制保留两位小数
+            toDecimal2(x) {
+                var f = parseFloat(x);
+                if (isNaN(f)) {
+                    return false;
+                }
+                var f = Math.round(x * 100) / 100;
+                var s = f.toString();
+                var rs = s.indexOf('.');
+                if (rs < 0) {
+                    rs = s.length;
+                    s += '.';
+                }
+                while (s.length <= rs + 2) {
+                    s += '0';
+                }
+                return s;
+            },
+            // 格式化价格
+            formatPrice(val) {
+                // val = val.toString()
+                val = this.toDecimal2(val);
+                if (val.indexOf('.') !== -1) {
+                    if (val.indexOf('.0') !== -1) {
+                        console.log(val.substring(0, val.length - 3));
+                        return val.substring(0, val.length - 3);
+                    } else {
+                        console.log(val.substring(0, val.length - 1));
+                        return val.substring(0, val.length - 1);
+                    }
+                }
+                // console.log(val);
             }
         },
         created() {
