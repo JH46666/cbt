@@ -284,10 +284,10 @@ export default {
                 this.$api.get('/oteao/propInfo/queryPropVal',data,res => {
                     resolve(res);
                 },res=>{
-                    return Toast({
-                        message: res.errorMsg,
-                        iconClass: 'icon icon-fail'
-                    });
+                    // return Toast({
+                    //     message: res.errorMsg,
+                    //     iconClass: 'icon icon-fail'
+                    // });
                 })
             })
         },
