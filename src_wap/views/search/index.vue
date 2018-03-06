@@ -24,7 +24,7 @@
     <div style="clear: both;"></div>
     <ul class="history-wrap">
       <template v-for="(item,i) in history">
-                    <router-link :key="i" :to="{name: '搜索',query: {q: item.searchContent,c: '1',sort: 'desc'}
+                    <router-link :key="i" :to="{name: '搜索',query: {q: item.searchContent}
                         }" tag="div" class="history-item">
                         {{ item.searchContent }}
                     </router-link>
@@ -89,8 +89,8 @@
       <div class="popup-content">
         <div class="con-item" v-if="$tool.isLogin()">
           <h4>供货价</h4>
-          <input class="price-input" type="number" v-model="minSupplyPrice" placeholder="最低价" @blur="toFixedMinZero()"> —
-          <input class="price-input" type="number" v-model="maxSupplyPrice" placeholder="最高价" @blur="toFixedMaxZero()">
+          <input class="price-input" type="number" pattern="[0-9]*" v-model="minSupplyPrice" placeholder="最低价" @blur="toFixedMinZero()"> —
+          <input class="price-input" type="number" pattern="[0-9]*" v-model="maxSupplyPrice" placeholder="最高价" @blur="toFixedMaxZero()">
         </div>
         <div class="con-item">
           <h4>品牌</h4>
@@ -120,8 +120,8 @@ export default {
       filterVisible: false, //筛选弹窗是否显示
       selectSort: '',
       text: '', // 搜索关键字
-      sortClass: '1', // 排序方式
-      sortName: 'salesNum',
+      sortClass: '', // 排序方式
+      sortName: '',
       priceSort: false, // 价格排序，降序
       hotList: [ // 热搜
         {
@@ -129,9 +129,7 @@ export default {
           path: {
             name: '搜索',
             query: {
-              q: '安溪铁观音',
-              c: '1',
-              sort: 'desc'
+              q: '安溪铁观音'
             }
           }
         },
@@ -140,9 +138,7 @@ export default {
           path: {
             name: '搜索',
             query: {
-              q: '金骏眉',
-              c: '1',
-              sort: 'desc'
+              q: '金骏眉'
             }
           }
         },
@@ -151,9 +147,7 @@ export default {
           path: {
             name: '搜索',
             query: {
-              q: '大红袍',
-              c: '1',
-              sort: 'desc'
+              q: '大红袍'
             }
           }
         },
@@ -162,9 +156,7 @@ export default {
           path: {
             name: '搜索',
             query: {
-              q: '正山小种',
-              c: '1',
-              sort: 'desc'
+              q: '正山小种'
             }
           }
         },
@@ -173,9 +165,7 @@ export default {
           path: {
             name: '搜索',
             query: {
-              q: '云南滇红',
-              c: '1',
-              sort: 'desc'
+              q: '云南滇红'
             }
           }
         },
@@ -184,9 +174,7 @@ export default {
           path: {
             name: '搜索',
             query: {
-              q: '龙井',
-              c: '1',
-              sort: 'desc'
+              q: '龙井'
             }
           }
         },
@@ -313,13 +301,12 @@ export default {
       } else if (tagNum.indexOf('茶企') >= 0) {
         num = 3;
       } else if (tagNum.indexOf('批发商') >= 0) {
-        num =  4;
+        num = 4;
       } else if (tagNum.indexOf('自营') >= 0) {
         num = 5;
       } else if (tagNum.indexOf('自营') >= 0) {
         num = 6;
       }
-      console.log(num)
       return num;
     },
     // 清空历史记录
@@ -339,8 +326,6 @@ export default {
         name: '搜索',
         query: {
           q: this.text,
-          c: '1',
-          sort: 'desc'
         }
       });
     },
@@ -351,8 +336,6 @@ export default {
         name: '搜索',
         query: {
           q: this.text,
-          c: '1',
-          sort: 'desc'
         }
       });
     },
@@ -379,7 +362,7 @@ export default {
             this.sortName = 'proPrice';
             break;
           default:
-            this.sortName = 'salesNum'
+            this.sortName = ''
         }
         let data = {
           "brandName": this.selectedBrand ? this.selectedBrand : null,
@@ -391,12 +374,11 @@ export default {
             "fieldName": "proPrice",
             "start": this.minSupplyPrice
           },
-          "sortParamList": [{
+          "sortParamList": this.sortName != '' ? [{
             "fieldName": this.sortName,
             "sortOrder": query.sort
-          }]
+          }] : null
         }
-        console.log(data)
 
 
         // 储存搜索历史
@@ -507,7 +489,6 @@ export default {
   created() {
     // 设置title
     this.$store.commit('SET_TITLE', '搜索');
-
     // 根据地址栏获取条件
     try {
       this.handle().then(res => {
@@ -550,22 +531,6 @@ export default {
       next();
     }
   },
-  // 获取排序方式
-  getSort(sortNum) {
-    switch (sortNum) {
-      case '1':
-        return 'salesNum';
-        break;
-      case '2':
-        return 'createTime';
-        break;
-      case '3':
-        return 'proPrice';
-        break;
-      default:
-        return 'proPrice'
-    }
-  }
 }
 </script>
 
