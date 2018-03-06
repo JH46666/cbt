@@ -181,6 +181,7 @@
                 minSupplyPrice: '',//最小供货价
                 brandList:[],//筛选品牌列表
                 selectedBrandId:'', //被选中的品牌
+                activePropId:'',//分类下选中属性id
                 filterIndexs: [],
                 noresult:false,
                 sortData:[{
@@ -541,6 +542,7 @@
                 let o_l = e.parentNode.offsetLeft;
                 this.activeCatIndex = index;
                 this.activeCatId = id;
+                this.activePropId = '';
                 if(index>=3){
                     this.$refs.wrapper.scrollLeft = o_l-2*o_w;
                 }
@@ -555,6 +557,7 @@
             setSubCat(index,id,e){
                 this.activeSubIndex = index;
                 this.activeSubId = id;
+                this.activePropId = '';
             },
             // 搜索一级分类
             searchFirstCat(index,id,e){
@@ -564,6 +567,7 @@
                 let o_l = e.parentNode.offsetLeft;
                 this.activeCatIndex = index;
                 this.activeCatId = id;
+                this.activePropId = '';
                 if(index>=3){
                     this.$refs.wrapper.scrollLeft = o_l-2*o_w;
                 }
@@ -588,6 +592,7 @@
                 });
                 this.activeSubIndex = index;
                 this.activeSubId = item.id;
+                this.activePropId = '';
                 this.pageSize = 20;
                 this.searchResult();
             },
@@ -607,6 +612,7 @@
                 thirdItem.activeFlag = true;
                 this.activeSubIndex = index;
                 this.activeSubId = thirdItem.catId;
+                this.activePropId = thirdItem.id;
                 this.pageSize = 20;
                 let temp = {
                     propId: thirdItem.id,
@@ -632,6 +638,7 @@
             openFilter(){
                 let data = {
                     catId: this.activeSubId,
+                    propId:this.activePropId
                 }
                 // 获取分类品牌列表
                 this.$api.get('/oteao/productBrand/findProductBrandByCatId?',data,res=>{
