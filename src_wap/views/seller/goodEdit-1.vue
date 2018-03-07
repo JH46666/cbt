@@ -434,7 +434,7 @@ export default {
             this.$router.push({
                 name: '商品编辑-2',
                 query: {
-                    state: this.state
+                    state: this.$route.query.state
                 }
             })
         },
