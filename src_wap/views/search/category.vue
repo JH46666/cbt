@@ -95,7 +95,7 @@
         <!-- 筛选弹窗 -->
         <div class="mupop_dialog" :class="{on: filterVisible}">
             <div class="mup_bg" @click="filterVisible = false"></div>
-            <div class="mupop_dialog_wrapper">
+            <div :class="isIOS ? 'mupop_dialog_wrapper ios':'mupop_dialog_wrapper'">
                 <div class="popup-content">
                     <div class="con-item" v-if="$tool.isLogin()">
                         <h4>供货价</h4>
@@ -150,6 +150,7 @@
     export default{
         data(){
             return {
+                isIOS:false,
                 wxFlag: false,
                 filterVisible: false,  //筛选弹窗是否显示
                 sortVisible: false,   //排序弹窗是否显示
@@ -315,6 +316,8 @@
                     console.log(res);
                 });
             }
+            // 判断是否为IOS
+            this.getIOSflag();
         },
         watch:{
             activeSubId(val){
@@ -694,6 +697,12 @@
             //清除sessionStorage
             clearSession(){
                 sessionStorage.removeItem("category");
+            },
+            // 判断是否为IOS
+            getIOSflag(){
+                let u = navigator.userAgent, app = navigator.appVersion;
+                let isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+                this.isIOS = isIOS;
             }
         },
         // 判断登陆
