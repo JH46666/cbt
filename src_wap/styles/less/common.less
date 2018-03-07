@@ -78,7 +78,7 @@ input{
     .bg(@bg);
 }
 .content{
-    padding:.88rem 0 .98rem;
+    padding:.88rem 0 0;
     overflow: hidden;
     height: 100%;
     .position(r);
@@ -90,7 +90,7 @@ input{
         .paddingB(0);
     }
     .content_inner{
-        height: 100%;
+        height: calc(100% - 0.98rem);
         overflow-y: scroll;
     }
 }
@@ -376,7 +376,7 @@ input{
         color: #adadad;
         opacity: 1;
     }
-} 
+}
 
 //message
 .layui-m-layer{
