@@ -84,7 +84,7 @@
                                 <span>{{ order.expressNo }}</span>
                             </div>
                             <div class="order_num">
-                                <mt-button plain v-if="num === orderListDetail.subOrder.length - 1 && (order.subOrderStatus === 'DELIVERED' || order.subOrderStatus === 'CBT_BUYER')" class="pay_now" @click.native="confrimMethodsMoreChild(order.subOrderNo,orderDetailData.orderNo)">确认收货</mt-button>
+                                <mt-button plain v-if="order.subOrderStatus === 'DELIVERED' || order.subOrderStatus === 'CBT_BUYER'" class="pay_now" @click.native="confrimMethodsMoreChild(order.subOrderNo,orderDetailData.orderNo)">确认收货</mt-button>
                             </div>
                         </div>
                     </div>
