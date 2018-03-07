@@ -615,11 +615,11 @@
                 thirdItem.activeFlag = true;
                 this.activeSubIndex = index;
                 this.activeSubId = thirdItem.catId;
-                this.activePropId = thirdItem.id;
+                this.activePropId = thirdItem.propId;
                 this.pageSize = 20;
                 let temp = {
-                    propId: thirdItem.id,
-                    propValId: thirdItem.propId
+                    propId: thirdItem.propId,
+                    propValId: ''
                 }
                 this.searchResult(temp);
             },
