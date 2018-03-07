@@ -165,13 +165,13 @@
             }
         },
         created() {
-            
+
             // 设置title
-            this.$store.commit('SET_TITLE','店铺信息');
+            this.$store.commit('SET_TITLE','店铺资料');
 
             // 拉取数据
             this.getData();
-                
+
         },
         // 判断登陆
         beforeRouteEnter (to, from, next) {
@@ -185,7 +185,7 @@
                 next();
             }
         }
-    }    
+    }
 </script>
 
 

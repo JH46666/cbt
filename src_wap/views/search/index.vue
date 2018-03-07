@@ -101,8 +101,8 @@
       <div class="popup-content">
         <div class="con-item" v-if="$tool.isLogin()">
           <h4>供货价</h4>
-          <input class="price-input" type="number" pattern="[0-9]*" v-model="minSupplyPrice" placeholder="最低价" @blur="toFixedMinZero()"> —
-          <input class="price-input" type="number" pattern="[0-9]*" v-model="maxSupplyPrice" placeholder="最高价" @blur="toFixedMaxZero()">
+          <input class="price-input" type="tel" v-model="minSupplyPrice" placeholder="最低价" @blur="toFixedMinZero()"> —
+          <input class="price-input" type="tel" v-model="maxSupplyPrice" placeholder="最高价" @blur="toFixedMaxZero()">
         </div>
         <div class="con-item">
           <h4>品牌</h4>
