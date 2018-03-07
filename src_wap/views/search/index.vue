@@ -58,9 +58,21 @@
   <!-- 商品列表 -->
   <section class="goods-list" v-if="!noSearch && list.length">
     <div v-infinite-scroll="loadMore" infinite-scroll-disabled="true" infinite-scroll-distance="10">
-      <goods-item v-for="(item,index) in list" :key="index" :mainTit="item.proName" :subTit="item.subTitle" :link="item.proSku" :price="item.isSales ? item.salesPrice : item.proPrice" :unit="item.unint ? item.unint : '斤' " :imgUrl="item.proImg" :businessType="sortTagNum(item.tagNum)"
-          :tasteStar="item.tasteStar" :tagUrl="item.tagImgUrl" :aromaStar="item.aromaStar" :isLogin="$tool.isLogin()">
-      </goods-item>
+        <goods-item v-for="(item,index) in list" 
+            :key="index" 
+            :mainTit="item.proName" 
+            :subTit="item.subTitle" 
+            :link="item.proSku" 
+            :price="item.isSales ? item.salesPrice : item.proPrice" 
+            :unit="item.unint ? item.unint : '斤' " 
+            :imgUrl="item.proImg" 
+            :businessType="sortTagNum(item.tagNum)"
+            :tasteStar="item.tasteStar" 
+            :tagUrl="item.tagImgUrl" 
+            :aromaStar="item.aromaStar" 
+            :isLogin="$tool.isLogin()"
+            >
+        </goods-item>
     </div>
     <div class="goods-loading" v-if="list.length < total">
       <mt-spinner type="fading-circle" color="#f08200"></mt-spinner>
