@@ -619,7 +619,7 @@
                 this.pageSize = 20;
                 let temp = {
                     propId: thirdItem.propId,
-                    propValId: ''
+                    propValId: thirdItem.linkUrl
                 }
                 this.searchResult(temp);
             },
