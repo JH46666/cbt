@@ -117,15 +117,15 @@
                     </div>
                 </div>
                 <div class="pop-btns flex">
-                    <a class="flex-1" href="javscript:void(0)" @click="resetConditions">重置</a>
-                    <a class="flex-1 confirm" href="javscript:void(0)" @click="confirmConditions">确定</a>
+                    <a class="flex-1"  @click="resetConditions">重置</a>
+                    <a class="flex-1 confirm" @click="confirmConditions">确定</a>
                 </div>
             </div>
         </div>
         <!-- 排序弹窗 -->
         <div class="mupop_dialog" :class="{on: sortVisible}">
             <div class="mup_bg" @click="sortVisible = false"></div>
-            <div class="mupop_dialog_wrapper">
+            <div :class="isIOS ? 'mupop_dialog_wrapper ios':'mupop_dialog_wrapper'">
                 <div class="popup-content">
                     <div class="con-item" v-for="(list,listIndex) in sortData" :key="listIndex">
                         <h4>{{list.sortName}}</h4>
@@ -135,8 +135,8 @@
                     </div>
                 </div>
                 <div class="pop-btns flex">
-                    <a class="flex-1" href="javscript:void(0)" @click="resetSort">重置</a>
-                    <a class="flex-1 confirm" href="javscript:void(0)" @click="confirmConditions">确定</a>
+                    <a class="flex-1"  @click="resetSort">重置</a>
+                    <a class="flex-1 confirm"  @click="confirmConditions">确定</a>
                 </div>
             </div>
         </div>
