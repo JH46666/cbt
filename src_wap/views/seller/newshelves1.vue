@@ -31,11 +31,11 @@
                             </div>
                         </div>
                         <div class="item">
-                            <label class="item-left" for="3">
+                            <label class="item-left" for="5">
                                 单位：
                             </label>
                             <div class="item-right" @click="clickSel('danwei')">
-                                <input type="text" id="3" readonly placeholder="必填项，请选择商品单位" v-model="resize.form.goodsDw" />
+                                <input type="text" id="5" readonly unselectable="on" onfocus="this.blur()" placeholder="必填项，请选择商品单位" v-model="resize.form.goodsDw" />
                             </div>
                             <i class="iconfont"  @click="clickSel('danwei')">&#xe744;</i>
                         </div>
@@ -44,7 +44,7 @@
                                 品牌：
                             </label>
                             <div class="item-right" @click="clickSel('pinpai')">
-                                <input type="text" id="4" readonly placeholder="必填项，请选择商品品牌" v-model="resize.form.goodsBrand" />
+                                <input type="text" id="4" readonly unselectable="on" onfocus="this.blur()" placeholder="必填项，请选择商品品牌" v-model="resize.form.goodsBrand" />
                             </div>
                             <i class="iconfont" @click="clickSel('pinpai')">&#xe744;</i>
                         </div>
@@ -53,7 +53,7 @@
                                 {{ item.name }}
                             </label>
                             <div class="item-right" @click="selectDefault(index)">
-                                <input type="text" readonly :id="index+2" v-model="item.content" placeholder="非必填" />
+                                <input type="text" readonly unselectable="on" onfocus="this.blur()" :id="index+2" v-model="item.content" placeholder="非必填" />
                             </div>
                             <i class="iconfont" @click="selectDefault(index)">&#xe744;</i>
                             <mt-popup v-model="item.showOfHide" position="bottom">
