@@ -31,7 +31,8 @@ module.exports = {
         }
       },
       '/erp': {
-        target: 'http://192.168.7.212:8080/', // 接口的域名
+          target: 'http://java.im.test.yipicha.com',
+        // target: 'http://192.168.7.212:8080/', // 接口的域名
         secure: false,
         changeOrigin: true,
         pathRewrite:{
