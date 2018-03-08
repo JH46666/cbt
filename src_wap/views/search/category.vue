@@ -416,8 +416,17 @@
             //加载更多
             loadMore(){
                 if(this.resultData.length < this.totalSize){
-                    this.pageNumber++;
-                    this.searchResult();
+                    if(this.activePropId==''){
+                        this.pageNumber++;
+                        this.searchResult();
+                    }else{
+                        let temp = {
+                            propId: this.activePropId,
+                            propValId: this.activePropVal
+                        }
+                        this.searchResult(temp);
+                    }
+
                 }
             },
             //筛选条件查询
@@ -425,7 +434,16 @@
                 this.resultData = [];
                 this.pageNumber = 1;
                 this.totalSize = 0;
-                this.searchResult();
+                if(this.activePropId==''){
+                    this.searchResult();
+                }else{
+                    let temp = {
+                        propId: this.activePropId,
+                        propValId: this.activePropVal
+                    }
+                    this.searchResult(temp);
+                }
+
             },
             // 格式化价格
             toFixedMinZero() {
@@ -616,6 +634,7 @@
                 this.activeSubIndex = index;
                 this.activeSubId = thirdItem.catId;
                 this.activePropId = thirdItem.propId;
+                this.activePropVal =thirdItem.linkUrl;
                 this.pageSize = 20;
                 let temp = {
                     propId: thirdItem.propId,
