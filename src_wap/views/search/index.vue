@@ -60,7 +60,7 @@
     <div v-infinite-scroll="loadMore" infinite-scroll-disabled="true" infinite-scroll-distance="10">
         <goods-item v-for="(item,index) in list" 
             :key="index" 
-            :mainTit="item.proName" 
+            :mainTit="item.proTitle" 
             :subTit="item.subTitle" 
             :link="item.proSku" 
             :price="item.isSales ? item.salesPrice : item.proPrice" 
