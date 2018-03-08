@@ -416,8 +416,8 @@
             //加载更多
             loadMore(){
                 if(this.resultData.length < this.totalSize){
+                    this.pageNumber++;
                     if(this.activePropId==''){
-                        this.pageNumber++;
                         this.searchResult();
                     }else{
                         let temp = {
