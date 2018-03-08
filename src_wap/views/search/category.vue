@@ -411,7 +411,7 @@
                     item.sortIndex = 0;
                 }
                 this.sort = 1;
-                this.sortVisible = false;
+                // this.sortVisible = false;
             },
             //加载更多
             loadMore(){
