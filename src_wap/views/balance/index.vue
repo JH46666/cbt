@@ -16,8 +16,8 @@
             <template v-for="(item,index) in pannel">
                 <section class="goods-pannel">
                     <div class="title">
-                        <img src="../../assets/images/small_logo.png" alt="" v-if="item.selfSupport === true">
-                        <img src="../../assets/images/shop_icon.png" class="third-shop" alt="" v-else >
+                        <img src="../../assets/images/small_logo.png" alt="" v-if="item.selfSupport === true" style="vertical-align: baseline;">
+                        <img src="../../assets/images/shop_icon.png" class="third-shop" alt="" v-else style="vertical-align: baseline; top: 0.06rem;">
                         {{ item.shopName }}
                     </div>
                     <template v-for="(todo,i) in item.cartList">

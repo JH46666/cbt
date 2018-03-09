@@ -520,38 +520,31 @@ import $api from 'api';
                 })
             },
             searchMethod() {
-                if(this.searchTxt.length==0){
-                    return Toast({
-                        message: `找不到该商品哦~`,
-                        iconClass: 'icon icon-fail'
-                    });
+                if(this.$route.query.state == undefined || this.$route.query.state == 'ON_SHELF'){
+                    this.getList(this.onShelf.orderBy,this.onShelf.sorts,this.onShelf.currentPage,'ON_SHELF').then((res) => {
+                        if(res.total_record==0){
+                            return Toast({
+                                message: `找不到该商品哦~`,
+                                iconClass: 'icon icon-fail'
+                            });
+                        }
+                        this.onShelf.listData = res.data;
+                        this.onShelf.totalPage = res.total_record;
+                    })
                 }else{
-                    if(this.$route.query.state == undefined || this.$route.query.state == 'ON_SHELF'){
-                        this.getList(this.onShelf.orderBy,this.onShelf.sorts,this.onShelf.currentPage,'ON_SHELF').then((res) => {
-                            if(res.total_record==0){
-                                return Toast({
-                                    message: `找不到该商品哦~`,
-                                    iconClass: 'icon icon-fail'
-                                });
-                            }
-                            this.onShelf.listData = res.data;
-                            this.onShelf.totalPage = res.total_record;
-                        })
-                    }else{
-                        this.getList(this.offShelf.orderBy,this.offShelf.sorts,this.offShelf.currentPage,'OFF_SHELF').then((res) => {
-                            if(res.total_record==0){
-                                return Toast({
-                                    message: `找不到该商品哦~`,
-                                    iconClass: 'icon icon-fail'
-                                });
-                            }
-                            this.offShelf.listData = res.data;
-                            this.offShelf.totalPage = res.total_record;
-                            for(let obj of this.offShelf.listData){
-                                this.$set(obj,'checked',false)
-                            }
-                        })
-                    }
+                    this.getList(this.offShelf.orderBy,this.offShelf.sorts,this.offShelf.currentPage,'OFF_SHELF').then((res) => {
+                        if(res.total_record==0){
+                            return Toast({
+                                message: `找不到该商品哦~`,
+                                iconClass: 'icon icon-fail'
+                            });
+                        }
+                        this.offShelf.listData = res.data;
+                        this.offShelf.totalPage = res.total_record;
+                        for(let obj of this.offShelf.listData){
+                            this.$set(obj,'checked',false)
+                        }
+                    })
                 }
             },
             selTab(str) {

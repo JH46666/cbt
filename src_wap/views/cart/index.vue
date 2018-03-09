@@ -22,7 +22,7 @@
                                 </p>
                             </div>
                             <div v-if="!list.selfSupport" class="other"><img src="../../assets/images/shop_icon.png" alt=""></div>
-                            <div v-else class="self"><img src="../../assets/images/logo_2.png" alt=""></div>
+                            <div v-else class="self"><img src="../../assets/images/logo_2.png" alt=""  style="vertical-align: baseline;"></div>
                             <p class="title" :class="{third: !list.selfSupport}">{{list.shopName}}</p>
                         </div>
                         <!-- 正常商品 -->
