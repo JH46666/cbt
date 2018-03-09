@@ -504,6 +504,7 @@ export default {
     // 根据地址栏获取条件
     try {
       this.handle().then(res => {
+        this.list = [];
         let data = this.list.concat(res.data.searchResult.result);
         if (data.length === 0) {
           this.noList = true;
