@@ -985,14 +985,19 @@ export default {
        },
        openKfDialog() {
         //    this.showOrHide = true;
-            let data = {username: store.state.member.member.id,password: store.state.member.member.id};
-            let ret = '';
-            for (let it in data) {
-                ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&';
-            }
-            this.$http.post("/erp/account/login",ret).then(res=>{
-                this.getBase();
+            store.dispatch('getMemberData').then((res) => {
+                let data = {username: store.state.member.member.id,password: store.state.member.member.id};
+                let ret = '';
+                for (let it in data) {
+                    ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&';
+                }
+                this.$http.post("/erp/account/login",ret).then(res=>{
+                    this.getBase();
+                });
+            }).catch(res => {
+                this.$router.replace('/login');
             });
+            
        },
        getBase(){
             this.$http.get("/erp/layim/base").then(res=>{
