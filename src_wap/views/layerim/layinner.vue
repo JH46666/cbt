@@ -60,7 +60,8 @@ import store from 'store';
                             log:true,
                             // token:'/erp/layim/getToKenById?id=204736',
                             token:'/erp/layim/token',
-                            server:'ws://192.168.7.212:8888'
+                            server:'ws://192.168.7.8:8888',
+                            reconn: false
                         });
 
                         socket.on('open',function (e) {

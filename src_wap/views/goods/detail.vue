@@ -823,12 +823,11 @@ export default {
             if(this.detailData.productInfo.orgId){
                 kefuName = this.detailData.orgShopCenterVo.shopName;
             }
-           this.$http.get(`/erp/layim/addFriend/${store.state.member.member.id}`).then(res=>{
+            
+
+           this.$http.get(`/erp/layim/addFriend/`+this.detailData.productInfo.orgId).then(res=>{
                let friendId = res.data;
-               layui.config({
-                    version: true,
-                    base: '/static/mods/'
-                }).use(['mobile','socket','req'], function(mobile,socket,req){
+               layui.use(['mobile','socket','req'], function(mobile,socket,req){
                     var layim = mobile.layim,
                         layer = mobile.layer;
                     var $ =layui.jquery;
@@ -838,14 +837,23 @@ export default {
                         init: {
                         //设置我的基础信息
                         mine: {
-                            "username": store.state.member.member.nickName //我的昵称
-                            ,"id": store.state.member.member.id //我的ID
+                            "username": "a"  //我的昵称
+                            ,"id": 593984 //我的ID
                             ,"avatar": "http://tp4.sinaimg.cn/1345566427/180/5730976522/0" //我的头像
                         }
                         //好友列表数据
                         ,friend: [] //见下文：init数据格式
                         }
                     });
+
+                    socket.config({
+                        log:true,
+                        // token:'/erp/layim/getToKenById?id=204736',
+                        token:'/erp/layim/token',
+                        server:'ws://192.168.7.8:8888',
+                        reconn: false
+                    });
+
                     //创建一个会话
                     layim.chat({
                         id: friendId
@@ -853,12 +861,7 @@ export default {
                         ,type: 'friend' //friend、group等字符，如果是group，则创建的是群聊
                         ,avatar: 'http://tp1.sinaimg.cn/1571889140/180/40030060651/1'
                     });
-                    socket.config({
-                        log:true,
-                        // token:'/erp/layim/getToKenById?id=204736',
-                        token:'/erp/layim/token',
-                        server:'ws://192.168.7.212:8888'
-                    });
+                    
     
                     socket.on('open',function (e) {
                         console.log("监听到事件：open");
