@@ -246,6 +246,7 @@
             if(sessionStorage.category){
                 this.sessionFlag = true;
                 let data = JSON.parse(sessionStorage.category);
+                console.log(data);
                 this.activeCatIndex = data.activeCatIndex;
                 this.activeSubIndex = data.activeSubIndex;
                 this.activeCatId = data.activeCatId;
@@ -582,13 +583,14 @@
             },
             // 搜索一级分类
             searchFirstCat(index,id,e){
-                this.resetSupplyPrice();
                 this.scrollTop = 0;
                 let o_w = e.parentNode.offsetWidth;
                 let o_l = e.parentNode.offsetLeft;
                 this.activeCatIndex = index;
                 this.activeCatId = id;
                 this.activePropId = '';
+                this.resetConditions();
+                this.resetSort();
                 if(index>=3){
                     this.$refs.wrapper.scrollLeft = o_l-2*o_w;
                 }
@@ -614,6 +616,8 @@
                 this.activeSubIndex = index;
                 this.activeSubId = item.id;
                 this.activePropId = '';
+                this.resetConditions();
+                this.resetSort();
                 this.pageSize = 20;
                 this.searchResult();
             },
@@ -631,6 +635,8 @@
                     item.activeFlag = false;
                 }
                 thirdItem.activeFlag = true;
+                this.resetConditions();
+                this.resetSort();
                 this.activeSubIndex = index;
                 this.activeSubId = thirdItem.catId;
                 this.activePropId = thirdItem.propId;
@@ -662,7 +668,7 @@
                     catId: this.activeSubId,
                     propId:this.activePropId
                 }
-                // 获取分类品牌列表
+                // 获取分类品牌列表00000000000000000000000000
                 this.$api.get('/oteao/productBrand/findProductBrandByCatId?',data,res=>{
                     this.brandList = res.data;
                     this.filterVisible = true;
