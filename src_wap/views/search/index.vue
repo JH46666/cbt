@@ -63,7 +63,7 @@
             :mainTit="item.proTitle" 
             :subTit="item.subTitle" 
             :link="item.proSku" 
-            :price="item.isSales ? item.salesPrice : item.proPrice" 
+            :price="item.isSales ? item.activityPrice : item.proPrice" 
             :unit="item.unint ? item.unint : '斤' " 
             :imgUrl="item.proImg" 
             :businessType="sortTagNum(item.tagNum)"
