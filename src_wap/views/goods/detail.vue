@@ -84,7 +84,7 @@
                 <div class="detail_describe">
                     <div class="detail_describe_wrapper">
                         <div class="detail_describe_text">
-                            <p class="detail_text">{{ detailData.productInfo.proName }}</p>
+                            <p class="detail_text">{{ detailData.productExtInfo.title }}</p>
                             <template  v-if="detailData.productExtInfo.state === 'OFF_SHELF' && loginId && state === 'ACTIVE'">
                                 <div class="off_shelf_tips">
                                     暂无报价
