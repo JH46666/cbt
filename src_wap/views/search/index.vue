@@ -63,7 +63,7 @@
             :mainTit="item.proTitle" 
             :subTit="item.subTitle" 
             :link="item.proSku" 
-            :price="item.isSales ? item.salesPrice : item.proPrice" 
+            :price="item.isSales ? item.activityPrice : item.proPrice" 
             :unit="item.unint ? item.unint : '斤' " 
             :imgUrl="item.proImg" 
             :businessType="sortTagNum(item.tagNum)"
@@ -504,6 +504,7 @@ export default {
     // 根据地址栏获取条件
     try {
       this.handle().then(res => {
+        this.list = [];
         let data = this.list.concat(res.data.searchResult.result);
         if (data.length === 0) {
           this.noList = true;
