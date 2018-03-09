@@ -10,7 +10,11 @@ import store from 'store';
         data(){
             return {
                 flag: false,
-                myData:{}
+                myData:{
+                    mine:{},
+                    friend:[],
+                    group:[]
+                }
             }
         },
         created(){
@@ -20,7 +24,7 @@ import store from 'store';
         watch:{
             flag(val){
                 if(val){
-                    let that = this;
+                    let _this = this;
                     layui.config({
                         version: true,
                         base: '/static/mods/'
@@ -29,14 +33,14 @@ import store from 'store';
                             layer = mobile.layer;
                         var $ =layui.jquery;
                         var selfFlag = false;
-                        console.log(that.myData);
+                        console.log(_this.myData);
                         //基础配置
                         layim.config({
                             //初始化接口
                             init: {
-                                mine: that.myData.data.mine,
-                                friend: that.myData.data.friend,
-                                group: that.myData.data.group
+                                mine: _this.myData.mine,
+                                friend: _this.myData.friend,
+                                group: _this.myData.group
                             }
                             //查看群员接口
                             ,members: {
@@ -60,7 +64,8 @@ import store from 'store';
                             log:true,
                             // token:'/erp/layim/getToKenById?id=204736',
                             token:'/erp/layim/token',
-                            server:'ws://192.168.7.212:8888'
+                            // server:'ws://192.168.7.212:8888'
+                            server:'wss://java.im.test.yipicha.com:8888'
                         });
 
                         socket.on('open',function (e) {
@@ -178,7 +183,7 @@ import store from 'store';
                     });
                 }
             }
-            
+
         },
         methods:{
             login(){
@@ -193,8 +198,10 @@ import store from 'store';
             },
             getBase(){
                 this.$http.get("/erp/layim/base").then(res=>{
-                    this.myData = res.data;
-                    this.flag = true;
+                    if(res.data.data){
+                        this.myData = res.data.data;
+                        this.flag = true;
+                    }
                     // return res.data;
                 })
             }

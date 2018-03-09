@@ -417,7 +417,16 @@
             loadMore(){
                 if(this.resultData.length < this.totalSize){
                     this.pageNumber++;
-                    this.searchResult();
+                    if(this.activePropId==''){
+                        this.searchResult();
+                    }else{
+                        let temp = {
+                            propId: this.activePropId,
+                            propValId: this.activePropVal
+                        }
+                        this.searchResult(temp);
+                    }
+
                 }
             },
             //筛选条件查询
@@ -425,7 +434,16 @@
                 this.resultData = [];
                 this.pageNumber = 1;
                 this.totalSize = 0;
-                this.searchResult();
+                if(this.activePropId==''){
+                    this.searchResult();
+                }else{
+                    let temp = {
+                        propId: this.activePropId,
+                        propValId: this.activePropVal
+                    }
+                    this.searchResult(temp);
+                }
+
             },
             // 格式化价格
             toFixedMinZero() {
@@ -564,13 +582,14 @@
             },
             // 搜索一级分类
             searchFirstCat(index,id,e){
-                this.resetSupplyPrice();
                 this.scrollTop = 0;
                 let o_w = e.parentNode.offsetWidth;
                 let o_l = e.parentNode.offsetLeft;
                 this.activeCatIndex = index;
                 this.activeCatId = id;
                 this.activePropId = '';
+                this.resetConditions();
+                this.resetSort();
                 if(index>=3){
                     this.$refs.wrapper.scrollLeft = o_l-2*o_w;
                 }
@@ -596,6 +615,8 @@
                 this.activeSubIndex = index;
                 this.activeSubId = item.id;
                 this.activePropId = '';
+                this.resetConditions();
+                this.resetSort();
                 this.pageSize = 20;
                 this.searchResult();
             },
@@ -613,9 +634,12 @@
                     item.activeFlag = false;
                 }
                 thirdItem.activeFlag = true;
+                this.resetConditions();
+                this.resetSort();
                 this.activeSubIndex = index;
                 this.activeSubId = thirdItem.catId;
                 this.activePropId = thirdItem.propId;
+                this.activePropVal =thirdItem.linkUrl;
                 this.pageSize = 20;
                 let temp = {
                     propId: thirdItem.propId,

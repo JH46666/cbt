@@ -67,6 +67,15 @@
             this.$store.dispatch('queryCartTotal');
         }
     }
+
+    /*layui.config({
+        version: true
+        ,base: '/static/mods/'
+    }).extend({
+        socket: 'socket',
+        //req:'req',
+        //fly: 'index'
+    });*/
 </script>
 
 <style lang="less">

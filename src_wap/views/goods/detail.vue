@@ -331,6 +331,11 @@ export default {
             commentFlag: false,
             timeData: [],
             isHasFlag: true,
+            myData:{       //聊天数据初始化
+                mine:{},
+                friend:[],
+                group:[]
+            }
         }
     },
     computed:{
@@ -820,11 +825,14 @@ export default {
        },
        addFriend(){
             let kefuName = "茶帮通客服";
+            let addId = 1;
+            let _this = this;
             if(this.detailData.productInfo.orgId){
                 kefuName = this.detailData.orgShopCenterVo.shopName;
+                addId = this.detailData.productInfo.orgId;
             }
-           this.$http.get(`/erp/layim/addFriend/${store.state.member.member.id}`).then(res=>{
-               let friendId = res.data;
+           this.$http.get(`/erp/layim/addFriend/${addId}`).then(res=>{
+               let friendId = res.data.data;
                layui.config({
                     version: true,
                     base: '/static/mods/'
@@ -836,16 +844,21 @@ export default {
                     //基础配置
                     layim.config({
                         init: {
-                        //设置我的基础信息
-                        mine: {
-                            "username": store.state.member.member.nickName //我的昵称
-                            ,"id": store.state.member.member.id //我的ID
-                            ,"avatar": "http://tp4.sinaimg.cn/1345566427/180/5730976522/0" //我的头像
-                        }
-                        //好友列表数据
-                        ,friend: [] //见下文：init数据格式
+                            //设置我的基础信息
+                            mine: _this.myData.mine,
+                            friend: _this.myData.friend,
+                            group: _this.myData.group
                         }
                     });
+
+                    socket.config({
+                        log:true,
+                        // token:'/erp/layim/getToKenById?id=204736',
+                        token:'/erp/layim/token',
+                        server:'wss://java.im.test.yipicha.com:8888',
+                        reconn: false
+                    });
+
                     //创建一个会话
                     layim.chat({
                         id: friendId
@@ -853,12 +866,7 @@ export default {
                         ,type: 'friend' //friend、group等字符，如果是group，则创建的是群聊
                         ,avatar: 'http://tp1.sinaimg.cn/1571889140/180/40030060651/1'
                     });
-                    socket.config({
-                        log:true,
-                        // token:'/erp/layim/getToKenById?id=204736',
-                        token:'/erp/layim/token',
-                        server:'ws://192.168.7.212:8888'
-                    });
+                    
     
                     socket.on('open',function (e) {
                         console.log("监听到事件：open");
@@ -977,15 +985,30 @@ export default {
        },
        openKfDialog() {
         //    this.showOrHide = true;
-            let data = {username: store.state.member.member.id,password: store.state.member.member.id};
-            let ret = '';
-            for (let it in data) {
-                ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&';
-            }
-            this.$http.post("/erp/account/login",ret).then(res=>{
-                this.addFriend();
+            store.dispatch('getMemberData').then((res) => {
+                let data = {username: store.state.member.member.id,password: store.state.member.member.id};
+                let ret = '';
+                for (let it in data) {
+                    ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&';
+                }
+                this.$http.post("/erp/account/login",ret).then(res=>{
+                    this.getBase();
+                });
+            }).catch(res => {
+                this.$router.replace('/login');
             });
+            
        },
+       getBase(){
+            this.$http.get("/erp/layim/base").then(res=>{
+                if(res.data.data){
+                    this.myData = res.data.data;
+                    this.addFriend();
+                }else{
+                    return Toast(res.data.msg);
+                }
+            })
+        },
        openDialog() {
            try {
                store.dispatch('getMemberData').then(()=>{
