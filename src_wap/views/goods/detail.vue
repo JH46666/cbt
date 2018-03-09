@@ -826,8 +826,11 @@ export default {
             
 
            this.$http.get(`/erp/layim/addFriend/`+this.detailData.productInfo.orgId).then(res=>{
-               let friendId = res.data;
-               layui.use(['mobile','socket','req'], function(mobile,socket,req){
+               let friendId = res.data.data;
+               layui.config({
+                    version: true,
+                    base: '/static/mods/'
+                }).use(['mobile','socket','req'], function(mobile,socket,req){
                     var layim = mobile.layim,
                         layer = mobile.layer;
                     var $ =layui.jquery;
