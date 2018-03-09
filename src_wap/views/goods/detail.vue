@@ -331,6 +331,11 @@ export default {
             commentFlag: false,
             timeData: [],
             isHasFlag: true,
+            myData:{       //聊天数据初始化
+                mine:{},
+                friend:[],
+                group:[]
+            }
         }
     },
     computed:{
@@ -820,12 +825,13 @@ export default {
        },
        addFriend(){
             let kefuName = "茶帮通客服";
+            let addId = 1;
+            let _this = this;
             if(this.detailData.productInfo.orgId){
                 kefuName = this.detailData.orgShopCenterVo.shopName;
+                addId = this.detailData.productInfo.orgId;
             }
-            
-
-           this.$http.get(`/erp/layim/addFriend/`+this.detailData.productInfo.orgId).then(res=>{
+           this.$http.get(`/erp/layim/addFriend/${addId}`).then(res=>{
                let friendId = res.data.data;
                layui.config({
                     version: true,
@@ -838,14 +844,10 @@ export default {
                     //基础配置
                     layim.config({
                         init: {
-                        //设置我的基础信息
-                        mine: {
-                            "username": "a"  //我的昵称
-                            ,"id": 593984 //我的ID
-                            ,"avatar": "http://tp4.sinaimg.cn/1345566427/180/5730976522/0" //我的头像
-                        }
-                        //好友列表数据
-                        ,friend: [] //见下文：init数据格式
+                            //设置我的基础信息
+                            mine: _this.myData.mine,
+                            friend: _this.myData.friend,
+                            group: _this.myData.group
                         }
                     });
 
@@ -983,15 +985,30 @@ export default {
        },
        openKfDialog() {
         //    this.showOrHide = true;
-            let data = {username: store.state.member.member.id,password: store.state.member.member.id};
-            let ret = '';
-            for (let it in data) {
-                ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&';
-            }
-            this.$http.post("/erp/account/login",ret).then(res=>{
-                this.addFriend();
+            store.dispatch('getMemberData').then((res) => {
+                let data = {username: store.state.member.member.id,password: store.state.member.member.id};
+                let ret = '';
+                for (let it in data) {
+                    ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&';
+                }
+                this.$http.post("/erp/account/login",ret).then(res=>{
+                    this.getBase();
+                });
+            }).catch(res => {
+                this.$router.replace('/login');
             });
+            
        },
+       getBase(){
+            this.$http.get("/erp/layim/base").then(res=>{
+                if(res.data.data){
+                    this.myData = res.data.data;
+                    this.addFriend();
+                }else{
+                    return Toast(res.data.msg);
+                }
+            })
+        },
        openDialog() {
            try {
                store.dispatch('getMemberData').then(()=>{
