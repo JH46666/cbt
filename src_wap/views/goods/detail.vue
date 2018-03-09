@@ -845,9 +845,9 @@ export default {
                     layim.config({
                         init: {
                             //设置我的基础信息
-                            mine: _this.myData.data.mine,
-                            friend: _this.myData.data.friend,
-                            group: _this.myData.data.group
+                            mine: _this.myData.mine,
+                            friend: _this.myData.friend,
+                            group: _this.myData.group
                         }
                     });
 
