@@ -246,7 +246,6 @@
             if(sessionStorage.category){
                 this.sessionFlag = true;
                 let data = JSON.parse(sessionStorage.category);
-                console.log(data);
                 this.activeCatIndex = data.activeCatIndex;
                 this.activeSubIndex = data.activeSubIndex;
                 this.activeCatId = data.activeCatId;
@@ -668,7 +667,7 @@
                     catId: this.activeSubId,
                     propId:this.activePropId
                 }
-                // 获取分类品牌列表00000000000000000000000000
+                // 获取分类品牌列表
                 this.$api.get('/oteao/productBrand/findProductBrandByCatId?',data,res=>{
                     this.brandList = res.data;
                     this.filterVisible = true;
