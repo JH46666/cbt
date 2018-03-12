@@ -991,7 +991,7 @@ export default {
                 for (let it in data) {
                     ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&';
                 }
-                this.$http.post("/erp/account/ajaxLogin",ret).then(res=>{
+                this.$http.post("/erp/account/login",ret).then(res=>{
                     this.getBase();
                 });
             }).catch(res => {
