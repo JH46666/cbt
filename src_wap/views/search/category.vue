@@ -411,6 +411,7 @@
                     item.sortIndex = 0;
                 }
                 this.sort = 1;
+                this.sortDesc = true;
                 // this.sortVisible = false;
             },
             //加载更多
@@ -665,7 +666,7 @@
             openFilter(){
                 let data = {
                     catId: this.activeSubId,
-                    propId:this.activePropId
+                    propValId:this.activePropId!=''?this.activePropVal:null
                 }
                 // 获取分类品牌列表
                 this.$api.get('/oteao/productBrand/findProductBrandByCatId?',data,res=>{

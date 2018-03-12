@@ -84,7 +84,7 @@
                 <div class="detail_describe">
                     <div class="detail_describe_wrapper">
                         <div class="detail_describe_text">
-                            <p class="detail_text">{{ detailData.productInfo.proName }}</p>
+                            <p class="detail_text">{{ detailData.productExtInfo.title }}</p>
                             <template  v-if="detailData.productExtInfo.state === 'OFF_SHELF' && loginId && state === 'ACTIVE'">
                                 <div class="off_shelf_tips">
                                     暂无报价
@@ -189,7 +189,7 @@
                                     <div>{{ item.propertiesVal.propVal }}</div>
                                 </div>
                             </template>
-                            <div class="reguler_item" v-if="detailData.productExtInfo.reason!=''" style="height: 1.5rem; padding: 0;">
+                            <div class="reguler_item" v-if="detailData.productExtInfo.reason" style="height: 1.5rem; padding: 0;">
                                 <div>推荐理由</div>
                                 <div>{{ detailData.productExtInfo.reason }}</div>
                             </div>
@@ -342,7 +342,7 @@ export default {
         ...mapState({
             cartTotal: state => state.cart.cartTotal
         }),
-        
+
     },
     created() {
         // 设置title
@@ -406,7 +406,7 @@ export default {
                 'visitLog.visitSku': this.proSku
             };
             this.$api.post("/oteao/visitLog/insert",visitData,res=>{
-                // console.log(res); 
+                // console.log(res);
             });
         },
         plusMethod() {
@@ -840,7 +840,7 @@ export default {
                     var layim = mobile.layim,
                         layer = mobile.layer;
                     var $ =layui.jquery;
-                    var selfFlag = false; 
+                    var selfFlag = false;
                     //基础配置
                     layim.config({
                         init: {
@@ -866,8 +866,8 @@ export default {
                         ,type: 'friend' //friend、group等字符，如果是group，则创建的是群聊
                         ,avatar: 'http://tp1.sinaimg.cn/1571889140/180/40030060651/1'
                     });
-                    
-    
+
+
                     socket.on('open',function (e) {
                         console.log("监听到事件：open");
                     });
@@ -997,7 +997,7 @@ export default {
             }).catch(res => {
                 this.$router.replace('/login');
             });
-            
+
        },
        getBase(){
             this.$http.get("/erp/layim/base").then(res=>{
