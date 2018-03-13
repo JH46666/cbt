@@ -66,7 +66,8 @@ import store from 'store';
                             token:`/erp/layim/getToKenById?id=${_this.userid}`,
                             // token:'/erp/layim/token',
                             // server:'ws://192.168.7.212:8888'
-                            server: 'wss://java.im.test.yipicha.com'
+                            server:'wss://mdemows.oteao.com',
+                            //server: 'wss://java.im.test.yipicha.com'
                             //server: 'ws://java.im.test.yipicha.com:8888',
                         });
 
