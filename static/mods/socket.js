@@ -123,7 +123,7 @@ layui.define(['jquery', 'layer'], function(exports) {
                     that.ws.send(JSON.stringify(data))
                 }, 300);
             } else if (this.ws.readyState != this.ws.OPEN) {
-                //this.reconnect();
+                this.reconnect();
                 let that = this; //保存当前对象this
                 setTimeout(function() {
                     that.ws.send(JSON.stringify(data))
