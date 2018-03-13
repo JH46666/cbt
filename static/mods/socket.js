@@ -10,7 +10,7 @@ layui.define(['jquery', 'layer'], function(exports) {
     var reconnectInterval = null;
     var defaultOptions = {
         log: true,
-        server:'wss://mdemows.oteao.com',
+        server: 'wss://mdemows.oteao.com',
         //server: 'ws://java.im.test.yipicha.com:8888',
         token: '/layim/token',
         reconn: true

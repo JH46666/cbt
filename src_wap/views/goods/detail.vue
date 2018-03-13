@@ -965,7 +965,7 @@ export default {
                         // token:'/erp/layim/token',
                         server:'wss://mdemows.oteao.com',
                         //server: 'wss://java.im.test.yipicha.com',
-                        reconn: false
+                        reconn: true
                     });
 
                     //创建一个会话
