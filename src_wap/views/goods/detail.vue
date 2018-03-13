@@ -954,7 +954,7 @@ export default {
                     //监听layim建立就绪
                     layim.on('ready', function(){
                         req.loading = false;
-                        req.get('/layim/apply-unread',{},function (res) {
+                        req.get('/erp/layim/apply-unread',{},function (res) {
                             res.data&&layim.msgbox(res.data);
                         });
                     console.log(layim.cache().friend);
