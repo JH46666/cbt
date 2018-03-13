@@ -10,6 +10,7 @@ import store from 'store';
         data(){
             return {
                 flag: false,
+                userid: null,
                 myData:{
                     mine:{},
                     friend:[],
@@ -62,8 +63,8 @@ import store from 'store';
                         });
                         socket.config({
                             log:true,
-                            // token:'/erp/layim/getToKenById?id=204736',
-                            token:'/erp/layim/token',
+                            token:`/erp/layim/getToKenById?id=${_this.userid}`,
+                            // token:'/erp/layim/token',
                             // server:'ws://192.168.7.212:8888'
                             //server:'wss://mdemo.oteao.com/websocket'
                             server: 'ws://java.im.test.yipicha.com:8888',
@@ -194,11 +195,12 @@ import store from 'store';
                     ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&';
                 }
                 this.$http.post("/erp/account/ajaxLogin",ret).then(res=>{
-                    this.getBase();
+                    this.userid = res.data.data.split(",")[0];
+                    this.getBase(this.userid);
                 });
             },
-            getBase(){
-                this.$http.get("/erp/layim/base").then(res=>{
+            getBase(userid){
+                this.$http.get(`/erp/layim/base?userId=${userid}`).then(res=>{
                     if(res.data.data){
                         this.myData = res.data.data;
                         this.flag = true;
