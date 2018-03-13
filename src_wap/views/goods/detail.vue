@@ -855,7 +855,7 @@ export default {
                         log:true,
                         token:`/erp/layim/getToKenById?id=${selfId}`,
                         // token:'/erp/layim/token',
-                        server:'wss://java.im.test.yipicha.com:8888',
+                        server:'ws://java.im.test.yipicha.com:8888',
                         reconn: false
                     });
 
