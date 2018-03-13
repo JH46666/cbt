@@ -931,7 +931,7 @@ export default {
                return this.$router.push({name: '账户登录'});
            })
        },
-       addFriend(){
+       addFriend(selfId){
             let kefuName = "茶帮通客服";
             let addId = 1;
             let _this = this;
@@ -939,7 +939,7 @@ export default {
                 kefuName = this.detailData.orgShopCenterVo.shopName;
                 addId = this.detailData.productInfo.orgId;
             }
-           this.$http.get(`/erp/layim/addFriend/${addId}`).then(res=>{
+           this.$http.get(`/erp/layim/addFriend?friend=${addId}&userId=${selfId}`).then(res=>{
                let friendId = res.data.data;
                layui.config({
                     version: true,
@@ -961,9 +961,10 @@ export default {
 
                     socket.config({
                         log:true,
-                        // token:'/erp/layim/getToKenById?id=204736',
-                        token:'/erp/layim/token',
-                        server:'wss://java.im.test.yipicha.com:8888',
+                        token:`/erp/layim/getToKenById?id=${selfId}`,
+                        // token:'/erp/layim/token',
+                        //server:'wss://mdemows.oteao.com',
+                        server: 'wss://java.im.test.yipicha.com',
                         reconn: false
                     });
 
@@ -1061,7 +1062,7 @@ export default {
                     //监听layim建立就绪
                     layim.on('ready', function(){
                         req.loading = false;
-                        req.get('/layim/apply-unread',{},function (res) {
+                        req.get('/erp/layim/apply-unread',{},function (res) {
                             res.data&&layim.msgbox(res.data);
                         });
                     console.log(layim.cache().friend);
@@ -1100,18 +1101,19 @@ export default {
                     ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&';
                 }
                 this.$http.post("/erp/account/ajaxLogin",ret).then(res=>{
-                    this.getBase();
+                    let userid = res.data.data.split(",")[0];
+                    this.getBase(userid);
                 });
             }).catch(res => {
                 this.$router.replace('/login');
             });
 
        },
-       getBase(){
-            this.$http.get("/erp/layim/base").then(res=>{
+       getBase(userid){
+            this.$http.get(`/erp/layim/base?userId=${userid}`).then(res=>{
                 if(res.data.data){
                     this.myData = res.data.data;
-                    this.addFriend();
+                    this.addFriend(userid);
                 }else{
                     return Toast(res.data.msg);
                 }
