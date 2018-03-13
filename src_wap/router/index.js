@@ -6,7 +6,7 @@ import * as $tool from 'utils/index.js';
 Vue.use(Router)
 
 const router = new Router({
-	// mode: 'history',//防止路径出现#.
+	mode: 'history',//防止路径出现#.
 	routes: [
 		{
 			path: '/',
