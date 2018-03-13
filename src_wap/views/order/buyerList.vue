@@ -297,13 +297,13 @@ export default {
             this.noInfinity = false;
         },
         getList() {
-                let status = this.$route.query.orderStatus,
-                data = {
-                    pageNumber: this.currentNum,
-                    pageSize: this.pageNume,
-                    device: this.device,
-                    orderStatus: status
-                };
+            let status = this.$route.query.orderStatus,
+            data = {
+                pageNumber: this.currentNum,
+                pageSize: this.pageNume,
+                device: this.device,
+                orderStatus: status
+            };
             if(status === 'waitPay'){
                 this.selectClass = 1;
             }else if(status === 'waitSend'){
