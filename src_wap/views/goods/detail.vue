@@ -131,8 +131,117 @@
                     </div>
                 </div>
             </div>
+
             <div class="detail_tab" ref="tab">
                 <mt-navbar v-model="tabSelected" :class="{'on': tabFixed , 'wxon': wxFixed}" ref='heihghj'>
+                    <i class="iconfont fixIndex" :class="{'on': tabFixed || wxFixed }" v-if="tabFixed || wxFixed" @click="$router.push({name: '首页'})">&#xe61b;</i>
+                    <mt-tab-item id="1">商品</mt-tab-item>
+                    <mt-tab-item id="2">评论</mt-tab-item>
+                    <mt-tab-item id="3">详情</mt-tab-item>
+                </mt-navbar>
+                <!-- 评价 -->
+                <div class="comment_wrapper" ref="commentTotal">
+                    <div class="comment_title">商品评价</div>
+                    <div class="comment_number">
+                        <div class="comment_star">好评 <span>{{ prectent | toFix2 }}%</span></div>
+                        <!-- commentRecond -->
+                        <div class="comment_total">共 <span>{{ commentRecond }}</span> 条</div>
+                    </div>
+                </div>
+                <div class="mint_cell_wrapper">
+                    <template v-if="commentList.length === 0 ">
+                        <div class="no-comment">
+                            <img src="../../assets/images/no-comment.png" alt="">
+                            <p>暂时还没有评价呦~</p>
+                        </div>
+                    </template>
+                    <template v-else>
+                        <mt-cell v-for="(item,index) in commentList" :key="index">
+                            <div class="comment_head">
+                                <div class="comment_head_wrapper">
+                                    <div class="comment_head_mumber">{{ regStar(item.nickName) }}</div>
+                                    <div class="comment_head_mumberlevel">{{ item.levelName }}</div>
+                                </div>
+                                <div class="comment_head_time">{{ item.createTime }}</div>
+                            </div>
+                            <p class="comment_footer" ref="comment" :class="{on:item.onFlag!==''&& item.onFlag}">
+                                {{ item.content }}
+                                <span v-if="item.replyContent"><span style="color:#c29e74;display:block;">回复：</span>{{item.replyContent}}</span>
+                                <span class="bg-white"><i class="iconfont down" :class="{on:item.pullFlag!=='' && item.pullFlag}" @click="pullOrDown(item)" :key="index+'11'">&#xe619;</i></span>
+                                <span class="bg-white"><i class="iconfont pull" :class="{on:item.upFlag!=='' && item.upFlag}" @click="pullOrDown(item)" :key="index+'12'">&#xe618;</i></span>
+                            </p>
+                        </mt-cell>
+                    </template>
+                </div>
+                <template v-if="commentList.length < commentRecond">
+                    <div class="comment_more_btn" @click="getMoreComment">
+                        查看更多评论<i class="iconfont">&#xe619;</i>
+                    </div>
+                </template>
+                <template v-if="commentList.length >= commentRecond">
+                    <div class="comment_more_btn">
+                        没有更多了呦~
+                    </div>
+                </template>
+                <!-- 规格 -->
+                <div class="comment_wrapper">
+                    <div class="comment_title">商品详情</div>
+                </div>
+                <div class="reguler_wrapper">
+                    <div class="reguler_item" style="height: .98rem; padding: 0;">
+                        <div>商品编号</div>
+                        <div>{{ detailData.productInfo.proSku }}</div>
+                    </div>
+                    <template v-if="isHasFlag">
+                        <div class="reguler_item" style="height: 1.5rem; padding: 0;" v-if="detailData.productExtInfo.fragrance != null">
+                            <div>香气</div>
+                            <div class="x_star">
+                                <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '偏淡' || detailData.productExtInfo.fragrance === '一般' || detailData.productExtInfo.fragrance === '香' || detailData.productExtInfo.fragrance === '高香' || detailData.productExtInfo.fragrance === '极香'}">偏淡</span>
+                                <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '一般' || detailData.productExtInfo.fragrance === '香' || detailData.productExtInfo.fragrance === '高香' || detailData.productExtInfo.fragrance === '极香'}">一般</span>
+                                <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '香' || detailData.productExtInfo.fragrance === '高香' || detailData.productExtInfo.fragrance === '极香'}">香</span>
+                                <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '高香' || detailData.productExtInfo.fragrance === '极香'}">高香</span>
+                                <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '极香'}">极香</span>
+                            </div>
+                        </div>
+                        <div class="reguler_item" style="height: 1.5rem; padding: 0;" v-if="detailData.productExtInfo.taste != null">
+                            <div>滋味</div>
+                            <div class="z_star">
+                                <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '偏淡' || detailData.productExtInfo.taste === '一般' || detailData.productExtInfo.taste === '浓' || detailData.productExtInfo.taste === '很浓' || detailData.productExtInfo.taste === '极浓'}">偏淡</span>
+                                <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '一般' || detailData.productExtInfo.taste === '浓' || detailData.productExtInfo.taste === '很浓' || detailData.productExtInfo.taste === '极浓'}">一般</span>
+                                <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '浓' || detailData.productExtInfo.taste === '很浓' || detailData.productExtInfo.taste === '极浓'}">浓</span>
+                                <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '很浓' || detailData.productExtInfo.taste === '极浓'}">很浓</span>
+                                <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '极浓'}">极浓</span>
+                            </div>
+                        </div>
+                    </template>
+                    <template v-for="(item,index) in attrImgDetail.propValList">
+                        <div class="reguler_item" style="height: .98rem; padding: 0;">
+                            <div>{{ item.atrName }}</div>
+                            <div>{{ item.propertiesVal.propVal }}</div>
+                        </div>
+                    </template>
+                    <div class="reguler_item" v-if="detailData.productExtInfo.reason" style="height: 1.5rem; padding: 0;">
+                        <div>推荐理由</div>
+                        <div>{{ detailData.productExtInfo.reason }}</div>
+                    </div>
+                </div>
+                <!-- 详情 -->
+                <div class="mint_cell_wrapper mint_cell_img_wrapper">
+                    <template v-if="imgDetailHtml.length>0">
+                        <div v-html="imgDetailHtml"></div>
+                    </template>
+                    <template v-else>
+                        <mt-cell v-for="(item,index) in imgDetail" :key="index" v-if="item.content != '' && item.imgArray.length != 0">
+                            <div class="mint_cell_img_title">{{ item.title }}</div>
+                            <div class="mint_cell_img">
+                                <img :src="ur.imgUrl" v-for="(ur,k) in item.imgArray" :key="k" />
+                            </div>
+                            <p class="mint_cell_img_content">{{ item.content }}</p>
+                        </mt-cell>
+                    </template>
+                </div>
+
+                <!-- <mt-navbar v-model="tabSelected" :class="{'on': tabFixed , 'wxon': wxFixed}" ref='heihghj'>
                     <i class="iconfont fixIndex" :class="{'on': tabFixed || wxFixed }" v-if="tabFixed || wxFixed" @click="$router.push({name: '首页'})">&#xe61b;</i>
                     <mt-tab-item id="1">详情</mt-tab-item>
                     <mt-tab-item id="2">规格</mt-tab-item>
@@ -200,7 +309,6 @@
                             <div class="comment_title">商品评价</div>
                             <div class="comment_number">
                                 <div class="comment_star">好评 <span>{{ prectent | toFix2 }}%</span></div>
-                                <!-- commentRecond -->
                                 <div class="comment_total">共 <span>{{ commentRecond }}</span> 条</div>
                             </div>
                         </div>
@@ -240,7 +348,7 @@
                             </div>
                         </template>
                     </mt-tab-container-item>
-                </mt-tab-container>
+                </mt-tab-container> -->
             </div>
         </div>
         <div class="off_shelf" v-if="detailData.productExtInfo.state === 'OFF_SHELF'">
@@ -261,11 +369,11 @@
                     店铺
                 </mt-tab-item>
             </template>
-            <mt-tab-item class="org-item" :class="{'cart-btn':!detailData.productInfo.orgId}" id="2" @click.native="openCart">
+            <!-- <mt-tab-item class="org-item" :class="{'cart-btn':!detailData.productInfo.orgId}" id="2" @click.native="openCart">
                 <i class="icon-jiarugouwuche" slot="icon"></i>
                 购物车
                 <mt-badge type="error" size="small" v-show="Number(cartTotal)>0">{{ cartTotal | ninenineAdd }}</mt-badge>
-            </mt-tab-item>
+            </mt-tab-item> -->
             <mt-tab-item id="3" class="join-cart">
                 <mt-button type="default" disabled v-if="detailData.productExtInfo.state === 'OFF_SHELF'">加入购物车</mt-button>
                 <mt-button type="default" v-else-if="detailData.productExtInfo.isSoldOut == 1 && detailData.productExtInfo.compelOutStock == 0" @click.native="addCartInfo">加入购物车</mt-button>

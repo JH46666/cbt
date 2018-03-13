@@ -36,13 +36,13 @@
                         path: '/message/',
                         select: 'icon-chabangtongzhuanyong_xiaoxiyixuansvg'
                     },
-                    {
-                        icon: 'icon-chabangtongzhuanyongfenlei_gouwuche1',
-                        name: '购物车',
-                        routeName: '购物车',
-                        path: '/cart/',
-                        select: 'icon-chabangtongzhuanyongfenlei_gouwuche'
-                    },
+                    // {
+                    //     icon: 'icon-chabangtongzhuanyongfenlei_gouwuche1',
+                    //     name: '购物车',
+                    //     routeName: '购物车',
+                    //     path: '/cart/',
+                    //     select: 'icon-chabangtongzhuanyongfenlei_gouwuche'
+                    // },
                     {
                         icon: 'icon-chabangtongzhuanyongfenlei_geren1',
                         name: '我的',
