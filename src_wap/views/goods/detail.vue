@@ -45,10 +45,10 @@
             </div>
         </mt-popup>
         <div class="detail_wrapper" @scroll="docScroll" ref="wrapper">
-            <div class="goIndex" v-if="!(tabFixed || wxFixed)" @click="$router.push({name: '首页'})" :class="{on: wxFixed}">
+            <!-- <div class="goIndex" v-if="!(tabFixed || wxFixed)" @click="$router.push({name: '首页'})" :class="{on: wxFixed}">
                 <span>回首页</span>
                 <i class="iconfont">&#xe61b;</i>
-            </div>
+            </div> -->
             <div class="top" :class="{on: tabFixed || wxFixed}" @click="topMethod"></div>
             <div ref="hel">
                 <div class="detail_img">
@@ -84,21 +84,36 @@
                 <div class="detail_describe">
                     <div class="detail_describe_wrapper">
                         <div class="detail_describe_text">
-                            <p class="detail_text">{{ detailData.productExtInfo.title }}</p>
-                            <template  v-if="detailData.productExtInfo.state === 'OFF_SHELF' && loginId && state === 'ACTIVE'">
-                                <div class="off_shelf_tips">
-                                    暂无报价
+                            <p class="detail_text"><span class="detail_type">自营</span>{{ detailData.productExtInfo.title }}</p>
+                            <div class="detail_price">
+                                <div class="detail-groupnum">
+                                    3人拼团价
                                 </div>
-                            </template>
-                            <template  v-if="!loginId || state != 'ACTIVE'">
-                                <div class="off_shelf_tips">
-                                    询价
-                                </div>
-                            </template>
-                            <template v-if="detailData.productPrice.length != 0 && detailData.productExtInfo.state === 'ON_SHELF' && loginId && state === 'ACTIVE'">
-                                <p class="detail_now_price" v-if="!detailData.productExtInfo.isSales">￥{{ detailData.productPrice[0].price | toFix2 }}</p>
-                                <p class="detail_suggest_price">建议零售价：￥{{ detailData.productPrice[1].price | toFix2 }}</p>
-                            </template>
+                                <template  v-if="detailData.productExtInfo.state === 'OFF_SHELF' && loginId && state === 'ACTIVE'">
+                                    <div class="off_shelf_tips">
+                                        暂无报价
+                                    </div>
+                                </template>
+                                <template  v-if="!loginId || state != 'ACTIVE'">
+                                    <div class="off_shelf_tips">
+                                        询价
+                                    </div>
+                                </template>
+                                <template v-if="detailData.productPrice.length != 0 && detailData.productExtInfo.state === 'ON_SHELF' && loginId && state === 'ACTIVE'">
+                                        <div class="detail_now_price" v-if="!detailData.productExtInfo.isSales">
+                                            ￥{{ detailData.productPrice[0].price | toFix2 }}
+                                        </div>
+                                        <div class="detail_suggest_price">￥{{ detailData.productPrice[1].price | toFix2 }}</div>
+                                </template>
+                            </div>
+                        </div>
+                        <div class="detail_salenum">
+                            <div>
+                                已拼50500件
+                            </div>
+                            <div>
+                                库存50500件
+                            </div>
                         </div>
                         <template  v-if="detailData.productExtInfo.state === 'ON_SHELF'">
                             <div class="detail_active">
@@ -108,30 +123,39 @@
                                         <p>已优惠￥{{  (detailData.productPrice[0].price-detailData.productExtInfo.salesPrice)  | toFix2 }}</p>
                                     </div> -->
                                     <div class="detail_active_item">
-                                        <span>运费</span>
+                                        <span>运费：</span>
                                         <template v-if="detailData.productInfo.businessType == 'ORG_SALES'">
-                                            <p v-if="!detailData.orgFreightTemplateVoList || detailData.orgFreightTemplateVoList.length == 0">本店商品全国包邮</p>
-                                            <p v-else-if="detailData.orgFreightTemplateVoList && detailData.orgFreightTemplateVoList.length > 0">邮费依实际重量计算运费</p>
+                                            <span v-if="!detailData.orgFreightTemplateVoList || detailData.orgFreightTemplateVoList.length == 0">本店商品全国包邮</span>
+                                            <span v-else-if="detailData.orgFreightTemplateVoList && detailData.orgFreightTemplateVoList.length > 0">邮费依实际重量计算运费</span>
                                         </template>
                                         <template v-else>
-                                            <p>自营茶叶满500包邮</p>
+                                            <span>自营茶叶满500包邮</span>
                                         </template>
                                     </div>
                                 </div>
                             </div>
                         </template>
-                        <div class="detail_describe_count">
+                        <!-- <div class="detail_describe_count">
                             <label class="label_text">采购量</label>
                             <div class="plusOreduce">
                                 <span class="reduce btn" :class="{isGary:goodsCount === 1}" @click="reduceMethod">-</span>
                                 <input v-model="goodsCount" type="number" class="countNum" @blur="limit">
                                 <span class="plus btn" @click="plusMethod">+</span>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
-
+            <!-- 拼团须知 -->
+            <div class="groupbuy-explain">
+                <div class="title">
+                    <div>拼团玩法</div>
+                    <div>拼团需知<i class="icon-icon07"></i></div>
+                </div>
+                <div class="groupbuy-content">
+                    支付开团，人数不足24h自动退款
+                </div>
+            </div>
             <div class="detail_tab" ref="tab">
                 <mt-navbar v-model="tabSelected" :class="{'on': tabFixed , 'wxon': wxFixed}" ref='heihghj'>
                     <i class="iconfont fixIndex" :class="{'on': tabFixed || wxFixed }" v-if="tabFixed || wxFixed" @click="$router.push({name: '首页'})">&#xe61b;</i>
@@ -140,7 +164,8 @@
                     <mt-tab-item id="3">详情</mt-tab-item>
                 </mt-navbar>
                 <!-- 评价 -->
-                <div class="comment_wrapper" ref="commentTotal">
+                <div class="comment_wrapper">
+                    <div class="scroll-div"  id="commentTotal"></div>
                     <div class="comment_title">商品评价</div>
                     <div class="comment_number">
                         <div class="comment_star">好评 <span>{{ prectent | toFix2 }}%</span></div>
@@ -148,7 +173,7 @@
                         <div class="comment_total">共 <span>{{ commentRecond }}</span> 条</div>
                     </div>
                 </div>
-                <div class="mint_cell_wrapper">
+                <div class="mint_cell_wrapper"  >
                     <template v-if="commentList.length === 0 ">
                         <div class="no-comment">
                             <img src="../../assets/images/no-comment.png" alt="">
@@ -184,7 +209,8 @@
                     </div>
                 </template>
                 <!-- 规格 -->
-                <div class="comment_wrapper">
+                <div class="comment_wrapper" >
+                    <div class="scroll-div"  id='reguler'></div>
                     <div class="comment_title">商品详情</div>
                 </div>
                 <div class="reguler_wrapper">
@@ -818,22 +844,16 @@ export default {
         },
         docScroll() {               // 判断页面滚动
             let scrollTop = this.$refs.wrapper.scrollTop;
-            let scrollHeight = this.$refs.wrapper.offsetHeight;
-            let tabTop = this.$refs.tab.offsetTop;
-            let allHideHeight = this.$refs.tab.children[0].offsetHeight+this.$refs.commentTotal.offsetHeight;
-            if(scrollTop - tabTop >= 0){
+            if(scrollTop > 0){
                 if(!this.wxFlag){
                     this.tabFixed = true;
                 }else{
                     this.wxFixed = true;
                 }
                 return;
-            }else if(scrollTop + allHideHeight - tabTop < 0){
+            }else if(scrollTop <= 0){
                 this.tabFixed = false;
                 this.wxFixed = false;
-                this.$refs.tabcontent1.$el.style['padding-top'] = 0;
-                this.$refs.tabcontent2.$el.style['padding-top'] = 0;
-                this.$refs.tabcontent3.$el.style['padding-top'] = 0;
                 return;
             }
         },
@@ -846,6 +866,12 @@ export default {
             }else{
                 return `0${time}`
             }
+        },
+        toCommentTotal(){          //滚动到评论
+            document.getElementById("commentTotal").scrollIntoView(true);
+        },
+        toReguler(){               //滚动到详情
+            document.getElementById("reguler").scrollIntoView(true);
         },
         timeDown () {
            const endTime = new Date(this.detailData.productExtInfo.salesEndTime);
@@ -1243,12 +1269,26 @@ export default {
             deep:true
         },
         tabSelected(val) {
-            this.$refs.wrapper.scrollTop = this.$refs.hel.offsetHeight;
+            // this.$refs.wrapper.scrollTop = this.$refs.hel.offsetHeight;
+            console.log(val)
+            switch (val) {
+                case '1':
+                    this.$refs.wrapper.scrollTop = 0;
+                    break;
+                case '2':
+                    this.toCommentTotal()
+                    break;
+                case '3':
+                    this.toReguler()
+                    break;
+
+            }
+
             this.tabFixed = true;
-            console.log(this.$refs.heihghj.$el.offsetHeight);
-            this.$refs.tabcontent1.$el.style['padding-top'] = this.$refs.heihghj.$el.offsetHeight + 'px';
-            this.$refs.tabcontent2.$el.style['padding-top'] = this.$refs.heihghj.$el.offsetHeight + 'px';
-            this.$refs.tabcontent3.$el.style['padding-top'] = this.$refs.heihghj.$el.offsetHeight + 'px';
+            // console.log(this.$refs.heihghj.$el.offsetHeight);
+            // this.$refs.tabcontent1.$el.style['padding-top'] = this.$refs.heihghj.$el.offsetHeight + 'px';
+            // this.$refs.tabcontent2.$el.style['padding-top'] = this.$refs.heihghj.$el.offsetHeight + 'px';
+            // this.$refs.tabcontent3.$el.style['padding-top'] = this.$refs.heihghj.$el.offsetHeight + 'px';
             if(!this.wxFlag){
                 this.tabFixed = true;
             }else{
