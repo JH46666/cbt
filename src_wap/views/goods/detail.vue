@@ -1101,7 +1101,7 @@ export default {
                     ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&';
                 }
                 this.$http.post("/erp/account/ajaxLogin",ret).then(res=>{
-                    let userid = res.data.data.split(",")[0];
+                    let userid = res.data.data;//res.data.data.split(",")[0];
                     this.getBase(userid);
                 });
             }).catch(res => {

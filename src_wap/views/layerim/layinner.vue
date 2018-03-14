@@ -196,7 +196,7 @@ import store from 'store';
                     ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&';
                 }
                 this.$http.post("/erp/account/ajaxLogin",ret).then(res=>{
-                    this.userid = res.data.data.split(",")[0];
+                    this.userid = res.data.data;//res.data.data.split(",")[0];
                     this.getBase(this.userid);
                 });
             },
