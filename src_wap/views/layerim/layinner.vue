@@ -69,6 +69,7 @@ import store from 'store';
                             server:'wss://mdemows.oteao.com',
                             //server: 'wss://java.im.test.yipicha.com'
                             //server: 'ws://java.im.test.yipicha.com:8888',
+                            reconn: true
                         });
 
                         socket.on('open',function (e) {
