@@ -990,6 +990,7 @@ export default {
                         token:`/erp/layim/getToKenById?id=${selfId}`,
                         // token:'/erp/layim/token',
                         server:'wss://mdemows.oteao.com',
+                        //server:'ws://192.168.7.8:8888',
                         //server: 'wss://java.im.test.yipicha.com',
                         reconn: true
                     });
@@ -1096,11 +1097,18 @@ export default {
                     //监听发送消息
                     layim.on('sendMessage', function(data){
                         var To = data.to;
+                        var timeStamp = data.mine.time;
+                        console.log("return******"+timeStamp)
+                        if(sessionStorage.getItem("msg_timestamp")==timeStamp){
+                            console.log("return******"+timeStamp)
+                            return;
+                        }
+                        sessionStorage.setItem("msg_timestamp", timeStamp);
                         var t = data.to.type=='friend';
                         if(!t){
                             selfFlag = true;
                         }
-                        socket.send({mtype:(t?socket.mtype.chatFriend:socket.mtype.chatGroup),content:data.mine.content,toid:data.to.id});
+                        socket.send({mtype:(t?socket.mtype.chatFriend:socket.mtype.chatGroup),content:data.mine.content,toid:data.to.id,id:data.mine.id,time:data.mine.time});
                         return;
                     });
                     //监听查看群员
