@@ -69,6 +69,7 @@ import store from 'store';
                             server:'wss://mdemows.oteao.com',
                             //server: 'wss://java.im.test.yipicha.com'
                             //server: 'ws://java.im.test.yipicha.com:8888',
+                            reconn: true
                         });
 
                         socket.on('open',function (e) {
@@ -161,14 +162,20 @@ import store from 'store';
                             });
                         console.log(layim.cache().friend);
                         });
-                        //监听发送消息
+                        //监听发送消息                        
                         layim.on('sendMessage', function(data){
                             var To = data.to;
+                            var timeStamp = data.mine.time;
+                            if(sessionStorage.getItem("msg_timestamp")==timeStamp){
+                                console.log("return*@@@"+timeStamp)
+                                return;
+                            }
+                            sessionStorage.setItem("msg_timestamp", timeStamp);
                             var t = data.to.type=='friend';
                             if(!t){
                                 selfFlag = true;
                             }
-                            socket.send({mtype:(t?socket.mtype.chatFriend:socket.mtype.chatGroup),content:data.mine.content,toid:data.to.id});
+                            socket.send({mtype:(t?socket.mtype.chatFriend:socket.mtype.chatGroup),content:data.mine.content,toid:data.to.id,id:data.mine.id,time:data.mine.time});
                             return;
                         });
                         //监听查看群员
