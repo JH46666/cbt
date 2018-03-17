@@ -62,18 +62,18 @@
                         <div class="center">
                             <p>{{ payMethods[item.currentPayMethod] }}  {{ expressName[item.currentDeliveryMethod] }}</p>
                             <!-- 运费 -->
-                            <p>运费： 
+                            <p>运费：
                                 <template v-if="item.currentPayMethod === 'ONLINE'">
                                     <span class="gold">{{ item.payAndDeliveryAndfreightMap.ONLINE[item.currentDeliveryMethod] | toFix2  }}</span>
-                                </template> 
+                                </template>
                                 <template v-else>
                                     <span class="gold">{{ item.payAndDeliveryAndfreightMap.CASH_DELIVERY[item.currentDeliveryMethod] | toFix2  }}</span>
                                 </template>
                             </p>
-                            <!-- <p v-else>运费：  
+                            <!-- <p v-else>运费：
                                 <template v-if="item.currentPayMethod === 'ONLINE'">
                                     <span class="gold">{{ item.payAndDeliveryAndfreightMap.ONLINE[item.currentDeliveryMethod] | toFix2  }}</span>
-                                </template> 
+                                </template>
                                 <template v-else>
                                     <span class="gold">{{ item.payAndDeliveryAndfreightMap.CASH_DELIVERY[item.currentDeliveryMethod] | toFix2  }}</span>
                                 </template>
@@ -137,9 +137,9 @@
             </section> -->
 
 
-            <section class="bd-address" @click="gotoTop" v-if="Object.keys(address).length > 0">
+            <!-- <section class="bd-address" @click="gotoTop" v-if="Object.keys(address).length > 0">
                 收货地址：{{ (address.provinceName + address.cityName + address.areaName + address.detailAddress) || '&nbsp;' }}&nbsp;&nbsp;&nbsp;&nbsp;{{ address.recName }} {{ address.mobilePhone }}
-            </section>
+            </section> -->
         </div>
         <section class="save-order">
             <div class="left" :class="{serverPrice: serverPrice > 0}">
@@ -270,7 +270,7 @@
                             list: [val]
                         })
                     }
-                    
+
                 })
                 return data;
             },
@@ -407,7 +407,7 @@
 
 
                 })
-                
+
                 let data = {
                     "cartIds": this.cartList,
                     "device": "WAP",
@@ -449,7 +449,7 @@
                     // console.log(1)
                     if(res.code === 4064) {
                         return this.$messageBox({
-                            title:'提示', 
+                            title:'提示',
                             message:`您的账号因违规操作而被冻结无法买买买~若有疑问，请联系客服400-996-3399`,
                             confirmButtonText: '我知道了'
                         }).then(res => {
@@ -516,7 +516,7 @@
         created() {
             // 设置title
             this.$store.commit('SET_TITLE','结算中心');
-            
+
             this.cartList = this.$route.query.cart;
             sessionStorage.setItem('edit',false);
             this.initData().then(res => {

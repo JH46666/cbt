@@ -207,6 +207,18 @@
                         	color: #ffffff;
                             .paddingL(0.1rem);
                             margin-right: 0.1rem;
+                            .position(r);
+                            &:after{
+                                content:'';
+                                display:block;
+                                width:0.2rem;
+                                height:0.4rem;
+                                position:absolute;
+                                transform:skewX(30deg);
+                                background:#fff;
+                                top:0;
+                                right:-0.1rem;
+                            }
                         }
                         .detail_now_price{
                             .color(#f08200);
@@ -295,6 +307,116 @@
                 }
             }
         }
+        .groupbuy-content{
+            background: #fff;
+            margin-top: .2rem;
+            .title{
+                padding: 0.4rem 0.3rem 0.4rem 0.4rem;
+                .flex;
+                font-size: 0.3rem;
+                line-height: 0.3rem;
+                letter-spacing: 0rem;
+                div:first-child{
+                    flex: 1;
+                    color: #333333;
+                }
+                div:last-child{
+                    text-align: right;
+                    color: #999999;
+                }
+            }
+            .groupbuy-list{
+                padding-bottom: 0.1rem;
+                .groupbuy-item{
+                    .flex;
+                    height: 0.9rem;
+                    margin: 0 0.3rem 0.3rem 0.4rem;
+                    border-top: 1px solid #f08200;
+                    border-bottom: 1px solid #f08200;
+                    .user-img{
+                        width: 1rem;
+                    	height: 1rem;
+                        margin-top: -0.1rem;
+                        background: #fff;
+                        border-radius: 0 50% 50% 0;
+                        img{
+                            width: 1rem;
+                        	height: 1rem;
+                            border-radius: 50%;
+                        }
+                    }
+                    .groupbuy-username{
+                    	font-size: 0.3rem;
+                    	line-height: 0.9rem;
+                    	letter-spacing: 0rem;
+                    	color: #333333;
+                        margin-left: 0.1rem;
+                        flex: 1;
+                        div{
+                            max-width: 1.8rem;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                        }
+                    }
+                    .groupbuy-info{
+                        height: 0.9rem;
+                        margin-right: 0.2rem;
+                        div:first-child{
+                            margin:0.15rem 0 0.1rem 0;
+                            height: 0.3rem;
+                            line-height: 0.3rem;
+                            font-size: 0.3rem;
+                            color: #333333;
+                            span{
+                                color: #f08200;
+                            }
+                        }
+                        div:last-child{
+                        	height: 0.2rem;
+                        	font-size: 0.2rem;
+                            line-height: 0.2rem;
+                        	letter-spacing: 0rem;
+                        	color: #999999;
+                        }
+                    }
+                    .to-groupbuy{
+                        width: 1.7rem;
+                    	height: 0.9rem;
+                    	background-color: #fff;
+                        margin-top: -1px;
+                        cursor: pointer;
+                        .to-groupbuy2{
+                            padding-left: 0.3rem;
+                        	width: 1.7rem;
+                        	height: 0.9rem;
+                        	background-color: #f08200;
+                            text-align: center;
+                        	border-radius: 0rem 0.5rem 0.5rem 0rem;
+                            font-size: 0.3rem;
+                            line-height: 0.9rem;
+                            letter-spacing: 0rem;
+                            color: #ffffff;
+                            .flex;
+                            align-items: center;
+                            .right{
+                                margin-left: 0.1rem;
+                                width: 0;
+                                height:0;
+                                border-top:0.15rem solid transparent;
+                                border-bottom: 0.15rem solid transparent;
+                                border-right: 0.1rem solid transparent;
+                                border-left: 0.1rem solid #fff;
+                            	opacity: 0.8;
+                            }
+                        }
+                    }
+                }
+            }
+            i{
+                .iconfont;
+            }
+        }
         .groupbuy-explain{
             background: #fff;
             margin-top: .2rem;
@@ -314,7 +436,7 @@
                     color: #999999;
                 }
             }
-            .groupbuy-content{
+            .groupbuy-content-ts{
                 padding: 0 0.3rem;
             	height: 0.3rem;
             	font-size: 0.3rem;
@@ -430,6 +552,9 @@
                         .color(#999);
                         span{
                             .color(#333);
+                        }
+                        i{
+                            .iconfont;
                         }
                     }
                 }
@@ -558,7 +683,7 @@
                     .color(#666);
                     text-align: center;
                     padding-bottom:1rem;
-                    min-height: 8rem;
+                    min-height: 4rem;
                 }
                 .bg(#fff);
                 .mint_cell_img_title{
@@ -738,6 +863,7 @@
             border-left: none !important;
             .mint-tab-item-label{
                 .fontSize(0);
+                .flex;
                 .mint-button--default{
                     width: 100%;
                     height: .98rem;
@@ -753,6 +879,23 @@
                     .color(#adadad);
                     .mint-button-text{
                         .color(#adadad);
+                    }
+                }
+                .lonelyBuy-btn{
+                    box-shadow: none;
+                    width: 44%;
+                	  background-color: rgba(240, 130, 0, 0.7);
+                    &.is-disabled{
+                      color: rgba(173, 173, 173, 0.7)!important;
+                      background-color: rgba(230, 230, 230, 0.7)!important;
+                    }
+                }
+                .groupBuy-btn{
+                    box-shadow: none;
+                    width: 56%;
+                    &.is-disabled{
+                      color: #adadad!important;
+                      background-color: #e6e6e6!important;
                     }
                 }
             }
