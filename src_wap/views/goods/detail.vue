@@ -84,7 +84,12 @@
                 <div class="detail_describe">
                     <div class="detail_describe_wrapper">
                         <div class="detail_describe_text">
-                            <p class="detail_text"><span class="detail_type">自营</span>{{ detailData.productExtInfo.title }}</p>
+                            <p class="detail_text">
+                                <span class="detail_type">
+                                    {{ detailData.orgShopCenterVo ? businessName[detailData.orgShopCenterVo.shopType - 1] : businessName[4] }}
+                                </span>
+                                {{ detailData.productExtInfo.title }}
+                            </p>
                             <div class="detail_price">
                                 <div class="detail-groupnum">
                                     3人拼团价
@@ -146,13 +151,70 @@
                     </div>
                 </div>
             </div>
+            <!-- 参与拼团模块 -->
+            <div class="groupbuy-content" v-if="groupPurchaseList.length>0">
+                <div class="title">
+                    <div>20人正在发起拼团，可直接参与</div>
+                    <div>更多<i class="icon-icon07"></i></div>
+                </div>
+                <div class="groupbuy-list">
+                    <div class="groupbuy-item" v-for="(item,index) in groupPurchaseList" :key="index" v-if="index<2">
+                        <div class="user-img">
+                            <img :src="item.masterFaceImg"/>
+                        </div>
+                        <div class="groupbuy-username"><div>{{item.masterName}}</div></div>
+                        <div class="groupbuy-info">
+                            <div>还差<span>{{item.groupNumber - item.offerNumber }}</span>人</div>
+                            <div>剩余<span>23:00:22</span></div>
+                        </div>
+                        <div class="to-groupbuy">
+                            <div class="to-groupbuy2">
+                                <div>去拼团</div>
+                                <div class="right"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="groupbuy-item">
+                        <div class="user-img">
+                            <img  src="../../assets/images/ic_xinpinguan.png"/>
+                        </div>
+                        <div class="groupbuy-username"><div>厦门茶叶公司啊啊</div></div>
+                        <div class="groupbuy-info">
+                            <div>还差<span>2</span>人</div>
+                            <div>剩余<span>23:00:22</span></div>
+                        </div>
+                        <div class="to-groupbuy">
+                            <div class="to-groupbuy2">
+                                <div>去拼团</div>
+                                <div class="right"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="groupbuy-item">
+                        <div class="user-img">
+                            <img  src="../../assets/images/ic_xinpinguan.png"/>
+                        </div>
+                        <div class="groupbuy-username"><div>厦门茶叶公司啊啊</div></div>
+                        <div class="groupbuy-info">
+                            <div>还差<span>2</span>人</div>
+                            <div>剩余<span>23:00:22</span></div>
+                        </div>
+                        <div class="to-groupbuy">
+                            <div class="to-groupbuy2">
+                                <div>去拼团</div>
+                                <div class="right"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- 拼团须知 -->
             <div class="groupbuy-explain">
                 <div class="title">
                     <div>拼团玩法</div>
                     <div>拼团需知<i class="icon-icon07"></i></div>
                 </div>
-                <div class="groupbuy-content">
+                <div class="groupbuy-content-ts">
                     支付开团，人数不足24h自动退款
                 </div>
             </div>
@@ -170,7 +232,7 @@
                     <div class="comment_number">
                         <div class="comment_star">好评 <span>{{ prectent | toFix2 }}%</span></div>
                         <!-- commentRecond -->
-                        <div class="comment_total">共 <span>{{ commentRecond }}</span> 条</div>
+                        <div class="comment_total">共 <span>{{ commentRecond }}</span> 条<i class="icon-icon07" v-if="commentList.length >2 "></i></div>
                     </div>
                 </div>
                 <div class="mint_cell_wrapper"  >
@@ -181,7 +243,7 @@
                         </div>
                     </template>
                     <template v-else>
-                        <mt-cell v-for="(item,index) in commentList" :key="index">
+                        <mt-cell v-for="(item,index) in commentList" :key="index" v-if="index<2">
                             <div class="comment_head">
                                 <div class="comment_head_wrapper">
                                     <div class="comment_head_mumber">{{ regStar(item.nickName) }}</div>
@@ -198,7 +260,7 @@
                         </mt-cell>
                     </template>
                 </div>
-                <template v-if="commentList.length < commentRecond">
+                <!-- <template v-if="commentList.length < commentRecond">
                     <div class="comment_more_btn" @click="getMoreComment">
                         查看更多评论<i class="iconfont">&#xe619;</i>
                     </div>
@@ -207,7 +269,7 @@
                     <div class="comment_more_btn">
                         没有更多了呦~
                     </div>
-                </template>
+                </template> -->
                 <!-- 规格 -->
                 <div class="comment_wrapper" >
                     <div class="scroll-div"  id='reguler'></div>
@@ -401,9 +463,17 @@
                 <mt-badge type="error" size="small" v-show="Number(cartTotal)>0">{{ cartTotal | ninenineAdd }}</mt-badge>
             </mt-tab-item> -->
             <mt-tab-item id="3" class="join-cart">
-                <mt-button type="default" disabled v-if="detailData.productExtInfo.state === 'OFF_SHELF'">加入购物车</mt-button>
+                <mt-button type="default" class="lonelyBuy-btn">
+                    <p>￥189.00</p>
+                    <p>单独购买</p>
+                </mt-button>
+                <mt-button type="default" class="groupBuy-btn">
+                    <p>￥99.00</p>
+                    <p>3人拼团</p>
+                </mt-button>
+                <!-- <mt-button type="default" disabled v-if="detailData.productExtInfo.state === 'OFF_SHELF'">加入购物车</mt-button>
                 <mt-button type="default" v-else-if="detailData.productExtInfo.isSoldOut == 1 && detailData.productExtInfo.compelOutStock == 0" @click.native="addCartInfo">加入购物车</mt-button>
-                <mt-button type="default" disabled v-else>缺货</mt-button>
+                <mt-button type="default" disabled v-else>缺货</mt-button> -->
             </mt-tab-item>
         </mt-tabbar>
     </div>
@@ -433,6 +503,7 @@ export default {
             wxFlag: false,
             wxFixed: false,
             showOrHide: false,
+            groupPurchaseList:[],
             isThird: false,
             headHeight: 44,
             detailData: {
@@ -476,11 +547,14 @@ export default {
         ...mapState({
             cartTotal: state => state.cart.cartTotal
         }),
+        businessName() {
+            return  this.$tool.shopType
+        }
 
     },
     created() {
         // 设置title
-        this.$store.commit('SET_TITLE','商品详情');
+        // this.$store.commit('SET_TITLE','商品详情');
         // 获取购物车数量
         this.$store.dispatch('queryCartTotal');
         this.loginId = store.state.member.member.id;
@@ -495,6 +569,8 @@ export default {
         })
         this.getDetail().then((res) =>{
             this.detailData = res.data;
+            // 设置title
+            this.$store.commit('SET_TITLE',this.detailData.productExtInfo.title );
             this.maxNum = this.detailData.productExtInfo.stockNum;
             if(res.data.orgShopCenterVo){
                 this.shopTel = `tel://${res.data.orgShopCenterVo.businessTelephone}`;
@@ -529,6 +605,9 @@ export default {
                     }
                 })
             })
+        })
+        this.getGroupPurchase().then((res)=>{
+            console.log(res)
         })
         this.addLike();
     },
@@ -792,6 +871,26 @@ export default {
                     });
                 })
             })
+        },
+        // 获取拼团信息
+        getGroupPurchase(){
+                let data= {
+                    'groupPurchase.proId':this.proSku,
+                    'groupPurchase.groupState':1,
+                    'groupPurchase.isJoin':2,
+                    'groupPurchase.proId':1,
+                    'groupPurchase.proId':10,
+                }
+                return new Promise((resolve,reject) =>{
+                    this.$api.post('/oteao/groupPurchase/seachGroupPurchase ',data,res=>{
+                        resolve(res);
+                    }),res=>{
+                        return Toast({
+                            message: res.errorMsg,
+                            iconClass: 'icon icon-fail'
+                        });
+                    }
+                })
         },
         handleChange(index) {           // 图片索引
             this.imgIndex = index+1;

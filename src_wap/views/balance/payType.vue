@@ -18,7 +18,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="check-item delivery edit-12-25" @click="active.currentPayMethod = 'CASH_DELIVERY'">
+                        <!-- <div class="check-item delivery edit-12-25" @click="active.currentPayMethod = 'CASH_DELIVERY'">
                             <div class="left"><i class="icon-huodaofukuan"></i>
                                 <div class="text-right">
                                     <p>货到付款</p>
@@ -30,7 +30,7 @@
                                     <input type="radio" value="CASH_DELIVERY" v-model="active.currentPayMethod">
                                 </label>
                             </div>
-                        </div>
+                        </div> -->
                     </template>
                 </div>
                 <div class="pannel">
