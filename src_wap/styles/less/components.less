@@ -117,17 +117,21 @@
 .cbt-goods-item{
     border-bottom: 1px solid @borCol;
     .flex;
-    .paddingT(.3rem);
-    .paddingB(.3rem);
+    .paddingT(.34rem);
+    .paddingB(.28rem);
     .left-text-wrap{
         .flex-1;
-        .paddingR(.2rem);
+        .paddingR(.45rem);
         .goods-title{
             word-break: break-all;
-            margin-bottom: .2rem;
+            .paddingB(.29rem);
+            height: .69rem;
             .fontSize(.28rem);
-            .line(1.5);
+            .line(.36rem);
             .moreLine;
+            .goods-mTit{
+                display: inline;
+            }
             &.one-line{
                 .moreLine(1);
                 .color(#999);
@@ -174,14 +178,20 @@
             background-size: 100% 100%;
         }
         .goods-bd{
-            margin-top: .2rem;
+            margin-top: .29rem;
             .flex;
         }
         .goods-price{
-            margin-right: .2rem;
-            .color(@mainCol);
+            color: #f18700;
             .fontSize(.28rem);
             .line(.3rem);
+            letter-spacing: -0.01rem;
+            .goods-garyPrice{
+                .fontSize(.22rem);
+                width: 0.92rem;
+                text-decoration: line-through;
+                color: #999999; 
+            }
         }
         .goods-type{
             border: 1px solid #f08200;
@@ -192,9 +202,11 @@
             .reduis(4px);
             .fontSize(.2rem);
             .line(.28rem);
+            display: inline-block;
             &.other{
                 border-color: #0ec416;
                 .color(#0ec416);
+                display: inline-block;
             }
         }
     }
