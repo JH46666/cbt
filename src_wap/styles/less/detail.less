@@ -882,11 +882,21 @@
                     }
                 }
                 .lonelyBuy-btn{
+                    box-shadow: none;
                     width: 44%;
-                	background-color: rgba(240, 130, 0, 0.7);
+                	  background-color: rgba(240, 130, 0, 0.7);
+                    &.is-disabled{
+                      color: rgba(173, 173, 173, 0.7)!important;
+                      background-color: rgba(230, 230, 230, 0.7)!important;
+                    }
                 }
                 .groupBuy-btn{
+                    box-shadow: none;
                     width: 56%;
+                    &.is-disabled{
+                      color: #adadad!important;
+                      background-color: #e6e6e6!important;
+                    }
                 }
             }
         }

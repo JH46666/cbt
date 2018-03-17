@@ -88,7 +88,7 @@
                             </div>
                         </div>
                     </template>
-                    <div class="indoor-wrap" v-if="(active.canPickUpBySelf && active.selfSupport === true) || active.selfSupport !== true">
+                    <!-- <div class="indoor-wrap" v-if="(active.canPickUpBySelf && active.selfSupport === true) || active.selfSupport !== true">
                         <div class="check-item delivery">
                             <div class="left" v-if="active.selfSupport === true"><i class="icon-jifenshangcheng"></i> 门店自提 </div>
                             <div class="left" v-else><span class="tip-third">门店自提</span></div>
@@ -103,7 +103,7 @@
                         </div>
                         <p class="tips" :class="{border: active.selfSupport !== true}" v-if="active.currentDeliveryMethod === 'get_self'">请与门店联系确认存货量以及门店营业时间</p>
                         <p class="contack" v-if="active.currentDeliveryMethod === 'get_self'">提货地址：{{ active.shopAddress }}--联系电话：{{ active.contactMobile }}</p>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <div class="btn-wrap">
