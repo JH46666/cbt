@@ -2,106 +2,19 @@
   <div class="layui-container"></div>
 </template>
 
+
 <script>
+import store from 'store';
     export default {
         name:'layinner',
         data(){
             return {
                 flag: false,
+                userid: null,
                 myData:{
-                    mine: {
-                        "username": "纸飞机" //我的昵称
-                        ,"id": 123 //我的ID
-                        ,"avatar": "http://tvax1.sinaimg.cn/crop.0.0.300.300.180/006Iv8Wjly8ff7ghbigcij308c08ct8i.jpg" //我的头像
-                        ,"sign": "懒得签名"
-                    }
-                    //我的好友列表
-                    ,friend: [{
-                        "groupname": "前端码屌"
-                        ,"id": 1
-                        ,"online": 2
-                        ,"list": [{
-                        "username": "贤心"
-                        ,"id": "100001"
-                        ,"avatar": "http://tp1.sinaimg.cn/1571889140/180/40030060651/1"
-                        ,"sign": "这些都是测试数据，实际使用请严格按照该格式返回"
-                        },{
-                        "username": "Z_子晴"
-                        ,"id": "108101"
-                        ,"avatar": "http://tva3.sinaimg.cn/crop.0.0.512.512.180/8693225ajw8f2rt20ptykj20e80e8weu.jpg"
-                        ,"sign": "微电商达人"
-                        },{
-                        "username": "Lemon_CC"
-                        ,"id": "102101"
-                        ,"avatar": "http://tp2.sinaimg.cn/1833062053/180/5643591594/0"
-                        ,"sign": ""
-                        },{
-                        "username": "马小云"
-                        ,"id": "168168"
-                        ,"avatar": "http://tp4.sinaimg.cn/2145291155/180/5601307179/1"
-                        ,"sign": "让天下没有难写的代码"
-                        ,"status": "offline"
-                        },{
-                        "username": "徐小峥"
-                        ,"id": "666666"
-                        ,"avatar": "http://tp2.sinaimg.cn/1783286485/180/5677568891/1"
-                        ,"sign": "代码在囧途，也要写到底"
-                        }]
-                    },{
-                        "groupname": "网红"
-                        ,"id": 2
-                        ,"online": 3
-                        ,"list": [{
-                        "username": "罗玉凤"
-                        ,"id": "121286"
-                        ,"avatar": "http://tp1.sinaimg.cn/1241679004/180/5743814375/0"
-                        ,"sign": "在自己实力不济的时候，不要去相信什么媒体和记者。他们不是善良的人，有时候候他们的采访对当事人而言就是陷阱"
-                        },{
-                        "username": "长泽梓Azusa"
-                        ,"id": "100001222"
-                        ,"sign": "我是日本女艺人长泽あずさ"
-                        ,"avatar": "http://tva1.sinaimg.cn/crop.0.0.180.180.180/86b15b6cjw1e8qgp5bmzyj2050050aa8.jpg"
-                        },{
-                        "username": "大鱼_MsYuyu"
-                        ,"id": "12123454"
-                        ,"avatar": "http://tp1.sinaimg.cn/5286730964/50/5745125631/0"
-                        ,"sign": "我瘋了！這也太準了吧  超級笑點低"
-                        },{
-                        "username": "谢楠"
-                        ,"id": "10034001"
-                        ,"avatar": "http://tp4.sinaimg.cn/1665074831/180/5617130952/0"
-                        ,"sign": ""
-                        },{
-                        "username": "柏雪近在它香"
-                        ,"id": "3435343"
-                        ,"avatar": "http://tp2.sinaimg.cn/2518326245/180/5636099025/0"
-                        ,"sign": ""
-                        }]
-                    },{
-                        "groupname": "我心中的女神"
-                        ,"id": 3
-                        ,"online": 1
-                        ,"list": [{
-                        "username": "林心如"
-                        ,"id": "76543"
-                        ,"avatar": "http://tp3.sinaimg.cn/1223762662/180/5741707953/0"
-                        ,"sign": "我爱贤心"
-                        },{
-                        "username": "佟丽娅"
-                        ,"id": "4803920"
-                        ,"avatar": "http://tp4.sinaimg.cn/1345566427/180/5730976522/0"
-                        ,"sign": "我也爱贤心吖吖啊"
-                        }]
-                    }]
-                    ,group: [{
-                        "groupname": "前端群"
-                        ,"id": "101"
-                        ,"avatar": "http://tp2.sinaimg.cn/2211874245/180/40050524279/0"
-                    },{
-                        "groupname": "Fly社区官方群"
-                        ,"id": "102"
-                        ,"avatar": "http://tp2.sinaimg.cn/5488749285/50/5719808192/1"
-                    }]
+                    mine:{},
+                    friend:[],
+                    group:[]
                 }
             }
         },
@@ -112,23 +25,23 @@
         watch:{
             flag(val){
                 if(val){
-                    let that = this;
-                    // console.log(this.myData);
+                    let _this = this;
                     layui.config({
                         version: true,
                         base: '/static/mods/'
-                    }).use(['mobile'], function(mobile){
+                    }).use(['mobile','socket','req'], function(mobile,socket,req){
                         var layim = mobile.layim,
                             layer = mobile.layer;
                         var $ =layui.jquery;
                         var selfFlag = false;
+                        console.log(_this.myData);
                         //基础配置
                         layim.config({
                             //初始化接口
                             init: {
-                                mine: that.myData.mine,
-                                friend: that.myData.friend,
-                                group: that.myData.group
+                                mine: _this.myData.mine,
+                                friend: _this.myData.friend,
+                                group: _this.myData.group
                             }
                             //查看群员接口
                             ,members: {
@@ -150,9 +63,13 @@
                         });
                         socket.config({
                             log:true,
-                            // token:'/erp/layim/getToKenById?id=204736',
-                            token:'/erp/layim/token',
-                            server:'ws://192.168.7.212:8888'
+                            token:`/erp/layim/getToKenById?id=${_this.userid}`,
+                            // token:'/erp/layim/token',
+                            // server:'ws://192.168.7.212:8888'
+                            server:'wss://mdemows.oteao.com',
+                            //server: 'wss://java.im.test.yipicha.com'
+                            //server: 'ws://java.im.test.yipicha.com:8888',
+                            reconn: true
                         });
 
                         socket.on('open',function (e) {
@@ -240,19 +157,25 @@
                         //监听layim建立就绪
                         layim.on('ready', function(){
                             req.loading = false;
-                            req.get('/layim/apply-unread',{},function (res) {
+                            req.get('/erp/layim/apply-unread',{},function (res) {
                                 res.data&&layim.msgbox(res.data);
                             });
                         console.log(layim.cache().friend);
                         });
-                        //监听发送消息
+                        //监听发送消息                        
                         layim.on('sendMessage', function(data){
                             var To = data.to;
+                            var timeStamp = data.mine.time;
+                            if(sessionStorage.getItem("msg_timestamp")==timeStamp){
+                                console.log("return*@@@"+timeStamp)
+                                return;
+                            }
+                            sessionStorage.setItem("msg_timestamp", timeStamp);
                             var t = data.to.type=='friend';
                             if(!t){
                                 selfFlag = true;
                             }
-                            socket.send({mtype:(t?socket.mtype.chatFriend:socket.mtype.chatGroup),content:data.mine.content,toid:data.to.id});
+                            socket.send({mtype:(t?socket.mtype.chatFriend:socket.mtype.chatGroup),content:data.mine.content,toid:data.to.id,id:data.mine.id,time:data.mine.time});
                             return;
                         });
                         //监听查看群员
@@ -270,23 +193,26 @@
                     });
                 }
             }
-            
+
         },
         methods:{
             login(){
-                let data = {username: 'test',password: '123456'};
+                let data = {username: store.state.member.member.id,password: store.state.member.member.id};
                 let ret = '';
                 for (let it in data) {
                     ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&';
                 }
-                this.$http.post("/erp/account/login",ret).then(res=>{
-                    this.getBase();
+                this.$http.post("/erp/account/ajaxLogin",ret).then(res=>{
+                    this.userid = res.data.data;//res.data.data.split(",")[0];
+                    this.getBase(this.userid);
                 });
             },
-            getBase(){
-                this.$http.get("/erp/layim/base").then(res=>{
-                    this.myData = res.data;
-                    this.flag = true;
+            getBase(userid){
+                this.$http.get(`/erp/layim/base?userId=${userid}`).then(res=>{
+                    if(res.data.data){
+                        this.myData = res.data.data;
+                        this.flag = true;
+                    }
                     // return res.data;
                 })
             }
@@ -298,6 +224,12 @@
         height: .88rem;
         line-height: .88rem;
         font-size: 14px;
+    }
+    body .layim-chat-footer{
+        left: 0;
+        right: 0;
+        background: #eee;
+        padding: 0 10px;
     }
     body .chat-wrapper{
         z-index: 2000;

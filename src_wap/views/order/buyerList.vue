@@ -58,7 +58,7 @@
                                 <mt-button plain v-if="item.orderStatus === 'WAIT_PAY' || item.orderStatus === 'WAIT_CHECK'" @click.native="cancelMethod(item)">取消订单</mt-button>
                                 <mt-button plain v-if="item.orderStatus === 'WAIT_PAY'" class="pay_now" @click.native="payMethod(item.payId)">立即支付</mt-button>
                                 <mt-button plain v-if="(item.orderStatus === 'DELIVERED' || item.orderStatus === 'CBT_BUYER') && (item.sellerOrgId!=null||(item.sellerOrgId==null && !item.subOrderSize))" class="pay_now" @click.native="confrimMethod(item.orderNo)">确认收货</mt-button>
-                                <mt-button plain v-if="(item.orderStatus === 'DELIVERED' || item.orderStatus === 'CBT_BUYER') && item.sellerOrgId==null&&item.subOrderSize > 0" class="pay_now" @click.native="confrimMethodsMoreChild(item.subOrderNo,item.orderNo)">确认收货</mt-button>
+                                <mt-button plain v-if="(item.orderStatus === 'DELIVERED' || item.orderStatus === 'CBT_BUYER') && item.sellerOrgId==null&&item.subOrderSize == 1" class="pay_now" @click.native="confrimMethodsMoreChild(item.subOrderNo,item.orderNo)">确认收货</mt-button>
                             </div>
                         </div>
                     </mt-cell>
@@ -297,13 +297,13 @@ export default {
             this.noInfinity = false;
         },
         getList() {
-                let status = this.$route.query.orderStatus,
-                data = {
-                    pageNumber: this.currentNum,
-                    pageSize: this.pageNume,
-                    device: this.device,
-                    orderStatus: status
-                };
+            let status = this.$route.query.orderStatus,
+            data = {
+                pageNumber: this.currentNum,
+                pageSize: this.pageNume,
+                device: this.device,
+                orderStatus: status
+            };
             if(status === 'waitPay'){
                 this.selectClass = 1;
             }else if(status === 'waitSend'){

@@ -13,8 +13,9 @@
     garyPrice       Number          0               灰价格
     unit            String          斤              单位
     isLogin         Boolean         false
-
-
+    
+    新增prop
+    salesPrice      Number          0               特价
 
 
 
@@ -31,7 +32,7 @@
 <template>
     <router-link :to="'/detail?proSku='+link" class="cbt-goods-item" tag="div">
         <div class="left-text-wrap">
-            <div class="goods-title">
+            <div class="goods-title" style="-webkit-box-orient: vertical">
                 <div class="goods-type" :class="{'other': businessType && businessType <= 4}">
                     {{ businessName[businessType - 1] || businessName[4] }}
                 </div>

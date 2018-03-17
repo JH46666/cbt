@@ -31,11 +31,11 @@
                             </div>
                         </div>
                         <div class="item">
-                            <label class="item-left" for="3">
+                            <label class="item-left" for="5">
                                 单位：
                             </label>
                             <div class="item-right" @click="clickSel('danwei')">
-                                <input type="text" id="3" readonly placeholder="必填项，请选择商品单位" v-model="resize.form.goodsDw" />
+                                <input type="text" id="5" readonly unselectable="on" onfocus="this.blur()" placeholder="必填项，请选择商品单位" v-model="resize.form.goodsDw" />
                             </div>
                             <i class="iconfont"  @click="clickSel('danwei')">&#xe744;</i>
                         </div>
@@ -44,9 +44,23 @@
                                 品牌：
                             </label>
                             <div class="item-right" @click="clickSel('pinpai')">
-                                <input type="text" id="4" readonly placeholder="必填项，请选择商品品牌" v-model="resize.form.goodsBrand" />
+                                <input type="text" id="4" readonly unselectable="on" onfocus="this.blur()" placeholder="必填项，请选择商品品牌" v-model="resize.form.goodsBrand" />
                             </div>
                             <i class="iconfont" @click="clickSel('pinpai')">&#xe744;</i>
+                        </div>
+                        <div class="item" v-for="(item,index) in resize.defaultArray" :key="index">
+                            <label class="item-left" :for="index+2">
+                                {{ item.name }}
+                            </label>
+                            <div class="item-right" @click="selectDefault(index)">
+                                <input type="text" readonly unselectable="on" onfocus="this.blur()" :id="index+2" v-model="item.content" placeholder="非必填" />
+                            </div>
+                            <i class="iconfont" @click="selectDefault(index)">&#xe744;</i>
+                            <mt-popup v-model="item.showOfHide" position="bottom">
+                                <div class="close-wrap">
+                                    <p class="close-tip"  v-for="(secobj,secindex) in item.prop" :class="{on: secindex == item.select}" :key="secindex" @click="selectDefaultProp(item,secindex,secobj)">{{ secobj }}<i class="iconfont">&#xe684;</i></p>
+                                </div>
+                            </mt-popup>
                         </div>
                         <div class="item">
                             <label class="item-left" for="7">
@@ -113,7 +127,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="good_type_list">
+                <!-- <div class="good_type_list">
                     <div class="good_type_list_wrapper">
                         <div class="item" v-for="(item,index) in resize.defaultArray" :key="index">
                             <label class="item-left" :for="index+2">
@@ -130,7 +144,7 @@
                             </mt-popup>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
             <div class="btn_wrapper" v-if="showOfHideStep">
                 <mt-button type="primary" :disabled="disabledBol" @click="goStep3">下一步</mt-button>
@@ -270,10 +284,10 @@ export default {
                 this.$api.get('/oteao/propInfo/queryPropVal',data,res => {
                     resolve(res);
                 },res=>{
-                    return Toast({
-                        message: res.errorMsg,
-                        iconClass: 'icon icon-fail'
-                    });
+                    // return Toast({
+                    //     message: res.errorMsg,
+                    //     iconClass: 'icon icon-fail'
+                    // });
                 })
             })
         },

@@ -57,6 +57,8 @@
                                         :mainTit="item.proTitle"
                                         :subTit="item.subTitle"
                                         :price="item.proPrice"
+                                        :salesPrice="item.salesPrice"
+                                        :unit="item.unint"
                                         :imgUrl="item.proImg"
                                         :tagUrl="item.tagImgUrl"
                                         :aromaStar="item.aromaStar"
@@ -93,12 +95,12 @@
         <!-- 筛选弹窗 -->
         <div class="mupop_dialog" :class="{on: filterVisible}">
             <div class="mup_bg" @click="filterVisible = false"></div>
-            <div class="mupop_dialog_wrapper">
+            <div :class="isIOS ? 'mupop_dialog_wrapper ios':'mupop_dialog_wrapper'">
                 <div class="popup-content">
                     <div class="con-item" v-if="$tool.isLogin()">
                         <h4>团购价</h4>
-                        <input class="price-input" type="number" v-model="minSupplyPrice" placeholder="最低价" @blur="toFixedMinZero()"> —
-                        <input class="price-input" type="number" v-model="maxSupplyPrice" placeholder="最高价" @blur="toFixedMaxZero()">
+                        <input class="price-input" type="tel" v-model="minSupplyPrice" placeholder="最低价" @blur="toFixedMinZero()"> —
+                        <input class="price-input" type="tel" v-model="maxSupplyPrice" placeholder="最高价" @blur="toFixedMaxZero()">
                     </div>
                     <div class="con-item">
                         <h4>品牌</h4>
@@ -115,15 +117,15 @@
                     </div>
                 </div>
                 <div class="pop-btns flex">
-                    <a class="flex-1" href="javscript:void(0)" @click="resetConditions">重置</a>
-                    <a class="flex-1 confirm" href="javscript:void(0)" @click="confirmConditions">确定</a>
+                    <a class="flex-1"  @click="resetConditions">重置</a>
+                    <a class="flex-1 confirm" @click="confirmConditions">确定</a>
                 </div>
             </div>
         </div>
         <!-- 排序弹窗 -->
         <div class="mupop_dialog" :class="{on: sortVisible}">
             <div class="mup_bg" @click="sortVisible = false"></div>
-            <div class="mupop_dialog_wrapper">
+            <div :class="isIOS ? 'mupop_dialog_wrapper ios':'mupop_dialog_wrapper'">
                 <div class="popup-content">
                     <div class="con-item" v-for="(list,listIndex) in sortData" :key="listIndex">
                         <h4>{{list.sortName}}</h4>
@@ -133,8 +135,8 @@
                     </div>
                 </div>
                 <div class="pop-btns flex">
-                    <a class="flex-1" href="javscript:void(0)" @click="resetSort">重置</a>
-                    <a class="flex-1 confirm" href="javscript:void(0)" @click="confirmConditions">确定</a>
+                    <a class="flex-1"  @click="resetSort">重置</a>
+                    <a class="flex-1 confirm"  @click="confirmConditions">确定</a>
                 </div>
             </div>
         </div>
@@ -148,6 +150,7 @@
     export default{
         data(){
             return {
+                isIOS:false,
                 wxFlag: false,
                 filterVisible: false,  //筛选弹窗是否显示
                 sortVisible: false,   //排序弹窗是否显示
@@ -179,6 +182,7 @@
                 minSupplyPrice: '',//最小团购价
                 brandList:[],//筛选品牌列表
                 selectedBrandId:'', //被选中的品牌
+                activePropId:'',//分类下选中属性id
                 filterIndexs: [],
                 noresult:false,
                 sortData:[{
@@ -312,6 +316,8 @@
                     console.log(res);
                 });
             }
+            // 判断是否为IOS
+            this.getIOSflag();
         },
         watch:{
             activeSubId(val){
@@ -405,13 +411,23 @@
                     item.sortIndex = 0;
                 }
                 this.sort = 1;
-                this.sortVisible = false;
+                this.sortDesc = true;
+                // this.sortVisible = false;
             },
             //加载更多
             loadMore(){
                 if(this.resultData.length < this.totalSize){
                     this.pageNumber++;
-                    this.searchResult();
+                    if(this.activePropId==''){
+                        this.searchResult();
+                    }else{
+                        let temp = {
+                            propId: this.activePropId,
+                            propValId: this.activePropVal
+                        }
+                        this.searchResult(temp);
+                    }
+
                 }
             },
             //筛选条件查询
@@ -419,7 +435,16 @@
                 this.resultData = [];
                 this.pageNumber = 1;
                 this.totalSize = 0;
-                this.searchResult();
+                if(this.activePropId==''){
+                    this.searchResult();
+                }else{
+                    let temp = {
+                        propId: this.activePropId,
+                        propValId: this.activePropVal
+                    }
+                    this.searchResult(temp);
+                }
+
             },
             // 格式化价格
             toFixedMinZero() {
@@ -539,6 +564,7 @@
                 let o_l = e.parentNode.offsetLeft;
                 this.activeCatIndex = index;
                 this.activeCatId = id;
+                this.activePropId = '';
                 if(index>=3){
                     this.$refs.wrapper.scrollLeft = o_l-2*o_w;
                 }
@@ -553,15 +579,18 @@
             setSubCat(index,id,e){
                 this.activeSubIndex = index;
                 this.activeSubId = id;
+                this.activePropId = '';
             },
             // 搜索一级分类
             searchFirstCat(index,id,e){
-                this.resetSupplyPrice();
                 this.scrollTop = 0;
                 let o_w = e.parentNode.offsetWidth;
                 let o_l = e.parentNode.offsetLeft;
                 this.activeCatIndex = index;
                 this.activeCatId = id;
+                this.activePropId = '';
+                this.resetConditions();
+                this.resetSort();
                 if(index>=3){
                     this.$refs.wrapper.scrollLeft = o_l-2*o_w;
                 }
@@ -586,6 +615,9 @@
                 });
                 this.activeSubIndex = index;
                 this.activeSubId = item.id;
+                this.activePropId = '';
+                this.resetConditions();
+                this.resetSort();
                 this.pageSize = 20;
                 this.searchResult();
             },
@@ -603,12 +635,16 @@
                     item.activeFlag = false;
                 }
                 thirdItem.activeFlag = true;
+                this.resetConditions();
+                this.resetSort();
                 this.activeSubIndex = index;
                 this.activeSubId = thirdItem.catId;
+                this.activePropId = thirdItem.propId;
+                this.activePropVal =thirdItem.linkUrl;
                 this.pageSize = 20;
                 let temp = {
-                    propId: thirdItem.id,
-                    propValId: thirdItem.propId
+                    propId: thirdItem.propId,
+                    propValId: thirdItem.linkUrl
                 }
                 this.searchResult(temp);
             },
@@ -630,6 +666,7 @@
             openFilter(){
                 let data = {
                     catId: this.activeSubId,
+                    propValId:this.activePropId!=''?this.activePropVal:null
                 }
                 // 获取分类品牌列表
                 this.$api.get('/oteao/productBrand/findProductBrandByCatId?',data,res=>{
@@ -685,6 +722,12 @@
             //清除sessionStorage
             clearSession(){
                 sessionStorage.removeItem("category");
+            },
+            // 判断是否为IOS
+            getIOSflag(){
+                let u = navigator.userAgent, app = navigator.appVersion;
+                let isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+                this.isIOS = isIOS;
             }
         },
         // 判断登陆

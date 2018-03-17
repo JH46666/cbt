@@ -45,10 +45,10 @@
             </div>
         </mt-popup>
         <div class="detail_wrapper" @scroll="docScroll" ref="wrapper">
-            <div class="goIndex" v-if="!(tabFixed || wxFixed)" @click="$router.push({name: '首页'})" :class="{on: wxFixed}">
+            <!-- <div class="goIndex" v-if="!(tabFixed || wxFixed)" @click="$router.push({name: '首页'})" :class="{on: wxFixed}">
                 <span>回首页</span>
                 <i class="iconfont">&#xe61b;</i>
-            </div>
+            </div> -->
             <div class="top" :class="{on: tabFixed || wxFixed}" @click="topMethod"></div>
             <div ref="hel">
                 <div class="detail_img">
@@ -84,21 +84,36 @@
                 <div class="detail_describe">
                     <div class="detail_describe_wrapper">
                         <div class="detail_describe_text">
-                            <p class="detail_text">{{ detailData.productInfo.proName }}</p>
-                            <template  v-if="detailData.productExtInfo.state === 'OFF_SHELF' && loginId && state === 'ACTIVE'">
-                                <div class="off_shelf_tips">
-                                    暂无报价
+                            <p class="detail_text"><span class="detail_type">自营</span>{{ detailData.productExtInfo.title }}</p>
+                            <div class="detail_price">
+                                <div class="detail-groupnum">
+                                    3人拼团价
                                 </div>
-                            </template>
-                            <template  v-if="!loginId || state != 'ACTIVE'">
-                                <div class="off_shelf_tips">
-                                    询价
-                                </div>
-                            </template>
-                            <template v-if="detailData.productPrice.length != 0 && detailData.productExtInfo.state === 'ON_SHELF' && loginId && state === 'ACTIVE'">
-                                <p class="detail_now_price" v-if="!detailData.productExtInfo.isSales">￥{{ detailData.productPrice[0].price | toFix2 }}</p>
-                                <p class="detail_suggest_price">建议零售价：￥{{ detailData.productPrice[1].price | toFix2 }}</p>
-                            </template>
+                                <template  v-if="detailData.productExtInfo.state === 'OFF_SHELF' && loginId && state === 'ACTIVE'">
+                                    <div class="off_shelf_tips">
+                                        暂无报价
+                                    </div>
+                                </template>
+                                <template  v-if="!loginId || state != 'ACTIVE'">
+                                    <div class="off_shelf_tips">
+                                        询价
+                                    </div>
+                                </template>
+                                <template v-if="detailData.productPrice.length != 0 && detailData.productExtInfo.state === 'ON_SHELF' && loginId && state === 'ACTIVE'">
+                                        <div class="detail_now_price" v-if="!detailData.productExtInfo.isSales">
+                                            ￥{{ detailData.productPrice[0].price | toFix2 }}
+                                        </div>
+                                        <div class="detail_suggest_price">￥{{ detailData.productPrice[1].price | toFix2 }}</div>
+                                </template>
+                            </div>
+                        </div>
+                        <div class="detail_salenum">
+                            <div>
+                                已拼50500件
+                            </div>
+                            <div>
+                                库存50500件
+                            </div>
                         </div>
                         <template  v-if="detailData.productExtInfo.state === 'ON_SHELF'">
                             <div class="detail_active">
@@ -108,31 +123,151 @@
                                         <p>已优惠￥{{  (detailData.productPrice[0].price-detailData.productExtInfo.salesPrice)  | toFix2 }}</p>
                                     </div> -->
                                     <div class="detail_active_item">
-                                        <span>运费</span>
+                                        <span>运费：</span>
                                         <template v-if="detailData.productInfo.businessType == 'ORG_SALES'">
-                                            <p v-if="!detailData.orgFreightTemplateVoList || detailData.orgFreightTemplateVoList.length == 0">本店商品全国包邮</p>
-                                            <p v-else-if="detailData.orgFreightTemplateVoList && detailData.orgFreightTemplateVoList.length > 0">邮费依实际重量计算运费</p>
+                                            <span v-if="!detailData.orgFreightTemplateVoList || detailData.orgFreightTemplateVoList.length == 0">本店商品全国包邮</span>
+                                            <span v-else-if="detailData.orgFreightTemplateVoList && detailData.orgFreightTemplateVoList.length > 0">邮费依实际重量计算运费</span>
                                         </template>
                                         <template v-else>
-                                            <p>自营茶叶满500包邮</p>
+                                            <span>自营茶叶满500包邮</span>
                                         </template>
                                     </div>
                                 </div>
                             </div>
                         </template>
-                        <div class="detail_describe_count">
+                        <!-- <div class="detail_describe_count">
                             <label class="label_text">采购量</label>
                             <div class="plusOreduce">
                                 <span class="reduce btn" :class="{isGary:goodsCount === 1}" @click="reduceMethod">-</span>
                                 <input v-model="goodsCount" type="number" class="countNum" @blur="limit">
                                 <span class="plus btn" @click="plusMethod">+</span>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
+                </div>
+            </div>
+            <!-- 拼团须知 -->
+            <div class="groupbuy-explain">
+                <div class="title">
+                    <div>拼团玩法</div>
+                    <div>拼团需知<i class="icon-icon07"></i></div>
+                </div>
+                <div class="groupbuy-content">
+                    支付开团，人数不足24h自动退款
                 </div>
             </div>
             <div class="detail_tab" ref="tab">
                 <mt-navbar v-model="tabSelected" :class="{'on': tabFixed , 'wxon': wxFixed}" ref='heihghj'>
+                    <i class="iconfont fixIndex" :class="{'on': tabFixed || wxFixed }" v-if="tabFixed || wxFixed" @click="$router.push({name: '首页'})">&#xe61b;</i>
+                    <mt-tab-item id="1">商品</mt-tab-item>
+                    <mt-tab-item id="2">评论</mt-tab-item>
+                    <mt-tab-item id="3">详情</mt-tab-item>
+                </mt-navbar>
+                <!-- 评价 -->
+                <div class="comment_wrapper">
+                    <div class="scroll-div"  id="commentTotal"></div>
+                    <div class="comment_title">商品评价</div>
+                    <div class="comment_number">
+                        <div class="comment_star">好评 <span>{{ prectent | toFix2 }}%</span></div>
+                        <!-- commentRecond -->
+                        <div class="comment_total">共 <span>{{ commentRecond }}</span> 条</div>
+                    </div>
+                </div>
+                <div class="mint_cell_wrapper"  >
+                    <template v-if="commentList.length === 0 ">
+                        <div class="no-comment">
+                            <img src="../../assets/images/no-comment.png" alt="">
+                            <p>暂时还没有评价呦~</p>
+                        </div>
+                    </template>
+                    <template v-else>
+                        <mt-cell v-for="(item,index) in commentList" :key="index">
+                            <div class="comment_head">
+                                <div class="comment_head_wrapper">
+                                    <div class="comment_head_mumber">{{ regStar(item.nickName) }}</div>
+                                    <div class="comment_head_mumberlevel">{{ item.levelName }}</div>
+                                </div>
+                                <div class="comment_head_time">{{ item.createTime }}</div>
+                            </div>
+                            <p class="comment_footer" ref="comment" :class="{on:item.onFlag!==''&& item.onFlag}">
+                                {{ item.content }}
+                                <span v-if="item.replyContent"><span style="color:#c29e74;display:block;">回复：</span>{{item.replyContent}}</span>
+                                <span class="bg-white"><i class="iconfont down" :class="{on:item.pullFlag!=='' && item.pullFlag}" @click="pullOrDown(item)" :key="index+'11'">&#xe619;</i></span>
+                                <span class="bg-white"><i class="iconfont pull" :class="{on:item.upFlag!=='' && item.upFlag}" @click="pullOrDown(item)" :key="index+'12'">&#xe618;</i></span>
+                            </p>
+                        </mt-cell>
+                    </template>
+                </div>
+                <template v-if="commentList.length < commentRecond">
+                    <div class="comment_more_btn" @click="getMoreComment">
+                        查看更多评论<i class="iconfont">&#xe619;</i>
+                    </div>
+                </template>
+                <template v-if="commentList.length >= commentRecond">
+                    <div class="comment_more_btn">
+                        没有更多了呦~
+                    </div>
+                </template>
+                <!-- 规格 -->
+                <div class="comment_wrapper" >
+                    <div class="scroll-div"  id='reguler'></div>
+                    <div class="comment_title">商品详情</div>
+                </div>
+                <div class="reguler_wrapper">
+                    <div class="reguler_item" style="height: .98rem; padding: 0;">
+                        <div>商品编号</div>
+                        <div>{{ detailData.productInfo.proSku }}</div>
+                    </div>
+                    <template v-if="isHasFlag">
+                        <div class="reguler_item" style="height: 1.5rem; padding: 0;" v-if="detailData.productExtInfo.fragrance != null">
+                            <div>香气</div>
+                            <div class="x_star">
+                                <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '偏淡' || detailData.productExtInfo.fragrance === '一般' || detailData.productExtInfo.fragrance === '香' || detailData.productExtInfo.fragrance === '高香' || detailData.productExtInfo.fragrance === '极香'}">偏淡</span>
+                                <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '一般' || detailData.productExtInfo.fragrance === '香' || detailData.productExtInfo.fragrance === '高香' || detailData.productExtInfo.fragrance === '极香'}">一般</span>
+                                <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '香' || detailData.productExtInfo.fragrance === '高香' || detailData.productExtInfo.fragrance === '极香'}">香</span>
+                                <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '高香' || detailData.productExtInfo.fragrance === '极香'}">高香</span>
+                                <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '极香'}">极香</span>
+                            </div>
+                        </div>
+                        <div class="reguler_item" style="height: 1.5rem; padding: 0;" v-if="detailData.productExtInfo.taste != null">
+                            <div>滋味</div>
+                            <div class="z_star">
+                                <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '偏淡' || detailData.productExtInfo.taste === '一般' || detailData.productExtInfo.taste === '浓' || detailData.productExtInfo.taste === '很浓' || detailData.productExtInfo.taste === '极浓'}">偏淡</span>
+                                <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '一般' || detailData.productExtInfo.taste === '浓' || detailData.productExtInfo.taste === '很浓' || detailData.productExtInfo.taste === '极浓'}">一般</span>
+                                <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '浓' || detailData.productExtInfo.taste === '很浓' || detailData.productExtInfo.taste === '极浓'}">浓</span>
+                                <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '很浓' || detailData.productExtInfo.taste === '极浓'}">很浓</span>
+                                <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '极浓'}">极浓</span>
+                            </div>
+                        </div>
+                    </template>
+                    <template v-for="(item,index) in attrImgDetail.propValList">
+                        <div class="reguler_item" style="height: .98rem; padding: 0;">
+                            <div>{{ item.atrName }}</div>
+                            <div>{{ item.propertiesVal.propVal }}</div>
+                        </div>
+                    </template>
+                    <div class="reguler_item" v-if="detailData.productExtInfo.reason" style="height: 1.5rem; padding: 0;">
+                        <div>推荐理由</div>
+                        <div>{{ detailData.productExtInfo.reason }}</div>
+                    </div>
+                </div>
+                <!-- 详情 -->
+                <div class="mint_cell_wrapper mint_cell_img_wrapper">
+                    <template v-if="imgDetailHtml.length>0">
+                        <div v-html="imgDetailHtml"></div>
+                    </template>
+                    <template v-else>
+                        <mt-cell v-for="(item,index) in imgDetail" :key="index" v-if="item.content != '' && item.imgArray.length != 0">
+                            <div class="mint_cell_img_title">{{ item.title }}</div>
+                            <div class="mint_cell_img">
+                                <img :src="ur.imgUrl" v-for="(ur,k) in item.imgArray" :key="k" />
+                            </div>
+                            <p class="mint_cell_img_content">{{ item.content }}</p>
+                        </mt-cell>
+                    </template>
+                </div>
+
+                <!-- <mt-navbar v-model="tabSelected" :class="{'on': tabFixed , 'wxon': wxFixed}" ref='heihghj'>
                     <i class="iconfont fixIndex" :class="{'on': tabFixed || wxFixed }" v-if="tabFixed || wxFixed" @click="$router.push({name: '首页'})">&#xe61b;</i>
                     <mt-tab-item id="1">详情</mt-tab-item>
                     <mt-tab-item id="2">规格</mt-tab-item>
@@ -189,7 +324,7 @@
                                     <div>{{ item.propertiesVal.propVal }}</div>
                                 </div>
                             </template>
-                            <div class="reguler_item" v-if="detailData.productExtInfo.reason!=''" style="height: 1.5rem; padding: 0;">
+                            <div class="reguler_item" v-if="detailData.productExtInfo.reason" style="height: 1.5rem; padding: 0;">
                                 <div>推荐理由</div>
                                 <div>{{ detailData.productExtInfo.reason }}</div>
                             </div>
@@ -200,7 +335,6 @@
                             <div class="comment_title">商品评价</div>
                             <div class="comment_number">
                                 <div class="comment_star">好评 <span>{{ prectent | toFix2 }}%</span></div>
-                                <!-- commentRecond -->
                                 <div class="comment_total">共 <span>{{ commentRecond }}</span> 条</div>
                             </div>
                         </div>
@@ -240,7 +374,7 @@
                             </div>
                         </template>
                     </mt-tab-container-item>
-                </mt-tab-container>
+                </mt-tab-container> -->
             </div>
         </div>
         <div class="off_shelf" v-if="detailData.productExtInfo.state === 'OFF_SHELF'">
@@ -261,11 +395,11 @@
                     店铺
                 </mt-tab-item>
             </template>
-            <mt-tab-item class="org-item" :class="{'cart-btn':!detailData.productInfo.orgId}" id="2" @click.native="openCart">
+            <!-- <mt-tab-item class="org-item" :class="{'cart-btn':!detailData.productInfo.orgId}" id="2" @click.native="openCart">
                 <i class="icon-jiarugouwuche" slot="icon"></i>
                 购物车
                 <mt-badge type="error" size="small" v-show="Number(cartTotal)>0">{{ cartTotal | ninenineAdd }}</mt-badge>
-            </mt-tab-item>
+            </mt-tab-item> -->
             <mt-tab-item id="3" class="join-cart">
                 <mt-button type="default" disabled v-if="detailData.productExtInfo.state === 'OFF_SHELF'">加入购物车</mt-button>
                 <mt-button type="default" v-else-if="detailData.productExtInfo.isSoldOut == 1 && detailData.productExtInfo.compelOutStock == 0" @click.native="addCartInfo">加入购物车</mt-button>
@@ -331,13 +465,18 @@ export default {
             commentFlag: false,
             timeData: [],
             isHasFlag: true,
+            myData:{       //聊天数据初始化
+                mine:{},
+                friend:[],
+                group:[]
+            }
         }
     },
     computed:{
         ...mapState({
             cartTotal: state => state.cart.cartTotal
         }),
-        
+
     },
     created() {
         // 设置title
@@ -401,7 +540,7 @@ export default {
                 'visitLog.visitSku': this.proSku
             };
             this.$api.post("/oteao/visitLog/insert",visitData,res=>{
-                // console.log(res); 
+                // console.log(res);
             });
         },
         plusMethod() {
@@ -705,22 +844,16 @@ export default {
         },
         docScroll() {               // 判断页面滚动
             let scrollTop = this.$refs.wrapper.scrollTop;
-            let scrollHeight = this.$refs.wrapper.offsetHeight;
-            let tabTop = this.$refs.tab.offsetTop;
-            let allHideHeight = this.$refs.tab.children[0].offsetHeight+this.$refs.commentTotal.offsetHeight;
-            if(scrollTop - tabTop >= 0){
+            if(scrollTop > 0){
                 if(!this.wxFlag){
                     this.tabFixed = true;
                 }else{
                     this.wxFixed = true;
                 }
                 return;
-            }else if(scrollTop + allHideHeight - tabTop < 0){
+            }else if(scrollTop <= 0){
                 this.tabFixed = false;
                 this.wxFixed = false;
-                this.$refs.tabcontent1.$el.style['padding-top'] = 0;
-                this.$refs.tabcontent2.$el.style['padding-top'] = 0;
-                this.$refs.tabcontent3.$el.style['padding-top'] = 0;
                 return;
             }
         },
@@ -733,6 +866,12 @@ export default {
             }else{
                 return `0${time}`
             }
+        },
+        toCommentTotal(){          //滚动到评论
+            document.getElementById("commentTotal").scrollIntoView(true);
+        },
+        toReguler(){               //滚动到详情
+            document.getElementById("reguler").scrollIntoView(true);
         },
         timeDown () {
            const endTime = new Date(this.detailData.productExtInfo.salesEndTime);
@@ -818,9 +957,202 @@ export default {
                return this.$router.push({name: '账户登录'});
            })
        },
-       openKfDialog() {
-           this.showOrHide = true;
+       addFriend(selfId){
+            let kefuName = "茶帮通客服";
+            let addId = 1;
+            let _this = this;
+            if(this.detailData.productInfo.orgId){
+                kefuName = this.detailData.orgShopCenterVo.shopName;
+                addId = this.detailData.productInfo.orgId;
+            }
+           this.$http.get(`/erp/layim/addFriend?friend=${addId}&userId=${selfId}`).then(res=>{
+               let friendId = res.data.data;
+               layui.config({
+                    version: true,
+                    base: '/static/mods/'
+                }).use(['mobile','socket','req'], function(mobile,socket,req){
+                    var layim = mobile.layim,
+                        layer = mobile.layer;
+                    var $ =layui.jquery;
+                    var selfFlag = false;
+                    //基础配置
+                    layim.config({
+                        init: {
+                            //设置我的基础信息
+                            mine: _this.myData.mine,
+                            friend: _this.myData.friend,
+                            group: _this.myData.group
+                        }
+                    });
+
+                    socket.config({
+                        log:true,
+                        token:`/erp/layim/getToKenById?id=${selfId}`,
+                        // token:'/erp/layim/token',
+                        server:'wss://mdemows.oteao.com',
+                        //server:'ws://192.168.7.8:8888',
+                        //server: 'wss://java.im.test.yipicha.com',
+                        reconn: true
+                    });
+
+                    //创建一个会话
+                    layim.chat({
+                        id: friendId
+                        ,name: kefuName
+                        ,type: 'friend' //friend、group等字符，如果是group，则创建的是群聊
+                        ,avatar: 'http://tp1.sinaimg.cn/1571889140/180/40030060651/1'
+                    });
+
+
+                    socket.on('open',function (e) {
+                        console.log("监听到事件：open");
+                    });
+                    socket.on('close',function (e) {
+                        console.log("监听到事件：close");
+                    });
+                    socket.on('error',function (e) {
+                        console.log("监听到事件：error");
+                    });
+                    socket.on('msg',function (e) {
+                        var msg = JSON.parse(e.data);
+                        console.log(msg);
+                        var handleChat = function (msg) {
+                            if (selfFlag) {
+                                selfFlag = false;
+                                return;
+                            }
+                            layim.getMessage(msg);
+                        }
+                        var handleStatus=function (msg) {
+                            var status ='';
+                            if(typeof msg.count !== 'undefined'){
+                                status = msg.count+'人在线';
+                            }else{
+                                status = msg.online?'在线':'离线';
+                            }
+                            layim.setChatStatus('<span style="color:#FF5722;">'+status+'</span>');
+                        }
+                        if (msg.mtype) {
+                            switch (msg.mtype) {
+                                case -1:
+                                    return console.log(msg.msg);
+                                case socket.mtype.chatFriend:
+                                case socket.mtype.chatGroup:
+                                    handleChat(msg);
+                                    break;
+                                case socket.mtype.checkIsOnline:
+                                case socket.mtype.checkOnlineCount:
+                                    handleStatus(msg);
+                                    break;
+                                case socket.mtype.serverNotice:
+                                    layim.msgbox(msg.count);
+                                    break;
+                                case socket.mtype.addFriendNotice:
+                                    layim.addList({
+                                        type:msg.type,
+                                        avatar:msg.avatar,
+                                        username:msg.username,
+                                        groupid:msg.groupid,
+                                        sign:msg.sign,
+                                        id:msg.id
+                                    });
+                                    msg.mtype=socket.mtype.chatFriend;
+                                    msg.content="我们已经是好友啦，一起来聊天吧！";
+                                    layim.getMessage(msg);
+                                    break;
+                                case socket.mtype.onofflineNotice:
+                                    layim.setFriendStatus(msg.id,msg.status);
+                                    break;
+                            }
+                        }
+                    });
+                    // console.log(socket.mtype);
+                    //监听在线状态的切换事件
+                    layim.on('online', function(data){
+                        //console.log(data);
+                    });
+                    //监听签名修改
+                    layim.on('sign', function(value){
+                        //console.log(value);
+                    });
+                    //监听自定义工具栏点击，以添加代码为例
+                    layim.on('tool(code)', function(insert){
+                        layer.prompt({
+                            title: '插入代码'
+                            ,formType: 2
+                            ,shade: 0
+                        }, function(text, index){
+                            layer.close(index);
+                            insert('[pre class=layui-code]' + text + '[/pre]'); //将内容插入到编辑器
+                        });
+                    });
+                    //监听layim建立就绪
+                    layim.on('ready', function(){
+                        req.loading = false;
+                        req.get('/erp/layim/apply-unread',{},function (res) {
+                            res.data&&layim.msgbox(res.data);
+                        });
+                    console.log(layim.cache().friend);
+                    });
+                    //监听发送消息
+                    layim.on('sendMessage', function(data){
+                        var To = data.to;
+                        var timeStamp = data.mine.time;
+                        console.log("return******"+timeStamp)
+                        if(sessionStorage.getItem("msg_timestamp")==timeStamp){
+                            console.log("return******"+timeStamp)
+                            return;
+                        }
+                        sessionStorage.setItem("msg_timestamp", timeStamp);
+                        var t = data.to.type=='friend';
+                        if(!t){
+                            selfFlag = true;
+                        }
+                        socket.send({mtype:(t?socket.mtype.chatFriend:socket.mtype.chatGroup),content:data.mine.content,toid:data.to.id,id:data.mine.id,time:data.mine.time});
+                        return;
+                    });
+                    //监听查看群员
+                    layim.on('members', function(data){
+                        //console.log(data);
+                    });
+                    //监听天窗口的切换
+                    layim.on('chatChange', function(res){
+                        var t = res.data.type=='friend';
+                        socket.send({
+                            mtype:t? socket.mtype.checkIsOnline:socket.mtype.checkOnlineCount,
+                            id:res.data.id
+                        });
+                    });
+                });
+           });
        },
+       openKfDialog() {
+        //    this.showOrHide = true;
+            store.dispatch('getMemberData').then((res) => {
+                let data = {username: store.state.member.member.id,password: store.state.member.member.id};
+                let ret = '';
+                for (let it in data) {
+                    ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&';
+                }
+                this.$http.post("/erp/account/ajaxLogin",ret).then(res=>{
+                    let userid = res.data.data;//res.data.data.split(",")[0];
+                    this.getBase(userid);
+                });
+            }).catch(res => {
+                this.$router.replace('/login');
+            });
+
+       },
+       getBase(userid){
+            this.$http.get(`/erp/layim/base?userId=${userid}`).then(res=>{
+                if(res.data.data){
+                    this.myData = res.data.data;
+                    this.addFriend(userid);
+                }else{
+                    return Toast(res.data.msg);
+                }
+            })
+        },
        openDialog() {
            try {
                store.dispatch('getMemberData').then(()=>{
@@ -945,12 +1277,26 @@ export default {
             deep:true
         },
         tabSelected(val) {
-            this.$refs.wrapper.scrollTop = this.$refs.hel.offsetHeight;
+            // this.$refs.wrapper.scrollTop = this.$refs.hel.offsetHeight;
+            console.log(val)
+            switch (val) {
+                case '1':
+                    this.$refs.wrapper.scrollTop = 0;
+                    break;
+                case '2':
+                    this.toCommentTotal()
+                    break;
+                case '3':
+                    this.toReguler()
+                    break;
+
+            }
+
             this.tabFixed = true;
-            console.log(this.$refs.heihghj.$el.offsetHeight);
-            this.$refs.tabcontent1.$el.style['padding-top'] = this.$refs.heihghj.$el.offsetHeight + 'px';
-            this.$refs.tabcontent2.$el.style['padding-top'] = this.$refs.heihghj.$el.offsetHeight + 'px';
-            this.$refs.tabcontent3.$el.style['padding-top'] = this.$refs.heihghj.$el.offsetHeight + 'px';
+            // console.log(this.$refs.heihghj.$el.offsetHeight);
+            // this.$refs.tabcontent1.$el.style['padding-top'] = this.$refs.heihghj.$el.offsetHeight + 'px';
+            // this.$refs.tabcontent2.$el.style['padding-top'] = this.$refs.heihghj.$el.offsetHeight + 'px';
+            // this.$refs.tabcontent3.$el.style['padding-top'] = this.$refs.heihghj.$el.offsetHeight + 'px';
             if(!this.wxFlag){
                 this.tabFixed = true;
             }else{
