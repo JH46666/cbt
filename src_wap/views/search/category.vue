@@ -98,7 +98,7 @@
             <div :class="isIOS ? 'mupop_dialog_wrapper ios':'mupop_dialog_wrapper'">
                 <div class="popup-content">
                     <div class="con-item" v-if="$tool.isLogin()">
-                        <h4>供货价</h4>
+                        <h4>团购价</h4>
                         <input class="price-input" type="tel" v-model="minSupplyPrice" placeholder="最低价" @blur="toFixedMinZero()"> —
                         <input class="price-input" type="tel" v-model="maxSupplyPrice" placeholder="最高价" @blur="toFixedMaxZero()">
                     </div>
@@ -178,8 +178,8 @@
                 sessionFlag: false,  // 是否有session
                 activeSubFlag: false,   //二级菜单是否添加选中样式
                 scrollTop: 0,
-                maxSupplyPrice: '', //最大供货价
-                minSupplyPrice: '',//最小供货价
+                maxSupplyPrice: '', //最大团购价
+                minSupplyPrice: '',//最小团购价
                 brandList:[],//筛选品牌列表
                 selectedBrandId:'', //被选中的品牌
                 activePropId:'',//分类下选中属性id
@@ -400,7 +400,7 @@
                 this.resetSupplyPrice();
                 this.selectedBrandId = '';
             },
-            // 重置供货价区间
+            // 重置团购价区间
             resetSupplyPrice(){
                 this.minSupplyPrice = '';
                 this.maxSupplyPrice = '';
@@ -467,7 +467,7 @@
                     this.maxSupplyPrice = Math.abs(parseFloat(delTrim).toFixed(0));
                 }
             },
-            // 判断最大供货价不得小于最小供货价
+            // 判断最大团购价不得小于最小团购价
             sortPrice(){
                 if(parseFloat(this.maxSupplyPrice)<parseFloat(this.minSupplyPrice)){
                     let temp = this.maxSupplyPrice;
