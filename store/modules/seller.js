@@ -1,10 +1,11 @@
 import $api from '../../api'
 const state = {
     orderList: {
-        null: {},
-        waitPay: {},
-        waitSend: {},
-        waitRec: {}
+        null: {},                           // 默认
+        waitPay: {},                        // 待付款
+        waitSend: {},                       // 待发货
+        waitRec: {},                        // 待收货 
+        groupping: {}                       // 待成团
     }
 }
 

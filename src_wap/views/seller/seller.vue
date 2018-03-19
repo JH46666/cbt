@@ -48,16 +48,21 @@
         </section>
         <section class="order-wrap">
             <div class="title">
-                <h3>卖家订单中心</h3>
-                <!-- <router-link to="/seller/orderlist?type=null" class="entry">
-                    全部订单 <i class="icon-icon07"></i>
-                </router-link> -->
+                <h3>卖家订单</h3>
+                <router-link to="/seller/orderlist?type=null" class="entry" style="color: #999; font-size: 0.26rem">
+                    全部订单<i class="icon-icon07" style="font-size: 16px"></i>
+                </router-link>
             </div>
             <div class="order-entry">
                 <router-link to="/seller/orderlist?type=waitPay" class="item">
                     <mt-badge size="small" type="error" :class="{one:count.waitPay < 10}" v-if="count.waitPay > 0">{{ count.waitPay | ninenineAdd }}</mt-badge>
                     <span><i class="icon-gerenzhongxin_daifukuan"></i></span>
                     <p>待付款</p>
+                </router-link>
+                <router-link to="/seller/orderlist?type=groupping" class="item">
+                    <mt-badge size="small" type="error" :class="{one:count.waitSend < 10}" v-if="count.grouppingNum > 0">{{ count.grouppingNum | ninenineAdd }}</mt-badge>
+                    <span><i class="icon-gerenzhongxin_pintuanzhong"></i></span>
+                    <p>待成团</p>
                 </router-link>
                 <router-link to="/seller/orderlist?type=waitSend" class="item">
                     <mt-badge size="small" type="error" :class="{one:count.waitSend < 10}" v-if="count.waitSend > 0">{{ count.waitSend | ninenineAdd }}</mt-badge>
@@ -69,11 +74,11 @@
                     <span><i class="icon-gerenzhongxin_yifahuo"></i></span>
                     <p>已发货</p>
                 </router-link>
-                <router-link to="/seller/orderlist?type=null" class="item">
-                    <!-- <mt-badge size="small" type="error" :class="{one:allCount < 10}" v-if="allCount > 0">{{ allCount | ninenineAdd }}</mt-badge> -->
+                <!-- <router-link to="/seller/orderlist?type=null" class="item">
+                    <mt-badge size="small" type="error" :class="{one:allCount < 10}" v-if="allCount > 0">{{ allCount | ninenineAdd }}</mt-badge>
                     <span><i class="icon-gengduo"></i></span>
                     <p>全部</p>
-                </router-link>
+                </router-link> -->
                 <!-- <router-link to="#" class="item">
                     <mt-badge size="small" type="error">30</mt-badge>
                     <span><i class="icon-gerenzhongxin_daipingjia"></i></span>
@@ -95,16 +100,20 @@
                     <span><i class="icon-dianpuziliao blue"></i></span>
                     <p>店铺资料</p>
                 </router-link>
-                <router-link :to="{name: '活动列表'}" class="item">
-                    <span><i class="icon-tejiaguanli"></i></span>
-                    <p>限时特价</p>
-                </router-link>
-            </div>
-            <div class="tools-row">
                 <router-link :to="{name: '运费配置'}" class="item">
                     <span><i class="icon-yunfeipeizhi"></i></span>
                     <p>运费配置</p>
                 </router-link>
+                <!-- <router-link :to="{name: '活动列表'}" class="item">
+                    <span><i class="icon-tejiaguanli"></i></span>
+                    <p>限时特价</p>
+                </router-link> -->
+            </div>
+            <div class="tools-row">
+                <!-- <router-link :to="{name: '运费配置'}" class="item">
+                    <span><i class="icon-yunfeipeizhi"></i></span>
+                    <p>运费配置</p>
+                </router-link> -->
                 <router-link :to="{name: '我的收入'}" class="item">
                     <span><i class="icon-shouru small"></i></span>
                     <p>我的收入</p>

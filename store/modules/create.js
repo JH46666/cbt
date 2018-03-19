@@ -3,16 +3,22 @@ const create = {
         resize: {
             form: {
                 goodTypes: '',
-                goodsName: '',
-                goodsSell: '',
-                goodsDw: '',
+                // goodsName: '',
+                goodsSell: '',                          // 商品卖点
+                // goodsDw: '',
                 goodsBrand: '其他品牌',
-                goodsJz: '',
-                goodsMz: '',
-                goodsKc: '',
-                goodsSj: '',
-                goodsPtsj: '',
-                goodsGoodType: '',
+                // goodsJz: '',
+                goodsMz: '',                            // 重量
+                goodsKc: '',                            // 库存
+                goodsSj: '',                            // 单买价
+                goodsPtsj: '',                          // 市场价
+                // goodsGoodType: '',
+                goodsGroup:'',                          // 团购价
+                goodsGroupNum:'',                       // 团购人数
+                goodsCzjj:'',                           // 采摘季节
+                goodsCd: '',                            // 产地
+                goodsSize:'',                           // 规格
+                goodsSave: '',                          // 储存方法
             },
             selIndex: {
                 dw: null,
@@ -67,16 +73,22 @@ const create = {
             state.resize = {
                 form: {
                     goodTypes: '',
-                    goodsName: '',
+                    // goodsName: '',
                     goodsSell: '',
-                    goodsDw: '',
+                    // goodsDw: '',
                     goodsBrand: '其他品牌',
-                    goodsJz: '',
+                    // goodsJz: '',
                     goodsMz: '',
                     goodsKc: '',
                     goodsSj: '',
                     goodsPtsj: '',
-                    goodsGoodType: '',
+                    // goodsGoodType: '',
+                    goodsGroup: '',                          // 团购价
+                    goodsGroupNum: '',                       // 团购人数
+                    goodsCzjj: '',                           // 采摘季节
+                    goodsCd: '',                             // 产地
+                    goodsSize: '',                           // 规格
+                    goodsSave: '',                           // 储存方法
                 },
                 selIndex: {
                     dw: null,
