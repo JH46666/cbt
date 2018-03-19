@@ -10,6 +10,7 @@ import store from 'store';
         data(){
             return {
                 flag: false,
+                userid: null,
                 myData:{
                     mine:{},
                     friend:[],
@@ -62,10 +63,13 @@ import store from 'store';
                         });
                         socket.config({
                             log:true,
-                            // token:'/erp/layim/getToKenById?id=204736',
-                            token:'/erp/layim/token',
+                            token:`/erp/layim/getToKenById?id=${_this.userid}`,
+                            // token:'/erp/layim/token',
                             // server:'ws://192.168.7.212:8888'
-                            server:'wss://java.im.test.yipicha.com:8888'
+                            server:'wss://mdemows.oteao.com',
+                            //server: 'wss://java.im.test.yipicha.com'
+                            //server: 'ws://java.im.test.yipicha.com:8888',
+                            reconn: true
                         });
 
                         socket.on('open',function (e) {
@@ -153,19 +157,25 @@ import store from 'store';
                         //监听layim建立就绪
                         layim.on('ready', function(){
                             req.loading = false;
-                            req.get('/layim/apply-unread',{},function (res) {
+                            req.get('/erp/layim/apply-unread',{},function (res) {
                                 res.data&&layim.msgbox(res.data);
                             });
                         console.log(layim.cache().friend);
                         });
-                        //监听发送消息
+                        //监听发送消息                        
                         layim.on('sendMessage', function(data){
                             var To = data.to;
+                            var timeStamp = data.mine.time;
+                            if(sessionStorage.getItem("msg_timestamp")==timeStamp){
+                                console.log("return*@@@"+timeStamp)
+                                return;
+                            }
+                            sessionStorage.setItem("msg_timestamp", timeStamp);
                             var t = data.to.type=='friend';
                             if(!t){
                                 selfFlag = true;
                             }
-                            socket.send({mtype:(t?socket.mtype.chatFriend:socket.mtype.chatGroup),content:data.mine.content,toid:data.to.id});
+                            socket.send({mtype:(t?socket.mtype.chatFriend:socket.mtype.chatGroup),content:data.mine.content,toid:data.to.id,id:data.mine.id,time:data.mine.time});
                             return;
                         });
                         //监听查看群员
@@ -192,12 +202,13 @@ import store from 'store';
                 for (let it in data) {
                     ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&';
                 }
-                this.$http.post("/erp/account/login",ret).then(res=>{
-                    this.getBase();
+                this.$http.post("/erp/account/ajaxLogin",ret).then(res=>{
+                    this.userid = res.data.data;//res.data.data.split(",")[0];
+                    this.getBase(this.userid);
                 });
             },
-            getBase(){
-                this.$http.get("/erp/layim/base").then(res=>{
+            getBase(userid){
+                this.$http.get(`/erp/layim/base?userId=${userid}`).then(res=>{
                     if(res.data.data){
                         this.myData = res.data.data;
                         this.flag = true;

@@ -6,7 +6,14 @@ import * as $tool from 'utils/index.js';
 Vue.use(Router)
 
 const router = new Router({
-	// mode: 'history',//防止路径出现#.
+	// mode: 'history',
+	// scrollBehavior (to, from, savedPosition) {
+	// 	if (to.hash) {
+	// 	  return {
+	// 		selector: to.hash
+	// 	  }
+	// 	}
+	// },
 	routes: [
 		{
 			path: '/',
@@ -74,6 +81,14 @@ const router = new Router({
 					path: 'block',
 					name: '静态块页面',
 					component: resolve => require(['@/views/block/index.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+				{
+					path: 'comment',
+					name: '商品评论',
+					component: resolve => require(['@/views/goods/commentList.vue'],resolve),
 					meta: {
 						hideFooter: true
 					}

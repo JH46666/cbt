@@ -10,7 +10,8 @@ layui.define(['jquery', 'layer'], function(exports) {
     var reconnectInterval = null;
     var defaultOptions = {
         log: true,
-        server: 'wss://java.im.test.yipicha.com:8888',
+        server: 'wss://mdemows.oteao.com',
+        //server: 'ws://java.im.test.yipicha.com:8888',
         token: '/layim/token',
         reconn: true
     };
@@ -116,18 +117,25 @@ layui.define(['jquery', 'layer'], function(exports) {
             return true;
         },
         send: function(data) {
+            console.log("1======================");
+            console.log(data);
+            console.log(this.ws);
+            console.log("1======================1");
             if (this.ws.readyState === this.ws.CONNECTING) {
+                console.log("2======================");
                 let that = this; //保存当前对象this
                 setTimeout(function() {
                     that.ws.send(JSON.stringify(data))
                 }, 300);
             } else if (this.ws.readyState != this.ws.OPEN) {
-                //this.reconnect();
+                console.log("3======================");
+                this.reconnect();
                 let that = this; //保存当前对象this
                 setTimeout(function() {
                     that.ws.send(JSON.stringify(data))
                 }, 500);
             } else if (this.ws.readyState === this.ws.OPEN) {
+                console.log("4======================");
                 if (this.check(data)) {
                     this.ws.send(JSON.stringify(data));
                 }

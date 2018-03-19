@@ -10,6 +10,7 @@
     mainTit         String          ''              主标题
     subTit          String          ''              副标题
     price           Number          0               价格
+    garyPrice       Number          0               灰价格
     unit            String          斤              单位
     isLogin         Boolean         false
     
@@ -31,11 +32,15 @@
 <template>
     <router-link :to="'/detail?proSku='+link" class="cbt-goods-item" tag="div">
         <div class="left-text-wrap">
-            <div class="goods-title" v-html="mainTit" style="-webkit-box-orient: vertical">
+            <div class="goods-title" style="-webkit-box-orient: vertical">
+                <div class="goods-type" :class="{'other': businessType && businessType <= 4}">
+                    {{ businessName[businessType - 1] || businessName[4] }}
+                </div>
+                <div class="goods-mTit" v-html="mainTit"></div>
             </div>
-            <div class="goods-title one-line" v-if="subTit" v-html="subTit" style="-webkit-box-orient: vertical">
-            </div>
-            <div class="goods-attr-wrap" v-if="isShowAttr">
+            <!-- <div class="goods-title one-line" v-if="subTit" v-html="subTit">
+            </div> -->
+            <!-- <div class="goods-attr-wrap" v-if="isShowAttr">
                 <div class="goods-attr">
                     <div class="attr-left">香气{{aromaName}}</div>
                     <div class="attr-right">
@@ -52,21 +57,16 @@
                         </template>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <div class="goods-bd">
                 <div class="goods-price">
-                <template v-if="isLogin && salesPrice">
-                    {{salesPrice}}元/{{unit}}
-                </template>
-                <template v-else-if="isLogin">
-                    {{price}}元/{{unit}}
-                </template>
-                <template v-else>
-                    询价
-                </template>
-                </div>
-                <div class="goods-type" :class="{'other': businessType && businessType <= 4}">
-                    {{ businessName[businessType - 1] || businessName[4] }}
+                    <template v-if="isLogin">
+                        <span>{{'￥'+ toFixed(price)}}</span>
+                        <span class="goods-garyPrice">{{'￥'+ toFixed(garyPrice)}}</span>
+                    </template>
+                    <template v-else>
+                        询价
+                    </template>
                 </div>
             </div>
         </div>
@@ -76,78 +76,83 @@
 
 
 <script>
-    export default{
-        name: 'goodsItem',
-        props: {
-            isShowAttr: {
-                type: Number,
-                default: 1
-            },
-            mainTit: {
-                type: String,
-                default: ''
-            },
-            subTit: {
-                type: String,
-                default: ''
-            },
-            price:{
-                type: Number,
-                default: 0
-            },
-            salesPrice:{
-                type: Number,
-                default: 0
-            },
-            unit:{
-                type:String,
-                default: '斤'
-            },
-            link: {
-                type: String,
-                default: '#'
-            },
-            businessType: {
-                type: Number,
-                default: 5
-            },
-            imgUrl: {
-                type: String,
-                default: '/'
-            },
-            imgWidth: {
-                type: String,
-                default: '1.76rem'
-            },
-            tagUrl: {
-                type: String,
-                default: ''
-            },
-            aromaStar: {
-                type: Number,
-                default: 0
-            },
-            tasteStar : {
-                type: Number,
-                default: 0
-            },
-            aromaName:{
-                type: String,
-                default: ''
-            },
-            tasteName:{
-                type: String,
-                default: ''
-            },
-            isLogin:{
-                type: Boolean,
-                default: false
-            }
+export default {
+    name: 'goodsItem',
+    props: {
+        isShowAttr: {
+            type: Number,
+            default: 1
         },
-        computed: {
-            businessName() {
-                return  this.$tool.shopType
-            }
+        mainTit: {
+            type: String,
+            default: ''
+        },
+        subTit: {
+            type: String,
+            default: ''
+        },
+        price: {
+            type: Number,
+            default: 0
+        },
+        garyPrice: {
+            type: Number,
+            default: 0
+        },
+        unit: {
+            type: String,
+            default: '斤'
+        },
+        link: {
+            type: String,
+            default: '#'
+        },
+        businessType: {
+            type: Number,
+            default: 5
+        },
+        imgUrl: {
+            type: String,
+            default: '/'
+        },
+        imgWidth: {
+            type: String,
+            default: '1.76rem'
+        },
+        tagUrl: {
+            type: String,
+            default: ''
+        },
+        aromaStar: {
+            type: Number,
+            default: 0
+        },
+        tasteStar: {
+            type: Number,
+            default: 0
+        },
+        aromaName: {
+            type: String,
+            default: ''
+        },
+        tasteName: {
+            type: String,
+            default: ''
+        },
+        isLogin: {
+            type: Boolean,
+            default: false
+        }
+    },
+    computed: {
+        businessName() {
+            return this.$tool.shopType
+        }
+    },
+    methods: {
+        toFixed(v) {
+            return Number(v).toFixed(2);
         }
     }
+}
 </script>

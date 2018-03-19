@@ -45,10 +45,10 @@
             </div>
         </mt-popup>
         <div class="detail_wrapper" @scroll="docScroll" ref="wrapper">
-            <div class="goIndex" v-if="!(tabFixed || wxFixed)" @click="$router.push({name: '首页'})" :class="{on: wxFixed}">
+            <!-- <div class="goIndex" v-if="!(tabFixed || wxFixed)" @click="$router.push({name: '首页'})" :class="{on: wxFixed}">
                 <span>回首页</span>
                 <i class="iconfont">&#xe61b;</i>
-            </div>
+            </div> -->
             <div class="top" :class="{on: tabFixed || wxFixed}" @click="topMethod"></div>
             <div ref="hel">
                 <div class="detail_img">
@@ -84,21 +84,41 @@
                 <div class="detail_describe">
                     <div class="detail_describe_wrapper">
                         <div class="detail_describe_text">
-                            <p class="detail_text">{{ detailData.productExtInfo.title }}</p>
-                            <template  v-if="detailData.productExtInfo.state === 'OFF_SHELF' && loginId && state === 'ACTIVE'">
-                                <div class="off_shelf_tips">
-                                    暂无报价
+                            <p class="detail_text">
+                                <span class="detail_type">
+                                    {{ detailData.orgShopCenterVo ? businessName[detailData.orgShopCenterVo.shopType - 1] : businessName[4] }}
+                                </span>
+                                {{ detailData.productExtInfo.title }}
+                            </p>
+                            <div class="detail_price">
+                                <div class="detail-groupnum">
+                                    3人拼团价
                                 </div>
-                            </template>
-                            <template  v-if="!loginId || state != 'ACTIVE'">
-                                <div class="off_shelf_tips">
-                                    询价
-                                </div>
-                            </template>
-                            <template v-if="detailData.productPrice.length != 0 && detailData.productExtInfo.state === 'ON_SHELF' && loginId && state === 'ACTIVE'">
-                                <p class="detail_now_price" v-if="!detailData.productExtInfo.isSales">￥{{ detailData.productPrice[0].price | toFix2 }}</p>
-                                <p class="detail_suggest_price">建议零售价：￥{{ detailData.productPrice[1].price | toFix2 }}</p>
-                            </template>
+                                <template  v-if="detailData.productExtInfo.state === 'OFF_SHELF' && loginId && state === 'ACTIVE'">
+                                    <div class="off_shelf_tips">
+                                        暂无报价
+                                    </div>
+                                </template>
+                                <template  v-if="!loginId || state != 'ACTIVE'">
+                                    <div class="off_shelf_tips">
+                                        询价
+                                    </div>
+                                </template>
+                                <template v-if="detailData.productPrice.length != 0 && detailData.productExtInfo.state === 'ON_SHELF' && loginId && state === 'ACTIVE'">
+                                        <div class="detail_now_price" v-if="!detailData.productExtInfo.isSales">
+                                            ￥{{ detailData.productPrice[0].price | toFix2 }}
+                                        </div>
+                                        <div class="detail_suggest_price">￥{{ detailData.productPrice[1].price | toFix2 }}</div>
+                                </template>
+                            </div>
+                        </div>
+                        <div class="detail_salenum">
+                            <div>
+                                已拼50500件
+                            </div>
+                            <div>
+                                库存50500件
+                            </div>
                         </div>
                         <template  v-if="detailData.productExtInfo.state === 'ON_SHELF'">
                             <div class="detail_active">
@@ -108,139 +128,206 @@
                                         <p>已优惠￥{{  (detailData.productPrice[0].price-detailData.productExtInfo.salesPrice)  | toFix2 }}</p>
                                     </div> -->
                                     <div class="detail_active_item">
-                                        <span>运费</span>
+                                        <span>运费：</span>
                                         <template v-if="detailData.productInfo.businessType == 'ORG_SALES'">
-                                            <p v-if="!detailData.orgFreightTemplateVoList || detailData.orgFreightTemplateVoList.length == 0">本店商品全国包邮</p>
-                                            <p v-else-if="detailData.orgFreightTemplateVoList && detailData.orgFreightTemplateVoList.length > 0">邮费依实际重量计算运费</p>
+                                            <span v-if="!detailData.orgFreightTemplateVoList || detailData.orgFreightTemplateVoList.length == 0">本店商品全国包邮</span>
+                                            <span v-else-if="detailData.orgFreightTemplateVoList && detailData.orgFreightTemplateVoList.length > 0">邮费依实际重量计算运费</span>
                                         </template>
                                         <template v-else>
-                                            <p>自营茶叶满500包邮</p>
+                                            <span>自营茶叶满500包邮</span>
                                         </template>
                                     </div>
                                 </div>
                             </div>
                         </template>
-                        <div class="detail_describe_count">
+                        <!-- <div class="detail_describe_count">
                             <label class="label_text">采购量</label>
                             <div class="plusOreduce">
                                 <span class="reduce btn" :class="{isGary:goodsCount === 1}" @click="reduceMethod">-</span>
                                 <input v-model="goodsCount" type="number" class="countNum" @blur="limit">
                                 <span class="plus btn" @click="plusMethod">+</span>
                             </div>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+            <!-- 参与拼团模块 -->
+            <div class="groupbuy-content" v-if="groupPurchaseList.length>0">
+                <div class="title">
+                    <div>20人正在发起拼团，可直接参与</div>
+                    <div>更多<i class="icon-icon07"></i></div>
+                </div>
+                <div class="groupbuy-list">
+                    <div class="groupbuy-item" v-for="(item,index) in groupPurchaseList" :key="index" v-if="index<2">
+                        <div class="user-img">
+                            <img :src="item.masterFaceImg"/>
+                        </div>
+                        <div class="groupbuy-username"><div>{{item.masterName}}</div></div>
+                        <div class="groupbuy-info">
+                            <div>还差<span>{{item.groupNumber - item.offerNumber }}</span>人</div>
+                            <div>剩余<span>23:00:22</span></div>
+                        </div>
+                        <div class="to-groupbuy">
+                            <div class="to-groupbuy2">
+                                <div>去拼团</div>
+                                <div class="right"></div>
+                            </div>
                         </div>
                     </div>
+                    <div class="groupbuy-item">
+                        <div class="user-img">
+                            <img  src="../../assets/images/ic_xinpinguan.png"/>
+                        </div>
+                        <div class="groupbuy-username"><div>厦门茶叶公司啊啊</div></div>
+                        <div class="groupbuy-info">
+                            <div>还差<span>2</span>人</div>
+                            <div>剩余<span>23:00:22</span></div>
+                        </div>
+                        <div class="to-groupbuy">
+                            <div class="to-groupbuy2">
+                                <div>去拼团</div>
+                                <div class="right"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="groupbuy-item">
+                        <div class="user-img">
+                            <img  src="../../assets/images/ic_xinpinguan.png"/>
+                        </div>
+                        <div class="groupbuy-username"><div>厦门茶叶公司啊啊</div></div>
+                        <div class="groupbuy-info">
+                            <div>还差<span>2</span>人</div>
+                            <div>剩余<span>23:00:22</span></div>
+                        </div>
+                        <div class="to-groupbuy">
+                            <div class="to-groupbuy2">
+                                <div>去拼团</div>
+                                <div class="right"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 拼团须知 -->
+            <div class="groupbuy-explain">
+                <div class="title">
+                    <div>拼团玩法</div>
+                    <div>拼团需知<i class="icon-icon07"></i></div>
+                </div>
+                <div class="groupbuy-content-ts">
+                    支付开团，人数不足24h自动退款
                 </div>
             </div>
             <div class="detail_tab" ref="tab">
                 <mt-navbar v-model="tabSelected" :class="{'on': tabFixed , 'wxon': wxFixed}" ref='heihghj'>
                     <i class="iconfont fixIndex" :class="{'on': tabFixed || wxFixed }" v-if="tabFixed || wxFixed" @click="$router.push({name: '首页'})">&#xe61b;</i>
-                    <mt-tab-item id="1">详情</mt-tab-item>
-                    <mt-tab-item id="2">规格</mt-tab-item>
-                    <mt-tab-item id="3"><span @click="showComment">评论</span> </mt-tab-item>
+                    <mt-tab-item id="1">商品</mt-tab-item>
+                    <mt-tab-item id="2">评论</mt-tab-item>
+                    <mt-tab-item id="3">详情</mt-tab-item>
                 </mt-navbar>
-                <mt-tab-container v-model="tabSelected" :swipeable="false">
-                    <mt-tab-container-item id="1" ref="tabcontent1">
-                        <div class="mint_cell_wrapper mint_cell_img_wrapper">
-                            <template v-if="imgDetailHtml.length>0">
-                                <div v-html="imgDetailHtml"></div>
-                            </template>
-                            <template v-else>
-                                <mt-cell v-for="(item,index) in imgDetail" :key="index" v-if="item.content != '' && item.imgArray.length != 0">
-                                    <div class="mint_cell_img_title">{{ item.title }}</div>
-                                    <div class="mint_cell_img">
-                                        <img :src="ur.imgUrl" v-for="(ur,k) in item.imgArray" :key="k" />
-                                    </div>
-                                    <p class="mint_cell_img_content">{{ item.content }}</p>
-                                </mt-cell>
-                            </template>
+                <!-- 评价 -->
+                <div class="comment_wrapper">
+                    <div class="scroll-div"  id="commentTotal"></div>
+                    <div class="comment_title">商品评价</div>
+                    <div class="comment_number">
+                        <div class="comment_star">好评 <span>{{ prectent | toFix2 }}%</span></div>
+                        <!-- commentRecond -->
+                        <div class="comment_total" @click="toCommentList">共 <span>{{ commentRecond }}</span> 条<i class="icon-icon07" v-if="commentList.length >2 "></i></div>
+                    </div>
+                </div>
+                <div class="mint_cell_wrapper"  >
+                    <template v-if="commentList.length === 0 ">
+                        <div class="no-comment">
+                            <img src="../../assets/images/no-comment.png" alt="">
+                            <p>暂时还没有评价呦~</p>
                         </div>
-                    </mt-tab-container-item>
-                    <mt-tab-container-item id="2" ref="tabcontent2">
-                        <div class="reguler_wrapper">
-                            <div class="reguler_item" style="height: .98rem; padding: 0;">
-                                <div>商品编号</div>
-                                <div>{{ detailData.productInfo.proSku }}</div>
+                    </template>
+                    <template v-else>
+                        <mt-cell v-for="(item,index) in commentList" :key="index" v-if="index<2">
+                            <div class="comment_head">
+                                <div class="comment_head_wrapper">
+                                    <div class="comment_head_mumber">{{ regStar(item.nickName) }}</div>
+                                    <div class="comment_head_mumberlevel">{{ item.levelName }}</div>
+                                </div>
+                                <div class="comment_head_time">{{ item.createTime }}</div>
                             </div>
-                            <template v-if="isHasFlag">
-                                <div class="reguler_item" style="height: 1.5rem; padding: 0;" v-if="detailData.productExtInfo.fragrance != null">
-                                    <div>香气</div>
-                                    <div class="x_star">
-                                        <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '偏淡' || detailData.productExtInfo.fragrance === '一般' || detailData.productExtInfo.fragrance === '香' || detailData.productExtInfo.fragrance === '高香' || detailData.productExtInfo.fragrance === '极香'}">偏淡</span>
-                                        <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '一般' || detailData.productExtInfo.fragrance === '香' || detailData.productExtInfo.fragrance === '高香' || detailData.productExtInfo.fragrance === '极香'}">一般</span>
-                                        <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '香' || detailData.productExtInfo.fragrance === '高香' || detailData.productExtInfo.fragrance === '极香'}">香</span>
-                                        <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '高香' || detailData.productExtInfo.fragrance === '极香'}">高香</span>
-                                        <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '极香'}">极香</span>
-                                    </div>
-                                </div>
-                                <div class="reguler_item" style="height: 1.5rem; padding: 0;" v-if="detailData.productExtInfo.taste != null">
-                                    <div>滋味</div>
-                                    <div class="z_star">
-                                        <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '偏淡' || detailData.productExtInfo.taste === '一般' || detailData.productExtInfo.taste === '浓' || detailData.productExtInfo.taste === '很浓' || detailData.productExtInfo.taste === '极浓'}">偏淡</span>
-                                        <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '一般' || detailData.productExtInfo.taste === '浓' || detailData.productExtInfo.taste === '很浓' || detailData.productExtInfo.taste === '极浓'}">一般</span>
-                                        <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '浓' || detailData.productExtInfo.taste === '很浓' || detailData.productExtInfo.taste === '极浓'}">浓</span>
-                                        <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '很浓' || detailData.productExtInfo.taste === '极浓'}">很浓</span>
-                                        <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '极浓'}">极浓</span>
-                                    </div>
-                                </div>
-                            </template>
-                            <template v-for="(item,index) in attrImgDetail.propValList">
-                                <div class="reguler_item" style="height: .98rem; padding: 0;">
-                                    <div>{{ item.atrName }}</div>
-                                    <div>{{ item.propertiesVal.propVal }}</div>
-                                </div>
-                            </template>
-                            <div class="reguler_item" v-if="detailData.productExtInfo.reason" style="height: 1.5rem; padding: 0;">
-                                <div>推荐理由</div>
-                                <div>{{ detailData.productExtInfo.reason }}</div>
+                            <p class="comment_footer" ref="comment" :class="{on:item.onFlag!==''&& item.onFlag}">
+                                {{ item.content }}
+                                <span v-if="item.replyContent"><span style="color:#c29e74;display:block;">回复：</span>{{item.replyContent}}</span>
+                                <span class="bg-white"><i class="iconfont down" :class="{on:item.pullFlag!=='' && item.pullFlag}" @click="pullOrDown(item)" :key="index+'11'">&#xe619;</i></span>
+                                <span class="bg-white"><i class="iconfont pull" :class="{on:item.upFlag!=='' && item.upFlag}" @click="pullOrDown(item)" :key="index+'12'">&#xe618;</i></span>
+                            </p>
+                        </mt-cell>
+                    </template>
+                </div>
+                <!-- <template v-if="commentList.length < commentRecond">
+                    <div class="comment_more_btn" @click="getMoreComment">
+                        查看更多评论<i class="iconfont">&#xe619;</i>
+                    </div>
+                </template>
+                <template v-if="commentList.length >= commentRecond">
+                    <div class="comment_more_btn">
+                        没有更多了呦~
+                    </div>
+                </template> -->
+                <!-- 规格 -->
+                <div class="comment_wrapper" >
+                    <div class="scroll-div"  id='reguler'></div>
+                    <div class="comment_title">商品详情</div>
+                </div>
+                <div class="reguler_wrapper">
+                    <div class="reguler_item" style="height: .98rem; padding: 0;">
+                        <div>商品编号</div>
+                        <div>{{ detailData.productInfo.proSku }}</div>
+                    </div>
+                    <template v-if="isHasFlag">
+                        <div class="reguler_item" style="height: 1.5rem; padding: 0;" v-if="detailData.productExtInfo.fragrance != null">
+                            <div>香气</div>
+                            <div class="x_star">
+                                <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '偏淡' || detailData.productExtInfo.fragrance === '一般' || detailData.productExtInfo.fragrance === '香' || detailData.productExtInfo.fragrance === '高香' || detailData.productExtInfo.fragrance === '极香'}">偏淡</span>
+                                <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '一般' || detailData.productExtInfo.fragrance === '香' || detailData.productExtInfo.fragrance === '高香' || detailData.productExtInfo.fragrance === '极香'}">一般</span>
+                                <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '香' || detailData.productExtInfo.fragrance === '高香' || detailData.productExtInfo.fragrance === '极香'}">香</span>
+                                <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '高香' || detailData.productExtInfo.fragrance === '极香'}">高香</span>
+                                <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '极香'}">极香</span>
                             </div>
                         </div>
-                    </mt-tab-container-item>
-                    <mt-tab-container-item id="3" ref="tabcontent3">
-                        <div class="comment_wrapper" ref="commentTotal" :class="{'on': tabFixed,'wxon': wxFixed}">
-                            <div class="comment_title">商品评价</div>
-                            <div class="comment_number">
-                                <div class="comment_star">好评 <span>{{ prectent | toFix2 }}%</span></div>
-                                <!-- commentRecond -->
-                                <div class="comment_total">共 <span>{{ commentRecond }}</span> 条</div>
+                        <div class="reguler_item" style="height: 1.5rem; padding: 0;" v-if="detailData.productExtInfo.taste != null">
+                            <div>滋味</div>
+                            <div class="z_star">
+                                <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '偏淡' || detailData.productExtInfo.taste === '一般' || detailData.productExtInfo.taste === '浓' || detailData.productExtInfo.taste === '很浓' || detailData.productExtInfo.taste === '极浓'}">偏淡</span>
+                                <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '一般' || detailData.productExtInfo.taste === '浓' || detailData.productExtInfo.taste === '很浓' || detailData.productExtInfo.taste === '极浓'}">一般</span>
+                                <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '浓' || detailData.productExtInfo.taste === '很浓' || detailData.productExtInfo.taste === '极浓'}">浓</span>
+                                <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '很浓' || detailData.productExtInfo.taste === '极浓'}">很浓</span>
+                                <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '极浓'}">极浓</span>
                             </div>
                         </div>
-                        <div class="mint_cell_wrapper">
-                            <template v-if="commentList.length === 0 ">
-                                <div class="no-comment">
-                                    <img src="../../assets/images/no-comment.png" alt="">
-                                    <p>暂时还没有评价呦~</p>
-                                </div>
-                            </template>
-                            <template v-else>
-                                <mt-cell v-for="(item,index) in commentList" :key="index">
-                                    <div class="comment_head">
-                                        <div class="comment_head_wrapper">
-                                            <div class="comment_head_mumber">{{ regStar(item.nickName) }}</div>
-                                            <div class="comment_head_mumberlevel">{{ item.levelName }}</div>
-                                        </div>
-                                        <div class="comment_head_time">{{ item.createTime }}</div>
-                                    </div>
-                                    <p class="comment_footer" ref="comment" :class="{on:item.onFlag!==''&& item.onFlag}">
-                                        {{ item.content }}
-                                        <span v-if="item.replyContent"><span style="color:#c29e74;display:block;">回复：</span>{{item.replyContent}}</span>
-                                        <span class="bg-white"><i class="iconfont down" :class="{on:item.pullFlag!=='' && item.pullFlag}" @click="pullOrDown(item)" :key="index+'11'">&#xe619;</i></span>
-                                        <span class="bg-white"><i class="iconfont pull" :class="{on:item.upFlag!=='' && item.upFlag}" @click="pullOrDown(item)" :key="index+'12'">&#xe618;</i></span>
-                                    </p>
-                                </mt-cell>
-                            </template>
+                    </template>
+                    <template v-for="(item,index) in attrImgDetail.propValList">
+                        <div class="reguler_item" style="height: .98rem; padding: 0;">
+                            <div>{{ item.atrName }}</div>
+                            <div>{{ item.propertiesVal.propVal }}</div>
                         </div>
-                        <template v-if="commentList.length < commentRecond">
-                            <div class="comment_more_btn" @click="getMoreComment">
-                                查看更多评论<i class="iconfont">&#xe619;</i>
+                    </template>
+                    <div class="reguler_item" v-if="detailData.productExtInfo.reason" style="height: 1.5rem; padding: 0;">
+                        <div>推荐理由</div>
+                        <div>{{ detailData.productExtInfo.reason }}</div>
+                    </div>
+                </div>
+                <!-- 详情 -->
+                <div class="mint_cell_wrapper mint_cell_img_wrapper">
+                    <template v-if="imgDetailHtml.length>0">
+                        <div v-html="imgDetailHtml"></div>
+                    </template>
+                    <template v-else>
+                        <mt-cell v-for="(item,index) in imgDetail" :key="index" v-if="item.content != '' && item.imgArray.length != 0">
+                            <div class="mint_cell_img_title">{{ item.title }}</div>
+                            <div class="mint_cell_img">
+                                <img :src="ur.imgUrl" v-for="(ur,k) in item.imgArray" :key="k" />
                             </div>
-                        </template>
-                        <template v-if="commentList.length >= commentRecond">
-                            <div class="comment_more_btn">
-                                没有更多了呦~
-                            </div>
-                        </template>
-                    </mt-tab-container-item>
-                </mt-tab-container>
+                            <p class="mint_cell_img_content">{{ item.content }}</p>
+                        </mt-cell>
+                    </template>
+                </div>
             </div>
         </div>
         <div class="off_shelf" v-if="detailData.productExtInfo.state === 'OFF_SHELF'">
@@ -261,14 +348,39 @@
                     店铺
                 </mt-tab-item>
             </template>
-            <mt-tab-item class="org-item" :class="{'cart-btn':!detailData.productInfo.orgId}" id="2" @click.native="openCart">
+            <!-- <mt-tab-item class="org-item" :class="{'cart-btn':!detailData.productInfo.orgId}" id="2" @click.native="openCart">
                 <i class="icon-jiarugouwuche" slot="icon"></i>
                 购物车
                 <mt-badge type="error" size="small" v-show="Number(cartTotal)>0">{{ cartTotal | ninenineAdd }}</mt-badge>
-            </mt-tab-item>
+            </mt-tab-item> -->
             <mt-tab-item id="3" class="join-cart">
-                <mt-button type="default" disabled v-if="detailData.productExtInfo.state === 'OFF_SHELF'">加入购物车</mt-button>
-                <mt-button type="default" v-else-if="detailData.productExtInfo.isSoldOut == 1 && detailData.productExtInfo.compelOutStock == 0" @click.native="addCartInfo">加入购物车</mt-button>
+              <template v-if="detailData.productExtInfo.state === 'OFF_SHELF'">
+                <mt-button disabled type="default" class="lonelyBuy-btn">
+                  <p v-if="$tool.isLogin()"><span>￥</span>189.00</p>
+                  <p v-else><span>￥</span>{{'189.00'.replace(/^[1-9]/g,'?')}}</p>
+                    <p>单独购买</p>
+                </mt-button>
+                <mt-button disabled type="default" class="groupBuy-btn">
+                  <p v-if="$tool.isLogin()"><span>￥</span>99.00</p>
+                  <p v-else><span>￥</span>{{'99.00'.replace(/^[1-9]/g,'?')}}</p>
+                    <p>3人拼团</p>
+                </mt-button>
+              </template>
+              <template v-else-if="detailData.productExtInfo.isSoldOut == 1 && detailData.productExtInfo.compelOutStock == 0">
+                <mt-button type="default"  class="lonelyBuy-btn" @click.native="addCartInfo">
+                    <p v-if="$tool.isLogin()"><span>￥</span>189.00</p>
+                    <p v-else><span>￥</span>{{'189.00'.replace(/^[1-9]/g,'?')}}</p>
+                    <p>单独购买</p>
+                </mt-button>
+                <mt-button type="default"  class="groupBuy-btn">
+                    <p v-if="$tool.isLogin()"><span>￥</span>99.00</p>
+                    <p v-else><span>￥</span>{{'99.00'.replace(/^[1-9]/g,'?')}}</p>
+                    <p>3人拼团</p>
+                </mt-button>
+              </template>
+
+                <!-- <mt-button type="default" disabled v-if="detailData.productExtInfo.state === 'OFF_SHELF'">加入购物车</mt-button>
+                <mt-button type="default" v-else-if="detailData.productExtInfo.isSoldOut == 1 && detailData.productExtInfo.compelOutStock == 0" @click.native="addCartInfo">加入购物车</mt-button> -->
                 <mt-button type="default" disabled v-else>缺货</mt-button>
             </mt-tab-item>
         </mt-tabbar>
@@ -299,6 +411,7 @@ export default {
             wxFlag: false,
             wxFixed: false,
             showOrHide: false,
+            groupPurchaseList:[],
             isThird: false,
             headHeight: 44,
             detailData: {
@@ -335,18 +448,23 @@ export default {
                 mine:{},
                 friend:[],
                 group:[]
-            }
+            },
+            groupId:0,//0或空:单独购买 1:开团 2:参团
+            groupType:''//团购编号
         }
     },
     computed:{
         ...mapState({
             cartTotal: state => state.cart.cartTotal
         }),
+        businessName() {
+            return  this.$tool.shopType
+        }
 
     },
     created() {
         // 设置title
-        this.$store.commit('SET_TITLE','商品详情');
+        // this.$store.commit('SET_TITLE','商品详情');
         // 获取购物车数量
         this.$store.dispatch('queryCartTotal');
         this.loginId = store.state.member.member.id;
@@ -361,6 +479,8 @@ export default {
         })
         this.getDetail().then((res) =>{
             this.detailData = res.data;
+            // 设置title
+            this.$store.commit('SET_TITLE',this.detailData.productExtInfo.title );
             this.maxNum = this.detailData.productExtInfo.stockNum;
             if(res.data.orgShopCenterVo){
                 this.shopTel = `tel://${res.data.orgShopCenterVo.businessTelephone}`;
@@ -395,6 +515,9 @@ export default {
                     }
                 })
             })
+        })
+        this.getGroupPurchase().then((res)=>{
+            console.log(res)
         })
         this.addLike();
     },
@@ -466,7 +589,7 @@ export default {
                 return 'blur'
             }
         },
-        addCartInfo() {
+        addCartInfo(groupType=1) {
             this.$store.dispatch('getMemberData').then(()=>{
                 let status = store.state.member.memberAccount.status;
                 if(!store.state.member.member.id){
@@ -517,8 +640,20 @@ export default {
                          this.selected = null;
                     });
                 }
-                this.$store.dispatch('addCart',{proId:this.detailData.productExtInfo.proId,buyNum:this.goodsCount}).then(res=>{
+                // 单独购买
+                if(groupType==0){
+                  this.groupType = 0;
+                  this.groupId = ''
+                }
+                // 立即购买
+                this.$store.dispatch('addCart',{proId:this.detailData.productExtInfo.proId,buyNum:1,groupType:this.groupType,groupId:this.groupId}).then(res=>{
                     console.log(res);
+                    this.$router.push({
+                        name: '结算中心',
+                        query: {
+                            cart: res.data.cartId
+                        }
+                    })
                 },res=>{});
             }).catch((res)=>{
                 return this.$router.push({name: '账户登录'});
@@ -659,6 +794,26 @@ export default {
                 })
             })
         },
+        // 获取拼团信息
+        getGroupPurchase(){
+                let data= {
+                    'groupPurchase.proId':this.proSku,
+                    'groupPurchase.groupState':1,
+                    'groupPurchase.isJoin':2,
+                    'groupPurchase.proId':1,
+                    'groupPurchase.proId':10,
+                }
+                return new Promise((resolve,reject) =>{
+                    this.$api.post('/oteao/groupPurchase/seachGroupPurchase ',data,res=>{
+                        resolve(res);
+                    }),res=>{
+                        return Toast({
+                            message: res.errorMsg,
+                            iconClass: 'icon icon-fail'
+                        });
+                    }
+                })
+        },
         handleChange(index) {           // 图片索引
             this.imgIndex = index+1;
         },
@@ -710,22 +865,16 @@ export default {
         },
         docScroll() {               // 判断页面滚动
             let scrollTop = this.$refs.wrapper.scrollTop;
-            let scrollHeight = this.$refs.wrapper.offsetHeight;
-            let tabTop = this.$refs.tab.offsetTop;
-            let allHideHeight = this.$refs.tab.children[0].offsetHeight+this.$refs.commentTotal.offsetHeight;
-            if(scrollTop - tabTop >= 0){
+            if(scrollTop > 0){
                 if(!this.wxFlag){
                     this.tabFixed = true;
                 }else{
                     this.wxFixed = true;
                 }
                 return;
-            }else if(scrollTop + allHideHeight - tabTop < 0){
+            }else if(scrollTop <= 0){
                 this.tabFixed = false;
                 this.wxFixed = false;
-                this.$refs.tabcontent1.$el.style['padding-top'] = 0;
-                this.$refs.tabcontent2.$el.style['padding-top'] = 0;
-                this.$refs.tabcontent3.$el.style['padding-top'] = 0;
                 return;
             }
         },
@@ -738,6 +887,23 @@ export default {
             }else{
                 return `0${time}`
             }
+        },
+        toCommentTotal(){          //滚动到评论
+            document.getElementById("commentTotal").scrollIntoView(true);
+        },
+        toReguler(){               //滚动到详情
+            document.getElementById("reguler").scrollIntoView(true);
+        },
+        toCommentList(){
+          if(this.commentList.length >2){
+            this.$router.push({
+                name: '商品评论',
+                query: {
+                    'proSku': this.detailData.productExtInfo.id
+                }
+            })
+          }
+
         },
         timeDown () {
            const endTime = new Date(this.detailData.productExtInfo.salesEndTime);
@@ -823,7 +989,7 @@ export default {
                return this.$router.push({name: '账户登录'});
            })
        },
-       addFriend(){
+       addFriend(selfId){
             let kefuName = "茶帮通客服";
             let addId = 1;
             let _this = this;
@@ -831,7 +997,7 @@ export default {
                 kefuName = this.detailData.orgShopCenterVo.shopName;
                 addId = this.detailData.productInfo.orgId;
             }
-           this.$http.get(`/erp/layim/addFriend/${addId}`).then(res=>{
+           this.$http.get(`/erp/layim/addFriend?friend=${addId}&userId=${selfId}`).then(res=>{
                let friendId = res.data.data;
                layui.config({
                     version: true,
@@ -853,10 +1019,12 @@ export default {
 
                     socket.config({
                         log:true,
-                        // token:'/erp/layim/getToKenById?id=204736',
-                        token:'/erp/layim/token',
-                        server:'wss://java.im.test.yipicha.com:8888',
-                        reconn: false
+                        token:`/erp/layim/getToKenById?id=${selfId}`,
+                        // token:'/erp/layim/token',
+                        server:'wss://mdemows.oteao.com',
+                        //server:'ws://192.168.7.8:8888',
+                        //server: 'wss://java.im.test.yipicha.com',
+                        reconn: true
                     });
 
                     //创建一个会话
@@ -953,7 +1121,7 @@ export default {
                     //监听layim建立就绪
                     layim.on('ready', function(){
                         req.loading = false;
-                        req.get('/layim/apply-unread',{},function (res) {
+                        req.get('/erp/layim/apply-unread',{},function (res) {
                             res.data&&layim.msgbox(res.data);
                         });
                     console.log(layim.cache().friend);
@@ -961,11 +1129,18 @@ export default {
                     //监听发送消息
                     layim.on('sendMessage', function(data){
                         var To = data.to;
+                        var timeStamp = data.mine.time;
+                        console.log("return******"+timeStamp)
+                        if(sessionStorage.getItem("msg_timestamp")==timeStamp){
+                            console.log("return******"+timeStamp)
+                            return;
+                        }
+                        sessionStorage.setItem("msg_timestamp", timeStamp);
                         var t = data.to.type=='friend';
                         if(!t){
                             selfFlag = true;
                         }
-                        socket.send({mtype:(t?socket.mtype.chatFriend:socket.mtype.chatGroup),content:data.mine.content,toid:data.to.id});
+                        socket.send({mtype:(t?socket.mtype.chatFriend:socket.mtype.chatGroup),content:data.mine.content,toid:data.to.id,id:data.mine.id,time:data.mine.time});
                         return;
                     });
                     //监听查看群员
@@ -991,19 +1166,20 @@ export default {
                 for (let it in data) {
                     ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&';
                 }
-                this.$http.post("/erp/account/login",ret).then(res=>{
-                    this.getBase();
+                this.$http.post("/erp/account/ajaxLogin",ret).then(res=>{
+                    let userid = res.data.data;//res.data.data.split(",")[0];
+                    this.getBase(userid);
                 });
             }).catch(res => {
                 this.$router.replace('/login');
             });
 
        },
-       getBase(){
-            this.$http.get("/erp/layim/base").then(res=>{
+       getBase(userid){
+            this.$http.get(`/erp/layim/base?userId=${userid}`).then(res=>{
                 if(res.data.data){
                     this.myData = res.data.data;
-                    this.addFriend();
+                    this.addFriend(userid);
                 }else{
                     return Toast(res.data.msg);
                 }
@@ -1133,12 +1309,26 @@ export default {
             deep:true
         },
         tabSelected(val) {
-            this.$refs.wrapper.scrollTop = this.$refs.hel.offsetHeight;
+            // this.$refs.wrapper.scrollTop = this.$refs.hel.offsetHeight;
+            console.log(val)
+            switch (val) {
+                case '1':
+                    this.$refs.wrapper.scrollTop = 0;
+                    break;
+                case '2':
+                    this.toCommentTotal()
+                    break;
+                case '3':
+                    this.toReguler()
+                    break;
+
+            }
+
             this.tabFixed = true;
-            console.log(this.$refs.heihghj.$el.offsetHeight);
-            this.$refs.tabcontent1.$el.style['padding-top'] = this.$refs.heihghj.$el.offsetHeight + 'px';
-            this.$refs.tabcontent2.$el.style['padding-top'] = this.$refs.heihghj.$el.offsetHeight + 'px';
-            this.$refs.tabcontent3.$el.style['padding-top'] = this.$refs.heihghj.$el.offsetHeight + 'px';
+            // console.log(this.$refs.heihghj.$el.offsetHeight);
+            // this.$refs.tabcontent1.$el.style['padding-top'] = this.$refs.heihghj.$el.offsetHeight + 'px';
+            // this.$refs.tabcontent2.$el.style['padding-top'] = this.$refs.heihghj.$el.offsetHeight + 'px';
+            // this.$refs.tabcontent3.$el.style['padding-top'] = this.$refs.heihghj.$el.offsetHeight + 'px';
             if(!this.wxFlag){
                 this.tabFixed = true;
             }else{
