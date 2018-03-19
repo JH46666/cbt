@@ -2,29 +2,26 @@
     <div class="newshelves">
         <div class="good_type_box">
             <div class="good_type_wrapper">
-                <div class="good_type_list bg_gray" style="background: #f5f5f5;">
-                    <div class="_add-tips">
-                        <p class="_add-tips-title" @click="funcHowToCreat">如何创建商品</p>
-                        <i class="iconfont icon-chuangjianshangpinshuoming" @click="funcHowToCreat"></i>
-                    </div>
+                <div class="good_type" @click="selectGoodType">
+                    <label for="goodType">商品分类：</label>
+                    <input type="text" id="goodType" readonly placeholder="必填项，请选择商品分类" v-model="resize.form.goodTypes" />
                 </div>
                 <div class="good_type_list">
                     <div class="good_type_list_wrapper">
-                        <div class="item" @click="selectGoodType">
-                            <label class="item-left" for="goodType">
-                                商品分类
+                        <div class="item">
+                            <label class="item-left" for="1">
+                                商品名称：
                             </label>
                             <div class="item-right">
-                                <input type="text" id="goodType" readonly placeholder="必填项，请选择商品分类" v-model="resize.form.goodTypes" />
+                                <textarea id="1" rows="2" maxlength="30" placeholder="必填项，请输入展示商品名称" v-model="resize.form.goodsName"></textarea>
+                                <div class="text_count">
+                                    <span>{{ resize.form.goodsName.length }}</span>/30
+                                </div>
                             </div>
                         </div>
-
-                        <div class="item" style="position: relative;">
-                            <label for="2">
-                                <p class="item-left spmtitle" for="2">
-                                    商品卖点
-                                    <i class="iconfont icon-chuangjianshangpinshuoming" style="color:#f08200;" @click="flagGoodsOwnGood = !flagGoodsOwnGood"></i>
-                                </p>
+                        <div class="item">
+                            <label class="item-left" for="2">
+                                商品卖点：
                             </label>
                             <div class="item-right">
                                 <textarea id="2" rows="2" maxlength="30" placeholder="非必填项，最多可写30个字" v-model="resize.form.goodsSell"></textarea>
@@ -32,146 +29,98 @@
                                     <span>{{ resize.form.goodsSell.length }}</span>/30
                                 </div>
                             </div>
-                            <!-- 创建商品tips -->
-                            <div class="_add-goods-good-tips" v-if="flagGoodsOwnGood">
-                               <div class="_add-tips">
-                                    <div>商品标题组成</div>
-                                    商品卖点+商品品类+工艺+采摘时间
-                                </div>
-                                <div class="_add-geometric-3"></div>
-                                <div class="_add-geometric-X" @click="flagGoodsOwnGood = !flagGoodsOwnGood">X</div>
-                            </div>
                         </div>
-
+                        <div class="item">
+                            <label class="item-left" for="5">
+                                单位：
+                            </label>
+                            <div class="item-right" @click="clickSel('danwei')">
+                                <input type="text" id="5" readonly unselectable="on" onfocus="this.blur()" placeholder="必填项，请选择商品单位" v-model="resize.form.goodsDw"
+                                />
+                            </div>
+                            <i class="iconfont" @click="clickSel('danwei')">&#xe744;</i>
+                        </div>
                         <div class="item">
                             <label class="item-left" for="4">
-                                品牌
+                                品牌：
                             </label>
                             <div class="item-right" @click="clickSel('pinpai')">
-                                <input type="text" id="4" readonly placeholder="必填项，请选择商品品牌" v-model="resize.form.goodsBrand" />
+                                <input type="text" id="4" readonly unselectable="on" onfocus="this.blur()" placeholder="必填项，请选择商品品牌" v-model="resize.form.goodsBrand"
+                                />
                             </div>
                             <i class="iconfont" @click="clickSel('pinpai')">&#xe744;</i>
                         </div>
+                        <div class="item" v-for="(item,index) in resize.defaultArray" :key="index">
+                            <label class="item-left" :for="index+2">
+                                {{ item.name }}
+                            </label>
+                            <div class="item-right" @click="selectDefault(index)">
+                                <input type="text" readonly unselectable="on" onfocus="this.blur()" :id="index+2" v-model="item.content" placeholder="非必填"
+                                />
+                            </div>
+                            <i class="iconfont" @click="selectDefault(index)">&#xe744;</i>
+                            <mt-popup v-model="item.showOfHide" position="bottom">
+                                <div class="close-wrap">
+                                    <p class="close-tip" v-for="(secobj,secindex) in item.prop" :class="{on: secindex == item.select}" :key="secindex" @click="selectDefaultProp(item,secindex,secobj)">{{ secobj }}
+                                        <i class="iconfont">&#xe684;</i>
+                                    </p>
+                                </div>
+                            </mt-popup>
+                        </div>
                         <div class="item">
-                            <label class="item-left" for="8">
-                                重量(含包装)
+                            <label class="item-left" for="7">
+                                净重(g)：
                             </label>
                             <div class="item-right">
-                                <input styl="float:left" type="number" id="8" placeholder="必填项，运费计算使用" v-model="resize.form.goodsMz" @blur="toFixedZero(resize.form.goodsMz,'goodsMz')"
+                                <input type="number" id="7" placeholder="必填项，商品展示使用" v-model="resize.form.goodsJz" @blur="toFixedZero(resize.form.goodsJz,'goodsJz')"
                                 />
-                                <p style="float:right">g</p>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <label class="item-left" for="8">
+                                毛重(g)：
+                            </label>
+                            <div class="item-right">
+                                <input type="number" id="8" placeholder="必填项，运费计算使用" v-model="resize.form.goodsMz" @blur="toFixedZero(resize.form.goodsMz,'goodsMz')"
+                                />
                             </div>
                         </div>
                         <div class="item">
                             <label class="item-left" for="9">
-                                库存
+                                库存：
                             </label>
                             <div class="item-right">
-                                <input styl="float:left" type="number" id="9" placeholder="必填项，请填写商品库存" v-model="resize.form.goodsKc" @blur="toFixedZero(resize.form.goodsKc,'goodsKc')"
+                                <input type="number" id="9" placeholder="必填项，请填写商品库存" v-model="resize.form.goodsKc" @blur="toFixedZero(resize.form.goodsKc,'goodsKc')"
                                 />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="good_type_list bg_gray" style="background: #f5f5f5;"> 
-                    <div class="_add-tips-title" style="display: flex;">
-                        <div class="_add-small-box"></div> 
-                        价格设定
-                    </div>
-                </div>
-                <div class="good_type_list">
-                    <div class="good_type_list_wrapper">
-                        <div class="item">
-                            <label class="item-left" for="10">
-                                市场价
-                            </label>
-                            <div class="item-right">
-                                <input type="number" id="10" placeholder="必填，市场价高于单买价" v-model="resize.form.goodsPtsj" @blur="comparePrice(resize.form.goodsPtsj,'goodsPtsj')"
-                                />
-                                <p style="float:right">元</p>
-                            </div>
-                        </div>
-                        <div class="item _fix-item">
-                            <label class="item-left" for="11" style="white-space: nowrap;">
-                                单买价
-                            </label>
-                            <div class="item-right">
-                                <input type="number" id="11" placeholder="必填，应高于商品团购价格" v-model="resize.form.goodsSj" @blur="comparePrice(resize.form.goodsSj,'goodsSj')"
-                                />
-                                <p style="float:right">元</p>
-                            </div>
-                            <div class="_add-price-error-tips" v-if="flagGoodsSj">
-                                <i class="iconfont icon-tishi"> 市场价需高于单买价</i>
                             </div>
                         </div>
                         <div class="item">
-                            <label class="item-left" for="12" style="white-space: nowrap;">
-                                团购价
+                            <label class="item-left" for="10">
+                                平台售价：
                             </label>
                             <div class="item-right">
-                                <input type="number" id="12" placeholder="必填，应低于商品单买价格" v-model="resize.form.goodsGroup" @blur="comparePrice(resize.form.goodsGroup,'goodsGroup')"
+                                <input type="number" id="10" placeholder="必填项，请填写平台售价" v-model="resize.form.goodsSx" @blur="changePtsj(resize.form.goodsSx,'goodsSx')"
                                 />
-                                <p style="float:right">元</p>
                             </div>
                         </div>
-                        <div class="item _fix-item">
-                            <label class="item-left" for="13" style="white-space: nowrap;">
-                                团购人数
-                            </label>
-                            <div class="item-right">
-                                <input type="number" id="13" placeholder="必填，不低于2" v-model="resize.form.goodsGroupNum" @blur="toFixedBelow(resize.form.goodsGroupNum,'goodsGroupNum')"
-                                />
-                                <p style="float:right">人</p>
-                            </div>
-                            <div class="_add-price-error-tips" v-if="flagGoodsGroup">
-                                <i class="iconfont icon-tishi"> 团购价需低于市场价</i>
-                            </div>
-                            <div class="_add-num-error-tips" v-if="flagGoodsGroupNum">
-                                <i class="iconfont icon-tishi"> 人数需介于2和10之间</i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 不明真相的吃瓜群众？↓↓↓ -->
-                <!-- <div class="good_type_list" v-if="resize.proValList.length != 0">
-                    <div class="good_type_list_wrapper">
                         <div class="item">
-                            <label class="item-left" for="11">
-                                商品属性
+                            <label class="item-left" for="16" style="white-space: nowrap;">
+                                建议零售价：
                             </label>
-                        </div>
-                        <div class="item" v-for="(item,index) in resize.proValList" :key="index">
-                            <label class="item-left" :for="index+12">
-                                {{ item.propName }}
-                            </label>
-                            <div class="item-right" @click="clickSelProVal(index)">
-                                <input type="text" :readonly="item.propValList.length>0" :id="index+12" v-model="item.proVal" placeholder="非必填" />
+                            <div class="item-right">
+                                <input type="number" id="16" placeholder="必填项，请填写建议零售价" v-model="resize.form.goodsPtsj" @blur="toFixedTwo(resize.form.goodsPtsj,'goodsPtsj')"
+                                />
                             </div>
-                            <i class="iconfont" @click="clickSelProVal(index)" v-if="item.propValList.length>0">&#xe744;</i>
-                            <mt-popup v-model="item.proShowHide" position="bottom" v-if="item.propValList.length>0">
-                                <div class="close-wrap">
-                                    <p class="close-tip" v-for="(secobj,secindex) in item.propValList" :class="{on: secindex == item.proIndex}" :key="secindex"
-                                        @click="selectPro(item,secindex,secobj)">{{ secobj.propVal }}
-                                        <i class="iconfont">&#xe684;</i>
-                                    </p>
-                                </div>
-                            </mt-popup>
                         </div>
-                    </div>
-                </div> -->
-                <!-- 不明真相的吃瓜群众？↑↑↑ -->
-
-
-                <div class="good_type_list bg_gray" style="background: #f5f5f5; position: relative;" v-if="resize.proValList.length != 0">
-                    <div class="_add-tips-title" style="display: flex;">
-                        <div class="_add-small-box"></div>
-                        <p>属性信息</p>
-                        <p style="font-size:0.2rem; color:#c7c7c7; margin-left: 0.2rem;">选填，填写可提升商品的搜索曝光率~</p>
                     </div>
                 </div>
                 <div class="good_type_list" v-if="resize.proValList.length != 0">
                     <div class="good_type_list_wrapper">
+                        <div class="item">
+                            <label class="item-left" for="11">
+                                商品属性：
+                            </label>
+                        </div>
                         <div class="item" v-for="(item,index) in resize.proValList" :key="index">
                             <label class="item-left" :for="index+12">
                                 {{ item.propName }}
@@ -191,60 +140,29 @@
                         </div>
                     </div>
                 </div>
-
-
-
-                <!-- <div class="good_type_list bg_gray" style="background: #f5f5f5; position: relative;">
-                    <div class="_add-tips-title" style="display: flex;">
-                        <div class="_add-small-box"></div>
-                        <p>属性信息</p>
-                        <p style="font-size:0.2rem; color:#c7c7c7; margin-left: 0.2rem;">选填，填写可提升商品的搜索曝光率~</p>
-                    </div>
-                </div>
-                <div class="good_type_list">
+                <!-- <div class="good_type_list">
                     <div class="good_type_list_wrapper">
-                        <div class="item">
-                            <label class="item-left" for="14">
-                                采摘季节
+                        <div class="item" v-for="(item,index) in resize.defaultArray" :key="index">
+                            <label class="item-left" :for="index+2">
+                                {{ item.name }}
                             </label>
-                            <div class="item-right">
-                                <input type="text" id="14" placeholder="例如雨前/春茶之类" v-model="resize.form.goodsCzjj" />
+                            <div class="item-right" @click="selectDefault(index)">
+                                <input type="text" readonly :id="index+2" v-model="item.content" placeholder="非必填" />
                             </div>
-                        </div>
-                        <div class="item">
-                            <label class="item-left" for="15">
-                                产地
-                            </label>
-                            <div class="item-right">
-                                <input type="text" id="15" placeholder="例如福鼎太姥山" v-model="resize.form.goodsCd" />
-                            </div>
-                        </div>
-                        <div class="item">
-                            <label class="item-left" for="16">
-                                规格
-                            </label>
-                            <div class="item-right">
-                                <input type="text" id="16" placeholder="商品规格" v-model="resize.form.goodsSize" />
-                            </div>
-                        </div>
-                        <div class="item">
-                            <label class="item-left" for="17">
-                                储存方法
-                            </label>
-                            <div class="item-right">
-                                <input type="text" id="17" placeholder="例如避光密封等" v-model="resize.form.goodsSave"/>
-                            </div>
+                            <i class="iconfont" @click="selectDefault(index)">&#xe744;</i>
+                            <mt-popup v-model="item.showOfHide" position="bottom">
+                                <div class="close-wrap">
+                                    <p class="close-tip"  v-for="(secobj,secindex) in item.prop" :class="{on: secindex == item.select}" :key="secindex" @click="selectDefaultProp(item,secindex,secobj)">{{ secobj }}<i class="iconfont">&#xe684;</i></p>
+                                </div>
+                            </mt-popup>
                         </div>
                     </div>
                 </div> -->
-
             </div>
             <div class="btn_wrapper" v-if="showOfHideStep">
                 <mt-button type="primary" :disabled="disabledBol" @click="goStep3">下一步</mt-button>
             </div>
         </div>
-
-        <!-- 品牌弹出框 -->
         <mt-popup v-model="closeUp" position="bottom">
             <div class="close-wrap">
                 <p class="close-tip" v-for="(item,index) in selList" :class="{on: index === selectClass}" :key="index" @click="selectRightList(index)">{{ item.name }}
@@ -253,18 +171,8 @@
                 <p class="close-tip" @click="cancelList">取消选择</p>
             </div>
         </mt-popup>
-
-        <!-- 商品分类弹出框 -->
-        <mt-popup v-model="dialogTypeBol" position="bottom" style="height: 90%;">
+        <mt-popup v-model="dialogTypeBol" position="bottom">
             <div class="dialog_type_wrapper">
-                <div class="dialog_type_title">
-                    常用品类
-                </div>
-                <div class="dialog_type_content _fix-dialog_type_content">
-                    <div class="type_1 _add-type_1">
-                        <div class="type_item _add-type_item" v-if="index < 4" v-for="(item,index) in oneTypeList" :key="index" :class="{on: item.id === resize.oneClass}" @click="selectOneType(item.id,index)">{{ item.name }}</div>
-                    </div>
-                </div>
                 <div class="dialog_type_title">
                     选择品类
                 </div>
@@ -278,7 +186,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="dialog_type_bottom _fix-dialog_type_bottom">
+                <div class="dialog_type_bottom">
                     <mt-button type="primary" @click.native="cancelType">取消</mt-button>
                     <mt-button type="primary" @click.native="sureType" :disabled="clickSure">确定</mt-button>
                 </div>
@@ -310,10 +218,6 @@
                 clickSure: true,
                 device: 'WAP',
                 showOfHideStep: true,
-                flagGoodsOwnGood: false,                            // 商品卖点
-                flagGoodsSj:false,                                  // 单买价              
-                flagGoodsGroup: false,                              // 团购价
-                flagGoodsGroupNum: false,                           // 团购人数
             }
         },
         watch: {
@@ -330,8 +234,8 @@
                             }
                         }
                     })
-                },
-                deep: true
+                　　　　　　　},
+                　　　　　　　deep: true
             },
             'resize.defaultArray': {
                 handler(curVal, oldVal) {
@@ -395,10 +299,10 @@
                     this.$api.get('/oteao/propInfo/queryPropVal', data, res => {
                         resolve(res);
                     }, res => {
-                        return Toast({
-                            message: res.errorMsg,
-                            iconClass: 'icon icon-fail'
-                        });
+                        // return Toast({
+                        //     message: res.errorMsg,
+                        //     iconClass: 'icon icon-fail'
+                        // });
                     })
                 })
             },
@@ -476,7 +380,6 @@
                     this.resize.form[str] = parseFloat(delTrim).toFixed(2);
                 }
             },
-            // 保留整数
             toFixedZero(val, str) {
                 let delTrim = String(val).trim();
                 if (delTrim == '') {
@@ -583,37 +486,6 @@
                         });
                     })
                 })
-            },
-            // 跳转如何创建商品页
-            funcHowToCreat() {
-                return Toast({
-                    message: '将要跳转'
-                })
-            },
-            // 比较几个价格
-            comparePrice(val, str) {
-                let delTrim = String(val).trim();
-                if (delTrim == '') {
-                    this.resize.form[str] = '0.00'
-                } else {
-                    this.resize.form[str] = parseFloat(delTrim).toFixed(2);
-                }
-                this.flagGoodsSj = this.resize.form.goodsSj >= this.resize.form.goodsPtsj;
-                this.flagGoodsGroup = this.resize.form.goodsGroup >= this.resize.form.goodsSj;            
-            },
-            // 控制人数在2-10
-            toFixedBelow(val, str) {
-                let delTrim = String(val).trim();
-                if (delTrim == '') {
-                    this.resize.form[str] = '0'
-                } else if (parseFloat(val) > 0) {
-                    this.resize.form[str] = parseFloat(delTrim).toFixed(0);
-                } else if (parseFloat(val) < 0) {
-                    this.resize.form[str] = Math.abs(parseFloat(delTrim).toFixed(0));
-                }
-                if (this.resize.form[str] < 2 || this.resize.form[str] > 10) {
-                    this.flagGoodsGroupNum = true;
-                }
             }
         },
         computed: {
@@ -621,27 +493,9 @@
                 'resize'
             ]),
             disabledBol() {
-                if(!this.flagGoodsSj && !this.flagGoodsGroup && !this.flagGoodsGroupNum){
-                    if (this.resize.form.goodTypes != ''
-                        && this.resize.form.goodsSell != ''
-                        && this.resize.form.goodsMz != ''
-                        && this.resize.form.goodsKc != ''
-                        && this.resize.form.goodsSj != ''
-                        && this.resize.form.goodsPtsj != ''
-                        && this.resize.form.goodsGroup != ''
-                        && this.resize.form.goodsGroupNum != ''
-                        && this.resize.form.goodsCzjj != ''
-                        && this.resize.form.goodsCd != ''
-                        && this.resize.form.goodsSize != ''
-                        && this.resize.form.goodsSave != ''
-                    ) {
-                        return false;
-                    }
-                    else {
-                        return true;
-                    }
-                }
-                else{
+                if (this.resize.form.goodsName != '' && this.resize.form.goodsDw != '' && this.resize.form.goodsBrand != '' && this.resize.form.goodsJz != '' && this.resize.form.goodsMz != '' && this.resize.form.goodsKc != '' && this.resize.form.goodsSx != '' && this.resize.form.goodTypes != '' && this.resize.form.goodsPtsj != '') {
+                    return false;
+                } else {
                     return true;
                 }
             }
@@ -699,120 +553,4 @@
 
 <style lang="less">
     @import '~@/styles/seller/newshelves1.less';
-    /* _add为新增，_fix为修改 */
-
-    /* 增加提示tips样式 */
-    .good_type_wrapper{
-        .item{
-            padding: 0.56rem 0.3rem 0.3rem!important;
-            .item-left{
-                 width: 1.8rem!important;
-            }
-        }
-        ._add-tips{
-            display: flex;
-            align-items: center;
-            .iconfont{
-                color:#f08200;
-                margin-left: 0.06rem;
-            }
-        }
-        ._add-tips-title{
-            font-size: 0.26rem;
-            font-weight: normal;
-            font-stretch: normal;
-            line-height: 0.7rem;
-            letter-spacing: 0rem;
-            color: #333;
-            align-items: center;
-        }
-        ._add-small-box{
-            width: 0.08rem;
-	        height: 0.24rem;
-            background-color: #f08200;
-            position: absolute;
-            left: 0rem;
-        }
-        ._add-goods-good-tips{
-            width: 4.52rem;
-            height: 1.12rem;
-            background-color: #525150;
-            box-shadow: 0rem 0.02rem 0.1rem 0rem rgba(0, 0, 0, 0.4);
-            position: absolute;
-            left: 1.90rem;
-            top: 0.4rem;
-            ._add-tips{
-                padding: 0.21rem 0.23rem;
-                width: 4.42rem;
-                font-size: 0.20rem;
-                line-height: 0.36rem;
-                color: #ffffff;
-                text-align: left;
-                position: relative;
-                z-index: 2;
-                display: block;
-            }
-            ._add-geometric-3{
-                width: 0rem;
-                height: 0rem;
-                border-top: 0.2rem #525150 solid;
-                border-right: 0.2rem #525150 solid;
-                border-bottom: 0.2rem solid transparent;
-                border-left: 0.2rem solid transparent;
-                z-index: 1;
-                position: absolute;
-                top: 0rem;
-                left: -0.2rem;
-            }
-            ._add-geometric-X{
-                color: #fff;
-                position: absolute;
-                top: 0.1rem;
-                right: 0.1rem;
-                z-index: 3;
-            }
-        }
-        ._fix-item{
-            position: relative;
-            ._add-price-error-tips{
-                position: absolute;
-                top: 0rem;
-                left: -0.3rem;
-                .iconfont{
-                font-size: 0.24rem;
-                color: #f00;
-                }
-            }
-            ._add-num-error-tips{
-                position: absolute;
-                bottom: -0.32rem;
-                left: -0.3rem;
-                .iconfont{
-                font-size: 0.24rem;
-                color: #f00;
-                }
-            }
-        }
-    }
-
-    /* 新增选择类型常用样式 */
-    .dialog_type_wrapper{
-        height: 90%;
-        ._fix-dialog_type_content{
-            flex: unset!important;
-            ._add-type_1{
-                display: flex;
-                justify-content: space-between;
-                ._add-type_item{
-                    width: 1.40rem!important;
-                    margin: 0rem!important;
-                }
-            }
-        }
-        ._fix-dialog_type_bottom{
-            position: absolute;
-            bottom: 0rem;
-        }
-        
-    }
 </style>

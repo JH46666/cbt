@@ -276,7 +276,8 @@
             getData() {
                 let orderNo = this.$route.query.orderNo;
                 this.$api.post('/oteao/order/findSellerOrderByNo',{
-                    orderNo,
+                // this.$api.post('/oteao/groupPurchase/seachGroupByOrder',{                    
+                orderNo,
                     delYes: 0
                 },res =>{
                     this.myData = res.data || {};
