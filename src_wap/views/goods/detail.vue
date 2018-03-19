@@ -92,7 +92,7 @@
                             </p>
                             <div class="detail_price">
                                 <div class="detail-groupnum">
-                                    3人拼团价
+                                    {{detailData.productInfo.memberNum}}人拼团价
                                 </div>
                                 <template  v-if="detailData.productExtInfo.state === 'OFF_SHELF' && loginId && state === 'ACTIVE'">
                                     <div class="off_shelf_tips">
@@ -101,23 +101,23 @@
                                 </template>
                                 <template  v-if="!loginId || state != 'ACTIVE'">
                                     <div class="off_shelf_tips">
-                                        询价
+                                        {{String(detailData.productInfo.priceFightGrops).replace(/^[1-9]/g,'?')}}
                                     </div>
                                 </template>
                                 <template v-if="detailData.productPrice.length != 0 && detailData.productExtInfo.state === 'ON_SHELF' && loginId && state === 'ACTIVE'">
-                                        <div class="detail_now_price" v-if="!detailData.productExtInfo.isSales">
-                                            ￥{{ detailData.productPrice[0].price | toFix2 }}
+                                        <div class="detail_now_price">
+                                            ￥{{ detailData.productInfo.priceFightGrops | toFix2 }}
                                         </div>
-                                        <div class="detail_suggest_price">￥{{ detailData.productPrice[1].price | toFix2 }}</div>
+                                        <div class="detail_suggest_price">￥{{ detailData.productPrice[0].price | toFix2 }}</div>
                                 </template>
                             </div>
                         </div>
                         <div class="detail_salenum">
-                            <div>
+                            <!-- <div>
                                 已拼50500件
-                            </div>
+                            </div> -->
                             <div>
-                                库存50500件
+                                库存{{detailData.productExtInfo.stockNum}}件
                             </div>
                         </div>
                         <template  v-if="detailData.productExtInfo.state === 'ON_SHELF'">
@@ -152,54 +152,23 @@
                 </div>
             </div>
             <!-- 参与拼团模块 -->
-            <div class="groupbuy-content" v-if="groupPurchaseList.length>0">
+            <div class="groupbuy-content" v-if="groupArray.length>0">
                 <div class="title">
-                    <div>20人正在发起拼团，可直接参与</div>
+                    <div>{{groupnum}}人正在发起拼团，可直接参与</div>
                     <div>更多<i class="icon-icon07"></i></div>
                 </div>
                 <div class="groupbuy-list">
-                    <div class="groupbuy-item" v-for="(item,index) in groupPurchaseList" :key="index" v-if="index<2">
-                        <div class="user-img">
-                            <img :src="item.masterFaceImg"/>
+                    <div class="groupbuy-item" v-for="(item,index) in groupArray" :key="index" v-if="index < 2">
+                        <div class="user-img" >
+                            <img :src="item.masterFaceImg" v-if="item.masterFaceImg"/>
+                            <div v-else>{{String(item.masterName).substr(0,2)}}</div>
                         </div>
-                        <div class="groupbuy-username"><div>{{item.masterName}}</div></div>
+                        <div class="groupbuy-username"><div>{{String(item.masterName).substr(0,6)}}</div></div>
                         <div class="groupbuy-info">
                             <div>还差<span>{{item.groupNumber - item.offerNumber }}</span>人</div>
-                            <div>剩余<span>23:00:22</span></div>
+                            <div>剩余<span>{{formateDate(item.lastTime)}}</span></div>
                         </div>
-                        <div class="to-groupbuy">
-                            <div class="to-groupbuy2">
-                                <div>去拼团</div>
-                                <div class="right"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="groupbuy-item">
-                        <div class="user-img">
-                            <img  src="../../assets/images/ic_xinpinguan.png"/>
-                        </div>
-                        <div class="groupbuy-username"><div>厦门茶叶公司啊啊</div></div>
-                        <div class="groupbuy-info">
-                            <div>还差<span>2</span>人</div>
-                            <div>剩余<span>23:00:22</span></div>
-                        </div>
-                        <div class="to-groupbuy">
-                            <div class="to-groupbuy2">
-                                <div>去拼团</div>
-                                <div class="right"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="groupbuy-item">
-                        <div class="user-img">
-                            <img  src="../../assets/images/ic_xinpinguan.png"/>
-                        </div>
-                        <div class="groupbuy-username"><div>厦门茶叶公司啊啊</div></div>
-                        <div class="groupbuy-info">
-                            <div>还差<span>2</span>人</div>
-                            <div>剩余<span>23:00:22</span></div>
-                        </div>
-                        <div class="to-groupbuy">
+                        <div class="to-groupbuy" @click="getGroupInfo(item.id,index)">
                             <div class="to-groupbuy2">
                                 <div>去拼团</div>
                                 <div class="right"></div>
@@ -356,26 +325,26 @@
             <mt-tab-item id="3" class="join-cart">
               <template v-if="detailData.productExtInfo.state === 'OFF_SHELF'">
                 <mt-button disabled type="default" class="lonelyBuy-btn">
-                  <p v-if="$tool.isLogin()"><span>￥</span>189.00</p>
-                  <p v-else><span>￥</span>{{'189.00'.replace(/^[1-9]/g,'?')}}</p>
+                  <p v-if="$tool.isLogin()">￥{{detailData.productPrice[0].price}}</p>
+                  <p v-else>￥{{String(detailData.productPrice[0].price).replace(/^[1-9]/g,'?')}}</p>
                     <p>单独购买</p>
                 </mt-button>
                 <mt-button disabled type="default" class="groupBuy-btn">
-                  <p v-if="$tool.isLogin()"><span>￥</span>99.00</p>
-                  <p v-else><span>￥</span>{{'99.00'.replace(/^[1-9]/g,'?')}}</p>
-                    <p>3人拼团</p>
+                  <p v-if="$tool.isLogin()">￥{{detailData.productInfo.priceFightGrops}}</p>
+                  <p v-else>￥{{String(detailData.productInfo.priceFightGrops).replace(/^[1-9]/g,'?')}}</p>
+                    <p>{{detailData.productInfo.memberNum}}人拼团</p>
                 </mt-button>
               </template>
               <template v-else-if="detailData.productExtInfo.isSoldOut == 1 && detailData.productExtInfo.compelOutStock == 0">
-                <mt-button type="default"  class="lonelyBuy-btn" @click.native="addCartInfo">
-                    <p v-if="$tool.isLogin()"><span>￥</span>189.00</p>
-                    <p v-else><span>￥</span>{{'189.00'.replace(/^[1-9]/g,'?')}}</p>
+                <mt-button type="default"  class="lonelyBuy-btn" @click.native="addCartInfo(0)">
+                    <p v-if="$tool.isLogin()">￥{{detailData.productPrice[0].price}}</p>
+                    <p v-else>￥{{String(detailData.productPrice[0].price).replace(/^[1-9]/g,'?')}}</p>
                     <p>单独购买</p>
                 </mt-button>
-                <mt-button type="default"  class="groupBuy-btn">
-                    <p v-if="$tool.isLogin()"><span>￥</span>99.00</p>
-                    <p v-else><span>￥</span>{{'99.00'.replace(/^[1-9]/g,'?')}}</p>
-                    <p>3人拼团</p>
+                <mt-button type="default"  class="groupBuy-btn" @click.native="addCartInfo(1)">
+                    <p v-if="$tool.isLogin()">￥{{detailData.productInfo.priceFightGrops}}</p>
+                    <p v-else>￥{{String(detailData.productInfo.priceFightGrops).replace(/^[1-9]/g,'?')}}</p>
+                    <p>{{detailData.productInfo.memberNum}}人拼团</p>
                 </mt-button>
               </template>
 
@@ -384,6 +353,33 @@
                 <mt-button type="default" disabled v-else>缺货</mt-button>
             </mt-tab-item>
         </mt-tabbar>
+        <!-- 参团弹窗 -->
+        <div class="groupDialog-mask" :class="{'on':infoDialogFlag}">
+          <div class="group-dialog">
+            <div class="group-title">
+              参与{{(groupArray[groupIndex].masterName).substr(0,6)}}的拼团
+            </div>
+            <div class="group-last-info">
+              仅剩<span>{{groupArray[groupIndex].groupNumber - groupArray[groupIndex].offerNumber}}</span>个名额，{{formateDate(groupArray[groupIndex].lastTime)}}后结束
+            </div>
+            <div class="group-members">
+              <div v-for="(item,index) in groupInfo.groupPurchaseDetails">
+                <img :src="item.memberFace" v-if="item.memberFace">
+                <div v-else>{{String(item.memberUnitName).substr(0,2)}}</div>
+                <div v-if="index == 0" class="first-target">团长</div>
+              </div>
+              <div>
+                <img src="../../assets/cbt_icwctportrait.png">
+              </div>
+            </div>
+            <div class="join-group-btn" @click="addCartInfo(2,groupArray[groupIndex].id)">
+              参与拼团
+            </div>
+            <div class="close-btn" @click="closeInfoDialog">
+              <i class="iconfont">&#xe621;</i>
+            </div>
+          </div>
+        </div>
     </div>
 </template>
 
@@ -411,7 +407,6 @@ export default {
             wxFlag: false,
             wxFixed: false,
             showOrHide: false,
-            groupPurchaseList:[],
             isThird: false,
             headHeight: 44,
             detailData: {
@@ -449,8 +444,13 @@ export default {
                 friend:[],
                 group:[]
             },
-            groupId:0,//0或空:单独购买 1:开团 2:参团
-            groupType:''//团购编号
+            groupId:0,//团购编号
+            groupType:'',//0或空:单独购买 1:开团 2:参团
+            groupArray:[],
+            groupInfo:'',
+            infoDialogFlag:false,
+            groupIndex:0,
+            groupnum:0
         }
     },
     computed:{
@@ -488,6 +488,15 @@ export default {
             if(this.detailData.productInfo.orgId){
                 this.visitLog();
             }
+            // 获取团购列表
+            this.getGroupPurchase().then((res)=>{
+                this.groupnum = res.data.groupMemberNums;
+                this.groupArray = res.data.groups;
+                for(let item of this.groupArray){
+                  this.$set(item,'lastTime',this.sortTime(item.createTime,item.systemTime));
+                }
+                this.timeOut();
+            })
             this.getAttrOrImg().then((attr) => {
                 this.attrImgDetail = attr.data;
                 for(let obj of this.attrImgDetail.propValList){
@@ -516,9 +525,7 @@ export default {
                 })
             })
         })
-        this.getGroupPurchase().then((res)=>{
-            console.log(res)
-        })
+
         this.addLike();
     },
     methods: {
@@ -589,7 +596,7 @@ export default {
                 return 'blur'
             }
         },
-        addCartInfo(groupType=1) {
+        addCartInfo(groupType,groupId='') {
             this.$store.dispatch('getMemberData').then(()=>{
                 let status = store.state.member.memberAccount.status;
                 if(!store.state.member.member.id){
@@ -640,13 +647,10 @@ export default {
                          this.selected = null;
                     });
                 }
-                // 单独购买
-                if(groupType==0){
-                  this.groupType = 0;
-                  this.groupId = ''
-                }
+
                 // 立即购买
-                this.$store.dispatch('addCart',{proId:this.detailData.productExtInfo.proId,buyNum:1,groupType:this.groupType,groupId:this.groupId}).then(res=>{
+                let buyLowLimit = this.detailData.productExtInfo.buyLowLimit?this.detailData.productExtInfo.buyLowLimit:1;
+                this.$store.dispatch('addCart',{proId:this.detailData.productExtInfo.proId,buyNum:buyLowLimit,groupType:groupType,groupId:groupId}).then(res=>{
                     console.log(res);
                     this.$router.push({
                         name: '结算中心',
@@ -760,6 +764,28 @@ export default {
                 })
             })
         },
+        // 获取拼团信息
+        getGroupInfo(id,index){
+          let data = {
+            "groupId":id
+          }
+          return new Promise((resolve,reject) => {
+              this.$api.post('/oteao/groupPurchase/seachGroupById ',data,res => {
+                  resolve(res);
+                  this.infoDialogFlag = true;
+                  this.groupInfo = res.data;
+                  this.groupIndex = index;
+              },res=>{
+                  return Toast({
+                      message: res.errorMsg,
+                      iconClass: 'icon icon-fail'
+                  });
+              })
+          })
+        },
+        closeInfoDialog(){
+          this.infoDialogFlag = false;
+        },
         getAttrOrImg() {
             let data ={
                 sysId: 1,
@@ -797,11 +823,11 @@ export default {
         // 获取拼团信息
         getGroupPurchase(){
                 let data= {
-                    'groupPurchase.proId':this.proSku,
+                    'groupPurchase.proId':this.detailData.productInfo.id,
                     'groupPurchase.groupState':1,
-                    'groupPurchase.isJoin':2,
-                    'groupPurchase.proId':1,
-                    'groupPurchase.proId':10,
+                    // 'groupPurchase.isJoin':2,
+                    'page.pageNumber':1,
+                    'page.pageSize':10,
                 }
                 return new Promise((resolve,reject) =>{
                     this.$api.post('/oteao/groupPurchase/seachGroupPurchase ',data,res=>{
@@ -904,6 +930,30 @@ export default {
             })
           }
 
+        },
+        sortTime(startTime,systemTime){
+          const endTime = new Date(startTime);
+          const nowTime = new Date(systemTime);
+          let leftTime = parseInt((endTime.getTime()-nowTime.getTime())/1000)+24*60*60
+          return leftTime;
+        },
+        formateDate(time){
+          let h = this.formate(parseInt(time/(60*60)%24))
+          let m = this.formate(parseInt(time/60%60))
+          let s = this.formate(parseInt(time%60))
+          if(time <= 0){
+              return '00:00:00';
+          }else{
+              return h+':'+m+':'+s;
+          }
+        },
+        // 倒计时
+        timeOut(){
+          let time = setInterval(()=>{            // 倒计时
+             for(let item of this.groupArray){
+               item.lastTime = item.lastTime - 1
+             }
+         },1000)
         },
         timeDown () {
            const endTime = new Date(this.detailData.productExtInfo.salesEndTime);
@@ -1309,8 +1359,6 @@ export default {
             deep:true
         },
         tabSelected(val) {
-            // this.$refs.wrapper.scrollTop = this.$refs.hel.offsetHeight;
-            console.log(val)
             switch (val) {
                 case '1':
                     this.$refs.wrapper.scrollTop = 0;
@@ -1321,14 +1369,9 @@ export default {
                 case '3':
                     this.toReguler()
                     break;
-
             }
 
             this.tabFixed = true;
-            // console.log(this.$refs.heihghj.$el.offsetHeight);
-            // this.$refs.tabcontent1.$el.style['padding-top'] = this.$refs.heihghj.$el.offsetHeight + 'px';
-            // this.$refs.tabcontent2.$el.style['padding-top'] = this.$refs.heihghj.$el.offsetHeight + 'px';
-            // this.$refs.tabcontent3.$el.style['padding-top'] = this.$refs.heihghj.$el.offsetHeight + 'px';
             if(!this.wxFlag){
                 this.tabFixed = true;
             }else{
