@@ -27,19 +27,22 @@ const cart = {
                 });
             })
         },
-        addCart({dispatch,rootState},{proId,buyNum}){
+        addCart({dispatch,rootState},{proId,buyNum,groupType,groupId}){
             return new Promise((resolve,reject)=>{
                 $api.post('/oteao/shoppingCart/addBuyNum',{
                     device: rootState.device,
                     proId: proId,
-                    buyNum: buyNum
+                    buyNum: buyNum,
+                    buyNow:1,//立即购买
+                    groupType:groupType,//0或空:单独购买 1:开团 2:参团
+                    groupId:groupId?groupId:''//团购编号
                 },res=>{
                     // 更新购物车数量
-                    dispatch('queryCartTotal');
-                    Toast({
-                        message: res.message,
-                        iconClass: 'icon icon-success'
-                    });
+                    // dispatch('queryCartTotal');
+                    // Toast({
+                    //     message: res.message,
+                    //     iconClass: 'icon icon-success'
+                    // });
                     resolve(res);
                 },res=>{
                     return Toast({

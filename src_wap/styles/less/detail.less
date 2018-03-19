@@ -198,15 +198,27 @@
                         .flex;
                         .align-items;
                         .detail-groupnum{
-                            width: 1.4rem;
+                            width: 1.5rem;
                             height: 0.4rem;
                             background-image: linear-gradient(to right, #ff5500 0%, #ff8200 100%);
-                        	font-size: 0.2rem;
+                        	font-size: 0.24rem;
                         	line-height: 0.4rem;
                         	letter-spacing: 0rem;
                         	color: #ffffff;
                             .paddingL(0.1rem);
                             margin-right: 0.1rem;
+                            .position(r);
+                            &:after{
+                                content:'';
+                                display:block;
+                                width:0.2rem;
+                                height:0.4rem;
+                                position:absolute;
+                                transform:skewX(30deg);
+                                background:#fff;
+                                top:0;
+                                right:-0.1rem;
+                            }
                         }
                         .detail_now_price{
                             .color(#f08200);
@@ -225,12 +237,12 @@
                 }
                 .detail_salenum{
                     .flex;
-                	height: 0.2rem;
+                  	height: 0.2rem;
                     padding: 0 .2rem;
-                	font-size: 0.2rem;
-                	line-height: 0.2rem;
-                	letter-spacing: 0rem;
-                	color: #999999;
+                  	font-size: 0.24rem;
+                  	line-height: 0.2rem;
+                  	letter-spacing: 0rem;
+                  	color: #999999;
                     div{
                         flex: 1;
                     }
@@ -295,12 +307,132 @@
                 }
             }
         }
+        .groupbuy-content{
+            background: #fff;
+            margin-top: .2rem;
+            .title{
+                padding: 0.4rem 0.2rem 0.4rem 0.2rem;
+                .flex;
+                font-size: 0.3rem;
+                line-height: 0.3rem;
+                letter-spacing: 0rem;
+                div:first-child{
+                    flex: 1;
+                    color: #333333;
+                }
+                div:last-child{
+                    text-align: right;
+                    color: #999999;
+                }
+            }
+            .groupbuy-list{
+                padding-bottom: 0.1rem;
+                .groupbuy-item{
+                    .flex;
+                    height: 0.9rem;
+                    margin: 0 0.2rem 0.3rem 0.2rem;
+                    border-top: 1px solid #f08200;
+                    border-bottom: 1px solid #f08200;
+                    .user-img{
+                        width: 1rem;
+                    	  height: 1rem;
+                        margin-top: -0.1rem;
+                        background: #fff;
+                        border-radius: 0 50% 50% 0;
+                        img{
+                          width: 1rem;
+                        	height: 1rem;
+                          border-radius: 50%;
+                        }
+                        div{
+                          height: 1rem;
+                          width: 1rem;
+                          text-align: center;
+                          line-height: 1rem;
+                          color: #ffffff;
+                          background-color: #e0b887;
+                          border-radius: 50%;
+                          font-size: 0.28rem;
+                        }
+                    }
+                    .groupbuy-username{
+                    	font-size: 0.3rem;
+                    	line-height: 0.9rem;
+                    	letter-spacing: 0rem;
+                    	color: #333333;
+                        margin-left: 0.1rem;
+                        flex: 1;
+                        div{
+                            max-width: 1.8rem;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                        }
+                    }
+                    .groupbuy-info{
+                        height: 0.9rem;
+                        margin-right: 0.2rem;
+                        div:first-child{
+                            margin:0.15rem 0 0.1rem 0;
+                            height: 0.3rem;
+                            line-height: 0.3rem;
+                            font-size: 0.3rem;
+                            color: #333333;
+                            span{
+                                color: #f08200;
+                            }
+                        }
+                        div:last-child{
+                        	height: 0.2rem;
+                        	font-size: 0.2rem;
+                            line-height: 0.2rem;
+                        	letter-spacing: 0rem;
+                        	color: #999999;
+                        }
+                    }
+                    .to-groupbuy{
+                        width: 1.7rem;
+                    	height: 0.9rem;
+                    	background-color: #fff;
+                        margin-top: -1px;
+                        cursor: pointer;
+                        .to-groupbuy2{
+                            padding-left: 0.3rem;
+                        	width: 1.7rem;
+                        	height: 0.9rem;
+                        	background-color: #f08200;
+                            text-align: center;
+                        	border-radius: 0rem 0.5rem 0.5rem 0rem;
+                            font-size: 0.3rem;
+                            line-height: 0.9rem;
+                            letter-spacing: 0rem;
+                            color: #ffffff;
+                            .flex;
+                            align-items: center;
+                            .right{
+                                margin-left: 0.1rem;
+                                width: 0;
+                                height:0;
+                                border-top:0.15rem solid transparent;
+                                border-bottom: 0.15rem solid transparent;
+                                border-right: 0.1rem solid transparent;
+                                border-left: 0.1rem solid #fff;
+                            	opacity: 0.8;
+                            }
+                        }
+                    }
+                }
+            }
+            i{
+                .iconfont;
+            }
+        }
         .groupbuy-explain{
             background: #fff;
             margin-top: .2rem;
             height: 1.6rem;
             .title{
-                padding: 0.4rem 0.3rem 0.3rem 0.3rem;
+                padding: 0.4rem 0.2rem 0.3rem 0.2rem;
                 .flex;
                 font-size: 0.3rem;
                 line-height: 0.3rem;
@@ -314,8 +446,8 @@
                     color: #999999;
                 }
             }
-            .groupbuy-content{
-                padding: 0 0.3rem;
+            .groupbuy-content-ts{
+                padding: 0 0.2rem;
             	height: 0.3rem;
             	font-size: 0.3rem;
             	line-height: 0.3rem;
@@ -430,6 +562,9 @@
                         .color(#999);
                         span{
                             .color(#333);
+                        }
+                        i{
+                            .iconfont;
                         }
                     }
                 }
@@ -558,7 +693,7 @@
                     .color(#666);
                     text-align: center;
                     padding-bottom:1rem;
-                    min-height: 8rem;
+                    min-height: 4rem;
                 }
                 .bg(#fff);
                 .mint_cell_img_title{
@@ -738,6 +873,7 @@
             border-left: none !important;
             .mint-tab-item-label{
                 .fontSize(0);
+                .flex;
                 .mint-button--default{
                     width: 100%;
                     height: .98rem;
@@ -755,8 +891,135 @@
                         .color(#adadad);
                     }
                 }
+                .lonelyBuy-btn{
+                    box-shadow: none;
+                    width: 44%;
+                	  background-color: rgba(240, 130, 0, 0.7);
+                    &.is-disabled{
+                      color: rgba(173, 173, 173, 0.7)!important;
+                      background-color: rgba(230, 230, 230, 0.7)!important;
+                    }
+                }
+                .groupBuy-btn{
+                    box-shadow: none;
+                    width: 56%;
+                    &.is-disabled{
+                      color: #adadad!important;
+                      background-color: #e6e6e6!important;
+                    }
+                }
             }
         }
+    }
+    .groupDialog-mask{
+      top: 0;
+      background: rgba(0,0,0,0.5);
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      z-index: 3000;
+      display: none;
+      &.on{
+        display: block;
+      }
+      .group-dialog{
+        position: absolute;
+        top:3rem;
+        left: 0;
+        right: 0;
+        margin: auto;
+        width: 6.4rem;
+      	background-color: #ffffff;
+      	border-radius: 0.08rem;
+        .group-title{
+          height: 0.34rem;
+        	font-size: 0.36rem;
+        	line-height: 0.34rem;
+        	letter-spacing: -0.01rem;
+        	color: #333333;
+          text-align: center;
+          margin-top: 0.56rem;
+          margin-bottom: 0.29rem;
+        }
+        .group-last-info{
+          width: 4.02rem;
+        	height: 0.48rem;
+        	background-color: #525150;
+        	border-radius: 0.24rem;
+          font-size: 0.24rem;
+          line-height: 0.48rem;
+          letter-spacing: 0rem;
+          color: #ffffff;
+          margin: 0 auto;
+          text-align: center;
+          span{
+            color: #f08200;
+            margin: 0 0.05rem;
+          }
+        }
+        .group-members{
+          padding: 0.37rem 0.25rem 0.56rem 0.25rem;
+          .flex;
+          justify-content: center;
+          flex-wrap: wrap;
+          div{
+            position: relative;
+            margin-right: 0.2rem;
+            margin-top: 0.2rem;
+            width: 0.97rem;
+            height: 0.97rem;
+            &:nth-child(5){
+              margin-right: 0
+            }
+            &:last-child{
+              margin-right: 0
+            }
+            img{
+              width: 0.97rem;
+              height: 0.97rem;
+              border-radius: 50%;
+            }
+            .first-target{
+              position: absolute;
+              top: 0;
+              right: 0;
+              width: 0.6rem;
+              text-align: center;
+              height: 0.3rem;
+              background-color: #fe9900;
+              border-radius: 0.12rem;
+              border: solid 0.02rem #ffffff;
+              font-size: 0.2rem;
+              line-height: 0.3rem;
+              letter-spacing: 0rem;
+              color: #ffffff;
+              margin: 0;
+            }
+          }
+        }
+        .join-group-btn{
+          text-align: center;
+          margin: 0 auto;
+          width: 4.12rem;
+        	height: 0.8rem;
+        	background-color: #f08200;
+        	border-radius: 0.05rem;
+          font-size: 0.3rem;
+          line-height: 0.8rem;
+          letter-spacing: 0rem;
+          color: #ffffff;
+          margin-bottom: 0.72rem;
+        }
+        .close-btn{
+          position: absolute;
+          top: -1.02rem;
+          right: 0;
+          i{
+            color: #fff;
+            font-size: 0.72rem;
+          }
+        }
+      }
     }
 }
 .mint-popup{

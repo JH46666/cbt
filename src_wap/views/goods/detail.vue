@@ -84,10 +84,15 @@
                 <div class="detail_describe">
                     <div class="detail_describe_wrapper">
                         <div class="detail_describe_text">
-                            <p class="detail_text"><span class="detail_type">自营</span>{{ detailData.productExtInfo.title }}</p>
+                            <p class="detail_text">
+                                <span class="detail_type">
+                                    {{ detailData.orgShopCenterVo ? businessName[detailData.orgShopCenterVo.shopType - 1] : businessName[4] }}
+                                </span>
+                                {{ detailData.productExtInfo.title }}
+                            </p>
                             <div class="detail_price">
                                 <div class="detail-groupnum">
-                                    3人拼团价
+                                    {{detailData.productInfo.memberNum}}人拼团价
                                 </div>
                                 <template  v-if="detailData.productExtInfo.state === 'OFF_SHELF' && loginId && state === 'ACTIVE'">
                                     <div class="off_shelf_tips">
@@ -96,23 +101,23 @@
                                 </template>
                                 <template  v-if="!loginId || state != 'ACTIVE'">
                                     <div class="off_shelf_tips">
-                                        询价
+                                        {{String(detailData.productInfo.priceFightGrops).replace(/^[1-9]/g,'?')}}
                                     </div>
                                 </template>
                                 <template v-if="detailData.productPrice.length != 0 && detailData.productExtInfo.state === 'ON_SHELF' && loginId && state === 'ACTIVE'">
-                                        <div class="detail_now_price" v-if="!detailData.productExtInfo.isSales">
-                                            ￥{{ detailData.productPrice[0].price | toFix2 }}
+                                        <div class="detail_now_price">
+                                            ￥{{ detailData.productInfo.priceFightGrops | toFix2 }}
                                         </div>
-                                        <div class="detail_suggest_price">￥{{ detailData.productPrice[1].price | toFix2 }}</div>
+                                        <div class="detail_suggest_price">￥{{ detailData.productPrice[0].price | toFix2 }}</div>
                                 </template>
                             </div>
                         </div>
                         <div class="detail_salenum">
-                            <div>
+                            <!-- <div>
                                 已拼50500件
-                            </div>
+                            </div> -->
                             <div>
-                                库存50500件
+                                库存{{detailData.productExtInfo.stockNum}}件
                             </div>
                         </div>
                         <template  v-if="detailData.productExtInfo.state === 'ON_SHELF'">
@@ -146,13 +151,39 @@
                     </div>
                 </div>
             </div>
+            <!-- 参与拼团模块 -->
+            <div class="groupbuy-content" v-if="groupArray.length>0">
+                <div class="title">
+                    <div>{{groupnum}}人正在发起拼团，可直接参与</div>
+                    <div>更多<i class="icon-icon07"></i></div>
+                </div>
+                <div class="groupbuy-list">
+                    <div class="groupbuy-item" v-for="(item,index) in groupArray" :key="index" v-if="index < 2">
+                        <div class="user-img" >
+                            <img :src="item.masterFaceImg" v-if="item.masterFaceImg"/>
+                            <div v-else>{{String(item.masterName).substr(0,2)}}</div>
+                        </div>
+                        <div class="groupbuy-username"><div>{{String(item.masterName).substr(0,6)}}</div></div>
+                        <div class="groupbuy-info">
+                            <div>还差<span>{{item.groupNumber - item.offerNumber }}</span>人</div>
+                            <div>剩余<span>{{formateDate(item.lastTime)}}</span></div>
+                        </div>
+                        <div class="to-groupbuy" @click="getGroupInfo(item.id,index)">
+                            <div class="to-groupbuy2">
+                                <div>去拼团</div>
+                                <div class="right"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- 拼团须知 -->
             <div class="groupbuy-explain">
                 <div class="title">
                     <div>拼团玩法</div>
                     <div>拼团需知<i class="icon-icon07"></i></div>
                 </div>
-                <div class="groupbuy-content">
+                <div class="groupbuy-content-ts">
                     支付开团，人数不足24h自动退款
                 </div>
             </div>
@@ -170,7 +201,7 @@
                     <div class="comment_number">
                         <div class="comment_star">好评 <span>{{ prectent | toFix2 }}%</span></div>
                         <!-- commentRecond -->
-                        <div class="comment_total">共 <span>{{ commentRecond }}</span> 条</div>
+                        <div class="comment_total" @click="toCommentList">共 <span>{{ commentRecond }}</span> 条<i class="icon-icon07" v-if="commentList.length >2 "></i></div>
                     </div>
                 </div>
                 <div class="mint_cell_wrapper"  >
@@ -181,7 +212,7 @@
                         </div>
                     </template>
                     <template v-else>
-                        <mt-cell v-for="(item,index) in commentList" :key="index">
+                        <mt-cell v-for="(item,index) in commentList" :key="index" v-if="index<2">
                             <div class="comment_head">
                                 <div class="comment_head_wrapper">
                                     <div class="comment_head_mumber">{{ regStar(item.nickName) }}</div>
@@ -198,7 +229,7 @@
                         </mt-cell>
                     </template>
                 </div>
-                <template v-if="commentList.length < commentRecond">
+                <!-- <template v-if="commentList.length < commentRecond">
                     <div class="comment_more_btn" @click="getMoreComment">
                         查看更多评论<i class="iconfont">&#xe619;</i>
                     </div>
@@ -207,7 +238,7 @@
                     <div class="comment_more_btn">
                         没有更多了呦~
                     </div>
-                </template>
+                </template> -->
                 <!-- 规格 -->
                 <div class="comment_wrapper" >
                     <div class="scroll-div"  id='reguler'></div>
@@ -266,115 +297,6 @@
                         </mt-cell>
                     </template>
                 </div>
-
-                <!-- <mt-navbar v-model="tabSelected" :class="{'on': tabFixed , 'wxon': wxFixed}" ref='heihghj'>
-                    <i class="iconfont fixIndex" :class="{'on': tabFixed || wxFixed }" v-if="tabFixed || wxFixed" @click="$router.push({name: '首页'})">&#xe61b;</i>
-                    <mt-tab-item id="1">详情</mt-tab-item>
-                    <mt-tab-item id="2">规格</mt-tab-item>
-                    <mt-tab-item id="3"><span @click="showComment">评论</span> </mt-tab-item>
-                </mt-navbar>
-                <mt-tab-container v-model="tabSelected" :swipeable="false">
-                    <mt-tab-container-item id="1" ref="tabcontent1">
-                        <div class="mint_cell_wrapper mint_cell_img_wrapper">
-                            <template v-if="imgDetailHtml.length>0">
-                                <div v-html="imgDetailHtml"></div>
-                            </template>
-                            <template v-else>
-                                <mt-cell v-for="(item,index) in imgDetail" :key="index" v-if="item.content != '' && item.imgArray.length != 0">
-                                    <div class="mint_cell_img_title">{{ item.title }}</div>
-                                    <div class="mint_cell_img">
-                                        <img :src="ur.imgUrl" v-for="(ur,k) in item.imgArray" :key="k" />
-                                    </div>
-                                    <p class="mint_cell_img_content">{{ item.content }}</p>
-                                </mt-cell>
-                            </template>
-                        </div>
-                    </mt-tab-container-item>
-                    <mt-tab-container-item id="2" ref="tabcontent2">
-                        <div class="reguler_wrapper">
-                            <div class="reguler_item" style="height: .98rem; padding: 0;">
-                                <div>商品编号</div>
-                                <div>{{ detailData.productInfo.proSku }}</div>
-                            </div>
-                            <template v-if="isHasFlag">
-                                <div class="reguler_item" style="height: 1.5rem; padding: 0;" v-if="detailData.productExtInfo.fragrance != null">
-                                    <div>香气</div>
-                                    <div class="x_star">
-                                        <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '偏淡' || detailData.productExtInfo.fragrance === '一般' || detailData.productExtInfo.fragrance === '香' || detailData.productExtInfo.fragrance === '高香' || detailData.productExtInfo.fragrance === '极香'}">偏淡</span>
-                                        <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '一般' || detailData.productExtInfo.fragrance === '香' || detailData.productExtInfo.fragrance === '高香' || detailData.productExtInfo.fragrance === '极香'}">一般</span>
-                                        <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '香' || detailData.productExtInfo.fragrance === '高香' || detailData.productExtInfo.fragrance === '极香'}">香</span>
-                                        <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '高香' || detailData.productExtInfo.fragrance === '极香'}">高香</span>
-                                        <span class="x_grey" :class="{on: detailData.productExtInfo.fragrance === '极香'}">极香</span>
-                                    </div>
-                                </div>
-                                <div class="reguler_item" style="height: 1.5rem; padding: 0;" v-if="detailData.productExtInfo.taste != null">
-                                    <div>滋味</div>
-                                    <div class="z_star">
-                                        <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '偏淡' || detailData.productExtInfo.taste === '一般' || detailData.productExtInfo.taste === '浓' || detailData.productExtInfo.taste === '很浓' || detailData.productExtInfo.taste === '极浓'}">偏淡</span>
-                                        <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '一般' || detailData.productExtInfo.taste === '浓' || detailData.productExtInfo.taste === '很浓' || detailData.productExtInfo.taste === '极浓'}">一般</span>
-                                        <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '浓' || detailData.productExtInfo.taste === '很浓' || detailData.productExtInfo.taste === '极浓'}">浓</span>
-                                        <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '很浓' || detailData.productExtInfo.taste === '极浓'}">很浓</span>
-                                        <span class="z_grey" :class="{on: detailData.productExtInfo.taste === '极浓'}">极浓</span>
-                                    </div>
-                                </div>
-                            </template>
-                            <template v-for="(item,index) in attrImgDetail.propValList">
-                                <div class="reguler_item" style="height: .98rem; padding: 0;">
-                                    <div>{{ item.atrName }}</div>
-                                    <div>{{ item.propertiesVal.propVal }}</div>
-                                </div>
-                            </template>
-                            <div class="reguler_item" v-if="detailData.productExtInfo.reason" style="height: 1.5rem; padding: 0;">
-                                <div>推荐理由</div>
-                                <div>{{ detailData.productExtInfo.reason }}</div>
-                            </div>
-                        </div>
-                    </mt-tab-container-item>
-                    <mt-tab-container-item id="3" ref="tabcontent3">
-                        <div class="comment_wrapper" ref="commentTotal" :class="{'on': tabFixed,'wxon': wxFixed}">
-                            <div class="comment_title">商品评价</div>
-                            <div class="comment_number">
-                                <div class="comment_star">好评 <span>{{ prectent | toFix2 }}%</span></div>
-                                <div class="comment_total">共 <span>{{ commentRecond }}</span> 条</div>
-                            </div>
-                        </div>
-                        <div class="mint_cell_wrapper">
-                            <template v-if="commentList.length === 0 ">
-                                <div class="no-comment">
-                                    <img src="../../assets/images/no-comment.png" alt="">
-                                    <p>暂时还没有评价呦~</p>
-                                </div>
-                            </template>
-                            <template v-else>
-                                <mt-cell v-for="(item,index) in commentList" :key="index">
-                                    <div class="comment_head">
-                                        <div class="comment_head_wrapper">
-                                            <div class="comment_head_mumber">{{ regStar(item.nickName) }}</div>
-                                            <div class="comment_head_mumberlevel">{{ item.levelName }}</div>
-                                        </div>
-                                        <div class="comment_head_time">{{ item.createTime }}</div>
-                                    </div>
-                                    <p class="comment_footer" ref="comment" :class="{on:item.onFlag!==''&& item.onFlag}">
-                                        {{ item.content }}
-                                        <span v-if="item.replyContent"><span style="color:#c29e74;display:block;">回复：</span>{{item.replyContent}}</span>
-                                        <span class="bg-white"><i class="iconfont down" :class="{on:item.pullFlag!=='' && item.pullFlag}" @click="pullOrDown(item)" :key="index+'11'">&#xe619;</i></span>
-                                        <span class="bg-white"><i class="iconfont pull" :class="{on:item.upFlag!=='' && item.upFlag}" @click="pullOrDown(item)" :key="index+'12'">&#xe618;</i></span>
-                                    </p>
-                                </mt-cell>
-                            </template>
-                        </div>
-                        <template v-if="commentList.length < commentRecond">
-                            <div class="comment_more_btn" @click="getMoreComment">
-                                查看更多评论<i class="iconfont">&#xe619;</i>
-                            </div>
-                        </template>
-                        <template v-if="commentList.length >= commentRecond">
-                            <div class="comment_more_btn">
-                                没有更多了呦~
-                            </div>
-                        </template>
-                    </mt-tab-container-item>
-                </mt-tab-container> -->
             </div>
         </div>
         <div class="off_shelf" v-if="detailData.productExtInfo.state === 'OFF_SHELF'">
@@ -401,11 +323,63 @@
                 <mt-badge type="error" size="small" v-show="Number(cartTotal)>0">{{ cartTotal | ninenineAdd }}</mt-badge>
             </mt-tab-item> -->
             <mt-tab-item id="3" class="join-cart">
-                <mt-button type="default" disabled v-if="detailData.productExtInfo.state === 'OFF_SHELF'">加入购物车</mt-button>
-                <mt-button type="default" v-else-if="detailData.productExtInfo.isSoldOut == 1 && detailData.productExtInfo.compelOutStock == 0" @click.native="addCartInfo">加入购物车</mt-button>
+              <template v-if="detailData.productExtInfo.state === 'OFF_SHELF'">
+                <mt-button disabled type="default" class="lonelyBuy-btn">
+                  <p v-if="$tool.isLogin()">￥{{detailData.productPrice[0].price}}</p>
+                  <p v-else>￥{{String(detailData.productPrice[0].price).replace(/^[1-9]/g,'?')}}</p>
+                    <p>单独购买</p>
+                </mt-button>
+                <mt-button disabled type="default" class="groupBuy-btn">
+                  <p v-if="$tool.isLogin()">￥{{detailData.productInfo.priceFightGrops}}</p>
+                  <p v-else>￥{{String(detailData.productInfo.priceFightGrops).replace(/^[1-9]/g,'?')}}</p>
+                    <p>{{detailData.productInfo.memberNum}}人拼团</p>
+                </mt-button>
+              </template>
+              <template v-else-if="detailData.productExtInfo.isSoldOut == 1 && detailData.productExtInfo.compelOutStock == 0">
+                <mt-button type="default"  class="lonelyBuy-btn" @click.native="addCartInfo(0)">
+                    <p v-if="$tool.isLogin()">￥{{detailData.productPrice[0].price}}</p>
+                    <p v-else>￥{{String(detailData.productPrice[0].price).replace(/^[1-9]/g,'?')}}</p>
+                    <p>单独购买</p>
+                </mt-button>
+                <mt-button type="default"  class="groupBuy-btn" @click.native="addCartInfo(1)">
+                    <p v-if="$tool.isLogin()">￥{{detailData.productInfo.priceFightGrops}}</p>
+                    <p v-else>￥{{String(detailData.productInfo.priceFightGrops).replace(/^[1-9]/g,'?')}}</p>
+                    <p>{{detailData.productInfo.memberNum}}人拼团</p>
+                </mt-button>
+              </template>
+
+                <!-- <mt-button type="default" disabled v-if="detailData.productExtInfo.state === 'OFF_SHELF'">加入购物车</mt-button>
+                <mt-button type="default" v-else-if="detailData.productExtInfo.isSoldOut == 1 && detailData.productExtInfo.compelOutStock == 0" @click.native="addCartInfo">加入购物车</mt-button> -->
                 <mt-button type="default" disabled v-else>缺货</mt-button>
             </mt-tab-item>
         </mt-tabbar>
+        <!-- 参团弹窗 -->
+        <div class="groupDialog-mask" :class="{'on':infoDialogFlag}">
+          <div class="group-dialog">
+            <div class="group-title">
+              参与{{(groupArray[groupIndex].masterName).substr(0,6)}}的拼团
+            </div>
+            <div class="group-last-info">
+              仅剩<span>{{groupArray[groupIndex].groupNumber - groupArray[groupIndex].offerNumber}}</span>个名额，{{formateDate(groupArray[groupIndex].lastTime)}}后结束
+            </div>
+            <div class="group-members">
+              <div v-for="(item,index) in groupInfo.groupPurchaseDetails">
+                <img :src="item.memberFace" v-if="item.memberFace">
+                <div v-else>{{String(item.memberUnitName).substr(0,2)}}</div>
+                <div v-if="index == 0" class="first-target">团长</div>
+              </div>
+              <div>
+                <img src="../../assets/cbt_icwctportrait.png">
+              </div>
+            </div>
+            <div class="join-group-btn" @click="addCartInfo(2,groupArray[groupIndex].id)">
+              参与拼团
+            </div>
+            <div class="close-btn" @click="closeInfoDialog">
+              <i class="iconfont">&#xe621;</i>
+            </div>
+          </div>
+        </div>
     </div>
     
 
@@ -473,18 +447,28 @@ export default {
                 mine:{},
                 friend:[],
                 group:[]
-            }
+            },
+            groupId:0,//团购编号
+            groupType:'',//0或空:单独购买 1:开团 2:参团
+            groupArray:[],
+            groupInfo:'',
+            infoDialogFlag:false,
+            groupIndex:0,
+            groupnum:0
         }
     },
     computed:{
         ...mapState({
             cartTotal: state => state.cart.cartTotal
         }),
+        businessName() {
+            return  this.$tool.shopType
+        }
 
     },
     created() {
         // 设置title
-        this.$store.commit('SET_TITLE','商品详情');
+        // this.$store.commit('SET_TITLE','商品详情');
         // 获取购物车数量
         this.$store.dispatch('queryCartTotal');
         this.loginId = store.state.member.member.id;
@@ -499,6 +483,8 @@ export default {
         })
         this.getDetail().then((res) =>{
             this.detailData = res.data;
+            // 设置title
+            this.$store.commit('SET_TITLE',this.detailData.productExtInfo.title );
             this.maxNum = this.detailData.productExtInfo.stockNum;
             if(res.data.orgShopCenterVo){
                 this.shopTel = `tel://${res.data.orgShopCenterVo.businessTelephone}`;
@@ -506,6 +492,15 @@ export default {
             if(this.detailData.productInfo.orgId){
                 this.visitLog();
             }
+            // 获取团购列表
+            this.getGroupPurchase().then((res)=>{
+                this.groupnum = res.data.groupMemberNums;
+                this.groupArray = res.data.groups;
+                for(let item of this.groupArray){
+                  this.$set(item,'lastTime',this.sortTime(item.createTime,item.systemTime));
+                }
+                this.timeOut();
+            })
             this.getAttrOrImg().then((attr) => {
                 this.attrImgDetail = attr.data;
                 for(let obj of this.attrImgDetail.propValList){
@@ -534,6 +529,7 @@ export default {
                 })
             })
         })
+
         this.addLike();
     },
     methods: {
@@ -604,7 +600,7 @@ export default {
                 return 'blur'
             }
         },
-        addCartInfo() {
+        addCartInfo(groupType,groupId='') {
             this.$store.dispatch('getMemberData').then(()=>{
                 let status = store.state.member.memberAccount.status;
                 if(!store.state.member.member.id){
@@ -655,8 +651,17 @@ export default {
                          this.selected = null;
                     });
                 }
-                this.$store.dispatch('addCart',{proId:this.detailData.productExtInfo.proId,buyNum:this.goodsCount}).then(res=>{
+
+                // 立即购买
+                let buyLowLimit = this.detailData.productExtInfo.buyLowLimit?this.detailData.productExtInfo.buyLowLimit:1;
+                this.$store.dispatch('addCart',{proId:this.detailData.productExtInfo.proId,buyNum:buyLowLimit,groupType:groupType,groupId:groupId}).then(res=>{
                     console.log(res);
+                    this.$router.push({
+                        name: '结算中心',
+                        query: {
+                            cart: res.data.cartId
+                        }
+                    })
                 },res=>{});
             }).catch((res)=>{
                 return this.$router.push({name: '账户登录'});
@@ -763,6 +768,28 @@ export default {
                 })
             })
         },
+        // 获取拼团信息
+        getGroupInfo(id,index){
+          let data = {
+            "groupId":id
+          }
+          return new Promise((resolve,reject) => {
+              this.$api.post('/oteao/groupPurchase/seachGroupById ',data,res => {
+                  resolve(res);
+                  this.infoDialogFlag = true;
+                  this.groupInfo = res.data;
+                  this.groupIndex = index;
+              },res=>{
+                  return Toast({
+                      message: res.errorMsg,
+                      iconClass: 'icon icon-fail'
+                  });
+              })
+          })
+        },
+        closeInfoDialog(){
+          this.infoDialogFlag = false;
+        },
         getAttrOrImg() {
             let data ={
                 sysId: 1,
@@ -796,6 +823,26 @@ export default {
                     });
                 })
             })
+        },
+        // 获取拼团信息
+        getGroupPurchase(){
+                let data= {
+                    'groupPurchase.proId':this.detailData.productInfo.id,
+                    'groupPurchase.groupState':1,
+                    // 'groupPurchase.isJoin':2,
+                    'page.pageNumber':1,
+                    'page.pageSize':10,
+                }
+                return new Promise((resolve,reject) =>{
+                    this.$api.post('/oteao/groupPurchase/seachGroupPurchase ',data,res=>{
+                        resolve(res);
+                    }),res=>{
+                        return Toast({
+                            message: res.errorMsg,
+                            iconClass: 'icon icon-fail'
+                        });
+                    }
+                })
         },
         handleChange(index) {           // 图片索引
             this.imgIndex = index+1;
@@ -876,6 +923,41 @@ export default {
         },
         toReguler(){               //滚动到详情
             document.getElementById("reguler").scrollIntoView(true);
+        },
+        toCommentList(){
+          if(this.commentList.length >2){
+            this.$router.push({
+                name: '商品评论',
+                query: {
+                    'proSku': this.detailData.productExtInfo.id
+                }
+            })
+          }
+
+        },
+        sortTime(startTime,systemTime){
+          const endTime = new Date(startTime);
+          const nowTime = new Date(systemTime);
+          let leftTime = parseInt((endTime.getTime()-nowTime.getTime())/1000)+24*60*60
+          return leftTime;
+        },
+        formateDate(time){
+          let h = this.formate(parseInt(time/(60*60)%24))
+          let m = this.formate(parseInt(time/60%60))
+          let s = this.formate(parseInt(time%60))
+          if(time <= 0){
+              return '00:00:00';
+          }else{
+              return h+':'+m+':'+s;
+          }
+        },
+        // 倒计时
+        timeOut(){
+          let time = setInterval(()=>{            // 倒计时
+             for(let item of this.groupArray){
+               item.lastTime = item.lastTime - 1
+             }
+         },1000)
         },
         timeDown () {
            const endTime = new Date(this.detailData.productExtInfo.salesEndTime);
@@ -1401,8 +1483,6 @@ export default {
             deep:true
         },
         tabSelected(val) {
-            // this.$refs.wrapper.scrollTop = this.$refs.hel.offsetHeight;
-            console.log(val)
             switch (val) {
                 case '1':
                     this.$refs.wrapper.scrollTop = 0;
@@ -1413,14 +1493,9 @@ export default {
                 case '3':
                     this.toReguler()
                     break;
-
             }
 
             this.tabFixed = true;
-            // console.log(this.$refs.heihghj.$el.offsetHeight);
-            // this.$refs.tabcontent1.$el.style['padding-top'] = this.$refs.heihghj.$el.offsetHeight + 'px';
-            // this.$refs.tabcontent2.$el.style['padding-top'] = this.$refs.heihghj.$el.offsetHeight + 'px';
-            // this.$refs.tabcontent3.$el.style['padding-top'] = this.$refs.heihghj.$el.offsetHeight + 'px';
             if(!this.wxFlag){
                 this.tabFixed = true;
             }else{

@@ -3,6 +3,7 @@
         <mt-navbar v-model="selected">
             <mt-tab-item id="null">全部</mt-tab-item>
             <mt-tab-item id="waitPay">待付款</mt-tab-item>
+            <mt-tab-item id="groupping">拼团中</mt-tab-item>
             <mt-tab-item id="waitSend">待发货</mt-tab-item>
             <mt-tab-item id="waitRec">已发货</mt-tab-item>
         </mt-navbar>
@@ -19,14 +20,15 @@
                         <h3 class="title">
                             订单号: {{ item.orderNo }}
                         </h3>
-                        <span class="type">{{ $store.state.order.status[item.orderStatus] }}</span>
+                        <span class="type" v-if="item.lessGroup">待成团，还差<span style="color: #f08200">{{ item.lessGroup }}</span>人</span>
+                        <span class="type" v-else>{{ $store.state.order.status[item.orderStatus] }}</span>
                     </div>
                     <template v-for="(todo,index) in item.products">
                         <div class="goods-item">
                             <goods-img style="width:1.6rem;height:1.6rem;" :imgUrl="todo.imageUrl || '/'"></goods-img>
-                            <div class="right">
+                            <div class="right _fix-right">
                                 <div class="goods-title">{{ todo.productName }}</div>
-                                <p class="goods-bd">
+                                <p class="goods-bd _fix-goods-bd">
                                     <span class="price">￥{{ todo.productPrice | toFix2 }}</span>
                                     <span class="num">×{{ todo.productNum }}</span>
                                 </p>
@@ -34,16 +36,16 @@
                         </div> 
                     </template>
                     <div class="foot">
-                        <div class="text">
-                            <p class="left">{{ item.createTime }}</p>
-                            <p class="right">共{{ item.products.length }}件&nbsp;&nbsp;<span class="gold">￥{{ item.orderAllSum | toFix2 }}</span></p>
+                        <div class="text _fix-text">
+                            <p class="left _fix-left">{{ item.createTime }}</p>
+                            <p class="right _fix-right">订单金额：<span class="gold">￥{{ item.orderAllSum | toFix2 }}</span></p>
                         </div>
                         <div class="btn-wrap">
                             <template v-if="item.orderStatus === 'WAIT_PAY'">
                                 <mt-button size="small" @click.stop="closeOrder(item)">关闭订单</mt-button>
                                 <mt-button size="small" @click.stop="editPrice(item)">修改价格</mt-button>
                             </template>
-                            <template v-if="item.orderStatus === 'PACKING'">
+                            <template v-if="item.orderStatus === 'PACKING' && item.groupSuccess==3">
                                 <mt-button size="small" @click.stop="closeOrder(item)">关闭订单</mt-button>
                                 <mt-button size="small" class="gold" @click.stop="$router.push({name:'发货',query:{orderNo:item.orderNo}})">发货</mt-button>
                             </template>
@@ -287,7 +289,7 @@
         },
         created() {
             // 设置title
-            this.$store.commit('SET_TITLE','卖家订单');
+            this.$store.commit('SET_TITLE','全部订单');
             
             // 进入页面拉取数据
             this.$store.dispatch('getSellerOrder',{type: this.selected}).then(res => {
@@ -300,4 +302,31 @@
 
 <style lang="less">
     @import url('~@/styles/seller/orderList.less');
+    /* _add为新增，_fix为修改 */
+
+    /* 修改价格样式 */
+    .goods-item{
+        ._fix-right{
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            margin-left: 0.2rem;
+            padding-left: 0rem!important;
+            ._fix-goods-bd{
+                width: 100%;
+                position: absolute;
+                bottom: 0rem;
+            }
+        }
+    }
+    .foot{
+        padding-bottom: 0.24rem!important;
+        ._fix-left{
+            color: #999;
+        }
+        ._fix-text{
+            margin-bottom: 0rem!important;
+        }
+    }
+        
 </style>

@@ -84,6 +84,14 @@ const router = new Router({
 					meta: {
 						hideFooter: true
 					}
+				},
+				{
+					path: 'comment',
+					name: '商品评论',
+					component: resolve => require(['@/views/goods/commentList.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
 				}
 			]
 		},
