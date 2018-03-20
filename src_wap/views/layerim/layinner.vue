@@ -59,13 +59,20 @@ import store from 'store';
                             ,msgbox: '/erp/layim/msgbox'
                             ,find: layui.cache.dir + 'css/modules/layim/html/find.html' //发现页面地址，若不开启，剔除该项即可
                             ,chatLog: layui.cache.dir + 'css/modules/layim/html/chatLog.html' //聊天记录页面地址，若不开启，剔除该项即可
+                            //可同时配置多个
+                            ,tool: [{
+                                alias: 'history' //工具别名
+                                ,title: '聊天记录' //工具名称
+                                ,iconUnicode: '&#xe60e;' //图标字体的unicode，可不填
+                                ,iconClass: '' //图标字体的class类名
+                            }]
 
                         });
                         socket.config({
                             log:true,
                             token:`/erp/layim/getToKenById?id=${_this.userid}`,
                             // token:'/erp/layim/token',
-                            // server:'ws://192.168.7.212:8888'
+                            //server:'ws://192.168.7.8:8888',
                             server:'wss://mdemows.oteao.com',
                             //server: 'wss://java.im.test.yipicha.com'
                             //server: 'ws://java.im.test.yipicha.com:8888',
@@ -143,17 +150,7 @@ import store from 'store';
                         layim.on('sign', function(value){
                             //console.log(value);
                         });
-                        //监听自定义工具栏点击，以添加代码为例
-                        layim.on('tool(code)', function(insert){
-                            layer.prompt({
-                                title: '插入代码'
-                                ,formType: 2
-                                ,shade: 0
-                            }, function(text, index){
-                                layer.close(index);
-                                insert('[pre class=layui-code]' + text + '[/pre]'); //将内容插入到编辑器
-                            });
-                        });
+                        
                         //监听layim建立就绪
                         layim.on('ready', function(){
                             req.loading = false;
@@ -163,7 +160,7 @@ import store from 'store';
                         console.log(layim.cache().friend);
                         });
                         //监听发送消息                        
-                        layim.on('sendMessage', function(data){
+                        layim.off('sendMessage').on('sendMessage', function(data){
                             var To = data.to;
                             var timeStamp = data.mine.time;
                             if(sessionStorage.getItem("msg_timestamp")==timeStamp){
@@ -189,6 +186,56 @@ import store from 'store';
                                 mtype:t? socket.mtype.checkIsOnline:socket.mtype.checkOnlineCount,
                                 id:res.data.id
                             });
+                        });
+                        //监听自定义工具栏点击，以添加代码为例
+                        layim.off('tool(history)').on('tool(history)', function(insert,f,thatChat){
+                            var friendId = thatChat.data.id
+                            var kefuName1 = thatChat.data.name
+                            var param = "?id="+friendId+"&userId="+layim.cache().mine.id;
+                            $.get('/erp/layim/getChatLog/0/10000'+param, {}, function(res){
+                                console.log(res.data.data)
+                                //弹出一个更多聊天记录面板
+                                layim.panel({
+                                    title: '与 '+ kefuName1 +' 的聊天记录' //标题
+                                    ,tpl: ['<div class="layim-chat-main"><ul id="LAY_view">'                                  
+                                    ,'{{# layui.each(d.data, function(index, item){  if(item.id == 200512){ }}'
+                                    ,'    <li class="layim-chat-mine"><div class="layim-chat-user"><img src="{{ item.avatar }}" />'
+                                    ,'    <cite><i>{{ layui.data.date(item.timestamp) }}</i>{{ item.username }}</cite>'
+                                    ,'    </div><div class="layim-chat-text">{{layui.mobile.layim.content(item.content)}}</div></li>'
+                                    ,'  {{# } else { }}'
+                                    ,'    <li><div class="layim-chat-user"><img src="{{ item.avatar }}" /><cite>{{ item.username }}<i>{{ layui.data.date(item.timestamp) }}</i></cite></div><div class="layim-chat-text">{{ layui.mobile.layim.content(item.content) }}</div></li>'
+                                    ,'  {{# } }); }}' 
+                                    ,'</ul></div>'    
+                                    ].join('') //模版
+                                    ,data: res.data.data
+                                });
+                            });                            
+                        });
+
+                        //监听查看更多记录
+                        layim.off('chatlog').on('chatlog', function(data, ul){
+                            console.log(data); //得到当前会话对象的基本信息
+                            console.log(ul); //得到当前聊天列表所在的ul容器，比如可以借助他来实现往上插入更多记录
+                            var param = "?id="+data.id+"&userId="+layim.cache().mine.id;
+                            $.get('/erp/layim/getChatLog/0/10000'+param, {}, function(res){
+                                console.log(res.data.data)   
+                                //弹出一个更多聊天记录面板
+                                layim.panel({
+                                    title: '与 '+ data.username +' 的聊天记录' //标题
+                                    ,tpl: ['<div class="layim-chat-main"><ul id="LAY_view">'                                  
+                                    ,'{{# layui.each(d.data, function(index, item){  if(item.id == layui.mobile.layim.cache().mine.id){ }}'
+                                    ,'    <li class="layim-chat-mine"><div class="layim-chat-user"><img src="{{ item.avatar }}" />'
+                                    ,'    <cite><i>{{ layui.data.date(item.timestamp) }}</i>{{ item.username }}</cite>'
+                                    ,'    </div><div class="layim-chat-text">{{layui.mobile.layim.content(item.content)}}</div></li>'
+                                    ,'  {{# } else { }}'
+                                    ,'    <li><div class="layim-chat-user"><img src="{{ item.avatar }}" /><cite>{{ item.username }}<i>{{ layui.data.date(item.timestamp) }}</i></cite></div><div class="layim-chat-text">{{ layui.mobile.layim.content(item.content) }}</div></li>'
+                                    ,'  {{# } }); }}' 
+                                    ,'</ul></div>'    
+                                    ].join('') //模版
+                                    ,data: res.data.data
+                                });
+                            });
+                            
                         });
                     });
                 }
