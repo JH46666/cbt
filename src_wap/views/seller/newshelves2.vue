@@ -302,11 +302,20 @@ import $api from 'api';
             },
             onlySave(stata) {
                 let mainImg = [];
+                let detailImg = [];
+                // 商品轮播图url
                 for(let i=0;i<this.urls.main.length;i++){
                     mainImg.push({
                         imgUrl: this.urls.main[i]
                     })
                 }
+                // 商品详情图url
+                for (let i = 0; i < this.urls.main.length; i++) {
+                    detailImg.push(
+                        this.urls.one[i]
+                    )
+                }
+
                 let oneImg = {
                     title: '外形细节展示',
                     content: this.resize.textMs1,
@@ -422,12 +431,7 @@ import $api from 'api';
                 let allOrgContent = oneImgStr + twoImgStr + threeImgStr + fourImgStr;
                 let data = {
                     "catProps": [],
-                    "productDetails": [
-                        {
-                            "content": JSON.stringify(allContent),
-                            'orgContent': allOrgContent
-                        }
-                    ],
+                    "detailImgs": detailImg,
                     "productImgs": mainImg
                 }
                 for(let i=0;i<this.resize.proValList.length;i++){
@@ -450,16 +454,16 @@ import $api from 'api';
                     this.$api.post(`/oteao/productInfo/createProductInfo` +
                         `?frontOrgProInfoDetailVo.catId=${ encodeURI(this.resize.twoClass) }` +
                         `&frontOrgProInfoDetailVo.brandId=${ encodeURI(this.resize.selId.pp) }` +
-                        `&frontOrgProInfoDetailVo.proName=${ encodeURI(this.resize.form.goodsName) }` +
-                        `&frontOrgProInfoDetailVo.unint=${ encodeURI(this.resize.form.goodsDw) }` +
+                        `&frontOrgProInfoDetailVo.proName=${ encodeURI(this.resize.form.goodsSell) }` +
+                        // `&frontOrgProInfoDetailVo.unint=${ encodeURI(this.resize.form.goodsDw) }` +
                         `&frontOrgProInfoDetailVo.weight=${ encodeURI(this.resize.form.goodsMz) }` +
-                        `&frontOrgProInfoDetailVo.netWeight=${ encodeURI(this.resize.form.goodsJz) }` +
-                        `&frontOrgProInfoDetailVo.reason=${ encodeURI(this.resize.form.goodsSell) }` +
+                        // `&frontOrgProInfoDetailVo.netWeight=${ encodeURI(this.resize.form.goodsJz) }` +
+                        // `&frontOrgProInfoDetailVo.reason=${ encodeURI(this.resize.form.goodsSell) }` +
                         `&frontOrgProInfoDetailVo.stockNum=${ encodeURI(this.resize.form.goodsKc) }` +
-                        `&frontOrgProInfoDetailVo.proPrice=${ encodeURI(this.resize.form.goodsSx) }` +
+                        `&frontOrgProInfoDetailVo.proPrice=${ encodeURI(this.resize.form.goodsSj) }` +
                         `&frontOrgProInfoDetailVo.retailPrice=${encodeURI(this.resize.form.goodsPtsj) }` +
-                        `&frontOrgProInfoDetailVo.fragrance=${encodeURI(this.resize.defaultArray[0].content)}` +
-                        `&frontOrgProInfoDetailVo.taste=${encodeURI(this.resize.defaultArray[1].content)}` +
+                        `&frontOrgProInfoDetailVo.memberNum=${encodeURI(this.resize.form.goodsGroupNum)}` +
+                        `&frontOrgProInfoDetailVo.groupPrice=${encodeURI(this.resize.form.goodsGroup)}` +
                         `&frontOrgProInfoDetailVo.isSaveOnShelf=${ encodeURI(stata) }`,JSON.stringify(data),res => {
                             this.sucFlag = true;
                             this.loading1 = false;
@@ -478,16 +482,16 @@ import $api from 'api';
                 }else{
                     this.$api.post(`/oteao/productInfo/createProductInfo` +
                         `?frontOrgProInfoDetailVo.catId=${ encodeURI(this.resize.twoClass) }` +
-                        `&frontOrgProInfoDetailVo.proName=${ encodeURI(this.resize.form.goodsName) }` +
-                        `&frontOrgProInfoDetailVo.unint=${ encodeURI(this.resize.form.goodsDw) }` +
+                        `&frontOrgProInfoDetailVo.proName=${ encodeURI(this.resize.form.goodsSell) }` +
+                        // `&frontOrgProInfoDetailVo.unint=${ encodeURI(this.resize.form.goodsDw) }` +
                         `&frontOrgProInfoDetailVo.weight=${ encodeURI(this.resize.form.goodsMz) }` +
-                        `&frontOrgProInfoDetailVo.netWeight=${ encodeURI(this.resize.form.goodsJz) }` +
-                        `&frontOrgProInfoDetailVo.reason=${ encodeURI(this.resize.form.goodsSell) }` +
+                        // `&frontOrgProInfoDetailVo.netWeight=${ encodeURI(this.resize.form.goodsJz) }` +
+                        // `&frontOrgProInfoDetailVo.reason=${ encodeURI(this.resize.form.goodsSell) }` +
                         `&frontOrgProInfoDetailVo.stockNum=${ encodeURI(this.resize.form.goodsKc) }` +
-                        `&frontOrgProInfoDetailVo.proPrice=${ encodeURI(this.resize.form.goodsSx) }` +
-                        `&frontOrgProInfoDetailVo.retailPrice=${encodeURI(this.resize.form.goodsPtsj) }` +
-                        `&frontOrgProInfoDetailVo.fragrance=${encodeURI(this.resize.defaultArray[0].content)}` +
-                        `&frontOrgProInfoDetailVo.taste=${encodeURI(this.resize.defaultArray[1].content)}` +
+                        `&frontOrgProInfoDetailVo.proPrice=${encodeURI(this.resize.form.goodsSj)}` +
+                        `&frontOrgProInfoDetailVo.retailPrice=${encodeURI(this.resize.form.goodsPtsj)}` +
+                        `&frontOrgProInfoDetailVo.memberNum=${encodeURI(this.resize.form.goodsGroupNum)}` +
+                        `&frontOrgProInfoDetailVo.groupPrice=${encodeURI(this.resize.form.goodsGroup)}` +
                         `&frontOrgProInfoDetailVo.isSaveOnShelf=${ encodeURI(stata) }`,JSON.stringify(data),res => {
                             this.sucFlag = true;
                             this.loading1 = false;

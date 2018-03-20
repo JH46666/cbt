@@ -71,12 +71,12 @@
                             <img :src="item.proImg" />
                         </div>
                         <div class="flex-1 pro-txt _fix-pro-txt">
-                            <h4 class="tit">{{item.proName}}</h4>
+                            <h4 class="tit">{{ item.proName }}</h4>
                             <!-- 成团 -->
                             <div class="_add-tuan">
-                                <div class="_add-groupnum">3人团价&emsp;&nbsp;</div>
-                                <div class="price _fix-price">￥{{toFixed(item.proPrice)}}</div>
-                                <div class="_add-single-price">单卖价：￥200</div>
+                                <div class="_add-groupnum">{{ item.memberNum }}人团价&emsp;&nbsp;</div>
+                                <div class="price _fix-price">￥{{ toFixed(item.priceFightGroup) }}</div>
+                                <div class="_add-single-price">单卖价：￥{{ toFixed(item.proPrice) }}</div>
                             </div>
                             <p class="time_tag" v-if="item.isSales">限时特价</p>
                         </div>
@@ -123,9 +123,9 @@
                             <h4 class="tit">{{item.proName}}</h4>
                             <!-- 成团 -->
                             <div class="_add-tuan">
-                                <div class="_add-groupnum">3人团价&emsp;&nbsp;</div>
-                                <div class="price _fix-price">￥{{toFixed(item.proPrice)}}</div>
-                                <div class="_add-single-price">单卖价：￥200</div>
+                                <div class="_add-groupnum">{{item.memberNum}}人团价&emsp;&nbsp;</div>
+                                <div class="price _fix-price">￥{{toFixed(item.priceFightGroup)}}</div>
+                                <div class="_add-single-price">单卖价：￥{{toFixed(item.proPrice)}}</div>
                             </div>
                             <p class="time_tag" v-if="item.isSales">限时特价</p>
                         </div>
@@ -763,7 +763,8 @@ import $api from 'api';
         justify-content: space-between;
         ._fix-price{
             position: unset!important;
-            flex: 1;
+            /* flex: 1; */
+            width: 1.7rem;
         }
     }
 
@@ -803,7 +804,7 @@ import $api from 'api';
             }
         }
         ._add-single-price{
-            width: 1.92rem;
+            /* width: 1.92rem; */
             height: 0.33rem;
             font-size: 0.24rem;
             font-weight: normal;

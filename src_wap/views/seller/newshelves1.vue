@@ -50,7 +50,7 @@
                             <div class="item-right" @click="clickSel('pinpai')">
                                 <input type="text" id="4" readonly placeholder="必填项，请选择商品品牌" v-model="resize.form.goodsBrand" />
                             </div>
-                            <i class="iconfont" @click="clickSel('pinpai')">&#xe744;</i>
+                            <i class="iconfont" @click="clickSel('pinpai')">&#xe619;</i>
                         </div>
                         <div class="item">
                             <label class="item-left" for="8">
@@ -148,7 +148,7 @@
                             <div class="item-right" @click="clickSelProVal(index)">
                                 <input type="text" :readonly="item.propValList.length>0" :id="index+12" v-model="item.proVal" placeholder="非必填" />
                             </div>
-                            <i class="iconfont" @click="clickSelProVal(index)" v-if="item.propValList.length>0">&#xe744;</i>
+                            <i class="iconfont" @click="clickSelProVal(index)" v-if="item.propValList.length>0">&#xe619;</i>
                             <mt-popup v-model="item.proShowHide" position="bottom" v-if="item.propValList.length>0">
                                 <div class="close-wrap">
                                     <p class="close-tip" v-for="(secobj,secindex) in item.propValList" :class="{on: secindex == item.proIndex}" :key="secindex"
@@ -173,13 +173,13 @@
                 <div class="good_type_list" v-if="resize.proValList.length != 0">
                     <div class="good_type_list_wrapper">
                         <div class="item" v-for="(item,index) in resize.proValList" :key="index">
-                            <label class="item-left" :for="index+12">
+                            <label class="item-left" :for="index+14">
                                 {{ item.propName }}
                             </label>
                             <div class="item-right" @click="clickSelProVal(index)">
-                                <input type="text" :readonly="item.propValList.length>0" :id="index+12" v-model="item.proVal" placeholder="非必填" />
+                                <input type="text" :readonly="item.propValList.length>0" :id="index+14" v-model="item.proVal" placeholder="非必填" />
                             </div>
-                            <i class="iconfont" @click="clickSelProVal(index)" v-if="item.propValList.length>0">&#xe744;</i>
+                            <i class="iconfont" @click="clickSelProVal(index)" v-if="item.propValList.length>0">&#xe619;</i>
                             <mt-popup v-model="item.proShowHide" position="bottom" v-if="item.propValList.length>0">
                                 <div class="close-wrap">
                                     <p class="close-tip" v-for="(secobj,secindex) in item.propValList" :class="{on: secindex == item.proIndex}" :key="secindex"
@@ -239,7 +239,8 @@
                 </div> -->
 
             </div>
-            <div class="btn_wrapper" v-if="showOfHideStep">
+            <!-- <div class="btn_wrapper" v-if="showOfHideStep"> -->
+            <div class="btn_wrapper">
                 <mt-button type="primary" :disabled="disabledBol" @click="goStep3">下一步</mt-button>
             </div>
         </div>
@@ -317,6 +318,7 @@
             }
         },
         watch: {
+            // 点击二级分类时获取属性后添加自定义属性
             'resize.twoClass': {
                 handler(curVal, oldVal) {
                     this.getProVal(curVal).then((res) => {
@@ -361,6 +363,7 @@
             }
         },
         methods: {
+            // 选择属性下的具体属性
             selectPro(item, index, secobj) {
                 item.proIndex = index;
                 item.proVal = secobj.propVal;
@@ -378,12 +381,14 @@
                     this.resize.defaultArray[index].showOfHide = true;
                 }
             },
+            // 选定属性值时弹出框
             clickSelProVal(index) {
                 for (let i = 0; i < this.resize.proValList.length; i++) {
                     this.resize.proValList[i].proShowHide = false;
                     this.resize.proValList[index].proShowHide = true;
                 }
             },
+            // 点击二级分类时获取属性
             getProVal(id) {
                 let data = {
                     catId: id,
@@ -614,6 +619,9 @@
                 if (this.resize.form[str] < 2 || this.resize.form[str] > 10) {
                     this.flagGoodsGroupNum = true;
                 }
+                else{
+                    this.flagGoodsGroupNum = false;
+                }
             }
         },
         computed: {
@@ -630,10 +638,10 @@
                         && this.resize.form.goodsPtsj != ''
                         && this.resize.form.goodsGroup != ''
                         && this.resize.form.goodsGroupNum != ''
-                        && this.resize.form.goodsCzjj != ''
-                        && this.resize.form.goodsCd != ''
-                        && this.resize.form.goodsSize != ''
-                        && this.resize.form.goodsSave != ''
+                        // && this.resize.form.goodsCzjj != ''
+                        // && this.resize.form.goodsCd != ''
+                        // && this.resize.form.goodsSize != ''
+                        // && this.resize.form.goodsSave != ''
                     ) {
                         return false;
                     }
