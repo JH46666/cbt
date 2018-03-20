@@ -101,12 +101,12 @@
                                 </template>
                                 <template  v-if="!loginId || state != 'ACTIVE'">
                                     <div class="off_shelf_tips">
-                                        {{String(detailData.productInfo.priceFightGrops).replace(/^[1-9]/g,'?')}}
+                                        ￥{{detailData.productInfo.hideGroupsPrice}}
                                     </div>
                                 </template>
                                 <template v-if="detailData.productPrice.length != 0 && detailData.productExtInfo.state === 'ON_SHELF' && loginId && state === 'ACTIVE'">
                                         <div class="detail_now_price">
-                                            ￥{{ detailData.productInfo.priceFightGrops | toFix2 }}
+                                            ￥{{detailData.productInfo.priceFightGrops | toFix2  }}
                                         </div>
                                         <div class="detail_suggest_price">￥{{ detailData.productPrice[0].price | toFix2 }}</div>
                                 </template>
@@ -153,9 +153,9 @@
             </div>
             <!-- 参与拼团模块 -->
             <div class="groupbuy-content" v-if="groupArray.length>0">
-                <div class="title">
+                <div class="title" @click="openListDialog">
                     <div>{{groupnum}}人正在发起拼团，可直接参与</div>
-                    <div>更多<i class="icon-icon07"></i></div>
+                    <div v-if="groupArray.length>2">更多<i class="icon-icon07"></i></div>
                 </div>
                 <div class="groupbuy-list">
                     <div class="groupbuy-item" v-for="(item,index) in groupArray" :key="index" v-if="index < 2">
@@ -283,7 +283,7 @@
                     </div>
                 </div>
                 <!-- 详情 -->
-                <div class="mint_cell_wrapper mint_cell_img_wrapper">
+                <!-- <div class="mint_cell_wrapper mint_cell_img_wrapper">
                     <template v-if="imgDetailHtml.length>0">
                         <div v-html="imgDetailHtml"></div>
                     </template>
@@ -296,7 +296,7 @@
                             <p class="mint_cell_img_content">{{ item.content }}</p>
                         </mt-cell>
                     </template>
-                </div>
+                </div> -->
             </div>
         </div>
         <div class="off_shelf" v-if="detailData.productExtInfo.state === 'OFF_SHELF'">
@@ -326,24 +326,24 @@
               <template v-if="detailData.productExtInfo.state === 'OFF_SHELF'">
                 <mt-button disabled type="default" class="lonelyBuy-btn">
                   <p v-if="$tool.isLogin()">￥{{detailData.productPrice[0].price| toFix2}}</p>
-                  <p v-else>￥{{String(detailData.productPrice[0].price).replace(/^[1-9]/g,'?')}}</p>
+                  <p v-else>￥{{detailData.productPrice[0].hidePrice}}</p>
                     <p>单独购买</p>
                 </mt-button>
                 <mt-button disabled type="default" class="groupBuy-btn">
-                  <p v-if="$tool.isLogin()">￥{{detailData.productInfo.priceFightGrops | toFix2}}</p>
-                  <p v-else>￥{{String(detailData.productInfo.priceFightGrops).replace(/^[1-9]/g,'?')}}</p>
+                  <p v-if="$tool.isLogin()">￥{{detailData.productInfo.priceFightGrops| toFix2}}</p>
+                  <p v-else>￥{{detailData.productInfo.hideGroupsPrice}}</p>
                     <p>{{detailData.productInfo.memberNum}}人拼团</p>
                 </mt-button>
               </template>
               <template v-else-if="detailData.productExtInfo.isSoldOut == 1 && detailData.productExtInfo.compelOutStock == 0">
                 <mt-button type="default"  class="lonelyBuy-btn" @click.native="addCartInfo(0)">
                     <p v-if="$tool.isLogin()">￥{{detailData.productPrice[0].price| toFix2}}</p>
-                    <p v-else>￥{{String(detailData.productPrice[0].price).replace(/^[1-9]/g,'?')}}</p>
+                    <p v-else>￥{{detailData.productPrice[0].hidePrice}}</p>
                     <p>单独购买</p>
                 </mt-button>
                 <mt-button type="default"  class="groupBuy-btn" @click.native="addCartInfo(1)">
-                    <p v-if="$tool.isLogin()">￥{{detailData.productInfo.priceFightGrops | toFix2}}</p>
-                    <p v-else>￥{{String(detailData.productInfo.priceFightGrops).replace(/^[1-9]/g,'?')}}</p>
+                    <p v-if="$tool.isLogin()">￥{{detailData.productInfo.priceFightGrops| toFix2}}</p>
+                    <p v-else>￥{{detailData.productInfo.hideGroupsPrice}}</p>
                     <p>{{detailData.productInfo.memberNum}}人拼团</p>
                 </mt-button>
               </template>
@@ -365,7 +365,7 @@
             <div class="group-members">
               <div v-for="(item,index) in groupInfo.groupPurchaseDetails">
                 <img :src="item.memberFace" v-if="item.memberFace">
-                <div v-else>{{String(item.memberUnitName).substr(0,2)}}</div>
+                <div v-else class="noImg">{{String(item.memberUnitName).substr(0,2)}}</div>
                 <div v-if="index == 0" class="first-target">团长</div>
               </div>
               <div>
@@ -380,8 +380,39 @@
             </div>
           </div>
         </div>
+        <!-- 团购列表弹窗 -->
+        <div class="groupList-mask" :class="{'on':listDialogFlag}">
+          <div class="groupList-dialog">
+            <div class="group-title">
+              <div>{{groupnum}}人正在发起拼团，可直接参与</div>
+              <div @click="closeListDialog">关闭</div>
+            </div>
+            <div class="group-list">
+              <div class="groupbuy-item" v-for="(item,index) in groupArray" :key="index">
+                  <div class="user-img" >
+                      <img :src="item.masterFaceImg" v-if="item.masterFaceImg"/>
+                      <div v-else>{{String(item.masterName).substr(0,2)}}</div>
+                  </div>
+                  <div class="groupbuy-username"><div>{{String(item.masterName).substr(0,6)}}</div></div>
+                  <div class="groupbuy-info">
+                      <div>还差<span>{{item.groupNumber - item.offerNumber }}</span>人</div>
+                      <div>剩余<span>{{formateDate(item.lastTime)}}</span></div>
+                  </div>
+                  <div class="to-groupbuy" @click="getGroupInfo(item.id,index)">
+                      <div class="to-groupbuy2">
+                          <div>去拼团</div>
+                          <div class="right"></div>
+                      </div>
+                  </div>
+              </div>
+            </div>
+            <div class="tip">
+              仅展示前10个拼团
+            </div>
+          </div>
+        </div>
     </div>
-    
+
 
 </template>
 
@@ -453,6 +484,7 @@ export default {
             groupArray:[],
             groupInfo:'',
             infoDialogFlag:false,
+            listDialogFlag:false,
             groupIndex:0,
             groupnum:0
         }
@@ -790,6 +822,14 @@ export default {
         closeInfoDialog(){
           this.infoDialogFlag = false;
         },
+        closeListDialog(){
+          this.listDialogFlag = false;
+        },
+        openListDialog(){
+          if(this.groupArray.length>2){
+            this.listDialogFlag = true;
+          }
+        },
         getAttrOrImg() {
             let data ={
                 sysId: 1,
@@ -1090,7 +1130,7 @@ export default {
                         ,msgbox: '/erp/layim/msgbox'
                         ,find: layui.cache.dir + 'css/modules/layim/html/find.html' //发现页面地址，若不开启，剔除该项即可
                         ,chatLog: layui.cache.dir + 'css/modules/layim/html/chatLog.html' //聊天记录页面地址，若不开启，剔除该项即可
-                        
+
                         //可同时配置多个
                         ,tool: [{
                             alias: 'history' //工具别名
@@ -1249,15 +1289,15 @@ export default {
                             //弹出一个更多聊天记录面板
                             layim.panel({
                                 title: '与 '+ kefuName1 +' 的聊天记录' //标题
-                                ,tpl: ['<div class="layim-chat-main"><ul id="LAY_view">'                                  
+                                ,tpl: ['<div class="layim-chat-main"><ul id="LAY_view">'
                                 ,'{{# layui.each(d.data, function(index, item){  if(item.id == 200512){ }}'
                                 ,'    <li class="layim-chat-mine"><div class="layim-chat-user"><img src="{{ item.avatar }}" />'
                                 ,'    <cite><i>{{ layui.data.date(item.timestamp) }}</i>{{ item.username }}</cite>'
                                 ,'    </div><div class="layim-chat-text">{{layui.mobile.layim.content(item.content)}}</div></li>'
                                 ,'  {{# } else { }}'
                                 ,'    <li><div class="layim-chat-user"><img src="{{ item.avatar }}" /><cite>{{ item.username }}<i>{{ layui.data.date(item.timestamp) }}</i></cite></div><div class="layim-chat-text">{{ layui.mobile.layim.content(item.content) }}</div></li>'
-                                ,'  {{# } }); }}' 
-                                ,'</ul></div>'    
+                                ,'  {{# } }); }}'
+                                ,'</ul></div>'
                                 ].join('') //模版
                                 ,data: res.data.data
                             });
@@ -1294,7 +1334,7 @@ export default {
                             ).render({
                                 data: res.data.data
                             });
-                            
+
                             // var html = laytpl(
                             //     [
                             //       '<textarea title="消息模版" id="LAY_tpl" style="display:none;">'
@@ -1314,20 +1354,20 @@ export default {
                             //弹出一个更多聊天记录面板
                             layim.panel({
                                 title: '与 '+ data.username +' 的聊天记录' //标题
-                                ,tpl: ['<div class="layim-chat-main"><ul id="LAY_view">'                                  
+                                ,tpl: ['<div class="layim-chat-main"><ul id="LAY_view">'
                                 ,'{{# layui.each(d.data, function(index, item){  if(item.id == layui.mobile.layim.cache().mine.id){ }}'
                                 ,'    <li class="layim-chat-mine"><div class="layim-chat-user"><img src="{{ item.avatar }}" />'
                                 ,'    <cite><i>{{ layui.data.date(item.timestamp) }}</i>{{ item.username }}</cite>'
                                 ,'    </div><div class="layim-chat-text">{{layui.mobile.layim.content(item.content)}}</div></li>'
                                 ,'  {{# } else { }}'
                                 ,'    <li><div class="layim-chat-user"><img src="{{ item.avatar }}" /><cite>{{ item.username }}<i>{{ layui.data.date(item.timestamp) }}</i></cite></div><div class="layim-chat-text">{{ layui.mobile.layim.content(item.content) }}</div></li>'
-                                ,'  {{# } }); }}' 
-                                ,'</ul></div>'    
+                                ,'  {{# } }); }}'
+                                ,'</ul></div>'
                                 ].join('') //模版
                                 ,data: res.data.data
                             });
                         });
-                        
+
                     });
                 });
            });
