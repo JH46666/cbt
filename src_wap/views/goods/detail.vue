@@ -325,24 +325,24 @@
             <mt-tab-item id="3" class="join-cart">
               <template v-if="detailData.productExtInfo.state === 'OFF_SHELF'">
                 <mt-button disabled type="default" class="lonelyBuy-btn">
-                  <p v-if="$tool.isLogin()">￥{{detailData.productPrice[0].price}}</p>
+                  <p v-if="$tool.isLogin()">￥{{detailData.productPrice[0].price| toFix2}}</p>
                   <p v-else>￥{{String(detailData.productPrice[0].price).replace(/^[1-9]/g,'?')}}</p>
                     <p>单独购买</p>
                 </mt-button>
                 <mt-button disabled type="default" class="groupBuy-btn">
-                  <p v-if="$tool.isLogin()">￥{{detailData.productInfo.priceFightGrops}}</p>
+                  <p v-if="$tool.isLogin()">￥{{detailData.productInfo.priceFightGrops | toFix2}}</p>
                   <p v-else>￥{{String(detailData.productInfo.priceFightGrops).replace(/^[1-9]/g,'?')}}</p>
                     <p>{{detailData.productInfo.memberNum}}人拼团</p>
                 </mt-button>
               </template>
               <template v-else-if="detailData.productExtInfo.isSoldOut == 1 && detailData.productExtInfo.compelOutStock == 0">
                 <mt-button type="default"  class="lonelyBuy-btn" @click.native="addCartInfo(0)">
-                    <p v-if="$tool.isLogin()">￥{{detailData.productPrice[0].price}}</p>
+                    <p v-if="$tool.isLogin()">￥{{detailData.productPrice[0].price| toFix2}}</p>
                     <p v-else>￥{{String(detailData.productPrice[0].price).replace(/^[1-9]/g,'?')}}</p>
                     <p>单独购买</p>
                 </mt-button>
                 <mt-button type="default"  class="groupBuy-btn" @click.native="addCartInfo(1)">
-                    <p v-if="$tool.isLogin()">￥{{detailData.productInfo.priceFightGrops}}</p>
+                    <p v-if="$tool.isLogin()">￥{{detailData.productInfo.priceFightGrops | toFix2}}</p>
                     <p v-else>￥{{String(detailData.productInfo.priceFightGrops).replace(/^[1-9]/g,'?')}}</p>
                     <p>{{detailData.productInfo.memberNum}}人拼团</p>
                 </mt-button>
@@ -355,7 +355,7 @@
         </mt-tabbar>
         <!-- 参团弹窗 -->
         <div class="groupDialog-mask" :class="{'on':infoDialogFlag}">
-          <div class="group-dialog">
+          <div class="group-dialog" v-if="groupArray.length>0">
             <div class="group-title">
               参与{{(groupArray[groupIndex].masterName).substr(0,6)}}的拼团
             </div>
