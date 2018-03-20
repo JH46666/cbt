@@ -160,6 +160,11 @@ layui.define(['jquery', 'layer'], function(exports) {
         }
         return this;
     }
+    socket.prototype.off = function(event) {
+        (!call[event]) && (call[event] = {});
+        tool.log('解绑事件：【' + event + '】');
+        return this;
+    }
     socket.prototype.send = function(data) {
         tool.send(data);
     }
