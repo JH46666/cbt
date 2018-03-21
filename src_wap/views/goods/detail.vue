@@ -869,7 +869,7 @@ export default {
                 let data= {
                     'groupPurchase.proId':this.detailData.productInfo.id,
                     'groupPurchase.groupState':1,
-                    // 'groupPurchase.isJoin':2,
+                    'groupPurchase.isJoin':2,
                     'page.pageNumber':1,
                     'page.pageSize':10,
                 }
