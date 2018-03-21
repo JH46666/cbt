@@ -65,7 +65,8 @@
                         <span class="goods-garyPrice">{{'￥'+ toFixed(garyPrice)}}</span>
                     </template>
                     <template v-else>
-                        询价
+                        <span>{{'￥'+ toFixed(price).replace(/^[1-9]/g,'?')}}</span>
+                        <span class="goods-garyPrice">{{'￥'+ toFixed(garyPrice)}}</span>
                     </template>
                 </div>
             </div>
