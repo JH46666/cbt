@@ -5,5 +5,115 @@
     padding: 0.3rem;
     background: #fff;
     .flex;
+    .product-img{
+      width: 1.6rem;
+    	height: 1.6rem;
+      margin-right: 0.19rem;
+      img{
+        width: 1.6rem;
+      	height: 1.6rem;
+      }
+    }
+    .product-data{
+      .flex-1;
+      .product-title{
+        height: 0.69rem;
+        font-size: 0.28rem;
+        line-height: 0.36rem;
+        letter-spacing: 0rem;
+        color: #333333;
+      }
+      .product-price{
+        margin-top: 0.29rem;
+        .flex;
+        .align-items;
+        .detail-groupnum{
+            width: 1.5rem;
+            height: 0.4rem;
+            background-image: linear-gradient(to right, #ff5500 0%, #ff8200 100%);
+            border-radius: 0.04rem 0rem 0rem 0.04rem;
+            font-size: 0.24rem;
+            line-height: 0.4rem;
+            letter-spacing: 0rem;
+            color: #ffffff;
+            .paddingL(0.1rem);
+            margin-right: 0.1rem;
+            .position(r);
+            &:after{
+                content:'';
+                display:block;
+                width:0.2rem;
+                height:0.4rem;
+                position:absolute;
+                transform:skewX(30deg);
+                background:#fff;
+                top:0;
+                right:-0.1rem;
+            }
+        }
+        .off_shelf_tips{
+            .color(@mainCol);
+            .fontSize(.3rem);
+            margin-left: 0.1rem;
+            font-size: 0.4rem;
+            line-height: 0.34rem;
+            letter-spacing: 0rem;
+            color: #f08200;
+        }
+        .detail_now_price{
+            .color(#f08200);
+            .line(1);
+            .fontSize(.4rem);
+            margin-right: 0.1rem;
+        }
+        .detail_suggest_price{
+            .color(#999);
+            .line(1);
+            .fontSize(.3rem);
+            text-decoration: line-through;
+        }
+      }
+    }
+  }
+
+  .group-info{
+    background: #fff;
+    margin-top: 0.2rem;
+    .group-title{
+      padding-top:0.56rem;
+      margin: 0 0.48rem 0.3rem 0.48rem;
+      div{
+        text-align: center;
+        font-size: 0.34rem;
+        line-height: 0.35rem;
+        letter-spacing: 0rem;
+        color: #333333;
+        span{
+          color: #f08200;
+          margin: 0 0.1rem;
+        }
+      }
+    }
+    .group-lasttime{
+      width: 2.52rem;
+    	height: 0.48rem;
+    	background-color: #525150;
+    	border-radius: 0.24rem;
+      font-size: 0.24rem;
+      padding-left: 0.49rem;
+      line-height: 0.48rem;
+      letter-spacing: 0rem;
+      color: #ffffff;
+      margin: 0 auto;
+    }
+    .group-tip{
+      text-align: center;
+      height: 0.25rem;
+      font-size: 0.24rem;
+      line-height: 0.25rem;
+      letter-spacing: 0rem;
+      color: #333333;
+      margin-top: 0.29rem;
+    }
   }
 }
