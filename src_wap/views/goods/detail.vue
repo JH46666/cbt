@@ -1125,6 +1125,7 @@ export default {
 
                         ,isAudio: true //开启聊天工具栏音频
                         ,isVideo: true //开启聊天工具栏视频
+                        ,voice: false //开启提示音
                         ,initSkin: '5.jpg' //1-5 设置初始背景
                         ,notice: true //是否开启桌面消息提醒，默认false
                         ,msgbox: '/erp/layim/msgbox'
