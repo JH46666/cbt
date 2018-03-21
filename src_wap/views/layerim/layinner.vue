@@ -251,8 +251,17 @@ import store from 'store';
                 }
                 this.$http.post("/erp/account/ajaxLogin",ret).then(res=>{
                     this.userid = res.data.data;//res.data.data.split(",")[0];
-                    this.getBase(this.userid);
+                    var currentUserId = res.data.data;
+                    if(localStorage.getItem("layim-mobile")==null||localStorage.getItem("layim-mobile")==''){
+                        this.$http.get("/erp/layim/getChatHistory/0/"+currentUserId).then(res=>{
+                            localStorage.setItem("layim-mobile",JSON.stringify(res.data.data));
+                            this.getBase(this.userid);
+                        });
+                    }else{
+                        this.getBase(this.userid);
+                    }
                 });
+                
             },
             getBase(userid){
                 this.$http.get(`/erp/layim/base?userId=${userid}`).then(res=>{
