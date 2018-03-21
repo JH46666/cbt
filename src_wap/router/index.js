@@ -92,6 +92,14 @@ const router = new Router({
 					meta: {
 						hideFooter: true
 					}
+				},
+				{
+					path: 'share',
+					name: '茶帮通拼团',
+					component: resolve => require(['@/views/share/index.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
 				}
 			]
 		},

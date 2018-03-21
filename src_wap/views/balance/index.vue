@@ -27,7 +27,11 @@
                                 <p class="goods-title">{{ todo.proName }}</p>
                                 <p class="goods-bd">
                                     <span class="price">￥{{ todo.priorityPrice | toFix2  }}</span>
-                                    <span class="num">×{{ todo.buyNum }}</span>
+                                    <span class="pro_number clearfix">
+                                        <span class="decrease" :class="{isGary:todo.buyNum === 1}" @click="numDecrease(todo)"><i class="iconfont">&#xe851;</i></span>
+                                        <input class="input-num" type="number" v-model="todo.buyNum" @blur="numChange(todo)">
+                                        <span class="plus" @click="numPlus(todo)"><i class="iconfont">&#xe638;</i></span>
+                                    </span>
                                 </p>
                             </div>
                         </div>
@@ -511,7 +515,104 @@
                 delete sessionStorage.paymethod;
                 delete sessionStorage.express;
 
-            }
+            },
+            //更新选中的数量
+            updateSeleNum(item,newVal,oldVal){
+                return new Promise((resolve,reject) => {
+                    this.$api.post('/oteao/shoppingCart/updateBuyNum',{
+                        id: item.id,
+                        proId: item.proId,
+                        buyNum: newVal,
+                        device: 'WAP'
+                    },res => {
+                        item.buyLowLimit = res.data.buyLowLimit;
+                        item.buyUpperLimit = res.data.buyUpperLimit;
+                        // 更新购物车数量
+                        // this.$store.dispatch('queryCartTotal');
+                        this.upDate();
+                        resolve(res);
+                    },res => {
+                        reject(res);
+                    })
+                })
+            },
+            // 减
+            numDecrease(item){
+                // 旧的数量
+                let oldVal = item.buyNum;
+                // 新的数量
+                let newVal = item.buyNum - 1;
+
+                // 判断是否小于0或者最低起购
+                if(newVal < 1) return;
+
+                if(!!item.buyLowLimit) {
+                    if(newVal < item.buyLowLimit) return;
+                }
+                this.updateSeleNum(item,newVal,oldVal).then(res => {
+                    // 禁用商品直接重新拉取数据
+                    if(res.data.isDisable) {
+                        return this.upDate();
+                    }
+                    item.buyNum = res.data.buyNum;
+                    item.oldBuy = res.data.buyNum;
+                }).catch(res => {})
+            },
+            // 加
+            numPlus(item){
+                // 旧的数量
+                let oldVal = item.buyNum;
+                // 新的数量
+                let newVal = item.buyNum + 1;
+
+                if(!!item.buyUpperLimit) {
+                    if(newVal > item.buyUpperLimit) return;
+                }
+
+                this.updateSeleNum(item,newVal,oldVal).then(res => {
+                    if(res.data.isDisable) {
+                        return this.upDate();
+                    }
+                    item.buyNum = res.data.buyNum;
+                    item.oldBuy = res.data.buyNum;
+                }).catch(res => {})
+
+            },
+            //input输入数量
+            numChange(item){
+                let reg = /^[1-9]\d*$/;
+                if(reg.test(item.buyNum)){
+
+                    // 需要进行最大购买与最小购买判断
+                    if(!!item.buyLowLimit) {
+                        if(item.buyNum < item.buyLowLimit) {
+                            item.buyNum = item.buyLowLimit;
+                            item.oldBuy = item.buyLowLimit;
+                            return Toast('小于最低购买量')
+                        }
+                    }
+
+                    if(!!item.buyUpperLimit) {
+                        if(item.buyNum > item.buyUpperLimit) {
+                            // item.buyNum = item.oldBuy;
+                            Toast('超过最高购买量')
+                        }
+                    }
+                    this.updateSeleNum(item,item.buyNum).then(res => {
+                        if(res.data.isDisable) {
+                            return this.upDate();
+                        }
+                        item.buyNum = res.data.buyNum;
+                        item.oldBuy = res.data.buyNum;
+                    }).catch(res => {
+                        item.buyNum = item.oldBuy;
+                    })
+
+                }else{
+                    Toast('请输入正确的数值')
+                    item.buyNum = item.buyLowLimit || 1;
+                }
+            },
         },
         created() {
             // 设置title
