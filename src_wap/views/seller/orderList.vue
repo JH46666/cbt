@@ -45,7 +45,7 @@
                                 <mt-button size="small" @click.stop="closeOrder(item)">关闭订单</mt-button>
                                 <mt-button size="small" @click.stop="editPrice(item)">修改价格</mt-button>
                             </template>
-                            <template v-if="item.orderStatus === 'PACKING' && item.groupSuccess==3">
+                            <template v-if="item.orderStatus === 'PACKING' && item.groupSuccess!=2">
                                 <mt-button size="small" @click.stop="closeOrder(item)">关闭订单</mt-button>
                                 <mt-button size="small" class="gold" @click.stop="$router.push({name:'发货',query:{orderNo:item.orderNo}})">发货</mt-button>
                             </template>

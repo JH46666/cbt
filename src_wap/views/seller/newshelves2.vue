@@ -16,7 +16,7 @@
             <div class="main-img-box _fix-main-img-box">
                     <div class="_fix-img-box" v-for="(item,index) in resize.imgs.mainImg" @click="getPrevImgSrc(index,'main')">
                         <img :src="item"/>
-                        <a class="delete-btn _fix-delete-btn" href="javascript: void(0);" @click="deleteImg(index,'main')">
+                        <a class="delete-btn _fix-delete-btn" href="javascript: void(0);" @click.stop="deleteImg(index,'main')">
                             <i class="iconfont">&#xe651;</i>
                         </a>
                     </div>
@@ -49,7 +49,7 @@
             <div class="main-img-box _fix-main-img-box">
                 <div class="_fix-img-box" v-for="(item,index) in resize.imgs.detailImg1" @click="getPrevImgSrc(index,'detailImg1')">
                     <img :src="item"/>
-                    <a class="delete-btn _fix-delete-btn" href="javascript: void(0);" @click="deleteImg(index,'main')">
+                    <a class="delete-btn _fix-delete-btn" href="javascript: void(0);" @click.stop="deleteImg(index,'one')">
                         <i class="iconfont">&#xe651;</i>
                     </a>
                 </div>
@@ -68,13 +68,14 @@
         </div>
         <!-- 底部按钮 -->
         <div class="flex btns">
-            <mt-button type="primary" :disabled="disabledBol || loading1" @click="saveMethod('0')" style="background-color: rgba(240, 130, 0, 0.7); color: #fff;">
-                <img src="../../assets/images/loading3.gif" height="20" width="20" slot="icon" :class="{on: loading1 && !flag}">
-                保存
+            <mt-button type="primary" @click="$router.go(-1)">上一步</mt-button>
+            <mt-button type="primary" :disabled="disabledBol || loading1" @click="saveMethod('0')">
+                <img src="../../assets/images/loading3.gif" height="20" width="20" slot="icon" :class="{on: loading1 && !flag}"> 保存
             </mt-button>
+        </div>
+        <div class="save-rackup">
             <mt-button type="primary" :disabled="disabledBol || loading2" @click="saveMethod('1')">
-                <img src="../../assets/images/loading3.gif" height="20" width="20" slot="icon" :class="{on: loading2 && flag}">
-                保存并上架
+                <img src="../../assets/images/loading3.gif" height="20" width="20" slot="icon" :class="{on: loading2 && flag}"> 保存并上架
             </mt-button>
         </div>
         <!-- 预览大图 -->
@@ -310,7 +311,7 @@ import $api from 'api';
                     })
                 }
                 // 商品详情图url
-                for (let i = 0; i < this.urls.main.length; i++) {
+                for (let i = 0; i < this.urls.one.length; i++) {
                     detailImg.push(
                         this.urls.one[i]
                     )
@@ -696,6 +697,9 @@ import $api from 'api';
                 ._fix-delete-btn{
                     top: -0.17rem;
                     right: -0.17rem;
+                }
+                & img{
+                   max-height: 1.55rem;
                 }
             }
             ._add-upload-box{

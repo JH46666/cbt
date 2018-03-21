@@ -27,7 +27,7 @@
                                 </p>
                             </label>
                             <div class="item-right">
-                                <textarea id="2" rows="2" maxlength="30" placeholder="非必填项，最多可写30个字" v-model="resize.form.goodsSell"></textarea>
+                                <textarea id="2" rows="2" maxlength="30" placeholder="必填项，最多可写30个字" v-model="resize.form.goodsSell"></textarea>
                                 <div class="text_count">
                                     <span>{{ resize.form.goodsSell.length }}</span>/30
                                 </div>
@@ -39,7 +39,9 @@
                                     商品卖点+商品品类+工艺+采摘时间
                                 </div>
                                 <div class="_add-geometric-3"></div>
-                                <div class="_add-geometric-X" @click="flagGoodsOwnGood = !flagGoodsOwnGood">X</div>
+                                <div class="_add-geometric-X" @click="flagGoodsOwnGood = !flagGoodsOwnGood">
+                                    <i class="iconfont icon-danchuangguanbianniu"></i>
+                                </div>
                             </div>
                         </div>
 
@@ -747,8 +749,8 @@
             background-color: #525150;
             box-shadow: 0rem 0.02rem 0.1rem 0rem rgba(0, 0, 0, 0.4);
             position: absolute;
-            left: 1.90rem;
-            top: 0.4rem;
+            left: 2.05rem;
+            top: 0.62rem;
             ._add-tips{
                 padding: 0.21rem 0.23rem;
                 width: 4.42rem;
