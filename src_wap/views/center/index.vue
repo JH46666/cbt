@@ -137,7 +137,7 @@
                 signDialog: false,          // 签到弹窗
                 successSign: {},            // 成功记录
             }
-        },
+        },        
         computed: {
             ...mapState({
                 member: state => state.member.member,
@@ -150,6 +150,18 @@
             })
         },
         methods: {
+            setCookie (name, value, days) {
+                var d = new Date;
+                d.setTime(d.getTime() + 24*60*60*1000*days);
+                window.document.cookie = name + "=" + value + ";path=/;expires=" + d.toGMTString();
+            },
+            getCookie (name) {
+                var v = window.document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+                return v ? v[2] : null;
+            },
+            deleteCookie (name) {
+                this.setCookie(name, '', -1);
+            },
             // 签到
             signTo() {
                 this.$api.post('/oteao/member/memberRecord/createSignInLog',{
@@ -178,12 +190,23 @@
                     if(res === 'cancel') {
                         return;
                     } else {
+                        this.deleteCookie("oteaoSid")
+                        this.$http.get('/erp/account/logout',{});                        
+                        //this.deleteCookie("JSESSIONID")
                         this.$api.get('/oteao/login/logout',{},res => {
-                            this.$router.push('/');
                             this.$store.commit('SET_MEMBERDATA',{type:'member',val:{}})
+                            //this.$router.go({path:'/'});
+                            //this.$router.push('/'); 
+                            setTimeout(() => {
+                                location.href='/'
+                            },1000)                                                       
                         },res => {
-                            this.$router.push('/')
                             this.$store.commit('SET_MEMBERDATA',{type:'member',val:{}})
+                            //this.$router.go({path:'/'});
+                            //this.$router.push('/') 
+                             setTimeout(() => {
+                                location.href='/'
+                            },1000)                          
                         })
                     }
                 })
