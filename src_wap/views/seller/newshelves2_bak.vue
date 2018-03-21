@@ -1,94 +1,168 @@
 <template>
     <div class="newshelves3_wrapper">
-        <!-- 商品轮播图 -->
-        <div class="_add-title">
-            <div class="_add-title-text">
-                <div class="_add-title-small-box"></div>
-                商品轮播图
-            </div>
-            <div class="_add-title-tips">
-                <i class="iconfont icon-chuangjianshangpinshuoming"></i>
-                <div>传图规范</div>
-            </div>
-        </div>
-        <div class="floor main-imgs _add-main-imgs">
-            <p style="font-size: 0.26rem; color: #333;">1-5张，建议800*800像素，单张图片小于8M的清晰商品照片</p>
-            <div class="main-img-box _fix-main-img-box">
-                    <div class="_fix-img-box" v-for="(item,index) in resize.imgs.mainImg" @click="getPrevImgSrc(index,'main')">
-                        <img :src="item"/>
-                        <a class="delete-btn _fix-delete-btn" href="javascript: void(0);" @click="deleteImg(index,'main')">
-                            <i class="iconfont">&#xe651;</i>
-                        </a>
-                    </div>
-                    <!-- 上传图标 -->
-                    <div class="_fix-img-box _add-upload-box" v-if="resize.imgs.mainImg.length<5">
-                        <label class="camera-bg _fix-camera-bg">
-                            <input type="file" accept="image/*" hidden @change="onPreview('main',$event)">
-                        </label>
-                        <div class="_add-up-num">
-                            <span style="color: #333" v-if="resize.imgs.mainImg.length==0">{{ resize.imgs.mainImg.length }}</span>
-                            <span style="color: #f08200" v-else>{{ resize.imgs.mainImg.length }}</span>
-                            / 5
+        <div class="floor main-imgs">
+            <h3>商品图片</h3>
+            <p class="color_9"><span class="color_f33">1-5张，</span>建议800*800像素，单张图片小于8M的清晰商品照片</p>
+            <div class="main-img-box" :class="{on: resize.imgs.mainImg.length>0}">
+                <mt-swipe :show-indicators="false" :auto="0" @change="handleChangeMain">
+                    <mt-swipe-item  v-for="(item,index) in resize.imgs.mainImg" :key="index">
+                        <img :src="item" />
+                        <a class="delete-btn" href="javascript: void(0);" @click="deleteImg(index,'main')"><i class="iconfont">&#xe651;</i></a>
+                        <div class="small-camera" v-if="resize.imgs.mainImg.length<5">
+                            <label>
+                                <img src="../../assets/images/camera.png" />
+                                <input type="file" accept="image/*" hidden @change="onPreview('main',$event)">
+                            </label>
                         </div>
-                    </div>
-            </div>
-        </div>
-        <!-- 商品详情展示 -->
-        <div class="_add-title">
-            <div class="_add-title-text">
-                <div class="_add-title-small-box"></div>
-                 商品详情展示
-            </div>
-            <div class="_add-title-tips">
-                <i class="iconfont icon-chuangjianshangpinshuoming"></i>
-                <div>传图规范</div>
-            </div>
-        </div>
-        <div class="floor detail-imgs _fix-detail-imgs">
-            <p style="font-size: 0.26rem; color: #333;">1-10张，尺寸宽度介于640像素至750像素之间，单张图片小于8M，图片尽量保持尺寸一致</p>
-            <div class="main-img-box _fix-main-img-box">
-                <div class="_fix-img-box" v-for="(item,index) in resize.imgs.detailImg1" @click="getPrevImgSrc(index,'detailImg1')">
-                    <img :src="item"/>
-                    <a class="delete-btn _fix-delete-btn" href="javascript: void(0);" @click="deleteImg(index,'main')">
-                        <i class="iconfont">&#xe651;</i>
-                    </a>
-                </div>
-                <!-- 上传图标 -->
-                <div class="_fix-img-box _add-upload-box" v-if="resize.imgs.detailImg1.length<10">
-                    <label class="camera-bg _fix-camera-bg">
-                        <input type="file" accept="image/*" hidden @change="onPreview('one',$event)">
-                    </label>
-                    <div class="_add-up-num">
-                        <span style="color: #333" v-if="resize.imgs.detailImg1.length==0">{{ resize.imgs.detailImg1.length }}</span>
-                        <span style="color: #f08200" v-else>{{ resize.imgs.detailImg1.length }}</span>
-                        / 10
-                    </div>
+                    </mt-swipe-item>
+                </mt-swipe>
+                <div class="len_num">
+                    <span>{{ changeIndex.main }}</span>/{{ resize.imgs.mainImg.length }}
                 </div>
             </div>
+            <div class="upload-box" v-if="resize.imgs.mainImg.length<1">
+                <label class="camera-bg">
+                    <input type="file" accept="image/*" hidden @change="onPreview('main',$event)">
+                </label>
+            </div>
         </div>
-        <!-- 底部按钮 -->
+        <div class="floor detail-imgs">
+            <h3>商品详情展示图片</h3>
+            <p class="color_9"><span class="color_f33">1-3项必须上传，</span>建议尺寸保持一致，单张图片小于8M</p>
+            <div class="upload-step">
+                <h4><span class="serial-num">1</span>高清实拍，清晰展示商品外形细节，最多可上传<span class="color_f33">3</span>张</h4>
+                <div class="proview_box" v-if="resize.imgs.detailImg1.length > 0">
+                    <mt-swipe :show-indicators="false" :auto="0" @change="handleChangeOne">
+                        <mt-swipe-item  v-for="(item,index) in resize.imgs.detailImg1" :key="index">
+                            <img :src="item" />
+                            <a class="delete-btn" href="javascript: void(0);" @click="deleteImg(index,'one')"><i class="iconfont">&#xe651;</i></a>
+                            <div class="small-camera" v-if="resize.imgs.detailImg1.length<3">
+                                <label>
+                                    <img src="../../assets/images/camera.png" />
+                                    <input type="file" accept="image/*" hidden @change="onPreview('one',$event)">
+                                </label>
+                            </div>
+                        </mt-swipe-item>
+                    </mt-swipe>
+                    <div class="len_num">
+                        <span>{{ changeIndex.one }}</span>/{{ resize.imgs.detailImg1.length }}
+                    </div>
+                </div>
+                <div class="flex example-box" v-if="resize.imgs.detailImg1.length === 0">
+                    <div class="flex-1 upload-box">
+                        <label class="camera-bg">
+                            <input type="file" accept="image/*" hidden @change="onPreview('one',$event)">
+                        </label>
+                    </div>
+                    <div class="flex-1">
+                        <img src="../../assets/upload-eg1.jpg" />
+                    </div>
+                </div>
+                <textarea name="" id="" cols="30" rows="10" placeholder="请输入外形描述" v-model="resize.textMs1"></textarea>
+            </div>
+            <div class="upload-step">
+                <h4><span class="serial-num">2</span>拒绝盗图，清晰展示商品内在细节，如茶汤，最多可上传<span class="color_f33">3</span>张</h4>
+                <div class="proview_box" v-if="resize.imgs.detailImg2.length > 0">
+                    <mt-swipe :show-indicators="false" :auto="0" @change="handleChangeTwo">
+                        <mt-swipe-item  v-for="(item,index) in resize.imgs.detailImg2" :key="index">
+                            <img :src="item" />
+                            <a class="delete-btn" href="javascript: void(0);" @click="deleteImg(index,'two')"><i class="iconfont">&#xe651;</i></a>
+                            <div class="small-camera" v-if="resize.imgs.detailImg2.length<3">
+                                <label>
+                                    <img src="../../assets/images/camera.png" />
+                                    <input type="file" accept="image/*" hidden @change="onPreview('two',$event)">
+                                </label>
+                            </div>
+                        </mt-swipe-item>
+                    </mt-swipe>
+                    <div class="len_num">
+                        <span>{{ changeIndex.two }}</span>/{{ resize.imgs.detailImg2.length }}
+                    </div>
+                </div>
+                <div class="flex example-box" v-if="resize.imgs.detailImg2.length === 0">
+                    <div class="flex-1 upload-box">
+                        <label class="camera-bg">
+                            <input type="file" accept="image/*" hidden @change="onPreview('two',$event)">
+                        </label>
+                    </div>
+                    <div class="flex-1">
+                        <img src="../../assets/upload-eg2.jpg" />
+                    </div>
+                </div>
+                <textarea name="" id="" cols="30" rows="10" placeholder="请输入内在细节描述1，如茶汤" v-model="resize.textMs2"></textarea>
+            </div>
+            <div class="upload-step">
+                <h4><span class="serial-num">3</span>拒绝盗图，清晰展示商品内在细节，如叶底，最多可上传<span class="color_f33">3</span>张</h4>
+                <div class="proview_box" v-if="resize.imgs.detailImg3.length > 0">
+                    <mt-swipe :show-indicators="false" :auto="0" @change="handleChangeThree">
+                        <mt-swipe-item  v-for="(item,index) in resize.imgs.detailImg3" :key="index">
+                            <img :src="item" />
+                            <a class="delete-btn" href="javascript: void(0);" @click="deleteImg(index,'three')"><i class="iconfont">&#xe651;</i></a>
+                            <div class="small-camera" v-if="resize.imgs.detailImg3.length<3">
+                                <label>
+                                    <img src="../../assets/images/camera.png" />
+                                    <input type="file" accept="image/*" hidden @change="onPreview('three',$event)">
+                                </label>
+                            </div>
+                        </mt-swipe-item>
+                    </mt-swipe>
+                    <div class="len_num">
+                        <span>{{ changeIndex.three }}</span>/{{ resize.imgs.detailImg3.length }}
+                    </div>
+                </div>
+                <div class="flex example-box" v-if="resize.imgs.detailImg3.length === 0">
+                    <div class="flex-1 upload-box">
+                        <label class="camera-bg">
+                            <input type="file" accept="image/*" hidden @change="onPreview('three',$event)">
+                        </label>
+                    </div>
+                    <div class="flex-1">
+                        <img src="../../assets/upload-eg3.jpg" />
+                    </div>
+                </div>
+                <textarea name="" id="" cols="30" rows="10" placeholder="请输入内在细节描述2，如叶底" v-model="resize.textMs3"></textarea>
+            </div>
+            <div class="upload-step up-step4">
+                <h4><span class="serial-num">4</span>其他商品细节，最多可上传<span class="color_f33">3</span>张</h4>
+                <div class="step4-img-box" :class="{on: resize.imgs.imgsStep4.length > 0}" style="margin-bottom:.25rem;">
+                    <mt-swipe :show-indicators="false" :auto="0" @change="handleChangeFour">
+                        <mt-swipe-item  v-for="(item,index) in resize.imgs.imgsStep4" :key="index">
+                            <img :src="item" />
+                            <a class="delete-btn" href="javascript: void(0);" @click="deleteImg(index,'four')"><i class="iconfont">&#xe651;</i></a>
+                            <div class="small-camera" v-if="resize.imgs.imgsStep4.length < 3">
+                                <label>
+                                    <img src="../../assets/images/camera.png" />
+                                    <input type="file" accept="image/*" hidden @change="onPreview('four',$event)">
+                                </label>
+                            </div>
+                        </mt-swipe-item>
+                    </mt-swipe>
+                    <div class="len_num">
+                        <span>{{ changeIndex.four }}</span>/{{ resize.imgs.imgsStep4.length }}
+                    </div>
+                </div>
+                <div class="flex example-box" v-if="resize.imgs.imgsStep4.length<1">
+                    <div class="flex-1 upload-box">
+                        <label class="camera-bg">
+                            <input type="file" accept="image/*" hidden @change="onPreview('four',$event)">
+                        </label>
+                    </div>
+                </div>
+                <textarea name="" id="" cols="30" rows="10" placeholder="请输入其他商品细节" v-model="resize.textMs4" style="margin-top: .1rem;"></textarea>
+            </div>
+        </div>
         <div class="flex btns">
-            <mt-button type="primary" :disabled="disabledBol || loading1" @click="saveMethod('0')" style="background-color: rgba(240, 130, 0, 0.7); color: #fff;">
+            <mt-button type="primary" @click="$router.go(-1)">上一步</mt-button>
+            <mt-button type="primary" :disabled="disabledBol || loading1" @click="saveMethod('0')">
                 <img src="../../assets/images/loading3.gif" height="20" width="20" slot="icon" :class="{on: loading1 && !flag}">
                 保存
             </mt-button>
+        </div>
+        <div class="save-rackup">
             <mt-button type="primary" :disabled="disabledBol || loading2" @click="saveMethod('1')">
                 <img src="../../assets/images/loading3.gif" height="20" width="20" slot="icon" :class="{on: loading2 && flag}">
                 保存并上架
             </mt-button>
-        </div>
-        <!-- 预览大图 -->
-        <div>
-            <div class="popup suc_popup _add-preview" v-if="previewFlag">
-                <div class="preview-inner">
-                    <div class="preview-img">
-                        <img :src="previewImgSrc" alt="">
-                    </div>
-                    <div class="preview-close-btn" @click="closePreviewBtn">
-                        <i class="iconfont icon-danchuangguanbianniu"></i>
-                    </div>
-                </div>
-            </div>
         </div>
         <!-- 成功上架弹窗 -->
         <div class="popup suc_popup" v-show="sucFlag">
@@ -114,9 +188,7 @@ import $api from 'api';
     export default{
         data(){
             return {
-                sucFlag: false,             // 是否成功上架
-                previewFlag: false,         // 预览大图
-                previewImgSrc: '',          // 预览图片地址
+                sucFlag: false,         //是否成功上架
                 changeIndex: {
                     main: 1,
                     one: 1,
@@ -151,7 +223,7 @@ import $api from 'api';
                 'resize'
             ]),
             disabledBol() {
-                if(this.resize.imgs.mainImg.length >0 && this.resize.imgs.detailImg1.length != 0){
+                if(this.resize.imgs.mainImg.length >0 && this.resize.imgs.detailImg1.length != 0 && this.resize.imgs.detailImg2.length != 0 && this.resize.imgs.detailImg3.length != 0 && this.resize.textMs1 != ''&& this.resize.textMs2 != ''&& this.resize.textMs3 != ''){
                     return false;
                 }else{
                     return true;
@@ -222,9 +294,9 @@ import $api from 'api';
                 let isFlag = (resolve,reject) => {
                     if( flags.main != this.resize.mainImgFile.length) return;
                     if( flags.one != this.resize.oneImgFile.length) return;
-                    // if( flags.two != this.resize.secondImgFile.length) return;
-                    // if( flags.third != this.resize.thirdImgFile.length) return;
-                    // if( flags.four != this.resize.fourImgFile.length) return;
+                    if( flags.two != this.resize.secondImgFile.length) return;
+                    if( flags.third != this.resize.thirdImgFile.length) return;
+                    if( flags.four != this.resize.fourImgFile.length) return;
                     resolve()
                 }
                 return new Promise((resolve,reject) => {
@@ -261,61 +333,52 @@ import $api from 'api';
                                 isFlag(resolve,reject);
                             })
                         }
-                        // for(let i=0; i<this.resize.secondImgFile.length; i++){            // 2图
-                        //     let random_name = res.data.basePath +'goods/' + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.secondImgFile[i].name.split('.').pop()
-                        //     client.multipartUpload(random_name, this.resize.secondImgFile[i]).then((results) => {
-                        //         const url = '//img2.oteao.com/'+ results.name;
-                        //         this.urls.two.push(url);
-                        //         flags.two++;
-                        //         isFlag(resolve,reject);
-                        //     }).catch((err) => {
-                        //         flags.two++;
-                        //         isFlag(resolve,reject);
-                        //     })
-                        // }
-                        // for(let i=0; i<this.resize.thirdImgFile.length; i++){            // 3图
-                        //     let random_name = res.data.basePath +'goods/' + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.thirdImgFile[i].name.split('.').pop()
-                        //     client.multipartUpload(random_name, this.resize.thirdImgFile[i]).then((results) => {
-                        //         const url = '//img3.oteao.com/'+ results.name;
-                        //         this.urls.third.push(url);
-                        //         flags.third++;
-                        //         isFlag(resolve,reject);
-                        //     }).catch((err) => {
-                        //         flags.third++;
-                        //         isFlag(resolve,reject);
-                        //     })
-                        // }
-                        // for(let i=0; i<this.resize.fourImgFile.length; i++){            // 4图
-                        //     let random_name = res.data.basePath +'goods/' + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.fourImgFile[i].name.split('.').pop()
-                        //     client.multipartUpload(random_name, this.resize.fourImgFile[i]).then((results) => {
-                        //         const url = '//img4.oteao.com/'+ results.name;
-                        //         this.urls.four.push(url);
-                        //         flags.four++;
-                        //         isFlag(resolve,reject);
-                        //     }).catch((err) => {
-                        //         flags.four++;
-                        //         isFlag(resolve,reject);
-                        //     })
-                        // }
+                        for(let i=0; i<this.resize.secondImgFile.length; i++){            // 2图
+                            let random_name = res.data.basePath +'goods/' + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.secondImgFile[i].name.split('.').pop()
+                            client.multipartUpload(random_name, this.resize.secondImgFile[i]).then((results) => {
+                                const url = '//img2.oteao.com/'+ results.name;
+                                this.urls.two.push(url);
+                                flags.two++;
+                                isFlag(resolve,reject);
+                            }).catch((err) => {
+                                flags.two++;
+                                isFlag(resolve,reject);
+                            })
+                        }
+                        for(let i=0; i<this.resize.thirdImgFile.length; i++){            // 3图
+                            let random_name = res.data.basePath +'goods/' + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.thirdImgFile[i].name.split('.').pop()
+                            client.multipartUpload(random_name, this.resize.thirdImgFile[i]).then((results) => {
+                                const url = '//img3.oteao.com/'+ results.name;
+                                this.urls.third.push(url);
+                                flags.third++;
+                                isFlag(resolve,reject);
+                            }).catch((err) => {
+                                flags.third++;
+                                isFlag(resolve,reject);
+                            })
+                        }
+                        for(let i=0; i<this.resize.fourImgFile.length; i++){            // 4图
+                            let random_name = res.data.basePath +'goods/' + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.fourImgFile[i].name.split('.').pop()
+                            client.multipartUpload(random_name, this.resize.fourImgFile[i]).then((results) => {
+                                const url = '//img4.oteao.com/'+ results.name;
+                                this.urls.four.push(url);
+                                flags.four++;
+                                isFlag(resolve,reject);
+                            }).catch((err) => {
+                                flags.four++;
+                                isFlag(resolve,reject);
+                            })
+                        }
                     })
                 })
             },
             onlySave(stata) {
                 let mainImg = [];
-                let detailImg = [];
-                // 商品轮播图url
                 for(let i=0;i<this.urls.main.length;i++){
                     mainImg.push({
                         imgUrl: this.urls.main[i]
                     })
                 }
-                // 商品详情图url
-                for (let i = 0; i < this.urls.main.length; i++) {
-                    detailImg.push(
-                        this.urls.one[i]
-                    )
-                }
-
                 let oneImg = {
                     title: '外形细节展示',
                     content: this.resize.textMs1,
@@ -431,7 +494,12 @@ import $api from 'api';
                 let allOrgContent = oneImgStr + twoImgStr + threeImgStr + fourImgStr;
                 let data = {
                     "catProps": [],
-                    "detailImgs": detailImg,
+                    "productDetails": [
+                        {
+                            "content": JSON.stringify(allContent),
+                            'orgContent': allOrgContent
+                        }
+                    ],
                     "productImgs": mainImg
                 }
                 for(let i=0;i<this.resize.proValList.length;i++){
@@ -454,16 +522,16 @@ import $api from 'api';
                     this.$api.post(`/oteao/productInfo/createProductInfo` +
                         `?frontOrgProInfoDetailVo.catId=${ encodeURI(this.resize.twoClass) }` +
                         `&frontOrgProInfoDetailVo.brandId=${ encodeURI(this.resize.selId.pp) }` +
-                        `&frontOrgProInfoDetailVo.proName=${ encodeURI(this.resize.form.goodsSell) }` +
-                        // `&frontOrgProInfoDetailVo.unint=${ encodeURI(this.resize.form.goodsDw) }` +
+                        `&frontOrgProInfoDetailVo.proName=${ encodeURI(this.resize.form.goodsName) }` +
+                        `&frontOrgProInfoDetailVo.unint=${ encodeURI(this.resize.form.goodsDw) }` +
                         `&frontOrgProInfoDetailVo.weight=${ encodeURI(this.resize.form.goodsMz) }` +
-                        // `&frontOrgProInfoDetailVo.netWeight=${ encodeURI(this.resize.form.goodsJz) }` +
-                        // `&frontOrgProInfoDetailVo.reason=${ encodeURI(this.resize.form.goodsSell) }` +
+                        `&frontOrgProInfoDetailVo.netWeight=${ encodeURI(this.resize.form.goodsJz) }` +
+                        `&frontOrgProInfoDetailVo.reason=${ encodeURI(this.resize.form.goodsSell) }` +
                         `&frontOrgProInfoDetailVo.stockNum=${ encodeURI(this.resize.form.goodsKc) }` +
-                        `&frontOrgProInfoDetailVo.proPrice=${ encodeURI(this.resize.form.goodsSj) }` +
+                        `&frontOrgProInfoDetailVo.proPrice=${ encodeURI(this.resize.form.goodsSx) }` +
                         `&frontOrgProInfoDetailVo.retailPrice=${encodeURI(this.resize.form.goodsPtsj) }` +
-                        `&frontOrgProInfoDetailVo.memberNum=${encodeURI(this.resize.form.goodsGroupNum)}` +
-                        `&frontOrgProInfoDetailVo.groupPrice=${encodeURI(this.resize.form.goodsGroup)}` +
+                        `&frontOrgProInfoDetailVo.fragrance=${encodeURI(this.resize.defaultArray[0].content)}` +
+                        `&frontOrgProInfoDetailVo.taste=${encodeURI(this.resize.defaultArray[1].content)}` +
                         `&frontOrgProInfoDetailVo.isSaveOnShelf=${ encodeURI(stata) }`,JSON.stringify(data),res => {
                             this.sucFlag = true;
                             this.loading1 = false;
@@ -482,16 +550,16 @@ import $api from 'api';
                 }else{
                     this.$api.post(`/oteao/productInfo/createProductInfo` +
                         `?frontOrgProInfoDetailVo.catId=${ encodeURI(this.resize.twoClass) }` +
-                        `&frontOrgProInfoDetailVo.proName=${ encodeURI(this.resize.form.goodsSell) }` +
-                        // `&frontOrgProInfoDetailVo.unint=${ encodeURI(this.resize.form.goodsDw) }` +
+                        `&frontOrgProInfoDetailVo.proName=${ encodeURI(this.resize.form.goodsName) }` +
+                        `&frontOrgProInfoDetailVo.unint=${ encodeURI(this.resize.form.goodsDw) }` +
                         `&frontOrgProInfoDetailVo.weight=${ encodeURI(this.resize.form.goodsMz) }` +
-                        // `&frontOrgProInfoDetailVo.netWeight=${ encodeURI(this.resize.form.goodsJz) }` +
-                        // `&frontOrgProInfoDetailVo.reason=${ encodeURI(this.resize.form.goodsSell) }` +
+                        `&frontOrgProInfoDetailVo.netWeight=${ encodeURI(this.resize.form.goodsJz) }` +
+                        `&frontOrgProInfoDetailVo.reason=${ encodeURI(this.resize.form.goodsSell) }` +
                         `&frontOrgProInfoDetailVo.stockNum=${ encodeURI(this.resize.form.goodsKc) }` +
-                        `&frontOrgProInfoDetailVo.proPrice=${encodeURI(this.resize.form.goodsSj)}` +
-                        `&frontOrgProInfoDetailVo.retailPrice=${encodeURI(this.resize.form.goodsPtsj)}` +
-                        `&frontOrgProInfoDetailVo.memberNum=${encodeURI(this.resize.form.goodsGroupNum)}` +
-                        `&frontOrgProInfoDetailVo.groupPrice=${encodeURI(this.resize.form.goodsGroup)}` +
+                        `&frontOrgProInfoDetailVo.proPrice=${ encodeURI(this.resize.form.goodsSx) }` +
+                        `&frontOrgProInfoDetailVo.retailPrice=${encodeURI(this.resize.form.goodsPtsj) }` +
+                        `&frontOrgProInfoDetailVo.fragrance=${encodeURI(this.resize.defaultArray[0].content)}` +
+                        `&frontOrgProInfoDetailVo.taste=${encodeURI(this.resize.defaultArray[1].content)}` +
                         `&frontOrgProInfoDetailVo.isSaveOnShelf=${ encodeURI(stata) }`,JSON.stringify(data),res => {
                             this.sucFlag = true;
                             this.loading1 = false;
@@ -598,21 +666,6 @@ import $api from 'api';
                     this.resize.imgs.imgsStep4.splice(index,1);
                     this.resize.fourImgFile.splice(index,1);
                 }
-            },
-            // 获取预览大图图片地址
-            getPrevImgSrc(index, type) {
-                this.previewFlag = true;
-                if(type == 'main'){
-                    this.previewImgSrc = this.resize.imgs.mainImg[index]
-                }
-                if (type == 'detailImg1') {
-                    this.previewImgSrc = this.resize.imgs.detailImg1[index]
-                }
-            },
-            closePreviewBtn(){
-                console.log(this.previewFlag);    
-                this.previewFlag = !this.previewFlag;
-                console.log(this.previewFlag);
             }
         },
         beforeRouteEnter(to, from, next) {
@@ -638,120 +691,5 @@ import $api from 'api';
     }
 </script>
 <style lang="less">
-    @import '~@/styles/seller/newshelves2.less';
-    /* _add为新增，_fix为修改 */
-
-    .newshelves3_wrapper{
-        /* 商品轮播图 */
-        ._add-main-imgs{
-            padding-top: 0.3rem!important;
-            font-size: 0.26rem;
-            padding-bottom: 0.4rem;
-        }
-        ._add-title{
-            height: 0.8rem;
-            line-height: 0.8rem;
-            background-color: #f5f5f5;
-            padding: 0rem 0.3rem;
-            display: flex;
-            font-size: 0.26rem;
-            justify-content: space-between;
-            position: relative;
-            ._add-title-text{
-                color: #333333;
-                display: flex;
-                align-items: center;
-                line-height: 1;
-                ._add-title-small-box{
-                    position: absolute;
-                    left: 0rem;
-                    width: 0.08rem;
-                    height: 0.24rem;
-                    background-color: #f08200;
-                }
-            }
-            ._add-title-tips{
-                display: flex;
-                color: #f08200;
-                & .iconfont{
-                    margin-right: 0.1rem;
-                }
-            }
-        }
-        ._fix-main-img-box{
-            display: flex!important;
-            flex-wrap: wrap;
-            border: none!important;
-            height: unset!important;
-            margin-top: 0rem!important;
-            ._fix-img-box{
-                width: 1.55rem;
-                height: 1.55rem;
-                position: relative;
-                display: flex;
-                align-items: center;
-                border: 0.02rem solid #f2f2f2;
-                margin-top: 0.3rem;
-                margin-right: 0.16rem;
-                ._fix-delete-btn{
-                    top: -0.17rem;
-                    right: -0.17rem;
-                }
-            }
-            ._add-upload-box{
-                display: flex;
-                flex-direction: column;
-                position: relative;
-                background-color: #f5f5f5;
-                ._fix-camera-bg{
-                    position: unset;
-                    width: 0.88rem;
-                    height: 0.88rem;
-                    top: 0rem;
-                    left: 0rem;
-                    margin: 0.2rem auto 0;
-                }
-                ._add-up-num{
-                    margin-top: 0.10rem;
-                }
-             }
-        }
-        /* 商品详情图 */
-        ._fix-detail-imgs{
-            margin-top: 0rem!important;
-        }
-
-        /* 预览大图 */
-        ._add-preview{
-            .preview-inner{
-                width: 5rem;
-                height: 5rem;
-                position: absolute;
-                left: 50%;
-                top: 50%;
-                margin-left: -2.5rem;
-                margin-top: -2.5rem;
-                .preview-close-btn{ 
-                    background-color: #fff;
-                    position: absolute;
-                    top: -1.0rem;
-                    right: 0rem;
-                    border-radius: 50%;
-                    width: 0.78rem;
-                    height: 0.78rem;
-                    & .iconfont{
-                        width: 0.78rem;
-                        height: 0.78rem;
-                        font-size: 0.8rem;
-                        color: rgba(0, 0, 0, 0.6);
-                        position: absolute;
-                        left: 0rem;
-                        top: 0rem;
-                        bottom: 0rem;
-                        right: 0rem;
-                    }
-                }
-            }
-        }
-    }
+@import '~@/styles/seller/newshelves2.less';
 </style>

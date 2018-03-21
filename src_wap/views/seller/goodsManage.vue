@@ -51,11 +51,13 @@
         </div>
         <!-- 商品 -->
         <div class="tab-content-wrapper">
+            <!-- 已上架 -->
             <div v-show="tabId == 'yes'" class="rack-up" v-infinite-scroll="loadMore1" infinite-scroll-disabled="true" infinite-scroll-distance="10">
                 <div class="good-item" v-if="onShelf.listData.length>0" v-for="(item,index) in onShelf.listData" :key="index">
                     <!-- 头部 caption -->
                     <div class="item-caption flex">
                         <div class="cap-l flex flex-1 align_items_c">
+                            <label class="check-cir" :class="{'checked':item.checked}" @click="item.checked = !item.checked"></label>
                             <span>上架 {{item.createTime}}</span>
                         </div>
                         <div class="cap-r algin_r">
@@ -68,9 +70,14 @@
                         <div class="pro-img">
                             <img :src="item.proImg" />
                         </div>
-                        <div class="flex-1 pro-txt">
-                            <h4 class="tit">{{item.proName}}</h4>
-                            <p class="price">￥{{toFixed(item.proPrice)}}</p>
+                        <div class="flex-1 pro-txt _fix-pro-txt">
+                            <h4 class="tit">{{ item.proName }}</h4>
+                            <!-- 成团 -->
+                            <div class="_add-tuan">
+                                <div class="_add-groupnum">{{ item.memberNum }}人团价&emsp;&nbsp;</div>
+                                <div class="price _fix-price">￥{{ toFixed(item.priceFightGroup) }}</div>
+                                <div class="_add-single-price">单卖价：￥{{ toFixed(item.proPrice) }}</div>
+                            </div>
                             <p class="time_tag" v-if="item.isSales">限时特价</p>
                         </div>
                     </div>
@@ -93,11 +100,13 @@
                     </div>
                 </div>
             </div>
+            <!-- 未上架 -->
             <div v-show="tabId == 'no'" class="no-shelves" v-infinite-scroll="loadMore2" infinite-scroll-disabled="true" infinite-scroll-distance="10">
                 <div class="good-item" v-for="(item,index) in offShelf.listData" v-if="offShelf.listData.length>0" :key="index">
                     <!-- 头部 caption -->
                     <div class="item-caption flex">
                         <div class="cap-l flex flex-1 align_items_c">
+                            <label class="check-cir" :class="{'checked':item.checked}" @click="item.checked = !item.checked"></label>
                             <span>创建 {{item.createTime}}</span>
                         </div>
                         <div class="cap-r algin_r">
@@ -110,9 +119,14 @@
                         <div class="pro-img">
                             <img :src="item.proImg" />
                         </div>
-                        <div class="flex-1 pro-txt">
+                        <div class="flex-1 pro-txt _fix-pro-txt">
                             <h4 class="tit">{{item.proName}}</h4>
-                            <p class="price">￥{{toFixed(item.proPrice)}}</p>
+                            <!-- 成团 -->
+                            <div class="_add-tuan">
+                                <div class="_add-groupnum">{{item.memberNum}}人团价&emsp;&nbsp;</div>
+                                <div class="price _fix-price">￥{{toFixed(item.priceFightGroup)}}</div>
+                                <div class="_add-single-price">单卖价：￥{{toFixed(item.proPrice)}}</div>
+                            </div>
                             <p class="time_tag" v-if="item.isSales">限时特价</p>
                         </div>
                     </div>
@@ -137,15 +151,25 @@
             </div>
         </div>
         <!-- 底部fixed栏 -->
-        <div class="flex fix-bottom align_items_c">
+        <!-- <div class="flex fix-bottom align_items_c">
             <div class="seller-center" @click="$router.push({name: '卖家中心'})">
                 <i class="iconfont">&#xe676;</i>
                 <p>卖家中心</p>
             </div>
             <a v-show="!isEmpty" class="flex-1 noshelves-btn batch-btn" href="javascript:void(0);" @click="goBrect">批量处理</a>
             <a class="flex-1 noshelves-btn created-btn" href="javascript:void(0);" @click="goCreate">创建商品</a>
-        </div>
+        </div> -->
          <!-- 底部fixed栏 -->
+        <!-- 底部fixed栏 -->
+        <div class="flex fix-bottom align_items_c">
+            <div class="flex-1 flex align_items_c" style="padding-left: .3rem;">
+                <label class="check-cir" :class="{checked: isAll}" @click="checkedAll"></label>
+                <span>已选 (<span>{{ checkedNum }}</span>)</span>
+            </div>
+            <a class="delete-btn" href="javascript:void(0);" @click="deleteMethod" v-if="tabId === 'no'">删除</a>
+            <a class="rackup-btn" href="javascript:void(0);" @click="downMethod" v-if="tabId === 'yes'">下架</a>
+            <a class="rackup-btn" href="javascript:void(0);" @click="downMethod" v-else>上架</a>
+        </div>
     </div>
 </template>
 <script>
@@ -193,18 +217,22 @@ import $api from 'api';
         created(){
             // 设置title
             this.$store.commit('SET_TITLE','商品管理');
-
+            // 初始化时拉取已上架商品信息
             this.getList(this.onShelf.orderBy,this.onShelf.sorts,this.onShelf.currentPage,'ON_SHELF').then((res) => {
                 this.onShelf.listData = res.data;
                 this.onShelf.totalPage = res.total_record;
-            })
+                for (let obj of this.onShelf.listData) {
+                    this.$set(obj, 'checked', false)
+                }
+            });
+            // 初始化时拉取未上架商品信息
             this.getList(this.offShelf.orderBy,this.offShelf.sorts,this.offShelf.currentPage,'OFF_SHELF').then((res) => {
                 this.offShelf.listData = res.data;
                 this.offShelf.totalPage = res.total_record;
                 for(let obj of this.offShelf.listData){
                     this.$set(obj,'checked',false)
                 }
-            })
+            });
             if(this.$route.query.state == undefined || this.$route.query.state === 'ON_SHELF'){
                 this.tabId = 'yes';
                 this.$router.replace({
@@ -239,24 +267,49 @@ import $api from 'api';
                     return true;
                 }
             },
+            // 全选
             isAll() {
-                let isTrue = this.offShelf.listData.every((item) =>{
-                    return item.checked === true
-                })
-                if(isTrue){
-                    return true;
-                }else{
-                    return false;
-                }
-            },
-            checkedNum() {
-                let num = 0;
-                for(let obj of this.offShelf.listData){
-                    if(obj.checked){
-                        num++;
+                if (this.tabId === 'yes'){
+                    let isTrue = this.onShelf.listData.every((item) => {
+                        return item.checked === true
+                    })
+                    if (isTrue) {
+                        return true;
+                    } else {
+                        return false;
                     }
                 }
-                return num;
+                if (this.tabId === 'no') {
+                    let isTrue = this.offShelf.listData.every((item) => {
+                        return item.checked === true
+                    })
+                    if (isTrue) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            },
+            // 已选数量
+            checkedNum() {
+                if (this.tabId === 'yes') {
+                    let num = 0;
+                    for (let obj of this.onShelf.listData) {
+                        if (obj.checked) {
+                            num++;
+                        }
+                    }
+                    return num;
+                }
+                if (this.tabId === 'no') {
+                    let num = 0;
+                    for (let obj of this.offShelf.listData) {
+                        if (obj.checked) {
+                            num++;
+                        }
+                    }
+                    return num;
+                }
             }
         },
         methods:{
@@ -387,20 +440,38 @@ import $api from 'api';
                     })
                 }
             },
+            // 全选时改变图标
             checkedAll() {
-                let isTrue = this.offShelf.listData.every((item) =>{
-                    return item.checked === true
-                })
-                if(isTrue){
-                    for(let obj of this.offShelf.listData){
-                        obj.checked = false;
+                if (this.tabId === 'yes') {
+                    let isTrue = this.onShelf.listData.every((item) => {
+                        return item.checked === true
+                    })
+                    if (isTrue) {
+                        for (let obj of this.onShelf.listData) {
+                            obj.checked = false;
+                        }
+                    } else {
+                        for (let obj of this.onShelf.listData) {
+                            obj.checked = true;
+                        }
                     }
-                }else{
-                    for(let obj of this.offShelf.listData){
-                        obj.checked = true;
+                }
+                if (this.tabId === 'no') {
+                    let isTrue = this.offShelf.listData.every((item) => {
+                        return item.checked === true
+                    })
+                    if (isTrue) {
+                        for (let obj of this.offShelf.listData) {
+                            obj.checked = false;
+                        }
+                    } else {
+                        for (let obj of this.offShelf.listData) {
+                            obj.checked = true;
+                        }
                     }
                 }
             },
+            // 上架商品
             plusMethod() {
                 let status = store.state.member.shop.shopStatus;
                 if(status == -2) {
@@ -437,6 +508,49 @@ import $api from 'api';
                     })
                 })
             },
+            // 下架商品
+            downMethod() {
+                let status = store.state.member.shop.shopStatus;
+                if (status == -2) {
+                    return this.$messageBox({
+                        title: '提示',
+                        message: `您因违规操作而被冻结无法操作商品，若有疑问，请联系客服400-996-3399`,
+                        confirmButtonText: '我知道了'
+                    })
+                }
+                let checkedId = [];
+                for (let obj of this.onShelf.listData) {
+                    if (obj.checked) {
+                        checkedId.push(obj.proExtId);
+                    }
+                }
+                let data = {
+                    sysId: 1,
+                    state: 'OFF_SHELF',
+                    proExtIds: checkedId.join(',')
+                }
+                this.upOrDown(data).then(res => {
+                    Toast({
+                        message: '商品下架成功',
+                        iconClass: 'icon icon-success'
+                    });
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 500);
+                });
+            },
+            upOrDown(data) {
+                return new Promise((resolve, reject) => {
+                    this.$api.post('/oteao/productInfo/modifyOrgProInfoState', data, res => {
+                        resolve(res);
+                    }, res => {
+                        return Toast({
+                            message: res.errorMsg,
+                            iconClass: 'icon icon-fail'
+                        });
+                    });
+                });
+            },
             getMore(type) {
                 if(type === 'up'){
                     this.onShelf.currentPage++;
@@ -458,6 +572,7 @@ import $api from 'api';
                     })
                 }
             },
+            // 删除
             deleteMethod() {
                 let checkedId = [];
                 for(let obj of this.offShelf.listData){
@@ -637,6 +752,66 @@ import $api from 'api';
         },
     }
 </script>
-<style lang="less">
+<style lang="less" scoped>
     @import '~@/styles/seller/goodsManage.less';
+    /* _add为新增，_fix为修改 */
+
+    /* 修改价格样式 */
+    ._fix-pro-txt{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        ._fix-price{
+            position: unset!important;
+            /* flex: 1; */
+            width: 1.7rem;
+        }
+    }
+
+    /* 增加成团人数描述 */
+    ._add-tuan{
+        display: flex;
+        align-items: center;
+        margin-top:0.3rem; 
+        ._add-num{
+        width: 33%;
+        height: 0.38rem;
+        background: linear-gradient(90deg,#ff5500 0%,#ff8200 100%);
+        padding: 0.1rem 0.2rem;
+        position: relative;
+        }
+        ._add-groupnum{
+            width: 1.24rem;
+            height: 0.4rem;
+            background-image: linear-gradient(to right, #ff5500 0%, #ff8200 100%);
+            font-size: 0.24rem;
+            line-height: 0.4rem;
+            letter-spacing: 0rem;
+            color: #ffffff;
+            padding-left: 0.1rem;
+            margin-right: 0.1rem;
+            position: relative;
+            &:after{
+                content:'';
+                display:block;
+                width:0.2rem;
+                height:0.4rem;
+                position:absolute;
+                transform:skewX(30deg);
+                background:#fff;
+                top:0;
+                right:-0.1rem;
+            }
+        }
+        ._add-single-price{
+            /* width: 1.92rem; */
+            height: 0.33rem;
+            font-size: 0.24rem;
+            font-weight: normal;
+            font-stretch: normal;
+            line-height: 0.36rem;
+            letter-spacing: 0rem;
+            color: #666666;
+        }
+    }
 </style>
