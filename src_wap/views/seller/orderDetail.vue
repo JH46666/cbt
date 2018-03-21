@@ -2,7 +2,14 @@
     <div id="order-detail">
         <section class="main-wrap">
             <section class="head">
-                <div class="left">
+                <div class="left" v-if="myData.groupState==1" style="width: 2.8rem; display: flex;">
+                    <span class="icon-wrap"><i class="icon-gerenzhongxin_pintuanzhong" style="color: #424242;"></i></span>
+                    <div style="height: 0.6rem;position: relative; top: -0.20rem;">
+                        <div class="green" style="height: 0.28rem; margin-bottom: 0.1rem; font-size: 0.28rem;">拼团中,差<span style="color: #f08200">{{ grouppingInfo.groupNumber - grouppingInfo.offerNumber }}</span>人</div>
+                        <div style="height: 0.23rem; margin-left: 0.2rem;color: #999; font-size: 0.24rem;">剩余{{ grouppingLeftTime }}</div>
+                    </div>
+                </div>
+                <div class="left" v-else style="width: 2.8rem;">
                     <span class="icon-wrap"><i class="icon-daifukuan"></i></span>
                     <span class="green">{{ $store.state.order.status[myData.orderStatus] }}</span>
                 </div>
@@ -97,6 +104,10 @@
             </section>
         </section>
         <section class="btn-bar">
+            <div style="float: left; font-size: 0.28rem; color: #333; display: flex;align-items: center;" @click="chat">
+                <i class="icon-kefurukousvg" style="font-size: 0.44rem; color: #f08200; margin-right: 0.1rem;"></i>
+                联系买家
+            </div>
             <template v-if="myData.orderStatus === 'WAIT_PAY'">
                 <mt-button size="small" class="btn" @click="closeOrder">关闭订单</mt-button>
                 <mt-button size="small" class="btn" @click="editPrice">修改价格</mt-button>
@@ -198,6 +209,8 @@
                 closeConfirm: false,            
                 myData: {},                     // 订单详情
                 list: [],                       // 商品列表
+                grouppingInfo:{},               // 团购信息
+                grouppingLeftTime:''            // 团购剩余时间
             }
         },
         methods: {
@@ -274,20 +287,73 @@
                 }).catch(res =>{})
             },
             getData() {
+                // 拉取订单详情数据
                 let orderNo = this.$route.query.orderNo;
-                this.$api.post('/oteao/order/findSellerOrderByNo',{
-                // this.$api.post('/oteao/groupPurchase/seachGroupByOrder',{                    
-                orderNo,
+                this.$api.post('/oteao/order/findSellerOrderByNo', {
+                    orderNo,
                     delYes: 0
-                },res =>{
+                }, res => {
                     this.myData = res.data || {};
                     this.remark = this.myData.customerRemark || '';
-
-                    this.$api.post('/oteao/order/sellerOrderProductList',{orderId: this.myData.orderId,device: 'WAP'},res => {
+                    // 拉取订单中的商品数据
+                    this.$api.post('/oteao/order/sellerOrderProductList', { orderId: this.myData.orderId, device: 'WAP' }, res => {
                         this.list = res.data.mainOrder.products
-                    })
-                })
-
+                    }, res => {
+                        this.$toast(res.message)
+                    });
+                    // 进入订单详情后, 按订单ID请求团购信息
+                    this.$api.post('/oteao/groupPurchase/seachGroupByOrder', { orderId: this.myData.orderId, }, res => {
+                        this.grouppingInfo = res.data.groupPurchase;
+                        this.time && clearInterval(this.time);
+                        this.timeOut(this.grouppingInfo.createTime, this.grouppingInfo.systemTime);
+                    }, res => {
+                        this.$toast(res.message)
+                    });
+                }, res => {
+                    this.$toast(res.message)
+                });
+            },
+            // 计算剩余时间
+            sortTime(startTime, systemTime) {
+                const endTime = new Date(startTime);
+                const nowTime = new Date(systemTime);
+                let leftTime = parseInt((endTime.getTime() - nowTime.getTime())) + 24 * 60 * 60 * 1000;
+                return leftTime;
+            },
+            // 格式化时间
+            formateDate(time) {
+                let h = this.formate(parseInt(time / (60 * 60 * 1000) % 24));
+                let m = this.formate(parseInt(time / (60 * 1000) % 60));
+                let s = this.formate(parseInt(time / 1000 % 60));
+                let ms = (parseInt(time /100 % 10));
+                if (time <= 0) {
+                    return '00:00:00.0';
+                } else {
+                    return h + ':' + m + ':' + s + '.' + ms;
+                }
+            },
+            // 时间补零
+            formate(time) {            // 倒计时部分
+                if (time >= 10) {
+                    return time
+                } else {
+                    return `0${time}`
+                }
+            },
+            // 倒计时
+            timeOut(startTime, systemTime) {
+                let leftTime = this.sortTime(startTime, systemTime);
+                this.time = setInterval(() => {
+                    leftTime = leftTime -100;
+                    this.grouppingLeftTime = this.formateDate(leftTime);
+                }, 100);
+                if (leftTime <= 0) {
+                    clearInterval(this.time);
+                }
+            },
+            // 与买家联系
+            chat(){
+                this.$toast('开发中');
             }
         },
         created() {
