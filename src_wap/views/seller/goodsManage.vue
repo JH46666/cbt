@@ -151,17 +151,17 @@
             </div>
         </div>
         <!-- 底部fixed栏 -->
-        <!-- <div class="flex fix-bottom align_items_c">
+        <div class="flex fix-bottom align_items_c">
             <div class="seller-center" @click="$router.push({name: '卖家中心'})">
                 <i class="iconfont">&#xe676;</i>
                 <p>卖家中心</p>
             </div>
             <a v-show="!isEmpty" class="flex-1 noshelves-btn batch-btn" href="javascript:void(0);" @click="goBrect">批量处理</a>
             <a class="flex-1 noshelves-btn created-btn" href="javascript:void(0);" @click="goCreate">创建商品</a>
-        </div> -->
+        </div>
          <!-- 底部fixed栏 -->
         <!-- 底部fixed栏 -->
-        <div class="flex fix-bottom align_items_c">
+        <!-- <div class="flex fix-bottom align_items_c">
             <div class="flex-1 flex align_items_c" style="padding-left: .3rem;">
                 <label class="check-cir" :class="{checked: isAll}" @click="checkedAll"></label>
                 <span>已选 (<span>{{ checkedNum }}</span>)</span>
@@ -169,7 +169,7 @@
             <a class="delete-btn" href="javascript:void(0);" @click="deleteMethod" v-if="tabId === 'no'">删除</a>
             <a class="rackup-btn" href="javascript:void(0);" @click="downMethod" v-if="tabId === 'yes'">下架</a>
             <a class="rackup-btn" href="javascript:void(0);" @click="downMethod" v-else>上架</a>
-        </div>
+        </div> -->
     </div>
 </template>
 <script>

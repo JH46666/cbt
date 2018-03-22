@@ -191,25 +191,22 @@
                         return;
                     } else {
                         this.deleteCookie("oteaoSid")
-                        this.$http.get('/erp/account/logout',{});
-                        var now = new Date(); 
-                        var exitTime = now.getTime() + 1000; 
-                        while (true) { 
-                        now = new Date(); 
-                        if (now.getTime() > exitTime) 
-                        break; 
-                        } 
+                        this.$http.get('/erp/account/logout',{});                        
                         //this.deleteCookie("JSESSIONID")
                         this.$api.get('/oteao/login/logout',{},res => {
                             this.$store.commit('SET_MEMBERDATA',{type:'member',val:{}})
                             //this.$router.go({path:'/'});
                             //this.$router.push('/'); 
-                            location.href='/'                           
+                            setTimeout(() => {
+                                location.href='/'
+                            },1000)                                                       
                         },res => {
                             this.$store.commit('SET_MEMBERDATA',{type:'member',val:{}})
                             //this.$router.go({path:'/'});
-                            //this.$router.push('/')  
-                            location.href='/'                          
+                            //this.$router.push('/') 
+                             setTimeout(() => {
+                                location.href='/'
+                            },1000)                          
                         })
                     }
                 })
