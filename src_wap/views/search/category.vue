@@ -58,6 +58,7 @@
                                         :subTit="item.subTitle"
                                         :price="item.priceGroups"
                                         :garyPrice="item.proPrice"
+                                        :hideGroupsPrice="item.hideGroupsPrice"
                                         :salesPrice="item.salesPrice"
                                         :unit="item.unint"
                                         :imgUrl="item.proImg"
