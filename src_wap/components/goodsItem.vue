@@ -9,8 +9,8 @@
     tasteStar       Number          0               味道等级
     mainTit         String          ''              主标题
     subTit          String          ''              副标题
-    price           Number          0               价格
-    garyPrice       Number          0               灰价格
+    price           Number          0               团购价格
+    garyPrice       Number          0               单买价格
     unit            String          斤              单位
     isLogin         Boolean         false
     
