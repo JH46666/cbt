@@ -108,7 +108,7 @@
                                         <div class="detail_now_price">
                                             ￥{{detailData.productInfo.priceFightGrops | toFix2  }}
                                         </div>
-                                        <div class="detail_suggest_price">￥{{ detailData.productPrice[0].price | toFix2 }}</div>
+                                        <div class="detail_suggest_price">￥{{ detailData.productPrice[1].price | toFix2 }}</div>
                                 </template>
                             </div>
                         </div>
