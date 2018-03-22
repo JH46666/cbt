@@ -65,6 +65,7 @@
             :link="item.proSku" 
             :price="item.isSales ? item.activityPrice : item.groupPrice" 
             :garyPrice="item.isSales ? item.activityPrice : item.proPrice" 
+            :hideGroupsPrice="item.isSales ? item.activityPrice : item.hideGroupsPrice"
             :unit="item.unint ? item.unint : '斤' " 
             :imgUrl="item.proImg" 
             :businessType="sortTagNum(item.tagNum)"
