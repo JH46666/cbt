@@ -63,7 +63,8 @@
             :mainTit="item.proTitle" 
             :subTit="item.subTitle" 
             :link="item.proSku" 
-            :price="item.isSales ? item.activityPrice : item.proPrice" 
+            :price="item.isSales ? item.activityPrice : item.groupPrice" 
+            :garyPrice="item.isSales ? item.activityPrice : item.proPrice" 
             :unit="item.unint ? item.unint : '斤' " 
             :imgUrl="item.proImg" 
             :businessType="sortTagNum(item.tagNum)"
@@ -100,7 +101,7 @@
     <div class="mupop_dialog_wrapper">
       <div class="popup-content">
         <div class="con-item" v-if="$tool.isLogin()">
-          <h4>团购价</h4>
+          <h4>供货价</h4>
           <input class="price-input" type="tel" v-model="minSupplyPrice" placeholder="最低价" @blur="toFixedMinZero()"> —
           <input class="price-input" type="tel" v-model="maxSupplyPrice" placeholder="最高价" @blur="toFixedMaxZero()">
         </div>
@@ -196,8 +197,8 @@ export default {
       total: 0, // 总条目
       pageNum: 1, // 页码
       noList: false, // 没有搜索到
-      maxSupplyPrice: '', //最大团购价
-      minSupplyPrice: '', //最小团购价
+      maxSupplyPrice: '', //最大供货价
+      minSupplyPrice: '', //最小供货价
       brandList: [], //筛选品牌列表
       selectedBrand: '', //被选中的品牌
       history: [], // 历史记录
@@ -255,7 +256,7 @@ export default {
       this.resetSupplyPrice();
       this.selectedBrand = '';
     },
-    // 重置团购价区间
+    // 重置供货价区间
     resetSupplyPrice() {
       this.minSupplyPrice = '';
       this.maxSupplyPrice = '';
@@ -481,7 +482,7 @@ export default {
         this.maxSupplyPrice = Math.abs(parseFloat(delTrim).toFixed(0));
       }
     },
-    // 判断最大团购价不得小于最小团购价
+    // 判断最大供货价不得小于最小供货价
     sortPrice() {
       if (this.maxSupplyPrice < this.minSupplyPrice) {
         let temp = this.maxSupplyPrice;
