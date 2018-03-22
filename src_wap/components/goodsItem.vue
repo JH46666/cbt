@@ -11,6 +11,7 @@
     subTit          String          ''              副标题
     price           Number          0               团购价格
     garyPrice       Number          0               单买价格
+    hideGroupsPrice Number          0               隐藏价格
     unit            String          斤              单位
     isLogin         Boolean         false
     
@@ -65,7 +66,7 @@
                         <span class="goods-garyPrice">{{'￥'+ toFixed(garyPrice)}}</span>
                     </template>
                     <template v-else>
-                        <span>{{'￥'+ toFixed(price).replace(/^[1-9]/g,'?')}}</span>
+                        <span>{{'￥'+ toFixed(hideGroupsPrice)}}</span>
                         <span class="goods-garyPrice">{{'￥'+ toFixed(garyPrice)}}</span>
                     </template>
                 </div>
@@ -97,6 +98,10 @@ export default {
             default: 0
         },
         garyPrice: {
+            type: Number,
+            default: 0
+        },
+        hideGroupsPrice: {
             type: Number,
             default: 0
         },
