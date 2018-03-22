@@ -100,6 +100,14 @@ const router = new Router({
 					meta: {
 						hideFooter: true
 					}
+				},
+				{
+					path: 'rules',
+					name: '拼团需知',
+					component: resolve => require(['@/views/share/collageddetail.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
 				}
 			]
 		},
