@@ -48,7 +48,7 @@
           <div v-else class="noImg">{{String(item.memberUnitName).substr(0,2)}}</div>
           <div v-if="index == 0" class="first-target">团长</div>
         </div>
-        <div v-if="!groupComplete">
+        <div v-if="!groupComplete" v-for="item in (groupData.groupPurchase.groupNumber - groupData.groupPurchase.offerNumber)">
           <img src="../../assets/cbt_icwctportrait.png">
         </div>
       </div>
@@ -135,7 +135,7 @@
             <div v-else class="noImg">{{String(item.memberUnitName).substr(0,2)}}</div>
             <div v-if="index == 0" class="first-target">团长</div>
           </div>
-          <div>
+          <div v-for="item in (groupArray[groupIndex].groupNumber - groupArray[groupIndex].offerNumber)">
             <img src="../../assets/cbt_icwctportrait.png">
           </div>
         </div>
@@ -278,29 +278,30 @@ export default {
     sortTime(startTime,systemTime){
       const endTime = new Date(startTime);
       const nowTime = new Date(systemTime);
-      let leftTime = parseInt((endTime.getTime()-nowTime.getTime())/1000)+24*60*60
+      let leftTime = parseInt((endTime.getTime()-nowTime.getTime()))+24*60*60*1000
       return leftTime;
     },
     formateDate(time){
-      let h = this.formate(parseInt(time/(60*60)%24))
-      let m = this.formate(parseInt(time/60%60))
-      let s = this.formate(parseInt(time%60))
+      let h = this.formate(parseInt(time/(1000*60*60)%24))
+      let m = this.formate(parseInt(time/60/1000%60))
+      let s = this.formate(parseInt(time/1000%60))
+      let ms = parseInt(time/100%10)
       if(time <= 0){
-          return '00:00:00';
+          return '00:00:00.0';
       }else{
-          return h+':'+m+':'+s;
+          return h+':'+m+':'+s+'.'+ms;
       }
     },
     // 倒计时
     timeOut(){
       let time = setInterval(()=>{            // 倒计时
-         this.leftTime --;
+         this.leftTime = this.leftTime-100;
          if(this.groupArray.length>0){
            for(let item of this.groupArray){
-             item.lastTime = item.lastTime - 1
+             item.lastTime = item.lastTime - 100
            }
          }
-     },1000)
+     },100)
    },
    // 参与拼团
    addCartInfo(groupType,groupId='') {
