@@ -14,7 +14,7 @@
     hideGroupsPrice Number          0               隐藏价格
     unit            String          斤              单位
     isLogin         Boolean         false
-    
+
     新增prop
     salesPrice      Number          0               特价
 
@@ -102,8 +102,8 @@ export default {
             default: 0
         },
         hideGroupsPrice: {
-            type: Number,
-            default: 0
+            type: String,
+            default: ''
         },
         unit: {
             type: String,
