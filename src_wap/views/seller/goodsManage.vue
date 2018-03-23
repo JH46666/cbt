@@ -763,7 +763,7 @@ import $api from 'api';
         justify-content: space-between;
         ._fix-price{
             position: unset!important;
-            /* flex: 1; */
+            flex: 1;
             width: 1.7rem;
         }
     }
@@ -781,7 +781,7 @@ import $api from 'api';
         position: relative;
         }
         ._add-groupnum{
-            width: 1.24rem;
+            width: 1.33rem;
             height: 0.4rem;
             background-image: linear-gradient(to right, #ff5500 0%, #ff8200 100%);
             font-size: 0.24rem;

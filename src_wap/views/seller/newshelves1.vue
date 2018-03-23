@@ -164,7 +164,7 @@
                 </div> -->
                 <!-- 不明真相的吃瓜群众？↑↑↑ -->
 
-
+                <!-- 商品属性 -->
                 <div class="good_type_list bg_gray" style="background: #f5f5f5; position: relative;" v-if="resize.proValList.length != 0">
                     <div class="_add-tips-title" style="display: flex;">
                         <div class="_add-small-box"></div>
@@ -260,12 +260,18 @@
         <!-- 商品分类弹出框 -->
         <mt-popup v-model="dialogTypeBol" position="bottom" style="height: 90%;">
             <div class="dialog_type_wrapper">
-                <div class="dialog_type_title">
-                    常用品类
-                </div>
-                <div class="dialog_type_content _fix-dialog_type_content">
-                    <div class="type_1 _add-type_1">
-                        <div class="type_item _add-type_item" v-if="index < 4" v-for="(item,index) in oneTypeList" :key="index" :class="{on: item.id === resize.oneClass}" @click="selectOneType(item.id,index)">{{ item.name }}</div>
+                <div v-if="oneTypeUsedList.length > 0">
+                    <div class="dialog_type_title">
+                        常用品类
+                    </div>
+                    <div class="dialog_type_content _fix-dialog_type_content">
+                        <div class="type_1 _add-type_1">
+                            <div class="type_item _add-type_item" v-for="(item,index) in oneTypeUsedList" :key="index" :class="{on: item.id === resize.oneClass}"
+                                @click="selectOneType(item.id,index)"
+                            >
+                                {{ item.name }}
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="dialog_type_title">
@@ -317,6 +323,7 @@
                 flagGoodsSj:false,                                  // 单买价              
                 flagGoodsGroup: false,                              // 团购价
                 flagGoodsGroupNum: false,                           // 团购人数
+                oneTypeUsedList: [],                                // 常用一级分类
             }
         },
         watch: {
@@ -413,10 +420,12 @@
                 this.dialogTypeBol = false;
                 this.resize.form.goodTypes = this.oneTypeList[this.resize.oneIndex].name + '-' + this.twoTypeList[this.resize.twoIndex].name;
             },
+            // 点击一级分类
             selectOneType(id, index) {
                 this.twoTypeList = [];
                 this.resize.oneClass = id;
                 this.resize.oneIndex = index;
+                // 获取二级分类
                 this.getTypeList(id).then((res) => {
                     let parentList = res.data;
                     for (let obj of parentList) {
@@ -444,6 +453,7 @@
             selectGoodType() {
                 this.dialogTypeBol = true;
             },
+            // 获取二级分类
             getTypeList(parentId) {
                 let data = {
                     sysId: 1,
@@ -460,6 +470,7 @@
                     })
                 })
             },
+            // 获取一级分类
             getOneTypeList() {
                 let data = {
                     sysId: 1
@@ -561,6 +572,7 @@
                     return;
                 }
             },
+            // 获取所有品牌列表
             getBrandList() {
                 let data = {
                     sysId: 1
@@ -576,25 +588,26 @@
                     })
                 })
             },
-            getDwList() {
-                let data = {
-                    dictionaryId: 14
-                }
-                return new Promise((resolve, reject) => {
-                    this.$api.get('/oteao/dictionaryData/getDataByType', data, res => {
-                        resolve(res);
-                    }, res => {
-                        return Toast({
-                            message: res.errorMsg,
-                            iconClass: 'icon icon-fail'
-                        });
-                    })
-                })
-            },
+            // 获取单位数据
+            // getDwList() {
+            //     let data = {
+            //         dictionaryId: 14
+            //     }
+            //     return new Promise((resolve, reject) => {
+            //         this.$api.get('/oteao/dictionaryData/getDataByType', data, res => {
+            //             resolve(res);
+            //         }, res => {
+            //             return Toast({
+            //                 message: res.errorMsg,
+            //                 iconClass: 'icon icon-fail'
+            //             });
+            //         })
+            //     })
+            // },
             // 跳转如何创建商品页
             funcHowToCreat() {
                 return Toast({
-                    message: '将要跳转'
+                    message: '将要跳转如何创建商品页'
                 })
             },
             // 比较几个价格
@@ -662,7 +675,7 @@
         created() {
             // 设置title
             this.$store.commit('SET_TITLE', '新品上架');
-
+            // 获取一级分类
             this.getOneTypeList().then((res) => {
                 let parentList = res.data;
                 for (let obj of parentList) {
@@ -672,6 +685,23 @@
                     })
                 }
             });
+            // 获取常用分类
+            this.$api.get('/oteao/productInfo/currentCategroyForSeller', {}, res => {
+                let parentList = res.data;
+                for (let obj of parentList) {
+                    this.oneTypeUsedList.push({
+                        id: obj.catId,
+                        name: obj.parentCatName
+                    })
+                }
+            }, res => {
+                return Toast({
+                    message: res.errorMsg,
+                    iconClass: 'icon icon-fail'
+                });
+            })
+
+            // 获取所有品牌列表
             this.getBrandList().then((res) => {
                 let parentList = res.data;
                 for (let obj of parentList) {
@@ -681,15 +711,15 @@
                     })
                 }
             });
-            this.getDwList().then((res) => {
-                let parentList = res.data;
-                for (let obj of parentList) {
-                    this.danWei.push({
-                        id: obj.id,
-                        name: obj.dataName
-                    })
-                }
-            });
+            // this.getDwList().then((res) => {
+            //     let parentList = res.data;
+            //     for (let obj of parentList) {
+            //         this.danWei.push({
+            //             id: obj.id,
+            //             name: obj.dataName
+            //         })
+            //     }
+            // });
         },
         beforeRouteEnter(to, from, next) {
             if (store.state.member.member.id) {
