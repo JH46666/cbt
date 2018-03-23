@@ -85,7 +85,7 @@
                     <div class="detail_describe_wrapper">
                         <div class="detail_describe_text">
                             <p class="detail_text">
-                                <span class="detail_type">
+                                <span class="detail_type" :class="{'green':detailData.orgShopCenterVo&&detailData.orgShopCenterVo.shopType<=4}">
                                     {{ detailData.orgShopCenterVo ? businessName[detailData.orgShopCenterVo.shopType - 1] : businessName[4] }}
                                 </span>
                                 {{ detailData.productExtInfo.title }}
@@ -100,15 +100,16 @@
                                     </div>
                                 </template>
                                 <template  v-if="!loginId || state != 'ACTIVE'">
-                                    <div class="off_shelf_tips">
+                                    <div class="detail_now_price">
                                         ￥{{detailData.productInfo.hideGroupsPrice}}
                                     </div>
+                                    <div class="detail_suggest_price">￥{{ detailData.productPrice[1].price | toFix2 }}</div>
                                 </template>
                                 <template v-if="detailData.productPrice.length != 0 && detailData.productExtInfo.state === 'ON_SHELF' && loginId && state === 'ACTIVE'">
                                         <div class="detail_now_price">
                                             ￥{{detailData.productInfo.priceFightGrops | toFix2  }}
                                         </div>
-                                        <div class="detail_suggest_price">￥{{ detailData.productPrice[0].price | toFix2 }}</div>
+                                        <div class="detail_suggest_price">￥{{ detailData.productPrice[1].price | toFix2 }}</div>
                                 </template>
                             </div>
                         </div>
@@ -131,7 +132,7 @@
                                         <span>运费：</span>
                                         <template v-if="detailData.productInfo.businessType == 'ORG_SALES'">
                                             <span v-if="!detailData.orgFreightTemplateVoList || detailData.orgFreightTemplateVoList.length == 0">本店商品全国包邮</span>
-                                            <span v-else-if="detailData.orgFreightTemplateVoList && detailData.orgFreightTemplateVoList.length > 0">邮费依实际重量计算运费</span>
+                                            <span v-else-if="detailData.orgFreightTemplateVoList && detailData.orgFreightTemplateVoList.length > 0">依实际重量计算运费</span>
                                         </template>
                                         <template v-else>
                                             <span>自营茶叶满500包邮</span>
@@ -323,7 +324,7 @@
                 <mt-badge type="error" size="small" v-show="Number(cartTotal)>0">{{ cartTotal | ninenineAdd }}</mt-badge>
             </mt-tab-item> -->
             <mt-tab-item id="3" class="join-cart">
-              <template v-if="detailData.productExtInfo.state === 'OFF_SHELF'">
+              <template v-if="detailData.productExtInfo.state === 'OFF_SHELF' && detailData.productExtInfo.stockNum > detailData.productInfo.memberNum">
                 <mt-button disabled type="default" class="lonelyBuy-btn">
                   <p v-if="$tool.isLogin()">￥{{detailData.productPrice[0].price| toFix2}}</p>
                   <p v-else>￥{{detailData.productPrice[0].hidePrice}}</p>
@@ -335,7 +336,7 @@
                     <p>{{detailData.productInfo.memberNum}}人拼团</p>
                 </mt-button>
               </template>
-              <template v-else-if="detailData.productExtInfo.isSoldOut == 1 && detailData.productExtInfo.compelOutStock == 0">
+              <template v-else-if="detailData.productExtInfo.isSoldOut == 1 && detailData.productExtInfo.compelOutStock == 0  && detailData.productExtInfo.stockNum > detailData.productInfo.memberNum">
                 <mt-button type="default"  class="lonelyBuy-btn" @click.native="addCartInfo(0)">
                     <p v-if="$tool.isLogin()">￥{{detailData.productPrice[0].price| toFix2}}</p>
                     <p v-else>￥{{detailData.productPrice[0].hidePrice}}</p>
@@ -368,7 +369,7 @@
                 <div v-else class="noImg">{{String(item.memberUnitName).substr(0,2)}}</div>
                 <div v-if="index == 0" class="first-target">团长</div>
               </div>
-              <div>
+              <div v-for="item in (groupArray[groupIndex].groupNumber - groupArray[groupIndex].offerNumber)">
                 <img src="../../assets/cbt_icwctportrait.png">
               </div>
             </div>
@@ -641,7 +642,7 @@ export default {
                 if(status === 'WAIT_AUDIT') {
                     return this.$messageBox({
                         title:'提示',
-                        message:`您的账号审核中，只有正式会员才以买买买，若有疑问，请联系客服400-996-3399`,
+                        message:`您的账号审核中，只有正式会员才可以买买买，若有疑问，请联系客服400-996-3399`,
                         confirmButtonText: '我知道了'
                     }).then(res => {
                          this.selected = null;
@@ -978,26 +979,27 @@ export default {
         sortTime(startTime,systemTime){
           const endTime = new Date(startTime);
           const nowTime = new Date(systemTime);
-          let leftTime = parseInt((endTime.getTime()-nowTime.getTime())/1000)+24*60*60
+          let leftTime = parseInt((endTime.getTime()-nowTime.getTime()))+24*60*60*1000
           return leftTime;
         },
         formateDate(time){
-          let h = this.formate(parseInt(time/(60*60)%24))
-          let m = this.formate(parseInt(time/60%60))
-          let s = this.formate(parseInt(time%60))
+          let h = this.formate(parseInt(time/(1000*60*60)%24))
+          let m = this.formate(parseInt(time/60/1000%60))
+          let s = this.formate(parseInt(time/1000%60))
+          let ms = parseInt(time/100%10)
           if(time <= 0){
-              return '00:00:00';
+              return '00:00:00.0';
           }else{
-              return h+':'+m+':'+s;
+              return h+':'+m+':'+s+'.'+ms;
           }
         },
         // 倒计时
         timeOut(){
           let time = setInterval(()=>{            // 倒计时
              for(let item of this.groupArray){
-               item.lastTime = item.lastTime - 1
+               item.lastTime = item.lastTime - 100
              }
-         },1000)
+         },100)
         },
         timeDown () {
            const endTime = new Date(this.detailData.productExtInfo.salesEndTime);
@@ -1034,7 +1036,7 @@ export default {
                if(status === 'WAIT_AUDIT') {
                    return this.$messageBox({
                        title:'提示',
-                       message:`您的账号审核中，只有正式会员才以买买买，若有疑问，请联系客服400-996-3399`,
+                       message:`您的账号审核中，只有正式会员才可以买买买，若有疑问，请联系客服400-996-3399`,
                        confirmButtonText: '我知道了'
                    }).then(res => {
                         this.selected = null;

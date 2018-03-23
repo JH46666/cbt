@@ -191,17 +191,25 @@
                         .line(1.5);
                         margin: .4rem 0 .32rem;
                         .detail_type{
-                            padding: 0.01rem 0.05rem;
-                        	border: solid 1px #f08200;
+                          width: 0.65rem;
+                        	  border: solid 1px #f08200;
+                            height: 0.32rem;
+                            line-height: 0.32rem;
+                            text-align: center;
+                            display: inline-block;
                             font-size: 0.2rem;
-                        	letter-spacing: 0rem;
-                        	color: #f08200;
+                        	  letter-spacing: 0rem;
+                        	  color: #f08200;
                             margin-right: 0.2rem;
+                            &.green{
+                              border-color: #0ec416;
+                              color: #0ec416;
+                            }
                         }
                     }
                     .detail_price{
                         .flex;
-                        .align-items;
+                        align-items: flex-end;
                         .detail-groupnum{
                             width: 1.5rem;
                             height: 0.4rem;
@@ -321,11 +329,11 @@
                 font-size: 0.3rem;
                 line-height: 0.3rem;
                 letter-spacing: 0rem;
-                div:first-child{
+                div:nth-child(1){
                     flex: 1;
                     color: #333333;
                 }
-                div:last-child{
+                div:nth-child(2){
                     text-align: right;
                     color: #999999;
                 }

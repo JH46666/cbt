@@ -28,7 +28,7 @@
                                 <p class="goods-bd">
                                     <span class="price">￥{{ todo.priorityPrice | toFix2  }}</span>
                                     <span class="pro_number clearfix">
-                                        <span class="decrease" :class="{isGary:todo.buyNum === 1}" @click="numDecrease(todo)"><i class="iconfont">&#xe851;</i></span>
+                                        <span class="decrease" :class="{isGary:todo.buyNum === 1||todo.buyNum == todo.buyUpperLimit}" @click="numDecrease(todo)"><i class="iconfont">&#xe851;</i></span>
                                         <input class="input-num" type="number" v-model="todo.buyNum" @blur="numChange(todo)">
                                         <span class="plus" @click="numPlus(todo)"><i class="iconfont">&#xe638;</i></span>
                                     </span>
@@ -419,13 +419,13 @@
                     "receiveAddrId": this.address.id,
                     "sysId": 1,
                     "useBackBalance": 0,
-                    "useStoreBalance": 0
+                    "useStoreBalance": 0,
+                }
+                if(this.$tool.isWx){
+                  data.faceImg = store.state.member.wechatHeadImg;
                 }
                 // 禁用提交按钮，防止重复提交
                 this.disabled = true;
-
-
-
 
                 this.$api.post('/oteao/shoppingCart/submitOrder',JSON.stringify(data),res => {
 
@@ -556,6 +556,7 @@
                     }
                     item.buyNum = res.data.buyNum;
                     item.oldBuy = res.data.buyNum;
+                    this.initData()
                 }).catch(res => {})
             },
             // 加
@@ -575,6 +576,7 @@
                     }
                     item.buyNum = res.data.buyNum;
                     item.oldBuy = res.data.buyNum;
+                    this.initData()
                 }).catch(res => {})
 
             },
@@ -604,6 +606,7 @@
                         }
                         item.buyNum = res.data.buyNum;
                         item.oldBuy = res.data.buyNum;
+                        this.initData()
                     }).catch(res => {
                         item.buyNum = item.oldBuy;
                     })
@@ -612,7 +615,7 @@
                     Toast('请输入正确的数值')
                     item.buyNum = item.buyLowLimit || 1;
                 }
-            },
+            }
         },
         created() {
             // 设置title
