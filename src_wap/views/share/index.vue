@@ -211,13 +211,13 @@ export default {
       this.leftTime = this.sortTime(res.data.groupPurchase.createTime,res.data.groupPurchase.systemTime)
       this.isOutTime = this.leftTime<=0?true:false;
       // 获取团购列表
-      // this.getGroupPurchase().then((res)=>{
-      //     this.groupArray = res.data.groups;
-      //     for(let item of this.groupArray){
-      //       this.$set(item,'lastTime',this.sortTime(item.createTime,item.systemTime));
-      //     }
-      //     this.timeOut();
-      // })
+      this.getGroupPurchase().then((res)=>{
+          this.groupArray = res.data.groups;
+          for(let item of this.groupArray){
+            this.$set(item,'lastTime',this.sortTime(item.createTime,item.systemTime));
+          }
+          this.timeOut();
+      })
       // 获取商品信息
       this.getProInfo().then((res) =>{
         this.detailData = res.data
@@ -295,8 +295,10 @@ export default {
     timeOut(){
       let time = setInterval(()=>{            // 倒计时
          this.leftTime --;
-         for(let item of this.groupArray){
-           item.lastTime = item.lastTime - 1
+         if(this.groupArray.length>0){
+           for(let item of this.groupArray){
+             item.lastTime = item.lastTime - 1
+           }
          }
      },1000)
    },
