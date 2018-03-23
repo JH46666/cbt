@@ -148,7 +148,7 @@
       </div>
     </div>
     <!-- 分享弹窗 -->
-    <div class="share-mask" :class="{'off':!shareDialogFlag}">
+    <div class="share-mask" :class="{'off':!shareDialogFlag}" v-if="!groupComplete && !isOutTime && isOwn">
       <div class="share-dialog">
           <div class="share-title">还差<span>{{groupData.groupPurchase.groupNumber - groupData.groupPurchase.offerNumber}}</span>人，快邀请好友来拼团</div>
           <div class="share-subtitle">拼单已发起，人满后立即发货</div>
