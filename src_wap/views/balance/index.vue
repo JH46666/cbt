@@ -556,6 +556,7 @@
                     }
                     item.buyNum = res.data.buyNum;
                     item.oldBuy = res.data.buyNum;
+                    this.initData()
                 }).catch(res => {})
             },
             // 加
@@ -575,6 +576,7 @@
                     }
                     item.buyNum = res.data.buyNum;
                     item.oldBuy = res.data.buyNum;
+                    this.initData()
                 }).catch(res => {})
 
             },
@@ -604,6 +606,7 @@
                         }
                         item.buyNum = res.data.buyNum;
                         item.oldBuy = res.data.buyNum;
+                        this.initData()
                     }).catch(res => {
                         item.buyNum = item.oldBuy;
                     })
@@ -612,7 +615,7 @@
                     Toast('请输入正确的数值')
                     item.buyNum = item.buyLowLimit || 1;
                 }
-            },
+            }
         },
         created() {
             // 设置title

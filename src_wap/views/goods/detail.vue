@@ -85,7 +85,7 @@
                     <div class="detail_describe_wrapper">
                         <div class="detail_describe_text">
                             <p class="detail_text">
-                                <span class="detail_type">
+                                <span class="detail_type" :class="{'green':detailData.orgShopCenterVo&&detailData.orgShopCenterVo.shopType<=4}">
                                     {{ detailData.orgShopCenterVo ? businessName[detailData.orgShopCenterVo.shopType - 1] : businessName[4] }}
                                 </span>
                                 {{ detailData.productExtInfo.title }}
@@ -100,9 +100,10 @@
                                     </div>
                                 </template>
                                 <template  v-if="!loginId || state != 'ACTIVE'">
-                                    <div class="off_shelf_tips">
+                                    <div class="detail_now_price">
                                         ￥{{detailData.productInfo.hideGroupsPrice}}
                                     </div>
+                                    <div class="detail_suggest_price">￥{{ detailData.productPrice[1].price | toFix2 }}</div>
                                 </template>
                                 <template v-if="detailData.productPrice.length != 0 && detailData.productExtInfo.state === 'ON_SHELF' && loginId && state === 'ACTIVE'">
                                         <div class="detail_now_price">
@@ -131,7 +132,7 @@
                                         <span>运费：</span>
                                         <template v-if="detailData.productInfo.businessType == 'ORG_SALES'">
                                             <span v-if="!detailData.orgFreightTemplateVoList || detailData.orgFreightTemplateVoList.length == 0">本店商品全国包邮</span>
-                                            <span v-else-if="detailData.orgFreightTemplateVoList && detailData.orgFreightTemplateVoList.length > 0">邮费依实际重量计算运费</span>
+                                            <span v-else-if="detailData.orgFreightTemplateVoList && detailData.orgFreightTemplateVoList.length > 0">依实际重量计算运费</span>
                                         </template>
                                         <template v-else>
                                             <span>自营茶叶满500包邮</span>
@@ -641,7 +642,7 @@ export default {
                 if(status === 'WAIT_AUDIT') {
                     return this.$messageBox({
                         title:'提示',
-                        message:`您的账号审核中，只有正式会员才以买买买，若有疑问，请联系客服400-996-3399`,
+                        message:`您的账号审核中，只有正式会员才可以买买买，若有疑问，请联系客服400-996-3399`,
                         confirmButtonText: '我知道了'
                     }).then(res => {
                          this.selected = null;
@@ -1035,7 +1036,7 @@ export default {
                if(status === 'WAIT_AUDIT') {
                    return this.$messageBox({
                        title:'提示',
-                       message:`您的账号审核中，只有正式会员才以买买买，若有疑问，请联系客服400-996-3399`,
+                       message:`您的账号审核中，只有正式会员才可以买买买，若有疑问，请联系客服400-996-3399`,
                        confirmButtonText: '我知道了'
                    }).then(res => {
                         this.selected = null;

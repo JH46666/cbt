@@ -313,7 +313,7 @@ export default {
            if(status === 'WAIT_AUDIT') {
                return this.$messageBox({
                    title:'提示',
-                   message:`您的账号审核中，只有正式会员才以买买买，若有疑问，请联系客服400-996-3399`,
+                   message:`您的账号审核中，只有正式会员才可以买买买，若有疑问，请联系客服400-996-3399`,
                    confirmButtonText: '我知道了'
                }).then(res => {
                     this.selected = null;
