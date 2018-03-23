@@ -6,13 +6,13 @@
                 <div class="_add-title-small-box"></div>
                 商品轮播图
             </div>
-            <div class="_add-title-tips">
+            <!-- <div class="_add-title-tips">
                 <i class="iconfont icon-chuangjianshangpinshuoming"></i>
                 <div>传图规范</div>
-            </div>
+            </div> -->
         </div>
         <div class="floor main-imgs _add-main-imgs">
-            <p style="font-size: 0.26rem; color: #333;">1-5张，建议800*800像素，单张图片小于8M的清晰商品照片</p>
+            <p style="font-size: 0.26rem; color: #666;">1-5张，建议800*800像素等宽高，单张图片小于8M的清晰商品照片</p>
             <div class="main-img-box _fix-main-img-box">
                 <div class="_fix-img-box" v-for="(item,index) in resize.imgs.mainImg" @click="getPrevImgSrc(index,'main')">
                     <img :src="item" />
@@ -45,7 +45,7 @@
             </div>
         </div>
         <div class="floor detail-imgs _fix-detail-imgs">
-            <p style="font-size: 0.26rem; color: #333;">1-10张，尺寸宽度介于640像素至750像素之间，单张图片小于8M，图片尽量保持尺寸一致</p>
+            <p style="font-size: 0.26rem; color: #666;">1-10张，尺寸宽度介于640像素至750像素之间，单张图片小于8M，图片尽量保持尺寸一致</p>
             <div class="main-img-box _fix-main-img-box">
                 <div class="_fix-img-box" v-for="(item,index) in resize.imgs.detailImg1" @click="getPrevImgSrc(index,'detailImg1')">
                     <img :src="item" />

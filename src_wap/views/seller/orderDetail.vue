@@ -108,18 +108,20 @@
                 <i class="icon-kefurukousvg" style="font-size: 0.44rem; color: #f08200; margin-right: 0.1rem;"></i>
                 联系买家
             </div>
-            <template v-if="myData.orderStatus === 'WAIT_PAY'">
-                <mt-button size="small" class="btn" @click="closeOrder">关闭订单</mt-button>
-                <mt-button size="small" class="btn" @click="editPrice">修改价格</mt-button>
-            </template>
-            <template v-if="myData.orderStatus === 'PACKING' || myData.orderStatus === 'PAY_WAIT_AUDIT'">
-                <mt-button size="small" class="btn" @click="closeOrder">关闭订单</mt-button>
-                <mt-button size="small" class="btn gold" @click.stop="$router.push({name:'发货',query:{orderNo:myData.orderNo}})">发货</mt-button>
-            </template>
-            <template v-if="myData.orderStatus === 'DELIVERED'">
-                <mt-button size="small" class="btn" @click="closeOrder">关闭订单</mt-button>
-                <mt-button size="small" class="btn" @click.stop="$router.push({name:'修改配送方式',query:{orderNo:myData.orderNo}})">修改快递</mt-button>
-            </template>
+            <div v-if="!myData.groupSuccess==2">
+                <template v-if="myData.orderStatus === 'WAIT_PAY'">
+                    <mt-button size="small" class="btn" @click="closeOrder">关闭订单</mt-button>
+                    <mt-button size="small" class="btn" @click="editPrice">修改价格</mt-button>
+                </template>
+                <template v-if="myData.orderStatus === 'PACKING' || myData.orderStatus === 'PAY_WAIT_AUDIT'">
+                    <mt-button size="small" class="btn" @click="closeOrder">关闭订单</mt-button>
+                    <mt-button size="small" class="btn gold" @click.stop="$router.push({name:'发货',query:{orderNo:myData.orderNo}})">发货</mt-button>
+                </template>
+                <template v-if="myData.orderStatus === 'DELIVERED'">
+                    <mt-button size="small" class="btn" @click="closeOrder">关闭订单</mt-button>
+                    <mt-button size="small" class="btn" @click.stop="$router.push({name:'修改配送方式',query:{orderNo:myData.orderNo}})">修改快递</mt-button>
+                </template>
+            </div>
         </section>
         
         <!-- 修改备注弹框 -->
@@ -210,7 +212,8 @@
                 myData: {},                     // 订单详情
                 list: [],                       // 商品列表
                 grouppingInfo:{},               // 团购信息
-                grouppingLeftTime:''            // 团购剩余时间
+                grouppingLeftTime:'',            // 团购剩余时间
+                timer: null
             }
         },
         methods: {
@@ -304,7 +307,7 @@
                     // 进入订单详情后, 按订单ID请求团购信息
                     this.$api.post('/oteao/groupPurchase/seachGroupByOrder', { orderId: this.myData.orderId, }, res => {
                         this.grouppingInfo = res.data.groupPurchase;
-                        this.time && clearInterval(this.time);
+                        this.timer && clearInterval(this.timer);
                         this.timeOut(this.grouppingInfo.createTime, this.grouppingInfo.systemTime);
                     }, res => {
                         this.$toast(res.message)
@@ -343,12 +346,12 @@
             // 倒计时
             timeOut(startTime, systemTime) {
                 let leftTime = this.sortTime(startTime, systemTime);
-                this.time = setInterval(() => {
+                this.timer = setInterval(() => {
                     leftTime = leftTime -100;
                     this.grouppingLeftTime = this.formateDate(leftTime);
                 }, 100);
                 if (leftTime <= 0) {
-                    clearInterval(this.time);
+                    clearInterval(this.timer);
                 }
             },
             // 与买家联系

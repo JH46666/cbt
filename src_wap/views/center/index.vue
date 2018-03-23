@@ -62,7 +62,7 @@
                 </router-link>
                 <router-link :to="{name: '订单列表',query: {orderStatus:'waitSend'}}" class="item">
                     <mt-badge size="small" :class="{one:count.waitSend < 10}" v-if="count.waitSend > 0" type="error">3</mt-badge>
-                    <span><i class="icon-tuikuandingdan"></i></span>
+                    <span><i class="icon-gerenzhongxin_pintuanzhong"></i></span>
                     <p>待成团</p>
                 </router-link>
                 <router-link :to="{name: '订单列表',query: {orderStatus:'waitSend'}}" class="item">
