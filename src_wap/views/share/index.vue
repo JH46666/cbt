@@ -379,9 +379,9 @@ export default {
        })
    },
    getWxConfig(){
-     console.log(window.location.href.replace('/#',''))
+     console.log(window.location.href.split('#')[0] + '#' + window.location.href.split('#')[1])
      let data = {
-       'url':window.location.href.replace('/#','')
+       'url':window.location.href.split('#')[0] + '#' + window.location.href.split('#')[1]
      }
      return new Promise((resolve,reject)=>{
        this.$api.get('/wap/wechatShareConfig',data,res=>{
@@ -396,7 +396,7 @@ export default {
           timestamp: this.wxConfig.timestamp,  // 必填，生成签名的时间戳
           nonceStr: this.wxConfig.nonceStr,  // 必填，生成签名的随机串
           signature: this.wxConfig.signature, // 必填，签名，见附录1
-          jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage','onMenuShareQQ','onMenuShareWeibo','onMenuShareQZone',] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+          jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
       });
       let shareTitle = '【仅剩'+(this.groupData.groupPurchase.groupNumber - this.groupData.groupPurchase.offerNumber)+'个名额】我超低价拼了'+this.detailData.productExtInfo.title+'，快来和我一起拼团吧'+window.location.href+'点击链接，参与拼团【来自茶帮通茶友分享】';
       let shareDesc = '';
