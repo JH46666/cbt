@@ -28,7 +28,7 @@
                                 <p class="goods-bd">
                                     <span class="price">￥{{ todo.priorityPrice | toFix2  }}</span>
                                     <span class="pro_number clearfix">
-                                        <span class="decrease" :class="{isGary:todo.buyNum === 1||todo.buyNum == todo.buyUpperLimit}" @click="numDecrease(todo)"><i class="iconfont">&#xe851;</i></span>
+                                        <span class="decrease" :class="{isGary:todo.buyNum === 1||todo.buyNum == todo.buyLowLimit}" @click="numDecrease(todo)"><i class="iconfont">&#xe851;</i></span>
                                         <input class="input-num" type="number" v-model="todo.buyNum" @blur="numChange(todo)">
                                         <span class="plus" @click="numPlus(todo)"><i class="iconfont">&#xe638;</i></span>
                                     </span>
@@ -547,6 +547,7 @@
                 if(newVal < 1) return;
 
                 if(!!item.buyLowLimit) {
+                  console.log(11)
                     if(newVal < item.buyLowLimit) return;
                 }
                 this.updateSeleNum(item,newVal,oldVal).then(res => {
@@ -557,7 +558,9 @@
                     item.buyNum = res.data.buyNum;
                     item.oldBuy = res.data.buyNum;
                     this.initData()
-                }).catch(res => {})
+                }).catch(res => {
+                  this.$toast(res.message);
+                })
             },
             // 加
             numPlus(item){
@@ -577,7 +580,9 @@
                     item.buyNum = res.data.buyNum;
                     item.oldBuy = res.data.buyNum;
                     this.initData()
-                }).catch(res => {})
+                }).catch(res => {
+                  this.$toast(res.message);
+                })
 
             },
             //input输入数量
@@ -608,6 +613,7 @@
                         item.oldBuy = res.data.buyNum;
                         this.initData()
                     }).catch(res => {
+                      this.$toast(res.message);
                         item.buyNum = item.oldBuy;
                     })
 
