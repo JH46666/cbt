@@ -89,12 +89,19 @@
     .group-title{
       padding-top:0.56rem;
       margin: 0 0.48rem 0.3rem 0.48rem;
-      div{
+      &>div{
         text-align: center;
         font-size: 0.34rem;
         line-height: 0.35rem;
         letter-spacing: 0rem;
         color: #333333;
+        background: url('../../assets/images/cbt_ptxx.jpg') repeat-x;
+        background-size: 0.16rem;
+        background-position-y: 0.1rem;
+        div{
+          display: inline-block;
+          background: #fff;
+        }
         span{
           color: #f08200;
           margin: 0 0.1rem;
@@ -107,11 +114,12 @@
     	background-color: #525150;
     	border-radius: 0.24rem;
       font-size: 0.24rem;
-      padding-left: 0.49rem;
+      // padding-left: 0.49rem;
       line-height: 0.48rem;
       letter-spacing: 0rem;
       color: #ffffff;
       margin: 0 auto;
+      text-align: center;
     }
     .group-tip{
       text-align: center;
@@ -203,6 +211,14 @@
       font-size: 0.28rem;
       letter-spacing: 0rem;
       color: #333333;
+      margin: 0 0.5rem;
+      background: url('../../assets/images/cbt_ptxx.jpg') repeat-x;
+      background-size: 0.16rem;
+      background-position-y: 0.4rem;
+      div{
+        display: inline-block;
+        background: #fff;
+      }
     }
     .groupbuy-item{
         .flex;
@@ -527,7 +543,7 @@
     }
     .share-dialog{
       position: absolute;
-      top:3rem;
+      top:4rem;
       left: 0;
       right: 0;
       margin: auto;
@@ -582,6 +598,42 @@
         color: #ffffff;
         margin-top: 1.07rem;
         margin: 1.07rem auto 0;
+      }
+    }
+    .share-head{
+      position: absolute;
+      width: 100%;
+      bottom: 0.9rem;
+      font-size: 0.34rem;
+      text-align: center;
+      line-height: 0.44rem;
+      letter-spacing: 0rem;
+      color: #ffffff;
+      .head{
+        transform:rotate(180deg);
+        -ms-transform:rotate(180deg); 	/* IE 9 */
+        -moz-transform:rotate(180deg); 	/* Firefox */
+        -webkit-transform:rotate(180deg); /* Safari 和 Chrome */
+        -o-transform:rotate(180deg); 	/* Opera */
+        i{
+          font-size: 0.64rem;
+        }
+      }
+    }
+    .sharewx-head{
+      position: absolute;
+      width: 100%;
+      top: 0.9rem;
+      padding-right: 0.49rem;
+      font-size: 0.34rem;
+      text-align: right;
+      line-height: 0.44rem;
+      letter-spacing: 0rem;
+      color: #ffffff;
+      .head{
+        i{
+          font-size: 0.64rem;
+        }
       }
     }
   }

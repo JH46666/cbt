@@ -284,11 +284,11 @@
                     </div>
                 </div>
                 <!-- 详情 -->
-                <!-- <div class="mint_cell_wrapper mint_cell_img_wrapper">
+                <div class="mint_cell_wrapper mint_cell_img_wrapper">
                     <template v-if="imgDetailHtml.length>0">
                         <div v-html="imgDetailHtml"></div>
                     </template>
-                    <template v-else>
+                    <!-- <template v-else>
                         <mt-cell v-for="(item,index) in imgDetail" :key="index" v-if="item.content != '' && item.imgArray.length != 0">
                             <div class="mint_cell_img_title">{{ item.title }}</div>
                             <div class="mint_cell_img">
@@ -296,8 +296,8 @@
                             </div>
                             <p class="mint_cell_img_content">{{ item.content }}</p>
                         </mt-cell>
-                    </template>
-                </div> -->
+                    </template> -->
+                </div>
             </div>
         </div>
         <div class="off_shelf" v-if="detailData.productExtInfo.state === 'OFF_SHELF'">
