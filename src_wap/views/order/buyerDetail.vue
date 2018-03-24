@@ -1,7 +1,7 @@
 <template lang="html">
     <div class="detail">
-        <div class="detail_type" :class="{'height2': orderDetailData.groupSuccess === 2}">
-            <div class="type" :class="{'width100': orderDetailData.groupSuccess === 2}">
+        <div class="detail_type" :class="{'height2': height2}">
+            <div class="type" :class="{'width100': width100}">
                 <!-- 拼团中 -->
                 <div v-if="orderDetailData.groupSuccess === 2" class="groupping">
                     <div style="position: relative;">
@@ -15,10 +15,36 @@
                     </div>
                     <div class="groupping-member-info">
                         <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key=index>   
-                            <img src="../../assets/images/cbt_icwctportrait.png" alt="">
-                            <img src="../../assets/images/p.gif" alt="">
-                            <!-- <img :src=item.memberFace alt=""> -->
-                            <div class="master-face">
+                            <!-- <img src="../../assets/images/cbt_icwctportrait.png" alt="" v-if="!item.memberFace"> -->
+                            <div style="color: #fff; font-size: 0.50rem">{{ item.memberUnitName.slice(0,2) }}</div>
+                            <!-- <img src="../../assets/images/p.gif" alt=""> -->
+                            <img :src=item.memberFace alt="" v-if="item.memberFace">
+                            <div class="master-face" v-if="index == 0">
+                                团长
+                            </div>
+                        </div>
+                        <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key=index>
+                            <img src="../../assets/images/cbt_icwctportrait.png" alt="" v-if="!(grouppingMemberInfo.length > 2)">
+                            <img src="../../assets/images/cbt_icwctportrait.png" alt="" v-if="!(grouppingMemberInfo.length > 1) ">
+                        </div>
+                        <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key=index v-if="!(grouppingMemberInfo.length > 2)">
+                            <img src="../../assets/images/cbt_icwctportrait.png" alt="" >
+                            <img src="../../assets/images/cbt_icwctportrait.png" alt="" v-if="!(grouppingMemberInfo.length > 1) ">
+                        </div>
+                    </div>
+                </div>
+                <!-- 待发货 -->
+                <div v-if="orderDetailData.orderStatus === 'PACKING' && orderDetailData.groupSuccess != 2"><img src="../../assets/images/order_3.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
+                <!-- 支付成功，待审核，已成团 -->
+                <div v-if="orderDetailData.orderStatus === 'PAY_WAIT_AUDIT' && orderDetailData.groupSuccess == 1" style="width: 100%; display: block; position: relative;">
+                    <div><img src="../../assets/images/order_3.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
+                    <div class="groupping-member-info">
+                        <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key=index>
+                            <!-- <img src="../../assets/images/cbt_icwctportrait.png" alt=""> -->
+                            <div style="color: #fff; font-size: 0.50rem">{{ item.memberUnitName.slice(0,2) }}</div>
+                            <!-- <img src="../../assets/images/p.gif" alt=""> -->
+                            <img :src=item.memberFace alt="" v-if="item.memberFace">
+                            <div class="master-face" v-if="index == 0">
                                 团长
                             </div>
                         </div>
@@ -27,17 +53,37 @@
                             <img src="../../assets/images/cbt_icwctportrait.png" alt="" v-if="!(grouppingMemberInfo.length > 1) ">
                         </div>
                     </div>
+                    <div><img src="../../assets/images/cbt_xqptcg.png" alt="" style="width: 1.00rem; height: 1.00rem; position: absolute; right: 0rem; top: 0rem"></div>
                 </div>
-                <!-- 待发货 -->
-                <div v-if="orderDetailData.orderStatus === 'PACKING' && orderDetailData.groupSuccess != 2"><img src="../../assets/images/order_3.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                 <!-- 待收货 -->
-                <div v-else-if="orderDetailData.orderStatus === 'DELIVERED'"><img src="../../assets/images/order_2.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
+                <div v-else-if="orderDetailData.orderStatus === 'DELIVERED' && orderDetailData.groupSuccess != 1"><img src="../../assets/images/order_2.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
+                <!-- 已发货，已成团-->
+                <div v-else-if="orderDetailData.orderStatus === 'DELIVERED' && orderDetailData.groupSuccess == 1" style="width: 100%; display: block; position: relative;">
+                    <div><img src="../../assets/images/order_2.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
+                    <div class="groupping-member-info">
+                        <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key=index>
+                            <img src="../../assets/images/cbt_icwctportrait.png" alt="">
+                            <!-- <img src="../../assets/images/p.gif" alt=""> -->
+                            <img :src=item.memberFace alt="" v-if="item.memberFace">
+                            <div class="master-face" v-if="index == 0">
+                                团长
+                            </div>
+                        </div>
+                        <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key=index>
+                            <img src="../../assets/images/cbt_icwctportrait.png" alt="" v-if="!(grouppingMemberInfo.length > 2)">
+                            <img src="../../assets/images/cbt_icwctportrait.png" alt="" v-if="!(grouppingMemberInfo.length > 1) ">
+                        </div>
+                    </div>
+                    <div><img src="../../assets/images/cbt_xqptcg.png" alt="" style="width: 1.00rem; height: 1.00rem; position: absolute; right: 0rem; top: 0rem"></div>
+                </div>
                 <!-- 待付款 -->
                 <div v-else-if="orderDetailData.orderStatus === 'WAIT_PAY'"><img src="../../assets/images/order_4.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                 <!-- 已评价 -->
                 <div v-else-if="orderDetailData.orderStatus === 'FINISH'"><img src="../../assets/images/order_1.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                 <!-- 取消 -->
                 <div v-else-if="orderDetailData.orderStatus === 'CANCEL'"><img src="../../assets/images/order_6.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
+                <!-- 关闭，未成团 -->
+                 <div v-else-if="orderDetailData.orderStatus === 'CANCEL'"><img src="../../assets/images/cbt_icddxqqx.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
             </div>
         </div>
         <div class="detail_address">
@@ -231,6 +277,17 @@
                 </template>
             </div>
         </div>
+         <!-- 联系卖家 -->
+         <div class="chat-with-seller" @click="openKfDialog">
+             <div class="text" v-if="!orderDetailData.shopName">
+                <i class="iconfont icon-kefurukousvg" style="color: #f08200;"></i>
+                联系茶通帮客服
+             </div>
+            <div class="text" v-else>
+                <i class="iconfont icon-dianpu" style="color: #f08200;"></i>
+                联系卖家
+            </div>
+         </div>
         <!-- 下单时间 -->
         <div class="order_date">
             <div class="number order_date_item" style="align-items: center;">
@@ -362,19 +419,19 @@
                 <p class="close-tip"  v-for="(item,index) in cancelList" :class="{on: index == cancelClass}" :key="index" @click="selectCancel(index)">{{ item }}<i class="iconfont">&#xe684;</i></p>
             </div>
         </mt-popup>
-        <div class="popup-tips" v-if="popupTipsFlag">
-            <div class="cancel-tips-popup">
+       <div class="popup-tips" v-if="popupTipsFlag">
+            <div class="tips-position-center cancel-tips-popup" v-if="cancelTipsFlag">
                 <div class="tips-box">
                     <div class="tips-title"><h4><b>暂时无法取消订单</b></h4></div>
                     <div class="tips-text">发起拼团24小时后，若未拼团成功将自动取消订单并退款哦</div>
-                    <div class="tips-btn" @click="popupTipsFlag = !popupTipsFlag">我知道了</div>
+                    <div class="tips-btn" @click="popupTipsFlag = !popupTipsFlag; cancelTipsFlag = !cancelTipsFlag">我知道了</div>
                 </div>
             </div>
-            <div class="refund-tips-popup">
+             <div class="tips-position-center refund-tips-popup cancel-tips-popup" v-if="refundTipsFlag">
                 <div class="tips-box">
-                    <div class="tips-title"><h4><b>暂时无法取消订单</b></h4></div>
-                    <div class="tips-text">发起拼团24小时后，若未拼团成功将自动取消订单并退款哦</div>
-                    <div class="tips-btn" @click="popupTipsFlag = !popupTipsFlag">我知道了</div>
+                    <div class="tips-title"><h4><b>退款说明</b></h4></div>
+                    <div class="tips-text">若您的订单有任何售后问题，请联系{{ isThirdShop }}进行售后处理</div>
+                    <div class="tips-btn" @click="popupTipsFlag = !popupTipsFlag; refundTipsFlag = !refundTipsFlag">我知道了</div>
                 </div>
             </div>
         </div>
@@ -384,6 +441,7 @@
 <script>
 import { MessageBox,Toast } from 'mint-ui';
 import {mapGetters} from 'vuex';
+import store from 'store';
 export default {
     data() {
         return {
@@ -407,8 +465,18 @@ export default {
             grouppingMemberInfo: [],                    // 团购成员信息
             grouppingLeftTime: '',                      // 团购剩余时间
             popupTipsFlag: false,                       // 弹窗
-            refundPopupFlag: false,                     // 退款弹窗
             cancelTipsFlag: false,                      // 取消订单弹窗
+            refundTipsFlag: false,                      // 退款弹窗
+            myData: {                                   // 聊天数据初始化
+                mine: {},
+                friend: [],
+                group: []
+            },
+            shopInfo: {                                 // 商家店铺信息
+                shopName: '',
+                orgId: ''
+            },
+            isThirdShop: '',                            // 茶帮通或者第三方
         }
     },
     head: {
@@ -476,14 +544,6 @@ export default {
                 })
             })
         },
-        commentMethod(orderId) {
-            this.$router.push({
-                name: '订单评价',
-                query: {
-                    orderId: orderId
-                }
-            })
-        },
         selectCancel(index) {
             this.cancelClass = index;
             this.closeUp = false;
@@ -509,6 +569,16 @@ export default {
                 })
             },300)
         },
+        // 提交评价
+        commentMethod(orderId) {
+            this.$router.push({
+                name: '订单评价',
+                query: {
+                    orderId: orderId
+                }
+            })
+        },
+        // 取消订单
         cancelMethod(obj, str) {
            if(str =="groupping"){
                 this.popupTipsFlag = true;
@@ -518,12 +588,33 @@ export default {
                 this.cancelPro = obj;
             }
         },
+        // 付款
         payMethod(payNumber) {
             this.$router.push({
                 name: '收银台',
                 query: {
                     payId: payNumber,
                     type: 'online'
+                }
+            })
+        },
+        // 退款
+        refund(item) {
+            if (item.shopName) {
+                this.isThirdShop = '卖家';
+            }
+            else {
+                this.isThirdShop = '茶帮通客服';
+            }
+            this.popupTipsFlag = true;
+            this.refundTipsFlag = true;
+        },
+        // 分享拼团
+        share(item) {
+            this.$router.push({
+                name: '茶帮通拼团',
+                query: {
+                    orderId: item.orderId
                 }
             })
         },
@@ -645,14 +736,349 @@ export default {
                 clearInterval(this.timer);
             }
         },
-        // 退款
-        refund(){
-            this.refundPopupFlag = true;
+        // 联系商家
+        openKfDialog() {
+            //    this.showOrHide = true;
+            store.dispatch('getMemberData').then((res) => {
+                let data = { username: store.state.member.member.id, password: store.state.member.member.id };
+                let ret = '';
+                for (let it in data) {
+                    ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&';
+                }
+                this.$http.post("/erp/account/ajaxLogin", ret).then(res => {
+                    let userid = res.data.data;//res.data.data.split(",")[0];
+                    this.getBase(userid);
+                });
+            }).catch(res => {
+                this.$router.replace('/login');
+            });
         },
-        // 分享拼团
-        share(){
+        // 获得商家数据
+        getBase(userid) {
+            this.$http.get(`/erp/layim/base?userId=${userid}`).then(res => {
+                if (res.data.data) {
+                    this.myData = res.data.data;
+                    this.addFriend(userid);
+                } else {
+                    return Toast(res.data.msg);
+                }
+            })
+        },
+        // 添加聊天
+        addFriend(selfId) {
+            let kefuName = "茶帮通客服";
+            let addId = 1;
+            let _this = this;
+            if (this.shopInfo.orgId) {
+                kefuName = this.shopInfo.shopName;
+                addId = this.shopInfo.orgId;
+            }
+            this.$http.get(`/erp/layim/addFriend?friend=${addId}&userId=${selfId}`).then(res => {
+                let friendId = res.data.data;
+                if (friendId == selfId) {
+                    Toast({
+                        message: '不能和自己聊天！',
+                        position: 'center',
+                        duration: 1000
+                    });
+                    return;
+                }
+                layui.config({
+                    version: true,
+                    base: '/static/mods/'
+                }).use(['mobile', 'socket', 'req', "laytpl"], function (mobile, socket, req) {
+                    var layim = mobile.layim,
+                        laytpl = layui.laytpl,
+                        layer = mobile.layer;
+                    var $ = layui.jquery;
+                    var selfFlag = false;
+                    //基础配置
+                    layim.config({
+                        init: {
+                            //设置我的基础信息
+                            mine: _this.myData.mine,
+                            friend: _this.myData.friend,
+                            group: _this.myData.group
+                        }
+                        //上传图片接口
+                        , uploadImage: { url: '/erp/upload/file' }
+                        //上传文件接口
+                        , uploadFile: { url: '/erp/upload/file' }
 
+                        , isAudio: true //开启聊天工具栏音频
+                        , isVideo: true //开启聊天工具栏视频
+                        , voice: false //开启提示音
+                        , initSkin: '5.jpg' //1-5 设置初始背景
+                        , notice: true //是否开启桌面消息提醒，默认false
+                        , msgbox: '/erp/layim/msgbox'
+                        , find: layui.cache.dir + 'css/modules/layim/html/find.html' //发现页面地址，若不开启，剔除该项即可
+                        , chatLog: layui.cache.dir + 'css/modules/layim/html/chatLog.html' //聊天记录页面地址，若不开启，剔除该项即可
+
+                        //可同时配置多个
+                        , tool: [{
+                            alias: 'history' //工具别名
+                            , title: '聊天记录' //工具名称
+                            , iconUnicode: '&#xe60e;' //图标字体的unicode，可不填
+                            , iconClass: '' //图标字体的class类名
+                        }]
+                    });
+
+                    socket.config({
+                        log: true,
+                        token: `/erp/layim/getToKenById?id=${selfId}`,
+                        // token:'/erp/layim/token',
+                        server: 'wss://mdemows.oteao.com',
+                        //server:'ws://192.168.7.8:8888',
+                        //server: 'wss://java.im.test.yipicha.com',
+                        reconn: true
+                    });
+
+                    //创建一个会话
+                    layim.chat({
+                        id: friendId
+                        , name: kefuName
+                        , type: 'friend' //friend、group等字符，如果是group，则创建的是群聊
+                        , avatar: 'http://tp1.sinaimg.cn/1571889140/180/40030060651/1'
+                    });
+
+
+                    socket.on('open', function (e) {
+                        console.log("监听到事件：open");
+                    });
+                    socket.on('close', function (e) {
+                        console.log("监听到事件：close");
+                    });
+                    socket.on('error', function (e) {
+                        console.log("监听到事件：error");
+                    });
+                    socket.on('msg', function (e) {
+                        var msg = JSON.parse(e.data);
+                        console.log(msg);
+                        var handleChat = function (msg) {
+                            if (selfFlag) {
+                                selfFlag = false;
+                                return;
+                            }
+                            layim.getMessage(msg);
+                        }
+                        var handleStatus = function (msg) {
+                            var status = '';
+                            if (typeof msg.count !== 'undefined') {
+                                status = msg.count + '人在线';
+                            } else {
+                                status = msg.online ? '在线' : '离线';
+                            }
+                            layim.setChatStatus('<span style="color:#FF5722;">' + status + '</span>');
+                        }
+                        if (msg.mtype) {
+                            switch (msg.mtype) {
+                                case -1:
+                                    return console.log(msg.msg);
+                                case socket.mtype.chatFriend:
+                                case socket.mtype.chatGroup:
+                                    handleChat(msg);
+                                    break;
+                                case socket.mtype.checkIsOnline:
+                                case socket.mtype.checkOnlineCount:
+                                    handleStatus(msg);
+                                    break;
+                                case socket.mtype.serverNotice:
+                                    layim.msgbox(msg.count);
+                                    break;
+                                case socket.mtype.addFriendNotice:
+                                    layim.addList({
+                                        type: msg.type,
+                                        avatar: msg.avatar,
+                                        username: msg.username,
+                                        groupid: msg.groupid,
+                                        sign: msg.sign,
+                                        id: msg.id
+                                    });
+                                    msg.mtype = socket.mtype.chatFriend;
+                                    msg.content = "我们已经是好友啦，一起来聊天吧！";
+                                    layim.getMessage(msg);
+                                    break;
+                                case socket.mtype.onofflineNotice:
+                                    layim.setFriendStatus(msg.id, msg.status);
+                                    break;
+                            }
+                        }
+                    });
+                    // console.log(socket.mtype);
+                    //监听在线状态的切换事件
+                    layim.on('online', function (data) {
+                        //console.log(data);
+                    });
+                    //监听签名修改
+                    layim.on('sign', function (value) {
+                        //console.log(value);
+                    });
+                    //监听自定义工具栏点击，以添加代码为例
+                    // layim.on('tool(code)', function(insert){
+                    //     layer.prompt({
+                    //         title: '插入代码'
+                    //         ,formType: 2
+                    //         ,shade: 0
+                    //     }, function(text, index){
+                    //         layer.close(index);
+                    //         insert('[pre class=layui-code]' + text + '[/pre]'); //将内容插入到编辑器
+                    //     });
+                    // });
+                    //监听layim建立就绪
+                    layim.on('ready', function () {
+                        req.loading = false;
+                        req.get('/erp/layim/apply-unread', {}, function (res) {
+                            res.data && layim.msgbox(res.data);
+                        });
+                        console.log(layim.cache().friend);
+                    });
+                    //监听发送消息
+                    layim.off('sendMessage').on('sendMessage', function (data) {
+                        var To = data.to;
+                        var timeStamp = data.mine.time;
+                        console.log("return******" + timeStamp)
+                        if (sessionStorage.getItem("msg_timestamp") == timeStamp) {
+                            console.log("return******" + timeStamp)
+                            return;
+                        }
+                        sessionStorage.setItem("msg_timestamp", timeStamp);
+                        var t = data.to.type == 'friend';
+                        if (!t) {
+                            selfFlag = true;
+                        }
+                        socket.send({ mtype: (t ? socket.mtype.chatFriend : socket.mtype.chatGroup), content: data.mine.content, toid: data.to.id, id: data.mine.id, time: data.mine.time });
+                        return;
+                    });
+                    //监听查看群员
+                    layim.on('members', function (data) {
+                        //console.log(data);
+                    });
+                    //监听天窗口的切换
+                    layim.on('chatChange', function (res) {
+                        var t = res.data.type == 'friend';
+                        socket.send({
+                            mtype: t ? socket.mtype.checkIsOnline : socket.mtype.checkOnlineCount,
+                            id: res.data.id
+                        });
+                    });
+
+                    //监听自定义工具栏点击，以添加代码为例
+                    layim.off('tool(history)').on('tool(history)', function (insert, f, thatChat) {
+                        var friendId = thatChat.data.id
+                        var kefuName1 = thatChat.data.name
+                        var param = "?id=" + friendId + "&userId=" + layim.cache().mine.id;
+                        $.get('/erp/layim/getChatLog/0/10000' + param, {}, function (res) {
+                            console.log(res.data.data)
+                            //弹出一个更多聊天记录面板
+                            layim.panel({
+                                title: '与 ' + kefuName1 + ' 的聊天记录' //标题
+                                , tpl: ['<div class="layim-chat-main"><ul id="LAY_view">'
+                                    , '{{# layui.each(d.data, function(index, item){  if(item.id == 200512){ }}'
+                                    , '    <li class="layim-chat-mine"><div class="layim-chat-user"><img src="{{ item.avatar }}" />'
+                                    , '    <cite><i>{{ layui.data.date(item.timestamp) }}</i>{{ item.username }}</cite>'
+                                    , '    </div><div class="layim-chat-text">{{layui.mobile.layim.content(item.content)}}</div></li>'
+                                    , '  {{# } else { }}'
+                                    , '    <li><div class="layim-chat-user"><img src="{{ item.avatar }}" /><cite>{{ item.username }}<i>{{ layui.data.date(item.timestamp) }}</i></cite></div><div class="layim-chat-text">{{ layui.mobile.layim.content(item.content) }}</div></li>'
+                                    , '  {{# } }); }}'
+                                    , '</ul></div>'
+                                ].join('') //模版
+                                , data: res.data.data
+                            });
+                        });
+                        // layer.prompt({
+                        //     title: '插入代码'
+                        //     ,formType: 2
+                        //     ,shade: 0
+                        // }, function(text, index){
+                        //     layer.close(index);
+                        //     insert('[pre class=layui-code]' + text + '[/pre]'); //将内容插入到编辑器
+                        // });
+                    });
+
+                    //监听查看更多记录
+                    layim.off('chatlog').on('chatlog', function (data, ul) {
+                        console.log(data); //得到当前会话对象的基本信息
+                        console.log(ul); //得到当前聊天列表所在的ul容器，比如可以借助他来实现往上插入更多记录
+                        var param = "?id=" + data.id + "&userId=" + layim.cache().mine.id;
+                        $.get('/erp/layim/getChatLog/0/10000' + param, {}, function (res) {
+                            console.log(res.data.data)
+                            var html = laytpl(
+                                [
+                                    '<textarea title="消息模版" id="LAY_tpl" style="display:none;">'
+                                    , '{{# layui.each(d.data, function(index, item){  if(item.id == 200512){ }}'
+                                    , '    <li class="layim-chat-mine"><div class="layim-chat-user"><img src="{{ item.avatar }}" />'
+                                    , '    <cite><i>{{ layui.data.date(item.timestamp) }}</i>{{ item.username }}</cite>'
+                                    , '    </div><div class="layim-chat-text">{{ layui.mobile.layim.content(item.content) }}</div></li>'
+                                    , '  {{# } else { }}'
+                                    , '    <li><div class="layim-chat-user"><img src="{{ item.avatar }}" /><cite>{{ item.username }}<i>{{ layui.data.date(item.timestamp) }}</i></cite></div><div class="layim-chat-text">{{ layui.mobile.layim.content(item.content) }}</div></li>'
+                                    , '  {{# } }); }}'
+                                    , '</textarea> '
+                                ].join('')
+                            ).render({
+                                data: res.data.data
+                            });
+
+                            // var html = laytpl(
+                            //     [
+                            //       '<textarea title="消息模版" id="LAY_tpl" style="display:none;">'
+                            //     ,'{{# layui.each(d.data, function(index, item){  if(item.id == 200512){ }}'
+                            //     ,'    <li class="layim-chat-mine"><div class="layim-chat-user"><img src="{{ item.avatar }}" />'
+                            //     ,'    <cite><i>{{ layui.data.date(item.timestamp) }}</i>{{ item.username }}</cite>'
+                            //     ,'    </div></li>'
+                            //     ,'  {{# } else { }}'
+                            //     ,'  {{# } }); }}'
+                            //     ,'</textarea> '
+                            //     ].join('')
+                            // ).render({
+                            //     data: res.data.data
+                            // });
+
+                            //$('#LAY_view').html(html);
+                            //弹出一个更多聊天记录面板
+                            layim.panel({
+                                title: '与 ' + data.username + ' 的聊天记录' //标题
+                                , tpl: ['<div class="layim-chat-main"><ul id="LAY_view">'
+                                    , '{{# layui.each(d.data, function(index, item){  if(item.id == layui.mobile.layim.cache().mine.id){ }}'
+                                    , '    <li class="layim-chat-mine"><div class="layim-chat-user"><img src="{{ item.avatar }}" />'
+                                    , '    <cite><i>{{ layui.data.date(item.timestamp) }}</i>{{ item.username }}</cite>'
+                                    , '    </div><div class="layim-chat-text">{{layui.mobile.layim.content(item.content)}}</div></li>'
+                                    , '  {{# } else { }}'
+                                    , '    <li><div class="layim-chat-user"><img src="{{ item.avatar }}" /><cite>{{ item.username }}<i>{{ layui.data.date(item.timestamp) }}</i></cite></div><div class="layim-chat-text">{{ layui.mobile.layim.content(item.content) }}</div></li>'
+                                    , '  {{# } }); }}'
+                                    , '</ul></div>'
+                                ].join('') //模版
+                                , data: res.data.data
+                            });
+                        });
+
+                    });
+                });
+            });
+        },
+    },
+    mounted() {
+        // this.height2 = true;
+    },
+    computed:{
+        ...mapGetters([
+            'orderStatus'
+        ]),
+        linkShopTel() {
+            return `tel//${this.orderDetailData.shopPhone}`;
+        },
+        height2() {
+            if (this.orderDetailData.groupSuccess === 2) return true;
+            else if (this.orderDetailData.orderStatus === 'PAY_WAIT_AUDIT' && this.orderDetailData.groupSuccess == 1) return true;
+            else if(this.orderDetailData.orderStatus === 'DELIVERED' && this.orderDetailData.groupSuccess == 1) return true;
+        },
+        width100(){
+            if(this.orderDetailData.groupSuccess === 2) return true;
+            else if (this.orderDetailData.orderStatus === 'PAY_WAIT_AUDIT' && this.orderDetailData.groupSuccess == 1) return true;
+            else if (this.orderDetailData.orderStatus === 'DELIVERED' && this.orderDetailData.groupSuccess == 1) return true;
         }
+    },
+    watch: {
+        
     },
     created() {
         // 设置title
@@ -673,19 +1099,11 @@ export default {
             this.getOrderList(this.orderDetailData.orderId).then((res) =>{
                 this.orderListDetail = res.data;
             });
+            // 获取商家信息
+            this.shopInfo.shopName = res.data.shopName;
+            this.shopInfo.orgId = res.data.sellerOrgId;
         })
     },
-    mounted() {
-
-    },
-    computed:{
-        ...mapGetters([
-            'orderStatus'
-        ]),
-        linkShopTel() {
-            return `tel//${this.orderDetailData.shopPhone}`;
-        }
-    }
 }
 </script>
 
@@ -718,38 +1136,42 @@ export default {
                 line-height: 0.34rem;
             }
         }
-        .groupping-member-info{
+    }
+    .groupping-member-info{
+        flex-wrap: wrap;
+        padding-bottom: 0.3rem;
+        .groupping-member-icon{
             margin-top: 0.3rem;
-            flex-wrap: wrap;
-            padding-bottom: 0.3rem;
-            .groupping-member-icon{
-                position: relative;
-                width: 1.00rem;
-                height: 1.00rem;
-                margin-right: 0.30rem;
-                img{
-                    width: 1.00rem!important;
-                    height: 1.00rem!important;
-                    &:nth-child(2){
-                        border-radius: 50%;
-                        position: absolute;
-                        left: 0rem;
-                    }
-                }
-                .master-face{
-                    font-size: 0.24rem!important;
-                    /* width: 0.48rem; */
-                    /* height: 0.26rem; */
-                    padding: 0.03rem;
-                    text-align: center;
-                    background-color: #fe9900;
-                    border-radius: 0.12rem;
-                    border: solid 0.02rem #ffffff;
+            position: relative;
+            width: 1.00rem;
+            height: 1.00rem;
+            margin-right: 0.30rem;
+            justify-content: center;
+            background-color: #fe9900;
+            border-radius: 50%;
+            img{
+                width: 1.04rem!important;
+                height: 1.04rem!important;
+                margin-left: -0.01rem;
+                &:nth-child(1){
+                    border-radius: 50%;
                     position: absolute;
-                    right: -0.25rem;
-                    top: 0rem;
-                    color: #fff;
+                    left: 0rem;
                 }
+            }
+            .master-face{
+                font-size: 0.24rem!important;
+                /* width: 0.48rem; */
+                /* height: 0.26rem; */
+                padding: 0.03rem;
+                text-align: center;
+                background-color: #fe9900;
+                border-radius: 0.12rem;
+                border: solid 0.02rem #ffffff;
+                position: absolute;
+                right: -0.25rem;
+                top: 0rem;
+                color: #fff;
             }
         }
     }
@@ -817,6 +1239,17 @@ export default {
                     color: #f08200;
                 }
             }
+        }
+    }
+    /* 联系商家 */
+    .chat-with-seller{
+        padding: 0.32rem 0;
+        background-color: #fff;
+        border-top: 0.01rem solid #e6e6e6;
+        text-align: center;
+        .text{
+            font-size: 0.28rem;
+            color: #333;
         }
     }
 </style>

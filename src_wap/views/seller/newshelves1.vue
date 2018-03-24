@@ -250,7 +250,7 @@
         <!-- 品牌弹出框 -->
         <mt-popup v-model="closeUp" position="bottom">
             <div class="close-wrap">
-                <p class="close-tip" v-for="(item,index) in selList" :class="{on: index === selectClass}" :key="index" @click="selectRightList(index)">{{ item.name }}
+                <p class="close-tip" v-for="(item, index) in selList" :class="{on: index === selectClass}" :key="index" @click="selectRightList(index)">{{ item.name }}
                     <i class="iconfont">&#xe684;</i>
                 </p>
                 <p class="close-tip" @click="cancelList">取消选择</p>
@@ -258,17 +258,15 @@
         </mt-popup>
 
         <!-- 商品分类弹出框 -->
-        <mt-popup v-model="dialogTypeBol" position="bottom" style="height: 90%;">
+        <mt-popup v-model="dialogTypeBol" position="bottom" style="height: 90%;" :closeOnClickModal=false>
             <div class="dialog_type_wrapper">
-                <div v-if="oneTypeUsedList.length > 0">
+                <div v-if="twoTypeUsedList.length > 0">
                     <div class="dialog_type_title">
                         常用品类
                     </div>
                     <div class="dialog_type_content _fix-dialog_type_content">
                         <div class="type_1 _add-type_1">
-                            <div class="type_item _add-type_item" v-for="(item,index) in oneTypeUsedList" :key="index" :class="{on: item.id === resize.oneClass}"
-                                @click="selectOneType(item.id,index)"
-                            >
+                            <div class="type_item _add-type_item" v-for="(item, index) in twoTypeUsedList" :key="index" :class="{on: item.id === resize.twoClass}" @click="selectUsedTwoType(item, index)">
                                 {{ item.name }}
                             </div>
                         </div>
@@ -279,11 +277,15 @@
                 </div>
                 <div class="dialog_type_content">
                     <div class="type_1">
-                        <div class="type_item" v-for="(item,index) in oneTypeList" :key="index" :class="{on: item.id === resize.oneClass}" @click="selectOneType(item.id,index)">{{ item.name }}</div>
+                        <div class="type_item" v-for="(item, index) in oneTypeList" :key="index" :class="{on: item.id === resize.oneClass}" @click="selectOneType(item, index)">
+                            {{ item.name }}
+                        </div>
                     </div>
                     <div class="type_2">
                         <div class="type_2_wrapper clearfix">
-                            <div class="type_item" v-for="(item,index) in twoTypeList" :key="index" :class="{on: item.id === resize.twoClass}" @click="selectTwoType(item.id,index)">{{ item.name }}</div>
+                            <div class="type_item" v-for="(item, index) in twoTypeList" :key="index" :class="{on: item.id === resize.twoClass}" @click="selectTwoType(item, index)">
+                                {{ item.name }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -316,6 +318,8 @@
                 dialogTypeBol: false,
                 oneTypeList: [],
                 twoTypeList: [],
+                oneTypeListName: '',
+                twoTypeListName: '',
                 clickSure: true,
                 device: 'WAP',
                 showOfHideStep: true,
@@ -323,7 +327,7 @@
                 flagGoodsSj:false,                                  // 单买价              
                 flagGoodsGroup: false,                              // 团购价
                 flagGoodsGroupNum: false,                           // 团购人数
-                oneTypeUsedList: [],                                // 常用一级分类
+                twoTypeUsedList: [],                                // 常用二级分类
             }
         },
         watch: {
@@ -379,11 +383,13 @@
                 item.proValId = secobj.id;
                 item.proShowHide = false;
             },
+            // 未知
             selectDefaultProp(item, index, secobj) {
                 item.select = index;
                 item.content = secobj;
                 item.showOfHide = false;
             },
+            // 未知
             selectDefault(index) {
                 for (let i = 0; i < this.resize.defaultArray.length; i++) {
                     this.resize.defaultArray[i].showOfHide = false;
@@ -399,6 +405,7 @@
             },
             // 点击二级分类时获取属性
             getProVal(id) {
+                if(!id) return;
                 let data = {
                     catId: id,
                     sysId: 1,
@@ -416,17 +423,23 @@
                     })
                 })
             },
+            // 确定一二级分类按钮
             sureType() {
+                // this.resize.form.goodTypes = this.oneTypeList[this.resize.oneIndex].name + '-' + this.twoTypeList[this.resize.twoIndex].name;
+                this.resize.form.goodTypes = this.oneTypeListName + '-' + this.twoTypeListName;
                 this.dialogTypeBol = false;
-                this.resize.form.goodTypes = this.oneTypeList[this.resize.oneIndex].name + '-' + this.twoTypeList[this.resize.twoIndex].name;
             },
             // 点击一级分类
-            selectOneType(id, index) {
+            selectOneType(item, index) {
                 this.twoTypeList = [];
-                this.resize.oneClass = id;
+                this.resize.twoClass = null;
+                 this.clickSure = true;
+                this.resize.oneClass = item.id;
                 this.resize.oneIndex = index;
+                this.oneTypeListName = item.name;
+                console.log(item.catName)
                 // 获取二级分类
-                this.getTypeList(id).then((res) => {
+                this.getTypeList(item.id).then((res) => {
                     let parentList = res.data;
                     for (let obj of parentList) {
                         this.twoTypeList.push({
@@ -436,9 +449,30 @@
                     }
                 })
             },
-            selectTwoType(id, index) {
-                this.resize.twoClass = id;
+            // 选择二级分类
+            selectTwoType(item, index) {
+                this.resize.twoClass = item.id;
                 this.resize.twoIndex = index;
+                this.twoTypeListName = item.name;
+                this.clickSure = false;
+            },
+            // 选择二级常用分类
+            selectUsedTwoType(item, index){
+                this.resize.twoClass = item.id;
+                this.resize.oneClass = item.parentCatId;
+                this.oneTypeListName = item.parentCatName;                
+                this.twoTypeListName = item.name;
+                // 选择二级常用分类后更新二级分类
+                this.getTypeList(item.parentCatId).then((res) => {
+                    let parentList = res.data;
+                    this.twoTypeList = [];                    
+                    for (let obj of parentList) {
+                        this.twoTypeList.push({
+                            id: obj.id,
+                            name: obj.catName
+                        })
+                    }
+                })
                 this.clickSure = false;
             },
             cancelType() {
@@ -449,6 +483,7 @@
                 this.resize.oneIndex = null;
                 this.clickSure = true;
                 this.twoTypeList = [];
+                this.resize.form.goodTypes = '';
             },
             selectGoodType() {
                 this.dialogTypeBol = true;
@@ -688,10 +723,16 @@
             // 获取常用分类
             this.$api.get('/oteao/productInfo/currentCategroyForSeller', {}, res => {
                 let parentList = res.data;
+                // 第一次创建商品时弹出商品卖点提示
+                if(!parentList.length){
+                    this.flagGoodsOwnGood = true;
+                }
                 for (let obj of parentList) {
-                    this.oneTypeUsedList.push({
+                    this.twoTypeUsedList.push({
                         id: obj.catId,
-                        name: obj.parentCatName
+                        name: obj.catName,
+                        parentCatId: obj.parentCatId,
+                        parentCatName: obj.parentCatName
                     })
                 }
             }, res => {
