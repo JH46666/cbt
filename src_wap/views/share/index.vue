@@ -379,8 +379,9 @@ export default {
        })
    },
    getWxConfig(){
+     console.log(window.location.href.replace('/#',''))
      let data = {
-       'url':window.location.href
+       'url':window.location.href.replace('/#','')
      }
      return new Promise((resolve,reject)=>{
        this.$api.get('/wap/wechatShareConfig',data,res=>{
