@@ -192,10 +192,10 @@
                     <div class="tips-btn" @click="popupTipsFlag = !popupTipsFlag; cancelTipsFlag = !cancelTipsFlag">我知道了</div>
                 </div>
             </div>
-             <div class="tips-position-center refund-tips-popup cancel-tips-popup"v-if="refundTipsFlag">
+             <div class="tips-position-center refund-tips-popup cancel-tips-popup" v-if="refundTipsFlag">
                 <div class="tips-box">
                     <div class="tips-title"><h4><b>退款说明</b></h4></div>
-                    <div class="tips-text">若您的订单有任何售后问题，请联系{{}进行售后处理}</div>
+                    <div class="tips-text">若您的订单有任何售后问题，请联系{{ isThirdShop }}进行售后处理</div>
                     <div class="tips-btn" @click="popupTipsFlag = !popupTipsFlag; refundTipsFlag = !refundTipsFlag">我知道了</div>
                 </div>
             </div>
@@ -233,7 +233,9 @@ export default {
             grouppingLeftTime: {},                // 团购剩余时间
             leftTimeList:[],                      // 团购剩余时间，无格式
             popupTipsFlag: false,                 // 弹窗
-            cancelTipsFlag: false,                // 取消订单弹窗                 
+            cancelTipsFlag: false,                // 取消订单弹窗   
+            refundTipsFlag: false,                // 退款弹窗
+            isThirdShop: '',                      // 茶帮通或者第三方
         }
     },
     methods: {
@@ -334,6 +336,7 @@ export default {
                 })
             },300)
         },
+        // 提交评价
         commentMethod(obj) {
             this.$router.push({
                 name: '订单评价',
@@ -342,26 +345,44 @@ export default {
                 }
             })
         },
+        // 取消订单
         cancelMethod(obj, str) {
             if(str =='groupping'){
                 this.popupTipsFlag = true;
                 this.cancelTipsFlag = true;
-            }
-            else if(str =='refund'){
-                this.popupTipsFlag = true;
-                this.refunTipsFlag = true;
             }
             else{
                 this.closeUp = true;
                 this.cancelPro = obj;
             }
         },
+        // 付款
         payMethod(payNumber) {
             this.$router.push({
                 name: '收银台',
                 query: {
                     payId: payNumber,
                     type: 'online'
+                }
+            })
+        },
+        // 退款
+        refund(item) {
+            if(item.shopName){
+                this.isThirdShop = '卖家';
+            }
+            else {
+                this.isThirdShop = '茶帮通客服';
+            }
+            this.popupTipsFlag = true;
+            this.refundTipsFlag = true;
+        },
+        // 分享拼团
+        share(item) {
+            this.$router.push({
+                name: '茶帮通拼团',
+                query: {
+                    orderId: item.orderId
                 }
             })
         },
@@ -559,14 +580,6 @@ export default {
             //     }, 100);
             // }
         },
-        // 退款
-        refund(){
-
-        },
-        // 分享拼团
-        share(){
-
-        }
     },
     mounted () {
        this.wxFlag = this.$tool.isWx;
@@ -610,6 +623,7 @@ export default {
 
 <style lang="less">
     @import '~@/styles/order/list.less';
+    /* 取消订单弹窗 */
     .popup-tips{
         position: fixed;
         top: 0rem;
@@ -617,15 +631,17 @@ export default {
         width: 100%;
         height: 100%;
         background-color: rgba(0, 0, 0, 0.67);
-        .cancel-tips-popup{
+        .tips-position-center{
             position: absolute;
-            width: 5rem;
-            height: 4rem;
             top: 0rem;
             right: 0rem;
             left: 0rem;
             bottom: 0rem;
             margin: auto;
+        }
+        .cancel-tips-popup{
+            width: 5rem;
+            height: 4rem;
             color: #000;
             .tips-box{
                 background-color: #fff;
