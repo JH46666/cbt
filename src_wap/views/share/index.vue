@@ -16,15 +16,16 @@
               </div>
           </template>
           <template  v-if="!loginId && state != 'ACTIVE'">
-              <div class="off_shelf_tips">
+              <div class="detail_now_price">
                   ￥{{detailData.productInfo.hideGroupsPrice}}
               </div>
+              <div class="detail_suggest_price">￥{{ detailData.productPrice[1].price | toFix2 }}</div>
           </template>
           <template v-if="detailData.productPrice.length != 0 && detailData.productExtInfo.state === 'ON_SHELF' &&  loginId && state === 'ACTIVE'">
                   <div class="detail_now_price">
                       ￥{{detailData.productInfo.priceFightGrops | toFix2  }}
                   </div>
-                  <div class="detail_suggest_price">￥{{ detailData.productPrice[0].price | toFix2 }}</div>
+                  <div class="detail_suggest_price">￥{{ detailData.productPrice[1].price | toFix2 }}</div>
           </template>
         </div>
       </div>
@@ -55,7 +56,7 @@
       <div class="join-btn" v-if="!isOwn && onShelf && !groupComplete && !isOutTime"  @click="addCartInfo(2,groupData.groupPurchase.id)">
         参与拼团
       </div>
-      <div class="join-btn" v-else-if="isOwn && onShelf && !groupComplete && !isOutTime">
+      <div class="join-btn" v-else-if="isOwn && onShelf && !groupComplete && !isOutTime" @click="shareDialogFlag = true">
         分享拼团
       </div>
       <div class="join-btn" v-else-if="isOwn && !onShelf ">
@@ -164,6 +165,7 @@
 </template>
 <script>
 import store from 'store';
+import wx from 'weixin-js-sdk';
 export default {
   data(){
     return{
@@ -189,7 +191,8 @@ export default {
       groupComplete:false,//true已成团false未成团
       isOutTime:false,//是否超时
       onShelf:true,
-      shareDialogFlag:true
+      shareDialogFlag:true,
+      wxConfig:''
     }
   },
   created(){
@@ -203,6 +206,10 @@ export default {
     // 设置title
     this.$store.commit('SET_TITLE','茶帮通拼团');
     this.orderId = this.$route.query.orderId;
+    this.getWxConfig().then((res)=>{
+      this.wxConfig = res.data;
+      this.setWxShare();
+    })
     // 获取团购信息
     this.searchGroup().then((res) =>{
       this.groupData = res.data;
@@ -370,6 +377,59 @@ export default {
        }).catch((res)=>{
            return this.$router.push({name: '账户登录'});
        })
+   },
+   getWxConfig(){
+     let data = {
+       'url':window.location.href
+     }
+     return new Promise((resolve,reject)=>{
+       this.$api.get('/wap/wechatShareConfig',data,res=>{
+         resolve(res)
+       })
+     })
+   },
+   setWxShare(){
+       wx.config({
+          debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+          appId: this.wxConfig.appId, // 必填，公众号的唯一标识
+          timestamp: this.wxConfig.timestamp,  // 必填，生成签名的时间戳
+          nonceStr: this.wxConfig.nonceStr,  // 必填，生成签名的随机串
+          signature: this.wxConfig.signature, // 必填，签名，见附录1
+          jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage','onMenuShareQQ','onMenuShareWeibo','onMenuShareQZone',] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+      });
+      let shareTitle = '【仅剩'+(this.groupData.groupPurchase.groupNumber - this.groupData.groupPurchase.offerNumber)+'个名额】我超低价拼了'+this.detailData.productExtInfo.title+'，快来和我一起拼团吧'+window.location.href+'点击链接，参与拼团【来自茶帮通茶友分享】';
+      let shareDesc = '';
+      let shareLink = window.location.href;
+      let shareImg = 'https://img3.oteao.com/WAPIMG/banner/banner_2.jpg'
+        wx.ready(function(){
+          wx.onMenuShareAppMessage({
+              title: shareTitle, // 分享标题
+              desc: shareDesc, // 分享描述
+              link: shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+              imgUrl: shareImg, // 分享图标
+              type: '', // 分享类型,music、video或link，不填默认为link
+              dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+              success: function () {
+                  // 用户确认分享后执行的回调函数
+              },
+              cancel: function () {
+                  // 用户取消分享后执行的回调函数
+              }
+
+          });
+
+          wx.onMenuShareTimeline({
+              title: shareTitle+' '+shareDesc, // 分享标题
+              link: shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+              imgUrl: shareImg, // 分享图标
+              success: function () {
+                  // 用户确认分享后执行的回调函数
+              },
+              cancel: function () {
+                  // 用户取消分享后执行的回调函数
+              }
+          });
+      });
    },
    // 获取拼团信息
    getGroupPurchase(){

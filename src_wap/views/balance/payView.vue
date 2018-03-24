@@ -13,16 +13,33 @@
             </template>
             <!-- 成功 -->
             <template v-if="$route.name === '结算显示' && !$route.query.fail">
+              <template v-if="myData.payOrder.groupType==0">
                 <div class="success-text">
                     <i class="icon-zhifuchenggong"></i>支付成功
                 </div>
                 <div class="success-btn-wrap">
                     <mt-button type="default" @click="$router.push('/order/buyerlist?orderStatus=null')">查看订单</mt-button>
-                    <mt-button type="default" @click="$router.push('/')">返回首页</mt-button>
                 </div>
+              </template>
+              <template v-if="myData.payOrder.groupType!=0">
+                <div class="success-text" v-if="myData.payOrder.groupType==1">
+                    <i class="icon-zhifuchenggong"></i>已开团，离成团仅剩<span>{{groupData.groupPurchase.groupNumber - groupData.groupPurchase.offerNumber}}</span>人
+                </div>
+                <div class="success-text" v-if="myData.payOrder.groupType==2">
+                    <i class="icon-zhifuchenggong"></i>已参团，离成团仅剩<span>{{groupData.groupPurchase.groupNumber - groupData.groupPurchase.offerNumber}}</span>人
+                </div>
+                <div class="last-time">
+                  {{formateDate(leftTime)}}后结束
+                </div>
+                <div class="success-btn-wrap">
+                    <mt-button type="default" @click="$router.push('/order/buyerlist?orderStatus=null')">查看订单</mt-button>
+                    <mt-button type="default" >分享拼团</mt-button>
+                </div>
+              </template>
+
             </template>
             <!-- 货到付款 -->
-            <template v-if="$route.name === '货到付款结算'">
+            <!-- <template v-if="$route.name === '货到付款结算'">
                 <div class="delivery-text">
                     <i class="icon-zhifuchenggong"></i>货到付款订单提交成功
                 </div>
@@ -31,9 +48,9 @@
                     <mt-button type="default" @click="$router.push('/order/buyerlist?orderStatus=null')">查看订单</mt-button>
                     <mt-button type="default" @click="$router.push({name: '收银台',query: {payId: $route.query.payId,type:$route.query.type}})">立即支付</mt-button>
                 </div>
-            </template>
+            </template> -->
             <!-- 货到付款成功 -->
-            <template v-if="$route.name === '货到付款成功'">
+            <!-- <template v-if="$route.name === '货到付款成功'">
                 <div class="delivery-text">
                     <i class="icon-zhifuchenggong"></i>货到付款订单提交成功
                 </div>
@@ -42,7 +59,8 @@
                     <mt-button type="default" @click="$router.push('/order/buyerlist?orderStatus=null')">查看订单</mt-button>
                     <mt-button type="default" @click="$router.push('/')">返回首页</mt-button>
                 </div>
-            </template>
+            </template> -->
+            <div class="back-home" @click="$router.push('/')"  v-if="$route.name === '结算显示' && !$route.query.fail">返回首页</div>
         </div>
         <div class="bd">
             <div class="text-item">
@@ -88,11 +106,15 @@
     export default {
         data() {
             return {
-                myData: {},
+                myData: {
+                  payOrder:''
+                },
                 payType: {
                     ONLINE: '在线支付',
                     CASH_DELIVERY: '货到付款'
-                }
+                },
+                groupData:'',
+                leftTime:''
             }
         },
         computed: {
@@ -107,7 +129,58 @@
             // 设置数据
             setData(data) {
                 this.myData = data;
-            }
+                this.searchGroup().then((res)=>{
+                  this.groupData = res.data;
+                  this.leftTime = this.sortTime(res.data.groupPurchase.createTime,res.data.groupPurchase.systemTime)
+                  this.timeOut();
+                })
+            },
+            searchGroup(){
+              let data = {
+                'payId': this.myData.payOrder.id
+              }
+              return new Promise((resolve,reject) =>{
+                this.$api.post('/oteao/groupPurchase/seachGroupByPayId',data,res=>{
+                    resolve(res);
+                }),res=>{
+                    return Toast({
+                        message: res.errorMsg,
+                        iconClass: 'icon icon-fail'
+                    });
+                }
+              })
+            },
+            formate (time) {            // 倒计时部分
+                if(time>=10){
+                    return time
+                }else{
+                    return `0${time}`
+                }
+            },
+            sortTime(startTime,systemTime){
+              const endTime = new Date(startTime);
+              const nowTime = new Date(systemTime);
+              let leftTime = parseInt((endTime.getTime()-nowTime.getTime()))+24*60*60*1000
+              return leftTime;
+            },
+            formateDate(time){
+              let h = this.formate(parseInt(time/(1000*60*60)%24))
+              let m = this.formate(parseInt(time/60/1000%60))
+              let s = this.formate(parseInt(time/1000%60))
+              let ms = parseInt(time/100%10)
+              if(time <= 0){
+                  return '00:00:00.0';
+              }else{
+                  return h+':'+m+':'+s+'.'+ms;
+              }
+            },
+            // 倒计时
+            timeOut(){
+              let time = setInterval(()=>{            // 倒计时
+                 this.leftTime = this.leftTime-100;
+             },100)
+           },
+
         },
         created() {
             if(this.$route.query.wx === 'wxpaycallback') {
@@ -119,6 +192,7 @@
                     }
                 })
             }
+
         },
         beforeRouteEnter(to, from, next) {
 

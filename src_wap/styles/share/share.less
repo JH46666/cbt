@@ -22,8 +22,12 @@
         line-height: 0.36rem;
         letter-spacing: 0rem;
         color: #333333;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
         overflow: hidden;
+        word-break: break-all;
         text-overflow: ellipsis;
+        -webkit-box-orient: vertical;
       }
       .product-price{
         margin-top: 0.29rem;
@@ -42,15 +46,15 @@
             margin-right: 0.1rem;
             .position(r);
             &:after{
-                content:'';
-                display:block;
-                width:0.2rem;
-                height:0.4rem;
-                position:absolute;
-                transform:skewX(30deg);
-                background:#fff;
-                top:0;
-                right:-0.1rem;
+              content:'';
+              display:block;
+              width:0.22rem;
+              height:0.4rem;
+              position:absolute;
+              transform:skewX(30deg);
+              background:#fff;
+              top:-0.01rem;
+              right:-0.12rem;
             }
         }
         .off_shelf_tips{
