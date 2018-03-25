@@ -1145,7 +1145,7 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
     @import '~@/styles/order/detail.less';
     .height2{
         height: unset!important;
