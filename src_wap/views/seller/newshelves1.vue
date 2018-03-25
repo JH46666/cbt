@@ -410,7 +410,8 @@
                     catId: id,
                     sysId: 1,
                     device: this.device,
-                    position: 0
+                    position: 0,
+                    isDisplay: 1,
                 }
                 return new Promise((resolve, reject) => {
                     this.$api.get('/oteao/propInfo/queryPropVal', data, res => {
