@@ -32,10 +32,10 @@
     </div>
     <div class="group-info">
       <div class="group-title">
-        <div v-if="onShelf && !groupComplete && !isOutTime">已开团，仅剩<span>{{groupData.groupPurchase.groupNumber - groupData.groupPurchase.offerNumber}}</span>人名额</div>
-        <div v-else-if="onShelf && !groupComplete && isOutTime">来晚了，该团超时结束啦</div>
-        <div v-else-if="groupComplete">拼团成功</div>
-        <div v-else-if="!onShelf && !groupComplete">来晚了，商品售罄下架了</div>
+        <div v-if="onShelf && !groupComplete && !isOutTime"><div>已开团，仅剩<span>{{groupData.groupPurchase.groupNumber - groupData.groupPurchase.offerNumber}}</span>人名额</div></div>
+        <div v-else-if="onShelf && !groupComplete && isOutTime"><div>来晚了，该团超时结束啦</div></div>
+        <div v-else-if="groupComplete"><div>拼团成功</div></div>
+        <div v-else-if="!onShelf && !groupComplete"><div>来晚了，商品售罄下架了</div></div>
       </div>
       <div class="group-lasttime" v-if="onShelf && !groupComplete && !isOutTime">{{formateDate(leftTime)}}后结束</div>
       <div class="group-lasttime" v-else-if="groupComplete">此团满员啦</div>
@@ -149,7 +149,7 @@
       </div>
     </div>
     <!-- 分享弹窗 -->
-    <div class="share-mask" :class="{'off':!shareDialogFlag}" v-if="!groupComplete && !isOutTime && isOwn">
+    <div class="share-mask" :class="{'off':!shareDialogFlag}" >
       <div class="share-dialog">
           <div class="share-title">还差<span>{{groupData.groupPurchase.groupNumber - groupData.groupPurchase.offerNumber}}</span>人，快邀请好友来拼团</div>
           <div class="share-subtitle">拼单已发起，人满后立即发货</div>
@@ -159,7 +159,16 @@
             <i class="iconfont">&#xe621;</i>
           </div>
       </div>
-
+      <div class="share-head" v-if="!$tool.isWx">
+        <div>点选浏览器“分享”选择</div>
+        <div>“发送给朋友”或“分享到朋友圈”</div>
+        <div class="head"><i class="iconfont">&#xe6ad;</i></div>
+      </div>
+      <div class="sharewx-head" v-else>
+        <div class="head"><i class="iconfont">&#xe6ad;</i></div>
+        <div>点击“…”选择</div>
+        <div>“发送给朋友”或“分享到朋友圈”</div>
+      </div>
     </div>
   </div>
 </template>
@@ -191,7 +200,7 @@ export default {
       groupComplete:false,//true已成团false未成团
       isOutTime:false,//是否超时
       onShelf:true,
-      shareDialogFlag:true,
+      shareDialogFlag:false,
       wxConfig:''
     }
   },
@@ -379,8 +388,9 @@ export default {
        })
    },
    getWxConfig(){
+     console.log(window.location.href.split('#')[0] + '#' + window.location.href.split('#')[1])
      let data = {
-       'url':window.location.href
+       'url':window.location.href.split('#')[0] + '#' + window.location.href.split('#')[1]
      }
      return new Promise((resolve,reject)=>{
        this.$api.get('/wap/wechatShareConfig',data,res=>{
@@ -395,7 +405,7 @@ export default {
           timestamp: this.wxConfig.timestamp,  // 必填，生成签名的时间戳
           nonceStr: this.wxConfig.nonceStr,  // 必填，生成签名的随机串
           signature: this.wxConfig.signature, // 必填，签名，见附录1
-          jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage','onMenuShareQQ','onMenuShareWeibo','onMenuShareQZone',] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+          jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
       });
       let shareTitle = '【仅剩'+(this.groupData.groupPurchase.groupNumber - this.groupData.groupPurchase.offerNumber)+'个名额】我超低价拼了'+this.detailData.productExtInfo.title+'，快来和我一起拼团吧'+window.location.href+'点击链接，参与拼团【来自茶帮通茶友分享】';
       let shareDesc = '';
