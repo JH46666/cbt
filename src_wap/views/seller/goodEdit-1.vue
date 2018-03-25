@@ -163,7 +163,7 @@
         </mt-popup>
 
         <!-- 商品分类弹出框 -->
-        <mt-popup v-model="dialogTypeBol" position="bottom" style="height: 90%;">
+        <mt-popup v-model="dialogTypeBol" position="bottom" style="height: 90%;" :closeOnClickModal=false>
             <div class="dialog_type_wrapper">
                 <div class="dialog_type_title">
                     常用品类
@@ -229,6 +229,41 @@
             }
         },
         watch: {
+            // 'resize.form.goodTypes': {
+            //     handler(curVal, oldVal) {
+            //         if (this.resize.twoClass) {
+            //             this.getProVal(this.resize.twoClass).then((res) => {
+            //                 this.resize.proValList = res.data;
+            //                 if (this.resize.proValList.length != 0) {
+            //                     for (let i = 0; i < this.resize.proValList.length; i++) {
+            //                         this.$set(this.resize.proValList[i], 'proVal', '');
+            //                         this.$set(this.resize.proValList[i], 'proIndex', null);
+            //                         this.$set(this.resize.proValList[i], 'proShowHide', false);
+            //                         this.$set(this.resize.proValList[i], 'proValId', '');
+            //                         for (let obj of this.resize.proValList[i].propValList) {
+            //                             this.$set(obj, 'flag', false);
+            //                         }
+            //                     }
+            //                     for (let i = 0; i < this.resize.proValList.length; i++) {
+            //                         for (let j = 0; j < this.getProvList.length; j++) {
+            //                             if (this.resize.proValList[i].id == this.getProvList[j].id) {
+            //                                 this.resize.proValList[i].proValId = this.getProvList[j].content;
+            //                                 this.resize.proValList[i].proIndex = i;
+            //                                 this.resize.proValList[i].proVal = this.getProvList[j].selval;
+            //                                 for (let obj of this.resize.proValList[i].propValList) {
+            //                                     if (obj.id == this.getProvList[j].content) {
+            //                                         obj.flag = true;
+            //                                     }
+            //                                 }
+            //                             }
+            //                         }
+            //                     }
+            //                 }
+            //             })
+            //         }
+            //     },
+            //     deep: true
+            // },
             // 点击二级分类时获取属性后添加自定义属性
             'resize.twoClass': {
                 handler(curVal, oldVal) {
@@ -301,11 +336,13 @@
             },
             // 点击二级分类时获取属性
             getProVal(id) {
+                if (!id) return;
                 let data = {
                     catId: id,
                     sysId: 1,
                     device: this.device,
-                    position: 0
+                    position: 0,
+                    isDisplay: 1,
                 }
                 return new Promise((resolve, reject) => {
                     // 获取属性
@@ -420,7 +457,10 @@
             },
             goStep3() {
                 this.$router.push({
-                    name: '商品编辑-2'
+                    name: '商品编辑-2',
+                    query: {
+                        state: this.$route.query.state
+                    }
                 })
             },
             selectRightList(index) {
@@ -675,7 +715,7 @@
                     this.resize.form.goodsGroup = parseFloat(this.detailObj.productPrice[2].price).toFixed(2);      // 团购价
                     this.resize.form.goodsGroupNum = this.detailObj.productInfo.memberNum;                          // 团购人数
                     this.resize.form.goodTypes = this.detailObj.productInfo.catName;                                // 分类
-                    this.resize.form.goodsSell = this.detailObj.productExtInfo.reason;                              // 商品卖点
+                    this.resize.form.goodsSell = this.detailObj.productExtInfo.subTitle;                              // 商品卖点
                     this.resize.form.goodsKc = this.detailObj.productExtInfo.stockNum;                              // 库存
                     // this.resize.defaultArray[0].content = this.detailObj.productExtInfo.fragrance;
                     // for (let i = 0; i < this.resize.defaultArray[0].prop.length; i++) {

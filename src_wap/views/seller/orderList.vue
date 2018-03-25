@@ -20,7 +20,7 @@
                         <h3 class="title">
                             订单号: {{ item.orderNo }}
                         </h3>
-                        <span class="type" v-if="item.lessGroup">待成团，还差<span style="color: #f08200">{{ item.lessGroup }}</span>人</span>
+                        <span class="type" v-if="item.lessGroup">待成团，差<span style="color: #f08200">{{ item.lessGroup }}</span>人</span>
                         <span class="type" v-else>{{ $store.state.order.status[item.orderStatus] }}</span>
                     </div>
                     <template v-for="(todo,index) in item.products">
