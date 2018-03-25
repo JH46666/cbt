@@ -791,6 +791,7 @@ import $api from 'api';
             padding-left: 0.1rem;
             margin-right: 0.1rem;
             position: relative;
+            border-radius: 0.04rem 0rem 0rem 0.04rem;
             &:after{
                 content:'';
                 display:block;
