@@ -244,7 +244,12 @@ export default {
       // 获取商品信息
       this.getProInfo().then((res) =>{
         this.detailData = res.data
-        if(this.loginId == this.groupData.groupPurchase.memberId)this.isOwn = true;
+        for(let item in this.groupData.groupPurchaseDetails){
+          if(item.memberId==this.loginId){
+            this.isOwn = true;
+            return;
+          }
+        }
         if("ON_SHELF" == this.detailData.productExtInfo.state)this.onShelf = true;
         this.copyShareTitle = '【仅剩'+(this.groupData.groupPurchase.groupNumber - this.groupData.groupPurchase.offerNumber)+'个名额】我超低价拼了'+this.detailData.productExtInfo.title+'，快来和我一起拼团吧'+window.location.href+'点击链接，参与拼团【来自茶帮通茶友分享】';
       })
