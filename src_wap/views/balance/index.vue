@@ -280,6 +280,9 @@
             },
             // 弹出付款方式弹窗
             upPayType(index) {
+                if(this.pannel[0].cartList[0].businessType=='ORG_SALES'){
+                  return;
+                }
                 this.activePannel = this.pannel[index];
                 this.$refs.payType.setActive(this.activePannel)
                 this.showPayType = true;
