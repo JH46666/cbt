@@ -10,18 +10,13 @@
           <div class="detail-groupnum">
                 {{detailData.productInfo.memberNum}}人拼团价
           </div>
-          <template  v-if="detailData.productExtInfo.state === 'OFF_SHELF' &&  loginId && state === 'ACTIVE'">
-              <div class="off_shelf_tips">
-                  暂无报价
-              </div>
-          </template>
           <template  v-if="!loginId && state != 'ACTIVE'">
               <div class="detail_now_price">
                   ￥{{detailData.productInfo.hideGroupsPrice}}
               </div>
               <div class="detail_suggest_price">￥{{ detailData.productPrice[1].price | toFix2 }}</div>
           </template>
-          <template v-if="detailData.productPrice.length != 0 && detailData.productExtInfo.state === 'ON_SHELF' &&  loginId && state === 'ACTIVE'">
+          <template v-if="detailData.productPrice.length != 0 &&  loginId && state === 'ACTIVE'">
                   <div class="detail_now_price">
                       ￥{{detailData.productInfo.priceFightGrops | toFix2  }}
                   </div>
@@ -46,7 +41,7 @@
       <div class="group-members" v-if="isOwn || onShelf || groupComplete">
         <div v-for="(item,index) in groupData.groupPurchaseDetails">
           <img :src="item.memberFace" v-if="item.memberFace">
-          <div v-else class="noImg">{{String(item.memberUnitName).substr(0,2)}}</div>
+          <div v-else class="noImg">{{item.memberUnitName!=''?String(item.memberUnitName).substr(0,2):'匿名'}}</div>
           <div v-if="index == 0" class="first-target">团长</div>
         </div>
         <div v-if="!groupComplete" v-for="item in (groupData.groupPurchase.groupNumber - groupData.groupPurchase.offerNumber)">
@@ -77,7 +72,7 @@
         <div class="groupbuy-item" v-for="(item,index) in groupArray" :key="index" v-if="index < 2">
             <div class="user-img" >
                 <img :src="item.masterFaceImg" v-if="item.masterFaceImg"/>
-                <div v-else>{{String(item.masterName).substr(0,2)}}</div>
+                <div v-else>{{item.masterName!=''?String(item.masterName).substr(0,2):'匿名'}}</div>
             </div>
             <div class="groupbuy-username"><div>{{String(item.masterName).substr(0,6)}}</div></div>
             <div class="groupbuy-info">
@@ -94,9 +89,11 @@
     </div>
 
     <!-- 为你推荐 -->
-    <div class="suggest_wrapper" v-if="groupComplete || !onShelf">
+    <div class="suggest_wrapper" v-if="isOwn|| !onShelf">
         <div class="suggest_head">
-            <div class="suggest_title">大家都在团</div>
+            <div class="suggest_title">
+              <div>大家都在团</div>
+            </div>
         </div>
         <div class="suggest_content">
             <div class="suggest_item" v-for="(item,index) in listData" :key="index" @click="$router.push({name: '商品详情',query:{proSku: item.proSku}})">
@@ -107,6 +104,7 @@
                       <div class="off_shelf_tips">
                           ￥{{item.hidePriceGroups}}
                       </div>
+                      <div class="detail_suggest_price">￥{{ item.proPrice | toFix2 }}</div>
                   </template>
                   <template v-else>
                       <div class="detail_now_price">
@@ -133,7 +131,7 @@
         <div class="group-members">
           <div v-for="(item,index) in groupInfo.groupPurchaseDetails">
             <img :src="item.memberFace" v-if="item.memberFace">
-            <div v-else class="noImg">{{String(item.memberUnitName).substr(0,2)}}</div>
+            <div v-else class="noImg">{{item.memberUnitName!=''?String(item.memberUnitName).substr(0,2):'匿名'}}</div>
             <div v-if="index == 0" class="first-target">团长</div>
           </div>
           <div v-for="item in (groupArray[groupIndex].groupNumber - groupArray[groupIndex].offerNumber)">

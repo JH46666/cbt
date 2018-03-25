@@ -118,7 +118,7 @@
                                 已拼50500件
                             </div> -->
                             <div>
-                                库存{{detailData.productExtInfo.stockNum}}件
+                                库存{{detailData.productExtInfo.stockNum > detailData.productInfo.memberNum?detailData.productExtInfo.stockNum:'缺货'}}件
                             </div>
                         </div>
                         <template  v-if="detailData.productExtInfo.state === 'ON_SHELF'">
@@ -131,11 +131,11 @@
                                     <div class="detail_active_item">
                                         <span>运费：</span>
                                         <template v-if="detailData.productInfo.businessType == 'ORG_SALES'">
-                                            <span v-if="!detailData.orgFreightTemplateVoList || detailData.orgFreightTemplateVoList.length == 0">本店商品全国包邮</span>
+                                            <span v-if="!detailData.orgFreightTemplateVoList || detailData.orgFreightTemplateVoList.length == 0">商品全国包邮</span>
                                             <span v-else-if="detailData.orgFreightTemplateVoList && detailData.orgFreightTemplateVoList.length > 0">依实际重量计算运费</span>
                                         </template>
                                         <template v-else>
-                                            <span>自营茶叶满500包邮</span>
+                                            <span>全国满500包邮</span>
                                         </template>
                                     </div>
                                 </div>
@@ -162,7 +162,7 @@
                     <div class="groupbuy-item" v-for="(item,index) in groupArray" :key="index" v-if="index < 2">
                         <div class="user-img" >
                             <img :src="item.masterFaceImg" v-if="item.masterFaceImg"/>
-                            <div v-else>{{String(item.masterName).substr(0,2)}}</div>
+                            <div v-else>{{item.masterName!=''?String(item.masterName).substr(0,2):'匿名'}}</div>
                         </div>
                         <div class="groupbuy-username"><div>{{String(item.masterName).substr(0,6)}}</div></div>
                         <div class="groupbuy-info">
@@ -288,6 +288,9 @@
                     <template v-if="imgDetailHtml.length>0">
                         <div v-html="imgDetailHtml"></div>
                     </template>
+                    <div v-else>
+                      <img v-for="(item,index) in imgDetail" :key="index" v-if="item.length != 0"  :src="item"/>
+                    </div>
                     <!-- <template v-else>
                         <mt-cell v-for="(item,index) in imgDetail" :key="index" v-if="item.content != '' && item.imgArray.length != 0">
                             <div class="mint_cell_img_title">{{ item.title }}</div>
@@ -366,7 +369,7 @@
             <div class="group-members">
               <div v-for="(item,index) in groupInfo.groupPurchaseDetails">
                 <img :src="item.memberFace" v-if="item.memberFace">
-                <div v-else class="noImg">{{String(item.memberUnitName).substr(0,2)}}</div>
+                <div v-else class="noImg">{{item.memberUnitName!=''?String(item.memberUnitName).substr(0,2):'匿名'}}</div>
                 <div v-if="index == 0" class="first-target">团长</div>
               </div>
               <div v-for="item in (groupArray[groupIndex].groupNumber - groupArray[groupIndex].offerNumber)">

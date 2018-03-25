@@ -73,7 +73,7 @@
                 <img src="../../assets/images/loading3.gif" height="20" width="20" slot="icon" :class="{on: loading1 && !flag}"> 保存
             </mt-button>
         </div>
-        <div class="save-rackup">
+        <div class="save-rackup" v-if="$route.query.state == OFF_SHELF">
             <mt-button type="primary" :disabled="disabledBol || loading2" @click="saveMethod('1')">
                 <img src="../../assets/images/loading3.gif" height="20" width="20" slot="icon" :class="{on: loading2 && flag}"> 保存并上架
             </mt-button>
@@ -493,7 +493,7 @@
                             this.loading1 = false;
                             this.loading2 = false;
                             if (stata == 0) {
-                                this.sussTips = '创建成功！';
+                                this.sussTips = '修改成功！';
                             } else {
                                 this.sussTips = '成功上架！';
                             }
@@ -523,7 +523,7 @@
                             this.loading1 = false;
                             this.loading2 = false;
                             if (stata == 0) {
-                                this.sussTips = '创建成功！';
+                                this.sussTips = '修改成功！';
                             } else {
                                 this.sussTips = '成功上架！';
                             }
@@ -596,7 +596,7 @@
             },
             goShopMange() {
                 let status = '';
-                if (this.sussTips === '创建成功！') {
+                if (this.sussTips === '修改成功！') {
                     status = 'OFF_SHELF';
                 } else {
                     status = 'ON_SHELF';

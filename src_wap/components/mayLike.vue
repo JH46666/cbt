@@ -1,7 +1,7 @@
 <template>
     <!-- 您可能喜欢 -->
     <div class="may_like" v-if="mayProducts.length > 0">
-        <h4 class="tit_like"><span>大家都在团</span></h4>
+        <h4 class="tit_like"><span>猜你喜欢</span></h4>
         <div class="search_pros">
             <ul class="may_pros_list clearfix">
                 <li class="may_pro_item" v-for="mayItem in mayProducts" :key="mayItem.proSku">
@@ -87,10 +87,10 @@
             }
             span{
                 display: inline-block;
-                background: url('../assets/images/may_like.png') no-repeat;
+                background: url('../assets/images/may_like.png') no-repeat left center,url('../assets/images/may_like.png') no-repeat right center;
                 background-size: .22rem;
-                background-position: left center;
-                padding-left: .32rem;
+                // background-position: left center;
+                padding: 0 .32rem;
                 .fontSize(.26rem);
             }
         }
