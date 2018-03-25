@@ -66,7 +66,7 @@
                         <span class="goods-garyPrice">{{'￥'+ toFixed(garyPrice)}}</span>
                     </template>
                     <template v-else>
-                        <span>{{'￥'+ toFixed(hideGroupsPrice)}}</span>
+                        <span>{{'￥'+ hideGroupsPrice}}</span>
                         <span class="goods-garyPrice">{{'￥'+ toFixed(garyPrice)}}</span>
                     </template>
                 </div>
