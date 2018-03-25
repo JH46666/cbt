@@ -219,6 +219,9 @@ export default {
     // 设置title
     this.$store.commit('SET_TITLE','茶帮通拼团');
     this.orderId = this.$route.query.orderId;
+    if(this.$route.query.open){
+      this.shareDialogFlag = true
+    }
     this.getWxConfig().then((res)=>{
       this.wxConfig = res.data;
       this.setWxShare();
