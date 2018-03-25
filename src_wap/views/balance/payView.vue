@@ -22,18 +22,21 @@
                 </div>
               </template>
               <template v-if="myData.payOrder.groupType!=0">
-                <div class="success-text" v-if="myData.payOrder.groupType==1">
+                <div class="success-text" v-if="groupData.groupPurchase.groupNumber - groupData.groupPurchase.offerNumber==0">
+                    <i class="icon-zhifuchenggong"></i>拼团成功
+                </div>
+                <div class="success-text" v-else-if="myData.payOrder.groupType==1">
                     <i class="icon-zhifuchenggong"></i>已开团，离成团仅剩<span>{{groupData.groupPurchase.groupNumber - groupData.groupPurchase.offerNumber}}</span>人
                 </div>
-                <div class="success-text" v-if="myData.payOrder.groupType==2">
+                <div class="success-text" v-else-if="myData.payOrder.groupType==2">
                     <i class="icon-zhifuchenggong"></i>已参团，离成团仅剩<span>{{groupData.groupPurchase.groupNumber - groupData.groupPurchase.offerNumber}}</span>人
                 </div>
-                <div class="last-time">
+                <div class="last-time" v-if="groupData.groupPurchase.groupNumber - groupData.groupPurchase.offerNumber!=0">
                   {{formateDate(leftTime)}}后结束
                 </div>
                 <div class="success-btn-wrap">
                     <mt-button type="default" @click="$router.push('/order/buyerlist?orderStatus=null')">查看订单</mt-button>
-                    <mt-button type="default" >分享拼团</mt-button>
+                    <mt-button type="default"  v-if="groupData.groupPurchase.groupNumber - groupData.groupPurchase.offerNumber!=0">分享拼团</mt-button>
                 </div>
               </template>
 
@@ -92,7 +95,35 @@
             </div>
         </div>
         <!-- 猜你喜欢 -->
-        <may-like v-if="$route.name === '结算显示' && !$route.query.fail || $route.name === '货到付款成功'"></may-like>
+        <!-- <may-like v-if="$route.name === '结算显示' && !$route.query.fail || $route.name === '货到付款成功'"></may-like> -->
+        <!-- 为你推荐 -->
+        <div class="suggest_wrapper" v-if="$route.name === '结算显示' && !$route.query.fail || $route.name === '货到付款成功'">
+            <div class="suggest_head">
+                <div class="suggest_title">
+                  <div>大家都在团</div>
+                </div>
+            </div>
+            <div class="suggest_content">
+                <div class="suggest_item" v-for="(item,index) in listData" :key="index" @click="$router.push({name: '商品详情',query:{proSku: item.proSku}})">
+                    <div class="sugget_img"><img :src="item.proImg" /></div>
+                    <p class="suggest_text">{{ item.proName }}</p>
+                    <div class="product-price">
+                      <template  v-if="!$tool.isLogin()">
+                          <div class="off_shelf_tips">
+                              ￥{{item.hidePriceGroups}}
+                          </div>
+                          <div class="detail_suggest_price">￥{{ item.proPrice | toFix2 }}</div>
+                      </template>
+                      <template v-else>
+                          <div class="detail_now_price">
+                              ￥{{item.priceGroups | toFix2  }}
+                          </div>
+                          <div class="detail_suggest_price">￥{{ item.proPrice | toFix2 }}</div>
+                      </template>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="go-index" v-if="$route.query.fail">
             <mt-button type="default" @click="$router.push('/')" class="goback-index">返回首页</mt-button>
         </div>
@@ -114,7 +145,8 @@
                     CASH_DELIVERY: '货到付款'
                 },
                 groupData:'',
-                leftTime:''
+                leftTime:'',
+                listData:[]
             }
         },
         computed: {
@@ -192,6 +224,14 @@
                     }
                 })
             }
+            //获取为您推荐集合
+            this.$api.get('/oteao/productCollection/getCollectionDetail',{
+                'device': 'WAP',
+                'sysId': 1,
+                'collection.collectionNo': 'wap_hometuijian'
+            },res=>{
+                this.listData = res.data.proExtInfoVoList;
+            })
 
         },
         beforeRouteEnter(to, from, next) {
