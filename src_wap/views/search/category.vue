@@ -58,7 +58,7 @@
                                         :subTit="item.subTitle"
                                         :price="item.priceGroups"
                                         :garyPrice="item.proPrice"
-                                        :hideGroupsPrice="item.hideGroupsPrice"
+                                        :hideGroupsPrice="item.hidePriceGroups"
                                         :salesPrice="item.salesPrice"
                                         :unit="item.unint"
                                         :imgUrl="item.proImg"
@@ -197,11 +197,11 @@
                         },
                         {
                             propVal: '价格高到低',
-                            propId: 3
+                            propId: 5
                         },
                         {
                             propVal: '价格低到高',
-                            propId: 3
+                            propId: 5
                         },
                         {
                             propVal: '新品',

@@ -385,7 +385,7 @@ export default {
           "pageSize": 20,
           "priceRange": {
             "end": this.maxSupplyPrice,
-            "fieldName": "proPrice",
+            "fieldName": "groupPrice",
             "start": this.minSupplyPrice
           },
           "sortParamList": this.sortName != '' ? [{
