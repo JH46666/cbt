@@ -19,12 +19,12 @@
                             </div>
                             <div class="order_status" v-if="item.groupSuccess == 2">
                                  待成团，差<span style="color: #f08200">{{ item.lessGroup }}</span>人
-                                <div class="left" style="width: rem; display: flex; margin-top: 0.1rem;">
+                                <!-- <div class="left" style="width: rem; display: flex; margin-top: 0.1rem;">
                                     <span class="icon-wrap" style="align-items: center; display: flex;">
                                         <i class="iconfont icon-pintuanshijianzhuangtai" style="color: #424242; font-size: 0.24rem;"></i>
                                     </span>
                                     <div style="margin-left: 0.05rem;color: #999; font-size: 0.22rem;">剩余{{ formateDate(item.lastTime) }}</div>
-                                </div>
+                                </div> -->
                             </div>
                             <div class="order_status" v-else>
                                 {{ orderStatus[item.orderStatus] }}
