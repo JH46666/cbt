@@ -163,7 +163,7 @@
         </mt-popup>
 
         <!-- 商品分类弹出框 -->
-        <mt-popup v-model="dialogTypeBol" position="bottom" style="height: 90%;">
+        <mt-popup v-model="dialogTypeBol" position="bottom" style="height: 90%;" :closeOnClickModal=false>
             <div class="dialog_type_wrapper">
                 <div class="dialog_type_title">
                     常用品类
@@ -301,6 +301,7 @@
             },
             // 点击二级分类时获取属性
             getProVal(id) {
+                if (!id) return;
                 let data = {
                     catId: id,
                     sysId: 1,
