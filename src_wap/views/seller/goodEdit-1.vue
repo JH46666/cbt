@@ -272,6 +272,8 @@
             // 点击二级分类时获取属性后添加自定义属性
             'resize.twoClass': {
                 handler(curVal, oldVal) {
+                    // this.resize.proValList通过queryPropVal接口查询
+                    // this.getProvList通过getProExtDetail接口查询
                     this.getProVal(curVal).then((res) => {
                         this.resize.proValList = res.data;
                         if (this.resize.proValList.length != 0) {
@@ -281,6 +283,32 @@
                                 this.$set(this.resize.proValList[i], 'proShowHide', false);
                                 this.$set(this.resize.proValList[i], 'proValId', '');
                             }
+                            // 匹配确定proIndex
+                            for (let i = 0; i < this.resize.proValList.length; i++) {
+                                for (let n = 0; n < this.resize.proValList[i].propValList.length; n++) {
+                                    for (let j = 0; j < this.getProvList.length; j++) {
+                                        if (this.resize.proValList[i].propValList[n].id == this.getProvList[j].content) {
+                                            this.resize.proValList[i].proValId = this.getProvList[j].content;
+                                            this.resize.proValList[i].proIndex = n;
+                                            this.resize.proValList[i].proVal = this.getProvList[j].selval;
+                                        }
+                                    }
+                                }
+                            }   
+                            // for (let i = 0; i < this.resize.proValList.length; i++) {
+                            //     for (let j = 0; j < this.getProvList.length; j++) {
+                            //         if (this.resize.proValList[i].id == this.getProvList[j].id) {
+                            //             this.resize.proValList[i].proValId = this.getProvList[j].content;
+                            //             this.resize.proValList[i].proIndex = i;
+                            //             this.resize.proValList[i].proVal = this.getProvList[j].selval;
+                            //             for (let obj of this.resize.proValList[i].propValList) {
+                            //                 if (obj.id == this.getProvList[j].content) {
+                            //                     obj.flag = true;
+                            //                 }
+                            //             }
+                            //         }
+                            //     }
+                            // }   
                         }
                     })
                 },
@@ -760,6 +788,7 @@
                     //         this.resize.defaultArray[1].select = i;
                     //     }
                     // }
+                    // mainImgFile为null说明是已有图片
                     for (let obj of this.detailObj.productImgList) {
                         this.resize.imgs.mainImg.push(obj.imgUrl);
                         this.resize.mainImgFile.push(null);
@@ -768,6 +797,7 @@
                     this.getCatDetail(this.detailObj.productInfo.catId).then((reses) => {
                         this.parentCatId = reses.data.parentId;
                         this.resize.form.goodTypes = reses.data.parentName + '-' + this.detailObj.productInfo.catName;
+                        // 还原一级分类
                         for (let i = 0; i < this.oneTypeList.length; i++) {
                             if (this.oneTypeList[i].id == this.parentCatId) {
                                 this.resize.oneIndex = i;
@@ -798,10 +828,22 @@
                             }
                         }
                         this.resize.twoClass = this.detailObj.productInfo.catId;
+                        // 还原一级分类后确定二级分类
+                        this.getTypeList(this.parentCatId).then((res) => {
+                            let parentList = res.data;
+                            for (let obj of parentList) {
+                                this.twoTypeList.push({
+                                    id: obj.id,
+                                    name: obj.catName
+                                })
+                            }
+                        })
+                        this.clickSure = false;
                     });
                     // 获取详情图和其它属性
                     this.getAttrOrImg().then((rs) => {
                         let proArr = rs.data.propValList;
+                        // this.getProvList通过getProExtDetail接口查询
                         for (let obj of proArr) {
                             this.getProvList.push({
                                 id: obj.propertiesVal.catPropId,
