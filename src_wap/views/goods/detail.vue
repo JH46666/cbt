@@ -118,7 +118,7 @@
                                 已拼50500件
                             </div> -->
                             <div>
-                                库存{{detailData.productExtInfo.stockNum > detailData.productInfo.memberNum?detailData.productExtInfo.stockNum:'缺货'}}件
+                                {{detailData.productExtInfo.stockNum > detailData.productInfo.memberNum?'库存'+detailData.productExtInfo.stockNum+'件':'缺货'}}
                             </div>
                         </div>
                         <template  v-if="detailData.productExtInfo.state === 'ON_SHELF'">

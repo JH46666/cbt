@@ -382,7 +382,8 @@ export default {
             this.$router.push({
                 name: '茶帮通拼团',
                 query: {
-                    orderId: item.orderId
+                    orderId: item.orderId,
+                    open: true,
                 }
             })
         },
