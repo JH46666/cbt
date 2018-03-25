@@ -599,8 +599,12 @@
                 } else {
                     this.resize.form[str] = parseFloat(delTrim).toFixed(2);
                 }
-                this.flagGoodsSj = this.resize.form.goodsSj >= this.resize.form.goodsPtsj;
-                this.flagGoodsGroup = this.resize.form.goodsGroup >= this.resize.form.goodsSj;
+                // goodsPtsj市场价
+                // goodsSj单买价
+                // goodsGroup团购价
+                // 两个字符串通过charCodeAt(0)转换成ASCII码比较大小
+                this.flagGoodsSj = Number(this.resize.form.goodsSj) >= Number(this.resize.form.goodsPtsj);
+                this.flagGoodsGroup = Number(this.resize.form.goodsGroup) >= Number(this.resize.form.goodsSj); 
             },
             // 控制人数在2-10
             toFixedBelow(val, str) {
