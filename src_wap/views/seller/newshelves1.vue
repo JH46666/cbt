@@ -17,6 +17,7 @@
                             <div class="item-right">
                                 <input type="text" id="goodType" readonly placeholder="必填项，请选择商品分类" v-model="resize.form.goodTypes" />
                             </div>
+                            <i class="iconfont" @click="selectGoodType">&#xe619;</i>
                         </div>
 
                         <div class="item" style="position: relative;">
@@ -439,7 +440,7 @@
                 this.resize.oneIndex = index;
                 this.oneTypeListName = item.name;
                 console.log(item.catName)
-                // 获取二级分类
+                // 选择一级分类后确定二级分类
                 this.getTypeList(item.id).then((res) => {
                     let parentList = res.data;
                     for (let obj of parentList) {
@@ -830,6 +831,7 @@
             letter-spacing: 0rem;
             color: #333;
             align-items: center;
+            padding-left: 0.3rem;
         }
         ._add-small-box{
             width: 0.08rem;
