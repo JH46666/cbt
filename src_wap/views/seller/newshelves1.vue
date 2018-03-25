@@ -36,7 +36,7 @@
                             <div class="_add-goods-good-tips" v-if="flagGoodsOwnGood">
                                <div class="_add-tips">
                                     <div>商品标题组成</div>
-                                    商品卖点+商品品类+工艺+采摘时间
+                                    商品卖点+商品品类+工艺+采摘时间+香气
                                 </div>
                                 <div class="_add-geometric-3"></div>
                                 <div class="_add-geometric-X" @click="flagGoodsOwnGood = !flagGoodsOwnGood">
@@ -126,7 +126,7 @@
                                 <p style="float:right">人</p>
                             </div>
                             <div class="_add-price-error-tips" v-if="flagGoodsGroup">
-                                <i class="iconfont icon-tishi"> 团购价需低于市场价</i>
+                                <i class="iconfont icon-tishi"> 团购价需低于单买价</i>
                             </div>
                             <div class="_add-num-error-tips" v-if="flagGoodsGroupNum">
                                 <i class="iconfont icon-tishi"> 人数需介于2和10之间</i>
@@ -652,9 +652,32 @@
                     this.resize.form[str] = '0.00'
                 } else {
                     this.resize.form[str] = parseFloat(delTrim).toFixed(2);
+                    console.log(str, delTrim);
+                    console.log(typeof this.resize.form[str]);
+                    console.log('1.23' > '1')
                 }
-                this.flagGoodsSj = this.resize.form.goodsSj >= this.resize.form.goodsPtsj;
-                this.flagGoodsGroup = this.resize.form.goodsGroup >= this.resize.form.goodsSj;            
+                this.flagGoodsSj = (this.resize.form.goodsSj >= this.resize.form.goodsPtsj);
+                this.flagGoodsGroup = (this.resize.form.goodsGroup >= this.resize.form.goodsSj);  
+                // goodsPtsj市场价
+                // goodsSj单买价
+                // goodsGroup团购价
+                // if (this.resize.form.goodsSj >= this.resize.form.goodsPtsj) {
+                //     this.flagGoodsSj = true;
+                //     console.log('this.flagGoodsSj is true', this.flagGoodsSj)
+                // }
+                // if(this.resize.form.goodsSj < this.resize.form.goodsPtsj) {
+                //     this.flagGoodsSj = false;
+                //     console.log('this.flagGoodsSj is false', this.flagGoodsSj)
+                // }
+                // if (this.resize.form.goodsGroup >= this.resize.form.goodsSj) {
+                //     this.flagGoodsGroup = true;
+                //     console.log('this.flagGoodsGroup is true', this.flagGoodsGroup)
+                // }
+                // if(this.resize.form.goodsGroup <
+                //  this.resize.form.goodsSj) {
+                //     this.flagGoodsGroup = false;
+                //     console.log('this.flagGoodsGroup is false', this.flagGoodsGroup)
+                // }
             },
             // 控制人数在2-10
             toFixedBelow(val, str) {
@@ -815,7 +838,7 @@
             left: 0rem;
         }
         ._add-goods-good-tips{
-            width: 4.52rem;
+            width: 4.92rem;
             height: 1.12rem;
             background-color: #525150;
             box-shadow: 0rem 0.02rem 0.1rem 0rem rgba(0, 0, 0, 0.4);
@@ -824,7 +847,7 @@
             top: 0.62rem;
             ._add-tips{
                 padding: 0.21rem 0.23rem;
-                width: 4.42rem;
+                width: 4.92rem;
                 font-size: 0.20rem;
                 line-height: 0.36rem;
                 color: #ffffff;
