@@ -85,7 +85,9 @@
                 <!-- 待付款 -->
                 <div v-else-if="orderDetailData.orderStatus === 'WAIT_PAY'"><img src="../../assets/images/order_4.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                 <!-- 已评价 -->
-                <div v-else-if="orderDetailData.orderStatus === 'FINISH'"><img src="../../assets/images/order_1.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
+                <div v-else-if="orderDetailData.orderStatus === 'FINISH' && orderDetailData.isComment"><img src="../../assets/images/order_1.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
+                <!-- 待评价 -->
+                <div v-else-if="!orderDetailData.isComment && orderDetailData.orderStatus === 'FINISH'"><img src="../../assets/images/order_1.png" />待评价</div>
                 <!-- 取消 -->
                 <div v-else-if="orderDetailData.orderStatus === 'CANCEL'"><img src="../../assets/images/order_6.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                 <!-- 关闭，未成团 -->
