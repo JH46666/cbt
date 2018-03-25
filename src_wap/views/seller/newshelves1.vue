@@ -654,29 +654,26 @@
                     this.resize.form[str] = '0.00'
                 } else {
                     this.resize.form[str] = parseFloat(delTrim).toFixed(2);
-                    console.log(str, delTrim);
-                    console.log(typeof this.resize.form[str]);
-                    console.log('1.23' > '1')
                 }
-                this.flagGoodsSj = (this.resize.form.goodsSj >= this.resize.form.goodsPtsj);
-                this.flagGoodsGroup = (this.resize.form.goodsGroup >= this.resize.form.goodsSj);  
                 // goodsPtsj市场价
                 // goodsSj单买价
                 // goodsGroup团购价
-                // if (this.resize.form.goodsSj >= this.resize.form.goodsPtsj) {
+                // 字符串通过charCodeAt(0)转换成ASCII码比较大小
+                this.flagGoodsSj = Number(this.resize.form.goodsSj) >= Number(this.resize.form.goodsPtsj);
+                this.flagGoodsGroup = Number(this.resize.form.goodsGroup) >= Number(this.resize.form.goodsSj);  
+                // if (Number(this.resize.form.goodsSj) >= Number(this.resize.form.goodsPtsj)) {
                 //     this.flagGoodsSj = true;
                 //     console.log('this.flagGoodsSj is true', this.flagGoodsSj)
                 // }
-                // if(this.resize.form.goodsSj < this.resize.form.goodsPtsj) {
+                // if(Number(this.resize.form.goodsSj) < Number(this.resize.form.goodsPtsj)) {
                 //     this.flagGoodsSj = false;
                 //     console.log('this.flagGoodsSj is false', this.flagGoodsSj)
                 // }
-                // if (this.resize.form.goodsGroup >= this.resize.form.goodsSj) {
+                // if (Number(this.resize.form.goodsGroup) >= Number(this.resize.form.goodsSj)) {
                 //     this.flagGoodsGroup = true;
                 //     console.log('this.flagGoodsGroup is true', this.flagGoodsGroup)
                 // }
-                // if(this.resize.form.goodsGroup <
-                //  this.resize.form.goodsSj) {
+                // if(Number(this.resize.form.goodsGroup) < Number(this.resize.form.goodsSj)) {
                 //     this.flagGoodsGroup = false;
                 //     console.log('this.flagGoodsGroup is false', this.flagGoodsGroup)
                 // }

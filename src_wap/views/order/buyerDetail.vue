@@ -301,12 +301,12 @@
             <div class="number order_date_item" style="align-items: center;">
                 订单编号：{{ orderDetailData.orderNo }}
                 <div style="border: solid 0.02rem #999999; border-radius: 0.05rem; font-size: 0.26rem; padding: 0.12rem 0.25rem;"
-                    @click="clipboardData(orderDetailData.orderNo, $event)"
+                    v-clipboard:copy="orderDetailData.orderNo" v-clipboard:success="clipboardData"
                 >
                     复制
                 </div>
                 <!-- <input type="text" v-model="copyOrderNo" style="width: 0rem; height: 0rem;" ref="clipboardData" id="copy_text"/> -->
-                <input type="text" value="456" style="width: 0rem; height: 0rem;" ref="clipboardData" id="copy_text"/>
+                <!-- <input type="text" value="456" style="width: 0rem; height: 0rem;" ref="clipboardData" id="copy_text"/> -->
             </div>
             <div class="order_date_item" v-if="orderDetailData.createTime">
                 <span>下单时间：</span>
@@ -1072,26 +1072,8 @@ export default {
             });
         },
         // 复制
-        clipboardData(copyText, e){
-            console.log(this.$refs.clipboardData);
-            document.execCommand("Copy");
-            if(window.clipboardData){
-                window.clipboardData.setData("Text", copyText);
-                return Toast('复制成功');
-            }
-            else if(e.originalEvent){
-                clipboardData = e.originalEvent.clipboardData
-                clipboardData.setData("Text", copyText);
-                return Toast('复制成功');
-            }
-            else if(document.execCommand){
-                this.$refs.clipboardData.select();
-                var copyText = document.getElementById("copy_text");
-                copyText.select();
-                document.execCommand("Copy");
-                return Toast('复制成功');
-            }
-            return Toast('不支持复制功能');
+        clipboardData(e){
+            return Toast('复制成功');
         }
     },
     mounted() {
