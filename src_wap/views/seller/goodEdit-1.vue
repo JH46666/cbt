@@ -420,7 +420,10 @@
             },
             goStep3() {
                 this.$router.push({
-                    name: '商品编辑-2'
+                    name: '商品编辑-2',
+                    query: {
+                        state: this.$route.query.state
+                    }
                 })
             },
             selectRightList(index) {
