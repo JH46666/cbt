@@ -14,7 +14,7 @@
                     </div>
                     </div>
                     <div class="groupping-member-info">
-                        <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key=index>   
+                        <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key=index>
                             <!-- <img src="../../assets/images/cbt_icwctportrait.png" alt="" v-if="!item.memberFace"> -->
                             <div style="color: #fff; font-size: 0.50rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
                             <!-- <img src="../../assets/images/p.gif" alt=""> -->
@@ -300,13 +300,13 @@
         <div class="order_date">
             <div class="number order_date_item" style="align-items: center;">
                 订单编号：{{ orderDetailData.orderNo }}
-                <div style="border: solid 0.02rem #999999; border-radius: 0.05rem; font-size: 0.26rem; padding: 0.12rem 0.25rem;" 
-                    @click="clipboardData(orderDetailData.orderNo, $event)" 
+                <div style="border: solid 0.02rem #999999; border-radius: 0.05rem; font-size: 0.26rem; padding: 0.12rem 0.25rem;"
+                    @click="clipboardData(orderDetailData.orderNo, $event)"
                 >
                     复制
                 </div>
                 <!-- <input type="text" v-model="copyOrderNo" style="width: 0rem; height: 0rem;" ref="clipboardData" id="copy_text"/> -->
-                <input type="text" value="456" style="width: 0rem; height: 0rem;" ref="clipboardData" id="copy_text"/>                
+                <input type="text" value="456" style="width: 0rem; height: 0rem;" ref="clipboardData" id="copy_text"/>
             </div>
             <div class="order_date_item" v-if="orderDetailData.createTime">
                 <span>下单时间：</span>
@@ -1116,7 +1116,7 @@ export default {
         }
     },
     watch: {
-        
+
     },
     created() {
         // 设置title
@@ -1146,7 +1146,7 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
     @import '~@/styles/order/detail.less';
     .height2{
         height: unset!important;
@@ -1161,11 +1161,11 @@ export default {
             width: 2.62rem;
             height: 0.50rem;
             padding: 0.18rem 0rem 0.12rem 0.2rem;
-            color: #fe9900; 
-            font-size: 0.22rem; 
-            position: absolute; 
-            right: -0.35rem; 
-            background-color: #525150; 
+            color: #fe9900;
+            font-size: 0.22rem;
+            position: absolute;
+            right: -0.35rem;
+            background-color: #525150;
             border-radius: 0.25rem 0rem 0rem 0.25rem;
             display: flex;
             font-size: 0.24rem;
