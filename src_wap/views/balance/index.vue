@@ -495,7 +495,7 @@
                 sessionStorage.setItem('paymethod',JSON.stringify(this.pannel.map(val => val.currentPayMethod)));
 
                 // 快递方式
-                sessionStorage.setItem('express',JSON.stringify(this.pannel.map(val => val.currentDeliveryMethod)));
+                // sessionStorage.setItem('express',JSON.stringify(this.pannel.map(val => val.currentDeliveryMethod)));
 
             },
             // 恢复数据
@@ -503,20 +503,20 @@
                 let remark = JSON.parse(sessionStorage.remark);
                 let redpacket = JSON.parse(sessionStorage.redpacket);
                 let paymethod = JSON.parse(sessionStorage.paymethod);
-                let express = JSON.parse(sessionStorage.express);
+                // let express = JSON.parse(sessionStorage.express);
 
 
                 this.pannel.forEach((val, i) => {
                     val.remark = remark[i];
                     val.useRedPacketId = redpacket[i];
                     val.currentPayMethod = paymethod[i];
-                    val.currentDeliveryMethod = express[i];
+                    // val.currentDeliveryMethod = express[i];
                 })
 
                 delete sessionStorage.remark;
                 delete sessionStorage.redpacket;
                 delete sessionStorage.paymethod;
-                delete sessionStorage.express;
+                // delete sessionStorage.express;
 
             },
             //更新选中的数量
