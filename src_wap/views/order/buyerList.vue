@@ -18,7 +18,7 @@
                                 {{ item.shopName }}
                             </div>
                             <div class="order_status" v-if="item.groupSuccess == 2">
-                                 待成团，还差<span style="color: #f08200">{{ item.lessGroup }}</span>人
+                                 待成团，差<span style="color: #f08200">{{ item.lessGroup }}</span>人
                                 <div class="left" style="width: rem; display: flex; margin-top: 0.1rem;">
                                     <span class="icon-wrap" style="align-items: center; display: flex;">
                                         <i class="iconfont icon-pintuanshijianzhuangtai" style="color: #424242; font-size: 0.24rem;"></i>

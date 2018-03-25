@@ -6,7 +6,7 @@
                 <div v-if="orderDetailData.groupSuccess === 2" class="groupping">
                     <div style="position: relative;">
                         <div><img src="../../assets/images/cbt_icddxqpt.png" />
-                        拼团中,还差<span style="color: #f08200">{{ grouppingInfo.groupNumber - grouppingInfo.offerNumber }}</span>人
+                        拼团中,差<span style="color: #f08200">{{ grouppingInfo.groupNumber - grouppingInfo.offerNumber }}</span>人
                     </div>
                     <div class="countdown">
                         <i class="iconfont icon-pintuanshijianzhuangtai" style="font-size: 0.24rem; margin-top: -0.03rem;"></i>
