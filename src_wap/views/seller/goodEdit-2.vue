@@ -450,6 +450,8 @@
                     "detailImgs": detailImg,
                     "productImgs": mainImg
                 }
+                // 组合标题
+                let titles = '';
                 for (let i = 0; i < this.resize.proValList.length; i++) {
                     if (this.resize.proValList[i].propValList.length === 0) {
                         data.catProps.push({
@@ -457,6 +459,7 @@
                             propId: this.resize.proValList[i].id,
                             propertyVal: this.resize.proValList[i].proVal
                         })
+                        titles = titles + this.resize.proValList[i].proVal;
                     } else {
                         data.catProps.push({
                             propType: 1,
@@ -464,11 +467,16 @@
                             propertyVal: this.resize.proValList[i].proVal,
                             propValId: this.resize.proValList[i].proValId
                         })
+                        titles = titles + this.resize.proValList[i].proVal;
                     }
                 }
+                // 组合标题 = 商品卖点 + 商品品类 + 属性
+                titles = this.resize.form.goodsSell + this.resize.form.goodTypes.replace(/-/g, '') + titles;
                 if (this.resize.selId.pp) {
-                    this.$api.post(`/oteao/productInfo/createProductInfo` +
-                        `?frontOrgProInfoDetailVo.catId=${encodeURI(this.resize.twoClass)}` +
+                    this.$api.post(`/oteao/productInfo/updateProductInfo` +
+                        `?frontOrgProInfoDetailVo.proId=${encodeURI(this.resize.mainId)}` +
+                        `&frontOrgProInfoDetailVo.proName=${encodeURI(titles)}` +                                             // 组合标题
+                        `&frontOrgProInfoDetailVo.catId=${encodeURI(this.resize.twoClass)}` +
                         `&frontOrgProInfoDetailVo.brandId=${encodeURI(this.resize.selId.pp)}` +
                         `&frontOrgProInfoDetailVo.proName=${encodeURI(this.resize.form.goodsSell)}` +
                         // `&frontOrgProInfoDetailVo.unint=${ encodeURI(this.resize.form.goodsDw) }` +
@@ -496,8 +504,10 @@
                             });
                         })
                 } else {
-                    this.$api.post(`/oteao/productInfo/createProductInfo` +
-                        `?frontOrgProInfoDetailVo.catId=${encodeURI(this.resize.twoClass)}` +
+                    this.$api.post(`/oteao/productInfo/updateProductInfo` +
+                        `?frontOrgProInfoDetailVo.proId=${encodeURI(this.resize.mainId)}` +
+                        `&frontOrgProInfoDetailVo.proName=${encodeURI(titles)}` +                                             // 组合标题
+                        `&frontOrgProInfoDetailVo.catId=${encodeURI(this.resize.twoClass)}` +
                         `&frontOrgProInfoDetailVo.proName=${encodeURI(this.resize.form.goodsSell)}` +
                         // `&frontOrgProInfoDetailVo.unint=${ encodeURI(this.resize.form.goodsDw) }` +
                         `&frontOrgProInfoDetailVo.weight=${encodeURI(this.resize.form.goodsMz)}` +

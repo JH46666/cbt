@@ -16,42 +16,46 @@
                     <div class="groupping-member-info">
                         <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key=index>   
                             <!-- <img src="../../assets/images/cbt_icwctportrait.png" alt="" v-if="!item.memberFace"> -->
-                            <div style="color: #fff; font-size: 0.50rem">{{ item.memberUnitName.slice(0,2) }}</div>
+                            <div style="color: #fff; font-size: 0.50rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
                             <!-- <img src="../../assets/images/p.gif" alt=""> -->
                             <img :src=item.memberFace alt="" v-if="item.memberFace">
                             <div class="master-face" v-if="index == 0">
                                 团长
                             </div>
                         </div>
-                        <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key=index>
-                            <img src="../../assets/images/cbt_icwctportrait.png" alt="" v-if="!(grouppingMemberInfo.length > 2)">
-                            <img src="../../assets/images/cbt_icwctportrait.png" alt="" v-if="!(grouppingMemberInfo.length > 1) ">
-                        </div>
-                        <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key=index v-if="!(grouppingMemberInfo.length > 2)">
+                        <template v-if="grouppingMemberInfo.length < 5">
+                            <div class="groupping-member-icon" :key=index v-for="n in (grouppingInfo.groupNumber - grouppingInfo.offerNumber)">
+                                <img src="../../assets/images/cbt_icwctportrait.png" alt="">
+                            </div>
+                        </template>
+                        <!-- <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key=index v-if="!(grouppingMemberInfo.length > 2)">
                             <img src="../../assets/images/cbt_icwctportrait.png" alt="" >
                             <img src="../../assets/images/cbt_icwctportrait.png" alt="" v-if="!(grouppingMemberInfo.length > 1) ">
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <!-- 待发货 -->
                 <div v-if="orderDetailData.orderStatus === 'PACKING' && orderDetailData.groupSuccess != 2"><img src="../../assets/images/order_3.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
+                <!-- 支付成功，待审核 -->
+                <div v-if="orderDetailData.orderStatus === 'PAY_WAIT_AUDIT' && orderDetailData.groupSuccess == 3"><img src="../../assets/images/order_3.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                 <!-- 支付成功，待审核，已成团 -->
                 <div v-if="orderDetailData.orderStatus === 'PAY_WAIT_AUDIT' && orderDetailData.groupSuccess == 1" style="width: 100%; display: block; position: relative;">
                     <div><img src="../../assets/images/order_3.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                     <div class="groupping-member-info">
                         <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key=index>
-                            <!-- <img src="../../assets/images/cbt_icwctportrait.png" alt=""> -->
-                            <div style="color: #fff; font-size: 0.50rem">{{ item.memberUnitName.slice(0,2) }}</div>
+                            <!-- <img src="../../assets/images/cbt_icwctportrait.png" alt="" v-if="!item.memberFace"> -->
+                            <div style="color: #fff; font-size: 0.50rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
                             <!-- <img src="../../assets/images/p.gif" alt=""> -->
                             <img :src=item.memberFace alt="" v-if="item.memberFace">
                             <div class="master-face" v-if="index == 0">
                                 团长
                             </div>
                         </div>
-                        <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key=index>
-                            <img src="../../assets/images/cbt_icwctportrait.png" alt="" v-if="!(grouppingMemberInfo.length > 2)">
-                            <img src="../../assets/images/cbt_icwctportrait.png" alt="" v-if="!(grouppingMemberInfo.length > 1) ">
-                        </div>
+                        <template v-if="grouppingMemberInfo.length < 5">
+                            <div class="groupping-member-icon" :key=index v-for="n in (grouppingInfo.groupNumber - grouppingInfo.offerNumber)">
+                                <img src="../../assets/images/cbt_icwctportrait.png" alt="">
+                            </div>
+                        </template>
                     </div>
                     <div><img src="../../assets/images/cbt_xqptcg.png" alt="" style="width: 1.00rem; height: 1.00rem; position: absolute; right: 0rem; top: 0rem"></div>
                 </div>
@@ -62,17 +66,19 @@
                     <div><img src="../../assets/images/order_2.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                     <div class="groupping-member-info">
                         <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key=index>
-                            <img src="../../assets/images/cbt_icwctportrait.png" alt="">
+                            <!-- <img src="../../assets/images/cbt_icwctportrait.png" alt="" v-if="!item.memberFace"> -->
+                            <div style="color: #fff; font-size: 0.50rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
                             <!-- <img src="../../assets/images/p.gif" alt=""> -->
                             <img :src=item.memberFace alt="" v-if="item.memberFace">
                             <div class="master-face" v-if="index == 0">
                                 团长
                             </div>
                         </div>
-                        <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key=index>
-                            <img src="../../assets/images/cbt_icwctportrait.png" alt="" v-if="!(grouppingMemberInfo.length > 2)">
-                            <img src="../../assets/images/cbt_icwctportrait.png" alt="" v-if="!(grouppingMemberInfo.length > 1) ">
-                        </div>
+                        <template v-if="grouppingMemberInfo.length < 5">
+                            <div class="groupping-member-icon" :key=index v-for="n in (grouppingInfo.groupNumber - grouppingInfo.offerNumber)">
+                                <img src="../../assets/images/cbt_icwctportrait.png" alt="">
+                            </div>
+                        </template>
                     </div>
                     <div><img src="../../assets/images/cbt_xqptcg.png" alt="" style="width: 1.00rem; height: 1.00rem; position: absolute; right: 0rem; top: 0rem"></div>
                 </div>
@@ -292,7 +298,13 @@
         <div class="order_date">
             <div class="number order_date_item" style="align-items: center;">
                 订单编号：{{ orderDetailData.orderNo }}
-                <div style="border: solid 0.02rem #999999; border-radius: 0.05rem; font-size: 0.26rem; padding: 0.12rem 0.25rem;">复制</div>
+                <div style="border: solid 0.02rem #999999; border-radius: 0.05rem; font-size: 0.26rem; padding: 0.12rem 0.25rem;" 
+                    @click="clipboardData(orderDetailData.orderNo, $event)" 
+                >
+                    复制
+                </div>
+                <!-- <input type="text" v-model="copyOrderNo" style="width: 0rem; height: 0rem;" ref="clipboardData" id="copy_text"/> -->
+                <input type="text" value="456" style="width: 0rem; height: 0rem;" ref="clipboardData" id="copy_text"/>                
             </div>
             <div class="order_date_item" v-if="orderDetailData.createTime">
                 <span>下单时间：</span>
@@ -477,6 +489,7 @@ export default {
                 orgId: ''
             },
             isThirdShop: '',                            // 茶帮通或者第三方
+            copyOrderNo: '',
         }
     },
     head: {
@@ -1055,11 +1068,33 @@ export default {
                 });
             });
         },
+        // 复制
+        clipboardData(copyText, e){
+            console.log(this.$refs.clipboardData);
+            document.execCommand("Copy");
+            if(window.clipboardData){
+                window.clipboardData.setData("Text", copyText);
+                return Toast('复制成功');
+            }
+            else if(e.originalEvent){
+                clipboardData = e.originalEvent.clipboardData
+                clipboardData.setData("Text", copyText);
+                return Toast('复制成功');
+            }
+            else if(document.execCommand){
+                this.$refs.clipboardData.select();
+                var copyText = document.getElementById("copy_text");
+                copyText.select();
+                document.execCommand("Copy");
+                return Toast('复制成功');
+            }
+            return Toast('不支持复制功能');
+        }
     },
     mounted() {
         // this.height2 = true;
     },
-    computed:{
+    computed: {
         ...mapGetters([
             'orderStatus'
         ]),
@@ -1069,10 +1104,10 @@ export default {
         height2() {
             if (this.orderDetailData.groupSuccess === 2) return true;
             else if (this.orderDetailData.orderStatus === 'PAY_WAIT_AUDIT' && this.orderDetailData.groupSuccess == 1) return true;
-            else if(this.orderDetailData.orderStatus === 'DELIVERED' && this.orderDetailData.groupSuccess == 1) return true;
+            else if (this.orderDetailData.orderStatus === 'DELIVERED' && this.orderDetailData.groupSuccess == 1) return true;
         },
-        width100(){
-            if(this.orderDetailData.groupSuccess === 2) return true;
+        width100() {
+            if (this.orderDetailData.groupSuccess === 2) return true;
             else if (this.orderDetailData.orderStatus === 'PAY_WAIT_AUDIT' && this.orderDetailData.groupSuccess == 1) return true;
             else if (this.orderDetailData.orderStatus === 'DELIVERED' && this.orderDetailData.groupSuccess == 1) return true;
         }
@@ -1086,6 +1121,7 @@ export default {
         // 获取订单详情
         this.getListDetail().then((res) =>{
             this.orderDetailData = res.data;
+            this.copyOrderNo = 123;
             // this.proAllSum = this.$tool.math.eval(`${this.orderDetailData..orderSum} - ${this.orderDetailData..freightSum}`);
             // 进入订单详情后, 按订单ID请求团购信息
             this.$api.post('/oteao/groupPurchase/seachGroupByOrder', { orderId: this.orderDetailData.orderId, }, res => {

@@ -489,6 +489,7 @@ import $api from 'api';
                 }else{
                     this.$api.post(`/oteao/productInfo/createProductInfo` +
                         `?frontOrgProInfoDetailVo.catId=${ encodeURI(this.resize.twoClass) }` +
+                        `&frontOrgProInfoDetailVo.proName=${encodeURI(titles)}` +                                             // 组合标题
                         `&frontOrgProInfoDetailVo.proName=${ encodeURI(this.resize.form.goodsSell) }` +
                         // `&frontOrgProInfoDetailVo.unint=${ encodeURI(this.resize.form.goodsDw) }` +
                         `&frontOrgProInfoDetailVo.weight=${ encodeURI(this.resize.form.goodsMz) }` +
