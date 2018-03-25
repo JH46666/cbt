@@ -29,7 +29,7 @@
       <div class="group-title">
         <div v-if="onShelf && !groupComplete && !isOutTime"><div>已开团，仅剩<span>{{groupData.groupPurchase.groupNumber - groupData.groupPurchase.offerNumber}}</span>人名额</div></div>
         <div v-else-if="onShelf && !groupComplete && isOutTime"><div>来晚了，该团超时结束啦</div></div>
-        <div v-else-if="groupComplete"><div>拼团成功</div></div>
+        <div v-else-if="groupComplete" style="color: #13c21c;"><div>拼团成功</div></div>
         <div v-else-if="!onShelf && !groupComplete"><div>来晚了，商品售罄下架了</div></div>
       </div>
       <div class="group-lasttime" v-if="onShelf && !groupComplete && !isOutTime">{{formateDate(leftTime)}}后结束</div>
@@ -38,7 +38,7 @@
 
       <div class="group-tip" v-if="onShelf && !groupComplete && !isOutTime">好货手慢无，快来拼团啦~</div>
       <div class="group-tip" v-else>您可以再开启或拼别人的团噢~</div>
-      <div class="group-members" v-if="isOwn || onShelf || groupComplete">
+      <div class="group-members">
         <div v-for="(item,index) in groupData.groupPurchaseDetails">
           <img :src="item.memberFace" v-if="item.memberFace">
           <div v-else class="noImg">{{item.memberUnitName!=''?String(item.memberUnitName).substr(0,2):'匿名'}}</div>
@@ -51,21 +51,25 @@
       <div class="join-btn" v-if="!isOwn && onShelf && !groupComplete && !isOutTime"  @click="addCartInfo(2,groupData.groupPurchase.id)">
         参与拼团
       </div>
-      <div class="join-btn" v-else-if="isOwn && onShelf && !groupComplete && !isOutTime" @click="shareDialogFlag = true">
+      <div class="join-btn" v-if="isOwn && onShelf && !groupComplete && !isOutTime" @click="shareDialogFlag = true">
         分享拼团
       </div>
-      <div class="join-btn" v-else-if="isOwn && !onShelf ">
+      <div class="join-btn" v-if="(isOwn && !onShelf)||(isOwn && groupComplete && onShelf) " @click="$router.push('/')">
         去首页逛逛
       </div>
-      <div class="join-btn" v-else @click="addCartInfo(1)">
+      <div class="join-btn" v-if="!groupComplete && isOutTime && onShelf" @click="addCartInfo(1)">
         发起拼团
       </div>
-      <div class="know-btn">
+      <div class="know-btn" v-if="isOwn && groupComplete" @click="$router.push('/order/buyerdetail?orderNo='+orderNo)">
+        查看订单详情
+      </div>
+      <div class="know-btn" v-else>
         拼团需知
       </div>
+
     </div>
     <!-- 其他拼团列表 -->
-    <div class="groupbuy-list" v-if="(onShelf && !isOwn  && groupArray.length>0)||(onShelf && isOwn && !groupComplete && isOutTime  && groupArray.length>0)">
+    <div class="groupbuy-list" v-if="((isOutTime||groupComplete) && onShelf && !isOwn && groupArray.length>0)||(onShelf && isOwn && !groupComplete && isOutTime  && groupArray.length>0)">
       <div class="groupbuy-title">
         <div>参加别人拼团</div>
       </div>
@@ -152,7 +156,7 @@
           <div class="share-title">还差<span>{{groupData.groupPurchase.groupNumber - groupData.groupPurchase.offerNumber}}</span>人，快邀请好友来拼团</div>
           <div class="share-subtitle">拼单已发起，人满后立即发货</div>
           <div class="share-function">或复制链接进行分享</div>
-          <div class="copylink-btn">复制分享链接</div>
+          <div class="copylink-btn" v-clipboard:copy="copyShareTitle" v-clipboard:success="onCopy">复制分享链接</div>
           <div class="close-btn" @click="closeShareDialog">
             <i class="iconfont">&#xe621;</i>
           </div>
@@ -189,6 +193,7 @@ export default {
           productInfo:{},
           productPrice:[]
       },
+      copyShareTitle:'',
       groupArray:[],
       infoDialogFlag:false,
       groupInfo:[],
@@ -199,7 +204,8 @@ export default {
       isOutTime:false,//是否超时
       onShelf:true,
       shareDialogFlag:false,
-      wxConfig:''
+      wxConfig:'',
+      orderNo:''
     }
   },
   created(){
@@ -213,6 +219,9 @@ export default {
     // 设置title
     this.$store.commit('SET_TITLE','茶帮通拼团');
     this.orderId = this.$route.query.orderId;
+    if(this.$route.query.open){
+      this.shareDialogFlag = true
+    }
     this.getWxConfig().then((res)=>{
       this.wxConfig = res.data;
       this.setWxShare();
@@ -237,6 +246,7 @@ export default {
         this.detailData = res.data
         if(this.loginId == this.groupData.groupPurchase.memberId)this.isOwn = true;
         if("ON_SHELF" == this.detailData.productExtInfo.state)this.onShelf = true;
+        this.copyShareTitle = '【仅剩'+(this.groupData.groupPurchase.groupNumber - this.groupData.groupPurchase.offerNumber)+'个名额】我超低价拼了'+this.detailData.productExtInfo.title+'，快来和我一起拼团吧'+window.location.href+'点击链接，参与拼团【来自茶帮通茶友分享】';
       })
       //获取为您推荐集合
       this.$api.get('/oteao/productCollection/getCollectionDetail',{
@@ -247,7 +257,9 @@ export default {
           this.listData = res.data.proExtInfoVoList;
       })
     })
-
+    this.getOrderList(this.orderId).then((res) =>{
+        this.orderNo = res.data.mainOrder.mainrNo;
+    });
   },
   methods: {
     searchGroup(){
@@ -264,6 +276,23 @@ export default {
             });
         }
       })
+    },
+    // 获取订单商品详情
+    getOrderList(orderId) {
+        let data = {
+                orderId: orderId,
+                device: 'WAP'
+            }
+        return new Promise((resolve,reject) => {
+            this.$api.post('/oteao/order/orderProductList',data,res => {
+                resolve(res);
+            },res=>{
+                return this.$toast({
+                    message: res.errorMsg,
+                    iconClass: 'icon icon-fail'
+                });
+            })
+        })
     },
     getProInfo(){
       let data = {
@@ -288,6 +317,9 @@ export default {
         }else{
             return `0${time}`
         }
+    },
+    onCopy(){
+      this.$toast('复制成功')
     },
     sortTime(startTime,systemTime){
       const endTime = new Date(startTime);
