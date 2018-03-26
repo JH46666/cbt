@@ -244,7 +244,7 @@ export default {
       // 获取商品信息
       this.getProInfo().then((res) =>{
         this.detailData = res.data
-        for(let item in this.groupData.groupPurchaseDetails){
+        for(let item of this.groupData.groupPurchaseDetails){
           if(item.memberId==this.loginId){
             this.isOwn = true;
             return;
