@@ -95,8 +95,14 @@
                                         退款
                                     </mt-button>
                                 </template>
+                                <!-- 支付成功、待审核（单独购买） -->
+                                <template v-if="item.orderStatus === 'PAY_WAIT_AUDIT' && item.groupSuccess == '3'">
+                                    <mt-button plain @click.native="refund(item)">
+                                        退款
+                                    </mt-button>
+                                </template>
                                 <!-- 打包中（自营） -->
-                                <template v-if="!item.shopName && item.orderStatus == 'PACKING'">
+                                <template v-if="item.unitName && item.orderStatus == 'PACKING'">
                                     <mt-button plain @click.native="refund(item)">
                                         退款
                                     </mt-button>
