@@ -11,7 +11,7 @@
       <ul class="tips-wrap">
           <li  v-for="(detailitem,index) in rulesData.detailData" :key='index'>
               <ul>
-                  <li class="tips-text"><i class="tips-order">{{index+1}}</i>{{detailitem.tips}}</li>
+                  <li class="tips-text"><span class="tips-order">{{index+1}}</span>{{detailitem.tips}}</li>
                  <img class="tips-img" v-bind:src="detailitem.img" alt="">
               </ul>
           </li>

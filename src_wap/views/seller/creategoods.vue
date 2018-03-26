@@ -95,8 +95,8 @@
           </div>
            <img src="http://imgcbt.oss-cn-hangzhou.aliyuncs.com/WAPIMG/share/10fb.png" alt="">
            <div class="steps-text">
-              <p>上一步：点选后，将返回商品信息填写页，系统会为您暂时保存你上传过的商品轮播图 及详情页面  。
-                “保存”：系统会将保存您的商品资料，但买家看不到您的商品，您可在商品管理-未上架商品中找到该商品，；
+              <p>上一步：点选后，将返回商品信息填写页，系统会为您暂时保存你上传过的商品轮播图 及详情页面 。<br>
+                “保存”：系统会将保存您的商品资料，但买家看不到您的商品，您可在商品管理-未上架商品中找到该商品；<br>
                 “保存并上架”：商品成功上架，客户可以在茶帮通搜到这款商品啦~</p>
           </div>
       </div>
@@ -107,7 +107,7 @@
 export default {
   data() {
     return {
-      isShowArr: [true, true, true, true, true, true]
+      isShowArr: [true, false, false, false, false, false]
     };
   },
 

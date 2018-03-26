@@ -7,7 +7,8 @@
      </div>
      <h5 class="title">建议内容模板</h5>
      <div class="steps">
-         <img src="http://imgcbt.oss-cn-hangzhou.aliyuncs.com/WAPIMG/share/02xqgf.png" alt="">
+         <img style="width:100%;" src="http://imgcbt.oss-cn-hangzhou.aliyuncs.com/WAPIMG/share/02xqgf.png" alt="">
+         <p style=" text-align: center;padding:0.48rem 0 0.2rem 0;">示例</p>
          <img src="http://imgcbt.oss-cn-hangzhou.aliyuncs.com/WAPIMG/share/03xqgf.png" alt="">
          <img src="http://imgcbt.oss-cn-hangzhou.aliyuncs.com/WAPIMG/share/04xqgf.png" alt="">
          <img src="http://imgcbt.oss-cn-hangzhou.aliyuncs.com/WAPIMG/share/05xqgf.png" alt="">
@@ -42,7 +43,7 @@ export default {
     //   console.log(res.data.htmlText);
     //   this.creategdDatas = res.data.htmlText;
     // });
-    this.$store.commit("SET_TITLE", "茶帮通商品详情规范s");
+    this.$store.commit("SET_TITLE", "茶帮通商品详情规范");
 
     // this.getHot();
     // this.getData();
@@ -66,7 +67,6 @@ export default {
   letter-spacing: 0rem;
   color: #333333;
   position: relative;
-  margin-bottom: 0.2rem;
 }
 .title:before {
   content: "";
@@ -125,15 +125,16 @@ img {
   overflow: hidden;
   position: absolute;
   left: 0;
-  top: 0.1rem;
+  top: 0.07rem;
 }
 .last-step img{
   margin-bottom: 0.45rem;
+  width: 90%;
 }
-.last-img{
+.last-step  .last-img{
   width: 2rem;
 	height: 1.49rem;
-  margin-left: 15%;
+  margin-left: 5%;
 }
 </style>
 
