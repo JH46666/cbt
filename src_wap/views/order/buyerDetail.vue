@@ -428,13 +428,13 @@
                 </mt-button>
             </template>
             <!-- 打包中（自营） -->
-            <template v-if="orderDetailData.unitName && orderDetailData.orderStatus == 'PACKING'">
+            <template v-if="!orderDetailData.sellerOrgId && orderDetailData.orderStatus == 'PACKING'">
                 <mt-button plain @click.native="refund(orderDetailData)">
                     退款
                 </mt-button>
             </template>
             <!-- 打包中（第三方、未成团） -->
-            <template v-if="orderDetailData.orderStatus === 'PACKING' && orderDetailData.groupSuccess == '2' && orderDetailData.shopName">
+            <template v-if="orderDetailData.orderStatus === 'PACKING' && orderDetailData.groupSuccess == '2' && orderDetailData.sellerOrgId">
                 <mt-button plain class="pay_now" @click.native="share(orderDetailData)">
                     分享拼团
                 </mt-button>
@@ -443,7 +443,7 @@
                 </mt-button>
             </template>
             <!-- 打包中（第三方、已成团） -->
-            <template v-if="orderDetailData.orderStatus === 'PACKING' && orderDetailData.groupSuccess == '1' && orderDetailData.shopName">
+            <template v-if="orderDetailData.orderStatus === 'PACKING' && orderDetailData.groupSuccess == '1' && orderDetailData.sellerOrgId">
                 <mt-button plain @click.native="refund(orderDetailData)">
                     退款
                 </mt-button>
