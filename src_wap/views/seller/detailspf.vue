@@ -9,7 +9,7 @@
      <div class="steps">
          <img style="width:100%;" src="http://imgcbt.oss-cn-hangzhou.aliyuncs.com/WAPIMG/share/02xqgf.png" alt="">
          <p style=" text-align: center;padding:0.48rem 0 0.2rem 0;">示例</p>
-         <img src="http://imgcbt.oss-cn-hangzhou.aliyuncs.com/WAPIMG/share/03xqgf.png" alt="">
+         <img src="http://img0.oteao.com/WAPIMG/share/03xqgf.png" alt="">
          <img src="http://imgcbt.oss-cn-hangzhou.aliyuncs.com/WAPIMG/share/04xqgf.png" alt="">
          <img src="http://imgcbt.oss-cn-hangzhou.aliyuncs.com/WAPIMG/share/05xqgf.png" alt="">
          <img src="http://imgcbt.oss-cn-hangzhou.aliyuncs.com/WAPIMG/share/06xqgf.png" alt="">
