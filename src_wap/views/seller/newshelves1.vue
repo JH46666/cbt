@@ -643,8 +643,8 @@
             // },
             // 跳转如何创建商品页
             funcHowToCreat() {
-                return Toast({
-                    message: '将要跳转如何创建商品页'
+                this.$router.push({
+                    name: '如何创建商品'
                 })
             },
             // 比较几个价格
@@ -906,7 +906,7 @@
             flex: unset!important;
             ._add-type_1{
                 display: flex;
-                justify-content: space-between;
+                /* justify-content: space-between; */
                 ._add-type_item{
                     width: 1.40rem!important;
                     margin: 0rem!important;
