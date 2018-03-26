@@ -13,9 +13,9 @@
                         <div class="countdown-text">{{ grouppingLeftTime ? grouppingLeftTime : "00:00:00.0" }}后结束</div>
                     </div>
                     </div>
+                    <!-- 拼团成员头像 -->
                     <div class="groupping-member-info">
                         <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key=index>
-                            <!-- <img src="../../assets/images/cbt_icwctportrait.png" alt="" v-if="!item.memberFace"> -->
                             <div style="color: #fff; font-size: 0.50rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
                             <!-- <img src="../../assets/images/p.gif" alt=""> -->
                             <img :src=item.memberFace alt="" v-if="item.memberFace">
@@ -28,14 +28,30 @@
                                 <img src="../../assets/images/cbt_icwctportrait.png" alt="">
                             </div>
                         </template>
-                        <!-- <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key=index v-if="!(grouppingMemberInfo.length > 2)">
-                            <img src="../../assets/images/cbt_icwctportrait.png" alt="" >
-                            <img src="../../assets/images/cbt_icwctportrait.png" alt="" v-if="!(grouppingMemberInfo.length > 1) ">
-                        </div> -->
                     </div>
                 </div>
                 <!-- 待发货 -->
-                <div v-if="orderDetailData.orderStatus === 'PACKING' && orderDetailData.groupSuccess != 2"><img src="../../assets/images/order_3.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
+                <div v-if="orderDetailData.orderStatus === 'PACKING' && orderDetailData.groupSuccess != 2" style="width: 100%; display: block; position: relative;">
+                    <div><img src="../../assets/images/order_3.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
+                    <!-- 拼团成员头像 -->
+                    <div class="groupping-member-info">
+                        <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key=index>
+                            <div style="color: #fff; font-size: 0.50rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
+                            <img :src=item.memberFace alt="" v-if="item.memberFace">
+                            <div class="master-face" v-if="index == 0">
+                                团长
+                            </div>
+                        </div>
+                        <template v-if="grouppingMemberInfo.length < 5">
+                            <div class="groupping-member-icon" :key=index v-for="n in (grouppingInfo.groupNumber - grouppingInfo.offerNumber)">
+                                <img src="../../assets/images/cbt_icwctportrait.png" alt="">
+                            </div>
+                        </template>
+                    </div>
+                    <div>
+                        <img src="../../assets/images/cbt_xqptcg.png" alt="" style="width: 1.00rem; height: 1.00rem; position: absolute; right: 0rem; top: 0rem">
+                    </div>
+                </div>
                 <!-- 支付成功，待审核 -->
                 <div v-if="orderDetailData.orderStatus === 'PAY_WAIT_AUDIT' && orderDetailData.groupSuccess == 3"><img src="../../assets/images/order_3.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                 <!-- 支付成功，待审核，已成团 -->
@@ -43,7 +59,6 @@
                     <div><img src="../../assets/images/order_3.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                     <div class="groupping-member-info">
                         <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key=index>
-                            <!-- <img src="../../assets/images/cbt_icwctportrait.png" alt="" v-if="!item.memberFace"> -->
                             <div style="color: #fff; font-size: 0.50rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
                             <!-- <img src="../../assets/images/p.gif" alt=""> -->
                             <img :src=item.memberFace alt="" v-if="item.memberFace">
@@ -66,7 +81,6 @@
                     <div><img src="../../assets/images/order_2.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                     <div class="groupping-member-info">
                         <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key=index>
-                            <!-- <img src="../../assets/images/cbt_icwctportrait.png" alt="" v-if="!item.memberFace"> -->
                             <div style="color: #fff; font-size: 0.50rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
                             <!-- <img src="../../assets/images/p.gif" alt=""> -->
                             <img :src=item.memberFace alt="" v-if="item.memberFace">
@@ -91,7 +105,27 @@
                 <!-- 取消 -->
                 <div v-else-if="orderDetailData.orderStatus === 'CANCEL'"><img src="../../assets/images/order_6.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                 <!-- 关闭，未成团 -->
-                 <div v-else-if="orderDetailData.orderStatus === 'CANCEL'"><img src="../../assets/images/cbt_icddxqqx.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
+                <div v-else-if="orderDetailData.orderStatus === 'CANCEL' && orderDetailData.groupSuccess == 2"  style="width: 100%; display: block; position: relative;">
+                    <div><img src="../../assets/images/cbt_icddxqqx.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
+                    <div class="groupping-member-info">
+                        <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key=index>
+                            <div style="color: #fff; font-size: 0.50rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
+                            <!-- <img src="../../assets/images/p.gif" alt=""> -->
+                            <img :src=item.memberFace alt="" v-if="item.memberFace">
+                            <div class="master-face" v-if="index == 0">
+                                团长
+                            </div>
+                        </div>
+                        <template v-if="grouppingMemberInfo.length < 5">
+                            <div class="groupping-member-icon" :key=index v-for="n in (grouppingInfo.groupNumber - grouppingInfo.offerNumber)">
+                                <img src="../../assets/images/cbt_icwctportrait.png" alt="">
+                            </div>
+                        </template>
+                    </div>
+                    <div>
+                        <img src="../../assets/images/cbt_xqptsb.png" alt="" style="width: 1.00rem; height: 1.00rem; position: absolute; right: 0rem; top: 0rem">
+                    </div>
+                </div>
             </div>
         </div>
         <div class="detail_address">
@@ -1098,11 +1132,13 @@ export default {
             if (this.orderDetailData.groupSuccess === 2) return true;
             else if (this.orderDetailData.orderStatus === 'PAY_WAIT_AUDIT' && this.orderDetailData.groupSuccess == 1) return true;
             else if (this.orderDetailData.orderStatus === 'DELIVERED' && this.orderDetailData.groupSuccess == 1) return true;
+            else if (this.orderDetailData.orderStatus === 'PACKING' && this.orderDetailData.groupSuccess != 2) return true;
         },
         width100() {
             if (this.orderDetailData.groupSuccess === 2) return true;
             else if (this.orderDetailData.orderStatus === 'PAY_WAIT_AUDIT' && this.orderDetailData.groupSuccess == 1) return true;
             else if (this.orderDetailData.orderStatus === 'DELIVERED' && this.orderDetailData.groupSuccess == 1) return true;
+            else if (this.orderDetailData.orderStatus === 'PACKING' && this.orderDetailData.groupSuccess != 2) return true;
         }
     },
     watch: {
