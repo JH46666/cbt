@@ -598,14 +598,14 @@ router.beforeEach((to,from,next) => {
 		window.isWxLogin = Boolean(localStorage.isWxLogin)
 		delete localStorage.isWxLogin;
 
-		// if(! window.isWxLogin) {
+		if(! window.isWxLogin) {
 			localStorage.setItem('isWxLogin',true);
 			// chiputaobutuputaopi 与文哥商量的 key 值
 			// console.log(encodeURI(location.origin + `/api/wap/wechatAutoLogin?chiputaobutuputaopi=${location.origin}/#/${to.fullPath}`))
 			location.href = encodeURI(location.origin + `/api/wap/wechatAutoLogin?chiputaobutuputaopi=${location.origin}`) + `/%23` + encodeURI(to.fullPath)
-		// } else {
-		// 	next()
-		// }
+		} else {
+			next()
+		}
 	} else {
 		next()
 	}
