@@ -401,6 +401,9 @@
                     class="pay_now" @click.native="confrimMethodsMoreChild(orderDetailData.subOrderNo,orderDetailData.orderNo)">
                     确认收货
                 </mt-button>
+                <mt-button plain v-if="(orderDetailData.orderStatus === 'DELIVERED' || orderDetailData.orderStatus === 'CBT_BUYER')" @click.native="refund(orderDetailData)">
+                    退款
+                </mt-button>
             </template>
             <!-- 完成（未评价） -->
             <template v-if="!orderDetailData.isComment && orderDetailData.orderStatus === 'FINISH'">
