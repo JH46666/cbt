@@ -102,7 +102,7 @@
                                     </mt-button>
                                 </template>
                                 <!-- 打包中（自营） -->
-                                <template v-if="item.unitName && item.orderStatus == 'PACKING'">
+                                <template v-if="!item.shopName && item.orderStatus == 'PACKING'">
                                     <mt-button plain @click.native="refund(item)">
                                         退款
                                     </mt-button>

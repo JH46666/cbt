@@ -17,7 +17,7 @@
                 <div class="_fix-img-box" v-for="(item,index) in resize.imgs.mainImg" @click="getPrevImgSrc(index,'main')">
                     <img :src="item" />
                     <a class="delete-btn _fix-delete-btn" href="javascript: void(0);" @click.stop="deleteImg(index,'main')">
-                        <i class="iconfont">&#xe651;</i>
+                        <i class="iconfont icon-tupianshangshanchuanniu"></i>
                     </a>
                 </div>
                 <!-- 上传图标 -->
@@ -50,7 +50,7 @@
                 <div class="_fix-img-box" v-for="(item,index) in resize.imgs.detailImg1" @click="getPrevImgSrc(index,'detailImg1')">
                     <img :src="item" />
                     <a class="delete-btn _fix-delete-btn" href="javascript: void(0);" @click.stop="deleteImg(index,'one')">
-                        <i class="iconfont">&#xe651;</i>
+                        <i class="iconfont icon-tupianshangshanchuanniu"></i>
                     </a>
                 </div>
                 <!-- 上传图标 -->
