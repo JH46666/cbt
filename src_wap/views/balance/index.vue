@@ -196,6 +196,7 @@
                     get_self: '门店自提'
                 },
                 activePannel: {},           // 当前激活的店铺
+                oldVal:1 //商品数量旧值
             }
         },
         computed: {
@@ -344,42 +345,44 @@
             },
             // 更新数据
             upDate() {
+                this.initData().then((res)=>{
+                  let orgSettleRequestList = [];
+                  // 遍历每个店铺，更新数据
+                  this.pannel.forEach(val => {
+                      orgSettleRequestList.push({
+                          "deliveryMethodCode": val.currentDeliveryMethod,
+                          "invoiceCode": "NOT_INVOICE",
+                          "invoiceTitle": "string",
+                          "isUseIntegral": 0,
+                          "orderRemark": val.remark,
+                          "payMethodCode": val.currentPayMethod,
+                          "sellerOrgId": val.orgId,
+                          "useRedPacketId": val.useRedPacketId === null ? -1 : val.useRedPacketId
+                      })
+                  })
 
-                let orgSettleRequestList = [];
-                // 遍历每个店铺，更新数据
-                this.pannel.forEach(val => {
-                    orgSettleRequestList.push({
-                        "deliveryMethodCode": val.currentDeliveryMethod,
-                        "invoiceCode": "NOT_INVOICE",
-                        "invoiceTitle": "string",
-                        "isUseIntegral": 0,
-                        "orderRemark": val.remark,
-                        "payMethodCode": val.currentPayMethod,
-                        "sellerOrgId": val.orgId,
-                        "useRedPacketId": val.useRedPacketId === null ? -1 : val.useRedPacketId
-                    })
+
+                  let data = {
+                      "cartIds": this.cartList,
+                      "device": "WAP",
+                      orgSettleRequestList,
+                      "receiveAddrId": this.address.id,
+                      "sysId": 1,
+                      "useBackBalance": 0,
+                      "useStoreBalance": 0
+                  }
+
+                  this.$api.post('/oteao/shoppingCart/settle',JSON.stringify(data),res => {
+
+                      // 恢复之前的订单备注
+                      res.data.oteaoCart.forEach((val,i) => {
+                          val.remark = this.getRemark()[i];
+                      })
+                      this.myData = res.data;
+
+                  })
                 })
 
-
-                let data = {
-                    "cartIds": this.cartList,
-                    "device": "WAP",
-                    orgSettleRequestList,
-                    "receiveAddrId": this.address.id,
-                    "sysId": 1,
-                    "useBackBalance": 0,
-                    "useStoreBalance": 0
-                }
-
-                this.$api.post('/oteao/shoppingCart/settle',JSON.stringify(data),res => {
-
-                    // 恢复之前的订单备注
-                    res.data.oteaoCart.forEach((val,i) => {
-                        val.remark = this.getRemark()[i];
-                    })
-                    this.myData = res.data;
-
-                })
             },
             // 提交订单
             upOrder() {
@@ -532,6 +535,7 @@
                         item.buyUpperLimit = res.data.buyUpperLimit;
                         // 更新购物车数量
                         // this.$store.dispatch('queryCartTotal');
+                        this.oldVal = newVal;
                         this.upDate();
                         resolve(res);
                     },res => {
@@ -560,7 +564,6 @@
                     }
                     item.buyNum = res.data.buyNum;
                     item.oldBuy = res.data.buyNum;
-                    this.initData()
                 }).catch(res => {
                   this.$toast(res.message);
                 })
@@ -582,7 +585,6 @@
                     }
                     item.buyNum = res.data.buyNum;
                     item.oldBuy = res.data.buyNum;
-                    this.initData()
                 }).catch(res => {
                   this.$toast(res.message);
                 })
@@ -614,10 +616,9 @@
                         }
                         item.buyNum = res.data.buyNum;
                         item.oldBuy = res.data.buyNum;
-                        this.initData()
                     }).catch(res => {
-                      this.$toast(res.message);
-                        item.buyNum = item.oldBuy;
+                        this.$toast(res.message);
+                        item.buyNum = this.oldVal;
                     })
 
                 }else{
