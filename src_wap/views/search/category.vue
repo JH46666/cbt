@@ -354,7 +354,7 @@
                         this.$set(this.propertiesValList,item.id,propObj);
                     }
                 });
-                this.searchResult();
+                // this.searchResult();
             },
             'propertiesValList': {
                 handler(newData,oldData){

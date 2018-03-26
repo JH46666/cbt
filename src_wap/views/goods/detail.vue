@@ -84,28 +84,23 @@
                 <div class="detail_describe">
                     <div class="detail_describe_wrapper">
                         <div class="detail_describe_text">
-                            <p class="detail_text">
-                                <span class="detail_type" :class="{'green':detailData.orgShopCenterVo&&detailData.orgShopCenterVo.shopType<=4}">
+                            <div class="detail_text">
+                                <div class="detail_type" :class="{'green':detailData.orgShopCenterVo&&detailData.orgShopCenterVo.shopType<=4}">
                                     {{ detailData.orgShopCenterVo ? businessName[detailData.orgShopCenterVo.shopType - 1] : businessName[4] }}
-                                </span>
-                                {{ detailData.productExtInfo.title }}
-                            </p>
+                                </div>
+                                <div>{{ detailData.productExtInfo.title }}</div>
+                            </div>
                             <div class="detail_price">
                                 <div class="detail-groupnum">
                                     {{detailData.productInfo.memberNum}}人拼团价
                                 </div>
-                                <template  v-if="detailData.productExtInfo.state === 'OFF_SHELF' && loginId && state === 'ACTIVE'">
-                                    <div class="off_shelf_tips">
-                                        暂无报价
-                                    </div>
-                                </template>
                                 <template  v-if="!loginId || state != 'ACTIVE'">
                                     <div class="detail_now_price">
                                         ￥{{detailData.productInfo.hideGroupsPrice}}
                                     </div>
                                     <div class="detail_suggest_price">￥{{ detailData.productPrice[1].price | toFix2 }}</div>
                                 </template>
-                                <template v-if="detailData.productPrice.length != 0 && detailData.productExtInfo.state === 'ON_SHELF' && loginId && state === 'ACTIVE'">
+                                <template v-if="detailData.productPrice.length != 0  && loginId && state === 'ACTIVE'">
                                         <div class="detail_now_price">
                                             ￥{{detailData.productInfo.priceFightGrops | toFix2  }}
                                         </div>
@@ -118,7 +113,7 @@
                                 已拼50500件
                             </div> -->
                             <div>
-                                库存{{detailData.productExtInfo.stockNum > detailData.productInfo.memberNum?detailData.productExtInfo.stockNum:'缺货'}}件
+                                库存：{{detailData.productExtInfo.stockNum > detailData.productInfo.memberNum?detailData.productExtInfo.stockNum+'件':'缺货'}}
                             </div>
                         </div>
                         <template  v-if="detailData.productExtInfo.state === 'ON_SHELF'">
@@ -135,7 +130,8 @@
                                             <span v-else-if="detailData.orgFreightTemplateVoList && detailData.orgFreightTemplateVoList.length > 0">依实际重量计算运费</span>
                                         </template>
                                         <template v-else>
-                                            <span>全国满500包邮</span>
+                                            <span v-if="!detailData.productInfo.isTea">全国满500包邮</span>
+                                            <span v-else>依实际重量计算运费</span>
                                         </template>
                                     </div>
                                 </div>
@@ -687,18 +683,21 @@ export default {
                          this.selected = null;
                     });
                 }
+                this.getDetail().then((res) =>{
+                    this.detailData = res.data;
+                    // 立即购买
+                    let buyLowLimit = this.detailData.productExtInfo.buyLowLimit?this.detailData.productExtInfo.buyLowLimit:1;
+                    this.$store.dispatch('addCart',{proId:this.detailData.productExtInfo.proId,buyNum:buyLowLimit,groupType:groupType,groupId:groupId}).then(res=>{
+                        console.log(res);
+                        this.$router.push({
+                            name: '结算中心',
+                            query: {
+                                cart: res.data.cartId
+                            }
+                        })
+                    },res=>{});
+                })
 
-                // 立即购买
-                let buyLowLimit = this.detailData.productExtInfo.buyLowLimit?this.detailData.productExtInfo.buyLowLimit:1;
-                this.$store.dispatch('addCart',{proId:this.detailData.productExtInfo.proId,buyNum:buyLowLimit,groupType:groupType,groupId:groupId}).then(res=>{
-                    console.log(res);
-                    this.$router.push({
-                        name: '结算中心',
-                        query: {
-                            cart: res.data.cartId
-                        }
-                    })
-                },res=>{});
             }).catch((res)=>{
                 return this.$router.push({name: '账户登录'});
             })
@@ -812,9 +811,17 @@ export default {
           return new Promise((resolve,reject) => {
               this.$api.post('/oteao/groupPurchase/seachGroupById ',data,res => {
                   resolve(res);
-                  this.infoDialogFlag = true;
-                  this.groupInfo = res.data;
-                  this.groupIndex = index;
+                  if(res.data.groupPurchase.offerNumber < res.data.groupPurchase.groupNumber){
+                    this.infoDialogFlag = true;
+                    this.groupInfo = res.data;
+                    this.groupIndex = index;
+                  }else{
+                    Toast({
+                        message: '此团满员啦',
+                        iconClass: 'icon icon-fail'
+                    });
+                  }
+
               },res=>{
                   return Toast({
                       message: res.errorMsg,

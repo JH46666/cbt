@@ -165,13 +165,15 @@
         <!-- 商品分类弹出框 -->
         <mt-popup v-model="dialogTypeBol" position="bottom" style="height: 90%;" :closeOnClickModal=false>
             <div class="dialog_type_wrapper">
-                <div class="dialog_type_title">
-                    常用品类
-                </div>
-                <div class="dialog_type_content _fix-dialog_type_content">
-                    <div class="type_1 _add-type_1">
-                        <div class="type_item _add-type_item" v-if="index < 4" v-for="(item,index) in oneTypeList" :key="index" :class="{on: item.id === resize.oneClass}"
-                            @click="selectOneType(item.id,index)">{{ item.name }}</div>
+                <div v-if="twoTypeUsedList.length > 0">
+                    <div class="dialog_type_title">
+                        常用品类
+                    </div>
+                    <div class="dialog_type_content _fix-dialog_type_content">
+                        <div class="type_1 _add-type_1">
+                            <div class="type_item _add-type_item" v-for="(item, index) in twoTypeUsedList" :key="index" :class="{on: item.id === resize.twoClass}"
+                                @click="selectUsedTwoType(item, index)">{{ item.name }}</div>
+                        </div>
                     </div>
                 </div>
                 <div class="dialog_type_title">
@@ -179,7 +181,7 @@
                 </div>
                 <div class="dialog_type_content">
                     <div class="type_1">
-                        <div class="type_item" v-for="(item,index) in oneTypeList" :key="index" :class="{on: item.id === resize.oneClass}" @click="selectOneType(item.id,index)">{{ item.name }}</div>
+                        <div class="type_item" v-for="(item,index) in oneTypeList" :key="index" :class="{on: item.id === resize.oneClass}" @click="selectOneType(item, index)">{{ item.name }}</div>
                     </div>
                     <div class="type_2">
                         <div class="type_2_wrapper clearfix">
@@ -216,6 +218,8 @@
                 dialogTypeBol: false,
                 oneTypeList: [],
                 twoTypeList: [],
+                oneTypeListName: '',
+                twoTypeListName: '',
                 clickSure: true,
                 device: 'WAP',
                 proSku: null,
@@ -226,6 +230,7 @@
                 flagGoodsGroup: false,                              // 团购价
                 flagGoodsGroupNum: false,                           // 团购人数
                 detailObj: {},
+                twoTypeUsedList: [],                                // 常用二级分类
             }
         },
         watch: {
@@ -267,6 +272,8 @@
             // 点击二级分类时获取属性后添加自定义属性
             'resize.twoClass': {
                 handler(curVal, oldVal) {
+                    // this.resize.proValList通过queryPropVal接口查询
+                    // this.getProvList通过getProExtDetail接口查询
                     this.getProVal(curVal).then((res) => {
                         this.resize.proValList = res.data;
                         if (this.resize.proValList.length != 0) {
@@ -276,6 +283,32 @@
                                 this.$set(this.resize.proValList[i], 'proShowHide', false);
                                 this.$set(this.resize.proValList[i], 'proValId', '');
                             }
+                            // 匹配确定proIndex
+                            for (let i = 0; i < this.resize.proValList.length; i++) {
+                                for (let n = 0; n < this.resize.proValList[i].propValList.length; n++) {
+                                    for (let j = 0; j < this.getProvList.length; j++) {
+                                        if (this.resize.proValList[i].propValList[n].id == this.getProvList[j].content) {
+                                            this.resize.proValList[i].proValId = this.getProvList[j].content;
+                                            this.resize.proValList[i].proIndex = n;
+                                            this.resize.proValList[i].proVal = this.getProvList[j].selval;
+                                        }
+                                    }
+                                }
+                            }   
+                            // for (let i = 0; i < this.resize.proValList.length; i++) {
+                            //     for (let j = 0; j < this.getProvList.length; j++) {
+                            //         if (this.resize.proValList[i].id == this.getProvList[j].id) {
+                            //             this.resize.proValList[i].proValId = this.getProvList[j].content;
+                            //             this.resize.proValList[i].proIndex = i;
+                            //             this.resize.proValList[i].proVal = this.getProvList[j].selval;
+                            //             for (let obj of this.resize.proValList[i].propValList) {
+                            //                 if (obj.id == this.getProvList[j].content) {
+                            //                     obj.flag = true;
+                            //                 }
+                            //             }
+                            //         }
+                            //     }
+                            // }   
                         }
                     })
                 },
@@ -316,11 +349,13 @@
                 item.proValId = secobj.id;
                 item.proShowHide = false;
             },
+            // 未知
             selectDefaultProp(item, index, secobj) {
                 item.select = index;
                 item.content = secobj;
                 item.showOfHide = false;
             },
+            // 未知
             selectDefault(index) {
                 for (let i = 0; i < this.resize.defaultArray.length; i++) {
                     this.resize.defaultArray[i].showOfHide = false;
@@ -345,7 +380,7 @@
                     isDisplay: 1,
                 }
                 return new Promise((resolve, reject) => {
-                    // 获取属性
+                    // 查询属性
                     this.$api.get('/oteao/propInfo/queryPropVal', data, res => {
                         resolve(res);
                     }, res => {
@@ -356,17 +391,22 @@
                     })
                 })
             },
+            // 确定一二级分类按钮
             sureType() {
+                // this.resize.form.goodTypes = this.oneTypeList[this.resize.oneIndex].name + '-' + this.twoTypeList[this.resize.twoIndex].name;
+                this.resize.form.goodTypes = this.oneTypeListName + '-' + this.twoTypeListName;
                 this.dialogTypeBol = false;
-                this.resize.form.goodTypes = this.oneTypeList[this.resize.oneIndex].name + '-' + this.twoTypeList[this.resize.twoIndex].name;
             },
             // 选择一级分类
-            selectOneType(id, index) {
+            selectOneType(item, index ,str) {
                 this.twoTypeList = [];
-                this.resize.oneClass = id;
+                this.resize.twoClass = null;
+                this.clickSure = true;
+                this.resize.oneClass = item.id;
                 this.resize.oneIndex = index;
+                this.oneTypeListName = item.name;
                 // 选择一级分类后确定二级分类
-                this.getTypeList(id).then((res) => {
+                this.getTypeList(item.id).then((res) => {
                     let parentList = res.data;
                     for (let obj of parentList) {
                         this.twoTypeList.push({
@@ -559,8 +599,12 @@
                 } else {
                     this.resize.form[str] = parseFloat(delTrim).toFixed(2);
                 }
-                this.flagGoodsSj = this.resize.form.goodsSj >= this.resize.form.goodsPtsj;
-                this.flagGoodsGroup = this.resize.form.goodsGroup >= this.resize.form.goodsSj;
+                // goodsPtsj市场价
+                // goodsSj单买价
+                // goodsGroup团购价
+                // 两个字符串通过charCodeAt(0)转换成ASCII码比较大小
+                this.flagGoodsSj = Number(this.resize.form.goodsSj) >= Number(this.resize.form.goodsPtsj);
+                this.flagGoodsGroup = Number(this.resize.form.goodsGroup) >= Number(this.resize.form.goodsSj); 
             },
             // 控制人数在2-10
             toFixedBelow(val, str) {
@@ -631,6 +675,25 @@
                         });
                     })
                 })
+            },
+            // 选择二级常用分类
+            selectUsedTwoType(item, index){
+                this.resize.twoClass = item.id;
+                this.resize.oneClass = item.parentCatId;
+                this.oneTypeListName = item.parentCatName;                
+                this.twoTypeListName = item.name;
+                // 选择二级常用分类后更新二级分类
+                this.getTypeList(item.parentCatId).then((res) => {
+                    let parentList = res.data;
+                    this.twoTypeList = [];                    
+                    for (let obj of parentList) {
+                        this.twoTypeList.push({
+                            id: obj.id,
+                            name: obj.catName
+                        })
+                    }
+                })
+                this.clickSure = false;
             },
         },
         computed: {
@@ -715,7 +778,7 @@
                     this.resize.form.goodsGroup = parseFloat(this.detailObj.productPrice[2].price).toFixed(2);      // 团购价
                     this.resize.form.goodsGroupNum = this.detailObj.productInfo.memberNum;                          // 团购人数
                     this.resize.form.goodTypes = this.detailObj.productInfo.catName;                                // 分类
-                    this.resize.form.goodsSell = this.detailObj.productExtInfo.subTitle;                              // 商品卖点
+                    this.resize.form.goodsSell = this.detailObj.productExtInfo.subTitle;                            // 商品卖点
                     this.resize.form.goodsKc = this.detailObj.productExtInfo.stockNum;                              // 库存
                     // this.resize.defaultArray[0].content = this.detailObj.productExtInfo.fragrance;
                     // for (let i = 0; i < this.resize.defaultArray[0].prop.length; i++) {
@@ -729,6 +792,7 @@
                     //         this.resize.defaultArray[1].select = i;
                     //     }
                     // }
+                    // mainImgFile为null说明是已有图片
                     for (let obj of this.detailObj.productImgList) {
                         this.resize.imgs.mainImg.push(obj.imgUrl);
                         this.resize.mainImgFile.push(null);
@@ -737,29 +801,53 @@
                     this.getCatDetail(this.detailObj.productInfo.catId).then((reses) => {
                         this.parentCatId = reses.data.parentId;
                         this.resize.form.goodTypes = reses.data.parentName + '-' + this.detailObj.productInfo.catName;
+                        // 还原一级分类
                         for (let i = 0; i < this.oneTypeList.length; i++) {
                             if (this.oneTypeList[i].id == this.parentCatId) {
                                 this.resize.oneIndex = i;
                                 this.resize.oneClass = this.oneTypeList[i].id;
-                                this.selectOneType(this.resize.oneClass, this.resize.oneIndex);
+                                // 选择一级分类
+                                // this.selectOneType(this.resize.oneClass, this.resize.oneIndex);
                                 // 获取二级全部列表
-                                this.getTypeList(3).then((ress) => {
-                                    let parentList = ress.data;
-                                    for (let obj of parentList) {
-                                        this.twoTypeList.push({
-                                            id: obj.id,
-                                            name: obj.catName
-                                        })
-                                    }
+                                // this.getTypeList(3).then((ress) => {
+                                //     let parentList = ress.data;
+                                //     for (let obj of parentList) {
+                                //         this.twoTypeList.push({
+                                //             id: obj.id,
+                                //             name: obj.catName
+                                //         })
+                                //     }
 
-                                })
+                                // })
+                                // 选择一级分类后确定二级分类
+                                // this.getTypeList(this.resize.oneClass).then((res) => {
+                                //     let parentList = res.data;
+                                //     for (let obj of parentList) {
+                                //         this.twoTypeList.push({
+                                //             id: obj.id,
+                                //             name: obj.catName
+                                //         })
+                                //     }
+                                // })
                             }
                         }
                         this.resize.twoClass = this.detailObj.productInfo.catId;
+                        // 还原一级分类后确定二级分类
+                        this.getTypeList(this.parentCatId).then((res) => {
+                            let parentList = res.data;
+                            for (let obj of parentList) {
+                                this.twoTypeList.push({
+                                    id: obj.id,
+                                    name: obj.catName
+                                })
+                            }
+                        })
+                        this.clickSure = false;
                     });
                     // 获取详情图和其它属性
                     this.getAttrOrImg().then((rs) => {
                         let proArr = rs.data.propValList;
+                        // this.getProvList通过getProExtDetail接口查询
                         for (let obj of proArr) {
                             this.getProvList.push({
                                 id: obj.propertiesVal.catPropId,
@@ -803,6 +891,23 @@
                     // }
                 })
             }
+            // 获取常用分类
+            this.$api.get('/oteao/productInfo/currentCategroyForSeller', {}, res => {
+                let parentList = res.data;
+                for (let obj of parentList) {
+                    this.twoTypeUsedList.push({
+                        id: obj.catId,
+                        name: obj.catName,
+                        parentCatId: obj.parentCatId,
+                        parentCatName: obj.parentCatName
+                    })
+                }
+            }, res => {
+                return Toast({
+                    message: res.errorMsg,
+                    iconClass: 'icon icon-fail'
+                });
+            })
         },
         beforeRouteEnter(to, from, next) {
             if (store.state.member.member.id) {

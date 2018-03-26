@@ -17,6 +17,7 @@
                             <div class="item-right">
                                 <input type="text" id="goodType" readonly placeholder="必填项，请选择商品分类" v-model="resize.form.goodTypes" />
                             </div>
+                            <i class="iconfont" @click="selectGoodType">&#xe619;</i>
                         </div>
 
                         <div class="item" style="position: relative;">
@@ -439,7 +440,7 @@
                 this.resize.oneIndex = index;
                 this.oneTypeListName = item.name;
                 console.log(item.catName)
-                // 获取二级分类
+                // 选择一级分类后确定二级分类
                 this.getTypeList(item.id).then((res) => {
                     let parentList = res.data;
                     for (let obj of parentList) {
@@ -653,29 +654,26 @@
                     this.resize.form[str] = '0.00'
                 } else {
                     this.resize.form[str] = parseFloat(delTrim).toFixed(2);
-                    console.log(str, delTrim);
-                    console.log(typeof this.resize.form[str]);
-                    console.log('1.23' > '1')
                 }
-                this.flagGoodsSj = (this.resize.form.goodsSj >= this.resize.form.goodsPtsj);
-                this.flagGoodsGroup = (this.resize.form.goodsGroup >= this.resize.form.goodsSj);  
                 // goodsPtsj市场价
                 // goodsSj单买价
                 // goodsGroup团购价
-                // if (this.resize.form.goodsSj >= this.resize.form.goodsPtsj) {
+                // 字符串通过charCodeAt(0)转换成ASCII码比较大小
+                this.flagGoodsSj = Number(this.resize.form.goodsSj) >= Number(this.resize.form.goodsPtsj);
+                this.flagGoodsGroup = Number(this.resize.form.goodsGroup) >= Number(this.resize.form.goodsSj);  
+                // if (Number(this.resize.form.goodsSj) >= Number(this.resize.form.goodsPtsj)) {
                 //     this.flagGoodsSj = true;
                 //     console.log('this.flagGoodsSj is true', this.flagGoodsSj)
                 // }
-                // if(this.resize.form.goodsSj < this.resize.form.goodsPtsj) {
+                // if(Number(this.resize.form.goodsSj) < Number(this.resize.form.goodsPtsj)) {
                 //     this.flagGoodsSj = false;
                 //     console.log('this.flagGoodsSj is false', this.flagGoodsSj)
                 // }
-                // if (this.resize.form.goodsGroup >= this.resize.form.goodsSj) {
+                // if (Number(this.resize.form.goodsGroup) >= Number(this.resize.form.goodsSj)) {
                 //     this.flagGoodsGroup = true;
                 //     console.log('this.flagGoodsGroup is true', this.flagGoodsGroup)
                 // }
-                // if(this.resize.form.goodsGroup <
-                //  this.resize.form.goodsSj) {
+                // if(Number(this.resize.form.goodsGroup) < Number(this.resize.form.goodsSj)) {
                 //     this.flagGoodsGroup = false;
                 //     console.log('this.flagGoodsGroup is false', this.flagGoodsGroup)
                 // }
@@ -830,6 +828,7 @@
             letter-spacing: 0rem;
             color: #333;
             align-items: center;
+            padding-left: 0.3rem;
         }
         ._add-small-box{
             width: 0.08rem;

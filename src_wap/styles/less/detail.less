@@ -19,6 +19,7 @@
     .bg(#f5f5f5);
     .detail_wrapper{
         .scroll-y(a);
+        .scroll-x(h);
         height: 100%;
         .ipScroll;
         .paddingB(.98rem);
@@ -191,18 +192,24 @@
                         .line(1.5);
                         margin: .4rem 0 .32rem;
                         .detail_type{
-                            padding: 0rem 0.1rem;
-                            border: solid 1px #f08200;
-                            text-align: center;
-                            display: inline-block;
-                            font-size: 0.2rem;
-                            letter-spacing: 0rem;
-                            color: #f08200;
-                            margin-right: 0.1rem;
+                          padding: 0rem 0.1rem;
+                          border: solid 1px #f08200;
+                          text-align: center;
+                          display: inline-block;
+                          font-size: 0.2rem;
+                          letter-spacing: 0rem;
+                          color: #f08200;
+                          margin-right: 0.1rem;
+                          border-radius: 4px;
+                          line-height: 0.32rem;
+                          vertical-align: text-bottom;
                             &.green{
                               border-color: #0ec416;
                               color: #0ec416;
                             }
+                        }
+                        div:last-child{
+                          display: inline;
                         }
                     }
                     .detail_price{
