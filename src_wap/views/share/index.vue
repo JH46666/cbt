@@ -155,8 +155,15 @@
       <div class="share-dialog">
           <div class="share-title">还差<span>{{groupData.groupPurchase.groupNumber - groupData.groupPurchase.offerNumber}}</span>人，快邀请好友来拼团</div>
           <div class="share-subtitle">拼单已发起，人满后立即发货</div>
-          <div class="share-function">或复制链接进行分享</div>
-          <div class="copylink-btn" v-clipboard:copy="copyShareTitle" v-clipboard:success="onCopy">复制分享链接</div>
+          <div class="share-function _fix-share-function">
+                <div class="_add-left"></div>
+                <div>或复制链接进行分享</div>
+                <div class="_add-right"></div>
+          </div>
+          <div class="copylink-btn" v-clipboard:copy="copyShareTitle" v-clipboard:success="onCopy">
+              复制分享链接
+              <i class="iconfont icon-lianjie" style="margin-left: 0.05rem;"></i>
+            </div>
           <div class="close-btn" @click="closeShareDialog">
             <i class="iconfont">&#xe621;</i>
           </div>
@@ -525,5 +532,55 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-@import '~@/styles/share/share.less';
+    @import '~@/styles/share/share.less';
+    /* _add为新增，_fix为修改 */
+
+    /* 修改分享链接 */
+    ._fix-share-function{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        ._add-left{          
+                width: 0.74rem;
+                height: 0.02rem;
+                align-self: center;
+                position: relative;
+                background: linear-gradient(to left, #f5c187, #fff);
+                margin-right: 0.25rem;
+                display: flex;
+            &::after{
+                content: "";
+                background-color: #f5c187;
+                width: 0.10rem;
+                height: 0.10rem;
+                position: absolute;
+                right: -0.12rem; 
+                display: flex;
+                align-self: center;
+                transform: rotateZ(45deg);
+                /* transform-origin: 0% 0%; */
+            }
+        }
+        ._add-right{
+                width: 0.74rem;
+                height: 0.02rem;
+                align-self: center;
+                position: relative;
+                background: linear-gradient(to right, #f5c187, #fff);
+                margin-left: 0.25rem;
+                display: flex;
+            &::before{
+                content: "";
+                background-color: #f5c187;
+                width: 0.10rem;
+                height: 0.10rem;
+                position: absolute;
+                left: -0.12rem; 
+                display: flex;
+                align-self: center;
+                transform: rotateZ(45deg);
+                /* transform-origin: 0% 0%; */
+            }
+        }
+    }
 </style>
