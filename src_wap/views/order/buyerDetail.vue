@@ -825,7 +825,7 @@ export default {
         openKfDialog() {
             //    this.showOrHide = true;
             store.dispatch('getMemberData').then((res) => {
-                let data = { username: store.state.member.member.id, password: store.state.member.member.id };
+                let data = { username: store.state.member.member.id+'_1', password: store.state.member.member.id+'_1' };
                 let ret = '';
                 for (let it in data) {
                     ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&';
@@ -856,7 +856,7 @@ export default {
             let _this = this;
             if (this.shopInfo.orgId) {
                 kefuName = this.shopInfo.shopName;
-                addId = this.shopInfo.orgId;
+                addId = this.shopInfo.orgId+'_2';
             }
             this.$http.get(`/erp/layim/addFriend?friend=${addId}&userId=${selfId}`).then(res => {
                 let friendId = res.data.data;

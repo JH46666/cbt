@@ -160,7 +160,7 @@
                             });
                             console.log(layim.cache().friend);
                         });
-                        //监听发送消息                        
+                        //监听发送消息
                         layim.off('sendMessage').on('sendMessage', function (data) {
                             var To = data.to;
                             var timeStamp = data.mine.time;
@@ -245,7 +245,7 @@
         },
         methods: {
             login() {
-                let data = { username: store.state.member.member.id, password: store.state.member.member.id };
+                let data = { username: store.state.member.member.id+'_2', password: store.state.member.member.id+'_2' };
                 let ret = '';
                 for (let it in data) {
                     ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&';
