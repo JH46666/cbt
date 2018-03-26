@@ -31,11 +31,11 @@
                             <div class="_add-goods-good-tips" v-if="flagGoodsOwnGood">
                                 <div class="_add-tips">
                                     <div>商品标题组成</div>
-                                    商品卖点+商品品类+工艺+采摘时间
+                                    商品卖点+商品品类+工艺+香气+采摘时间
                                 </div>
                                 <div class="_add-geometric-3"></div>
                                 <div class="_add-geometric-X" @click="flagGoodsOwnGood = !flagGoodsOwnGood">
-                                    <i class="iconfont icon-danchuangguanbianniu"></i>
+                                    <i class="iconfont icon-danchuangguanbianniu" style="font-size: 0.48rem"></i>
                                 </div>
                             </div>
                         </div>
@@ -973,7 +973,7 @@
             ._add-tips {
                 padding: 0.21rem 0.23rem;
                 width: 4.42rem;
-                font-size: 0.20rem;
+                font-size: 0.24rem;
                 line-height: 0.36rem;
                 color: #ffffff;
                 text-align: left;

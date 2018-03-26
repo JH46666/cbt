@@ -103,12 +103,13 @@
                 </div>
             </section>
         </section>
+        <!-- 底部按钮 -->
         <section class="btn-bar">
             <div style="float: left; font-size: 0.28rem; color: #333; display: flex;align-items: center;" @click="openKfDialog">
                 <i class="icon-kefurukousvg" style="font-size: 0.44rem; color: #f08200; margin-right: 0.1rem;"></i>
                 联系买家
             </div>
-            <div v-if="!myData.groupSuccess==2">
+            <div v-if="!(myData.groupSuccess== 2)">
                 <template v-if="myData.orderStatus === 'WAIT_PAY'">
                     <mt-button size="small" class="btn" @click="closeOrder">关闭订单</mt-button>
                     <mt-button size="small" class="btn" @click="editPrice">修改价格</mt-button>
