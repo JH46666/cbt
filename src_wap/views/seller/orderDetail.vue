@@ -42,7 +42,7 @@
                     <span @click="showMore = !showMore" v-if="myData.detailAddress ? myData.detailAddress.length >66 : false"><i :class="{'icon-single-down':!showMore,'icon-shang':showMore}"></i></span>
                 </div>
                 <div class="remark" @click="showRemark">
-                    备注：<span class="remark-txt">{{ remark.length > 0 ? remark : '买家不可见' }}</span> 
+                    备注：<span class="remark-txt">{{ remark.length > 0 ? remark : '买家不可见' }}</span>
                 </div>
             </section>
             <section class="goods-pannel">
@@ -124,7 +124,7 @@
                 </template>
             </div>
         </section>
-        
+
         <!-- 修改备注弹框 -->
         <transition name="down-slow" mode="out-in">
             <div class="edit-remark" v-show="remarkDialog">
@@ -210,7 +210,7 @@
                 remarkDialog: false,            // 备注弹框
                 closeUp: false,                 // 关闭订单
                 closeUpSend: false,             // 发货的关闭订单
-                closeConfirm: false,            
+                closeConfirm: false,
                 myData: {},                     // 订单详情
                 list: [],                       // 商品列表
                 grouppingInfo:{},               // 团购信息
@@ -362,7 +362,7 @@
             openKfDialog() {
                 //    this.showOrHide = true;
                 store.dispatch('getMemberData').then((res) => {
-                    let data = { username: store.state.member.member.id, password: store.state.member.member.id };
+                    let data = { username: store.state.member.member.id+'_2', password: store.state.member.member.id+'_2' };
                     let ret = '';
                     for (let it in data) {
                         ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&';
@@ -393,7 +393,7 @@
                 let _this = this;
                 if (this.shopInfo.orgId) {
                     kefuName = this.shopInfo.shopName;
-                    addId = this.shopInfo.orgId;
+                    addId = this.shopInfo.orgId+'_1';
                 }
                 this.$http.get(`/erp/layim/addFriend?friend=${addId}&userId=${selfId}`).then(res => {
                     let friendId = res.data.data;
@@ -681,7 +681,7 @@
         created() {
             // 设置title
             this.$store.commit('SET_TITLE','卖家订单详情');
-            
+
             this.getData();
         }
     }
