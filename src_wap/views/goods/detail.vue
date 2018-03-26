@@ -84,31 +84,27 @@
                 <div class="detail_describe">
                     <div class="detail_describe_wrapper">
                         <div class="detail_describe_text">
-                            <p class="detail_text">
-                                <span class="detail_type">
+                            <div class="detail_text">
+                                <div class="detail_type" :class="{'green':detailData.orgShopCenterVo&&detailData.orgShopCenterVo.shopType<=4}">
                                     {{ detailData.orgShopCenterVo ? businessName[detailData.orgShopCenterVo.shopType - 1] : businessName[4] }}
-                                </span>
-                                {{ detailData.productExtInfo.title }}
-                            </p>
+                                </div>
+                                <div class="detail-goods-title">{{ detailData.productExtInfo.title }}</div>
+                            </div>
                             <div class="detail_price">
                                 <div class="detail-groupnum">
                                     {{detailData.productInfo.memberNum}}人拼团价
                                 </div>
-                                <template  v-if="detailData.productExtInfo.state === 'OFF_SHELF' && loginId && state === 'ACTIVE'">
-                                    <div class="off_shelf_tips">
-                                        暂无报价
-                                    </div>
-                                </template>
                                 <template  v-if="!loginId || state != 'ACTIVE'">
-                                    <div class="off_shelf_tips">
+                                    <div class="detail_now_price">
                                         ￥{{detailData.productInfo.hideGroupsPrice}}
                                     </div>
+                                    <div class="detail_suggest_price">￥{{ detailData.productPrice[1].price | toFix2 }}</div>
                                 </template>
-                                <template v-if="detailData.productPrice.length != 0 && detailData.productExtInfo.state === 'ON_SHELF' && loginId && state === 'ACTIVE'">
+                                <template v-if="detailData.productPrice.length != 0  && loginId && state === 'ACTIVE'">
                                         <div class="detail_now_price">
                                             ￥{{detailData.productInfo.priceFightGrops | toFix2  }}
                                         </div>
-                                        <div class="detail_suggest_price">￥{{ detailData.productPrice[0].price | toFix2 }}</div>
+                                        <div class="detail_suggest_price">￥{{ detailData.productPrice[1].price | toFix2 }}</div>
                                 </template>
                             </div>
                         </div>
@@ -117,7 +113,7 @@
                                 已拼50500件
                             </div> -->
                             <div>
-                                库存{{detailData.productExtInfo.stockNum}}件
+                                库存：{{detailData.productExtInfo.stockNum > detailData.productInfo.memberNum?detailData.productExtInfo.stockNum+'件':'缺货'}}
                             </div>
                         </div>
                         <template  v-if="detailData.productExtInfo.state === 'ON_SHELF'">
@@ -130,11 +126,12 @@
                                     <div class="detail_active_item">
                                         <span>运费：</span>
                                         <template v-if="detailData.productInfo.businessType == 'ORG_SALES'">
-                                            <span v-if="!detailData.orgFreightTemplateVoList || detailData.orgFreightTemplateVoList.length == 0">本店商品全国包邮</span>
-                                            <span v-else-if="detailData.orgFreightTemplateVoList && detailData.orgFreightTemplateVoList.length > 0">邮费依实际重量计算运费</span>
+                                            <span v-if="!detailData.orgFreightTemplateVoList || detailData.orgFreightTemplateVoList.length == 0">商品全国包邮</span>
+                                            <span v-else-if="detailData.orgFreightTemplateVoList && detailData.orgFreightTemplateVoList.length > 0">依实际重量计算运费</span>
                                         </template>
                                         <template v-else>
-                                            <span>自营茶叶满500包邮</span>
+                                            <span v-if="!detailData.productInfo.isTea">全国满500包邮</span>
+                                            <span v-else>依实际重量计算运费</span>
                                         </template>
                                     </div>
                                 </div>
@@ -161,7 +158,7 @@
                     <div class="groupbuy-item" v-for="(item,index) in groupArray" :key="index" v-if="index < 2">
                         <div class="user-img" >
                             <img :src="item.masterFaceImg" v-if="item.masterFaceImg"/>
-                            <div v-else>{{String(item.masterName).substr(0,2)}}</div>
+                            <div v-else>{{item.masterName!=''?String(item.masterName).substr(0,2):'匿名'}}</div>
                         </div>
                         <div class="groupbuy-username"><div>{{String(item.masterName).substr(0,6)}}</div></div>
                         <div class="groupbuy-info">
@@ -181,7 +178,7 @@
             <div class="groupbuy-explain">
                 <div class="title">
                     <div>拼团玩法</div>
-                    <div>拼团需知<i class="icon-icon07"></i></div>
+                    <div @click="$router.push('/rules')">拼团需知<i class="icon-icon07"></i></div>
                 </div>
                 <div class="groupbuy-content-ts">
                     支付开团，人数不足24h自动退款
@@ -283,11 +280,14 @@
                     </div>
                 </div>
                 <!-- 详情 -->
-                <!-- <div class="mint_cell_wrapper mint_cell_img_wrapper">
+                <div class="mint_cell_wrapper mint_cell_img_wrapper">
                     <template v-if="imgDetailHtml.length>0">
                         <div v-html="imgDetailHtml"></div>
                     </template>
-                    <template v-else>
+                    <div v-else>
+                      <img v-for="(item,index) in imgDetail" :key="index" v-if="item.length != 0"  :src="item"/>
+                    </div>
+                    <!-- <template v-else>
                         <mt-cell v-for="(item,index) in imgDetail" :key="index" v-if="item.content != '' && item.imgArray.length != 0">
                             <div class="mint_cell_img_title">{{ item.title }}</div>
                             <div class="mint_cell_img">
@@ -295,8 +295,8 @@
                             </div>
                             <p class="mint_cell_img_content">{{ item.content }}</p>
                         </mt-cell>
-                    </template>
-                </div> -->
+                    </template> -->
+                </div>
             </div>
         </div>
         <div class="off_shelf" v-if="detailData.productExtInfo.state === 'OFF_SHELF'">
@@ -323,7 +323,7 @@
                 <mt-badge type="error" size="small" v-show="Number(cartTotal)>0">{{ cartTotal | ninenineAdd }}</mt-badge>
             </mt-tab-item> -->
             <mt-tab-item id="3" class="join-cart">
-              <template v-if="detailData.productExtInfo.state === 'OFF_SHELF'">
+              <template v-if="detailData.productExtInfo.state === 'OFF_SHELF' && detailData.productExtInfo.stockNum > detailData.productInfo.memberNum">
                 <mt-button disabled type="default" class="lonelyBuy-btn">
                   <p v-if="$tool.isLogin()">￥{{detailData.productPrice[0].price| toFix2}}</p>
                   <p v-else>￥{{detailData.productPrice[0].hidePrice}}</p>
@@ -335,7 +335,7 @@
                     <p>{{detailData.productInfo.memberNum}}人拼团</p>
                 </mt-button>
               </template>
-              <template v-else-if="detailData.productExtInfo.isSoldOut == 1 && detailData.productExtInfo.compelOutStock == 0">
+              <template v-else-if="detailData.productExtInfo.isSoldOut == 1 && detailData.productExtInfo.compelOutStock == 0  && detailData.productExtInfo.stockNum > detailData.productInfo.memberNum">
                 <mt-button type="default"  class="lonelyBuy-btn" @click.native="addCartInfo(0)">
                     <p v-if="$tool.isLogin()">￥{{detailData.productPrice[0].price| toFix2}}</p>
                     <p v-else>￥{{detailData.productPrice[0].hidePrice}}</p>
@@ -365,10 +365,10 @@
             <div class="group-members">
               <div v-for="(item,index) in groupInfo.groupPurchaseDetails">
                 <img :src="item.memberFace" v-if="item.memberFace">
-                <div v-else class="noImg">{{String(item.memberUnitName).substr(0,2)}}</div>
+                <div v-else class="noImg">{{item.memberUnitName!=''?String(item.memberUnitName).substr(0,2):'匿名'}}</div>
                 <div v-if="index == 0" class="first-target">团长</div>
               </div>
-              <div>
+              <div v-for="item in (groupArray[groupIndex].groupNumber - groupArray[groupIndex].offerNumber)">
                 <img src="../../assets/cbt_icwctportrait.png">
               </div>
             </div>
@@ -641,7 +641,7 @@ export default {
                 if(status === 'WAIT_AUDIT') {
                     return this.$messageBox({
                         title:'提示',
-                        message:`您的账号审核中，只有正式会员才以买买买，若有疑问，请联系客服400-996-3399`,
+                        message:`您的账号审核中，只有正式会员才可以买买买，若有疑问，请联系客服400-996-3399`,
                         confirmButtonText: '我知道了'
                     }).then(res => {
                          this.selected = null;
@@ -683,18 +683,21 @@ export default {
                          this.selected = null;
                     });
                 }
+                this.getDetail().then((res) =>{
+                    this.detailData = res.data;
+                    // 立即购买
+                    let buyLowLimit = this.detailData.productExtInfo.buyLowLimit?this.detailData.productExtInfo.buyLowLimit:1;
+                    this.$store.dispatch('addCart',{proId:this.detailData.productExtInfo.proId,buyNum:buyLowLimit,groupType:groupType,groupId:groupId}).then(res=>{
+                        console.log(res);
+                        this.$router.push({
+                            name: '结算中心',
+                            query: {
+                                cart: res.data.cartId
+                            }
+                        })
+                    },res=>{});
+                })
 
-                // 立即购买
-                let buyLowLimit = this.detailData.productExtInfo.buyLowLimit?this.detailData.productExtInfo.buyLowLimit:1;
-                this.$store.dispatch('addCart',{proId:this.detailData.productExtInfo.proId,buyNum:buyLowLimit,groupType:groupType,groupId:groupId}).then(res=>{
-                    console.log(res);
-                    this.$router.push({
-                        name: '结算中心',
-                        query: {
-                            cart: res.data.cartId
-                        }
-                    })
-                },res=>{});
             }).catch((res)=>{
                 return this.$router.push({name: '账户登录'});
             })
@@ -808,9 +811,17 @@ export default {
           return new Promise((resolve,reject) => {
               this.$api.post('/oteao/groupPurchase/seachGroupById ',data,res => {
                   resolve(res);
-                  this.infoDialogFlag = true;
-                  this.groupInfo = res.data;
-                  this.groupIndex = index;
+                  if(res.data.groupPurchase.offerNumber < res.data.groupPurchase.groupNumber){
+                    this.infoDialogFlag = true;
+                    this.groupInfo = res.data;
+                    this.groupIndex = index;
+                  }else{
+                    Toast({
+                        message: '该团拼满啦，看看别的团吧~',
+                        iconClass: 'icon icon-fail'
+                    });
+                  }
+
               },res=>{
                   return Toast({
                       message: res.errorMsg,
@@ -976,28 +987,31 @@ export default {
 
         },
         sortTime(startTime,systemTime){
+          startTime = startTime.substr(0,10)+"T"+startTime.substr(11,8);
+          systemTime = systemTime.substr(0,10)+"T"+systemTime.substr(11,8)
           const endTime = new Date(startTime);
           const nowTime = new Date(systemTime);
-          let leftTime = parseInt((endTime.getTime()-nowTime.getTime())/1000)+24*60*60
+          let leftTime = parseInt((endTime.getTime()-nowTime.getTime()))+24*60*60*1000
           return leftTime;
         },
         formateDate(time){
-          let h = this.formate(parseInt(time/(60*60)%24))
-          let m = this.formate(parseInt(time/60%60))
-          let s = this.formate(parseInt(time%60))
+          let h = this.formate(parseInt(time/(1000*60*60)%24))
+          let m = this.formate(parseInt(time/60/1000%60))
+          let s = this.formate(parseInt(time/1000%60))
+          let ms = parseInt(time/100%10)
           if(time <= 0){
-              return '00:00:00';
+              return '00:00:00.0';
           }else{
-              return h+':'+m+':'+s;
+              return h+':'+m+':'+s+'.'+ms;
           }
         },
         // 倒计时
         timeOut(){
           let time = setInterval(()=>{            // 倒计时
              for(let item of this.groupArray){
-               item.lastTime = item.lastTime - 1
+               item.lastTime = item.lastTime - 100
              }
-         },1000)
+         },100)
         },
         timeDown () {
            const endTime = new Date(this.detailData.productExtInfo.salesEndTime);
@@ -1034,7 +1048,7 @@ export default {
                if(status === 'WAIT_AUDIT') {
                    return this.$messageBox({
                        title:'提示',
-                       message:`您的账号审核中，只有正式会员才以买买买，若有疑问，请联系客服400-996-3399`,
+                       message:`您的账号审核中，只有正式会员才可以买买买，若有疑问，请联系客服400-996-3399`,
                        confirmButtonText: '我知道了'
                    }).then(res => {
                         this.selected = null;
@@ -1089,7 +1103,7 @@ export default {
             let _this = this;
             if(this.detailData.productInfo.orgId){
                 kefuName = this.detailData.orgShopCenterVo.shopName;
-                addId = this.detailData.productInfo.orgId;
+                addId = this.detailData.productInfo.orgId+'_2';
             }
            this.$http.get(`/erp/layim/addFriend?friend=${addId}&userId=${selfId}`).then(res=>{
                let friendId = res.data.data;
@@ -1376,7 +1390,7 @@ export default {
        openKfDialog() {
         //    this.showOrHide = true;
             store.dispatch('getMemberData').then((res) => {
-                let data = {username: store.state.member.member.id,password: store.state.member.member.id};
+                let data = {username: store.state.member.member.id+'_1',password: store.state.member.member.id+'_1'};
                 let ret = '';
                 for (let it in data) {
                     ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&';

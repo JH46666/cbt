@@ -76,7 +76,7 @@
                             <div class="_add-tuan">
                                 <div class="_add-groupnum">{{ item.memberNum }}人团价&emsp;&nbsp;</div>
                                 <div class="price _fix-price">￥{{ toFixed(item.priceFightGroup) }}</div>
-                                <div class="_add-single-price">单卖价：￥{{ toFixed(item.proPrice) }}</div>
+                                <div class="_add-single-price">单买价：￥{{ toFixed(item.proPrice) }}</div>
                             </div>
                             <p class="time_tag" v-if="item.isSales">限时特价</p>
                         </div>
@@ -151,17 +151,17 @@
             </div>
         </div>
         <!-- 底部fixed栏 -->
-        <!-- <div class="flex fix-bottom align_items_c">
+        <div class="flex fix-bottom align_items_c">
             <div class="seller-center" @click="$router.push({name: '卖家中心'})">
                 <i class="iconfont">&#xe676;</i>
                 <p>卖家中心</p>
             </div>
             <a v-show="!isEmpty" class="flex-1 noshelves-btn batch-btn" href="javascript:void(0);" @click="goBrect">批量处理</a>
             <a class="flex-1 noshelves-btn created-btn" href="javascript:void(0);" @click="goCreate">创建商品</a>
-        </div> -->
+        </div>
          <!-- 底部fixed栏 -->
         <!-- 底部fixed栏 -->
-        <div class="flex fix-bottom align_items_c">
+        <!-- <div class="flex fix-bottom align_items_c">
             <div class="flex-1 flex align_items_c" style="padding-left: .3rem;">
                 <label class="check-cir" :class="{checked: isAll}" @click="checkedAll"></label>
                 <span>已选 (<span>{{ checkedNum }}</span>)</span>
@@ -169,7 +169,7 @@
             <a class="delete-btn" href="javascript:void(0);" @click="deleteMethod" v-if="tabId === 'no'">删除</a>
             <a class="rackup-btn" href="javascript:void(0);" @click="downMethod" v-if="tabId === 'yes'">下架</a>
             <a class="rackup-btn" href="javascript:void(0);" @click="downMethod" v-else>上架</a>
-        </div>
+        </div> -->
     </div>
 </template>
 <script>
@@ -763,7 +763,7 @@ import $api from 'api';
         justify-content: space-between;
         ._fix-price{
             position: unset!important;
-            /* flex: 1; */
+            flex: 1;
             width: 1.7rem;
         }
     }
@@ -781,7 +781,7 @@ import $api from 'api';
         position: relative;
         }
         ._add-groupnum{
-            width: 1.24rem;
+            width: 1.33rem;
             height: 0.4rem;
             background-image: linear-gradient(to right, #ff5500 0%, #ff8200 100%);
             font-size: 0.24rem;
@@ -791,6 +791,7 @@ import $api from 'api';
             padding-left: 0.1rem;
             margin-right: 0.1rem;
             position: relative;
+            border-radius: 0.04rem 0rem 0rem 0.04rem;
             &:after{
                 content:'';
                 display:block;

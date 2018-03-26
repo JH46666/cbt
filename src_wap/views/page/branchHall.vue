@@ -85,6 +85,7 @@
                 'collection.collectionNo': str
             },res=>{
                 this.listData = res.data.proExtInfoVoList;
+                console.log(res.data.proExtInfoVoList)
                 this.showTip = true;
             },res=>{
                 return this.$messageBox({
@@ -114,6 +115,35 @@
         text-align: center;
         line-height: 0.8rem;
     }
+    .product-price{
+        margin-top: 0.29rem;
+        overflow: hidden;
+        }
+    .detail_now_price{
+    color:#f08200;
+    line-height: 1;
+    font-size: 0.4rem;
+    margin-right: 0.1rem;
+    display: inline-block;
+}
+.detail_suggest_price{
+    color:#999;
+    line-height: 1;
+    font-size: 0.3rem;
+    text-decoration: line-through;
+    display: inline-block;
+}
+.off_shelf_tips{
+            
+            font-size: 0.3rem;
+            margin-right: 0.1rem;
+            font-size: 0.4rem;
+            line-height: 0.34rem;
+            letter-spacing: 0rem;
+            color: #f08200;
+            display: inline-block;
+        }
+    
 }
 </style>
 <style>

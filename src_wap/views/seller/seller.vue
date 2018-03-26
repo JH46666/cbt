@@ -48,7 +48,7 @@
         </section>
         <section class="order-wrap">
             <div class="title">
-                <h3>卖家订单</h3>
+                <h3>卖家订单中心</h3>
                 <router-link to="/seller/orderlist?type=null" class="entry" style="color: #999; font-size: 0.26rem">
                     全部订单<i class="icon-icon07" style="font-size: 16px"></i>
                 </router-link>
@@ -62,7 +62,7 @@
                 <router-link to="/seller/orderlist?type=groupping" class="item">
                     <mt-badge size="small" type="error" :class="{one:count.waitSend < 10}" v-if="count.grouppingNum > 0">{{ count.grouppingNum | ninenineAdd }}</mt-badge>
                     <span><i class="icon-gerenzhongxin_pintuanzhong"></i></span>
-                    <p>待成团</p>
+                    <p>拼团中</p>
                 </router-link>
                 <router-link to="/seller/orderlist?type=waitSend" class="item">
                     <mt-badge size="small" type="error" :class="{one:count.waitSend < 10}" v-if="count.waitSend > 0">{{ count.waitSend | ninenineAdd }}</mt-badge>
@@ -71,7 +71,7 @@
                 </router-link>
                 <router-link to="/seller/orderlist?type=waitRec" class="item">
                     <mt-badge size="small" type="error" :class="{one:count.send < 10}" v-if="count.send > 0">{{ count.send | ninenineAdd }}</mt-badge>
-                    <span><i class="icon-gerenzhongxin_yifahuo"></i></span>
+                    <span><i class="icon-gerenzhongxin_yifahuo" style="color: #f08200;"></i></span>
                     <p>已发货</p>
                 </router-link>
                 <!-- <router-link to="/seller/orderlist?type=null" class="item">

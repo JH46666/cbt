@@ -45,10 +45,23 @@ const cart = {
                     // });
                     resolve(res);
                 },res=>{
+                  if(groupType==2){
                     return Toast({
                         message: res.message,
                         iconClass: 'icon icon-fail'
                     });
+                  }else if(res.code == 4078){
+                    return Toast({
+                        message: '不可以购买自己的商品哟~',
+                        iconClass: 'icon icon-fail'
+                    });
+                  }else{
+                    return Toast({
+                        message: '来晚了呦，商品卖光啦~',
+                        iconClass: 'icon icon-fail'
+                    });
+                  }
+
                 });
             })
         },

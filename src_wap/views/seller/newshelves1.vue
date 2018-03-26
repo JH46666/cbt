@@ -17,6 +17,7 @@
                             <div class="item-right">
                                 <input type="text" id="goodType" readonly placeholder="必填项，请选择商品分类" v-model="resize.form.goodTypes" />
                             </div>
+                            <i class="iconfont" @click="selectGoodType">&#xe619;</i>
                         </div>
 
                         <div class="item" style="position: relative;">
@@ -27,7 +28,7 @@
                                 </p>
                             </label>
                             <div class="item-right">
-                                <textarea id="2" rows="2" maxlength="30" placeholder="非必填项，最多可写30个字" v-model="resize.form.goodsSell"></textarea>
+                                <textarea id="2" rows="2" maxlength="30" placeholder="必填项，最多可写30个字" v-model="resize.form.goodsSell"></textarea>
                                 <div class="text_count">
                                     <span>{{ resize.form.goodsSell.length }}</span>/30
                                 </div>
@@ -36,10 +37,12 @@
                             <div class="_add-goods-good-tips" v-if="flagGoodsOwnGood">
                                <div class="_add-tips">
                                     <div>商品标题组成</div>
-                                    商品卖点+商品品类+工艺+采摘时间
+                                    商品卖点+商品品类+工艺+香气+采摘时间
                                 </div>
                                 <div class="_add-geometric-3"></div>
-                                <div class="_add-geometric-X" @click="flagGoodsOwnGood = !flagGoodsOwnGood">X</div>
+                                <div class="_add-geometric-X" @click="flagGoodsOwnGood = !flagGoodsOwnGood">
+                                    <i class="iconfont icon-danchuangguanbianniu" style="font-size: 0.48rem"></i>
+                                </div>
                             </div>
                         </div>
 
@@ -124,7 +127,7 @@
                                 <p style="float:right">人</p>
                             </div>
                             <div class="_add-price-error-tips" v-if="flagGoodsGroup">
-                                <i class="iconfont icon-tishi"> 团购价需低于市场价</i>
+                                <i class="iconfont icon-tishi"> 团购价需低于单买价</i>
                             </div>
                             <div class="_add-num-error-tips" v-if="flagGoodsGroupNum">
                                 <i class="iconfont icon-tishi"> 人数需介于2和10之间</i>
@@ -162,7 +165,7 @@
                 </div> -->
                 <!-- 不明真相的吃瓜群众？↑↑↑ -->
 
-
+                <!-- 商品属性 -->
                 <div class="good_type_list bg_gray" style="background: #f5f5f5; position: relative;" v-if="resize.proValList.length != 0">
                     <div class="_add-tips-title" style="display: flex;">
                         <div class="_add-small-box"></div>
@@ -248,7 +251,7 @@
         <!-- 品牌弹出框 -->
         <mt-popup v-model="closeUp" position="bottom">
             <div class="close-wrap">
-                <p class="close-tip" v-for="(item,index) in selList" :class="{on: index === selectClass}" :key="index" @click="selectRightList(index)">{{ item.name }}
+                <p class="close-tip" v-for="(item, index) in selList" :class="{on: index === selectClass}" :key="index" @click="selectRightList(index)">{{ item.name }}
                     <i class="iconfont">&#xe684;</i>
                 </p>
                 <p class="close-tip" @click="cancelList">取消选择</p>
@@ -256,14 +259,18 @@
         </mt-popup>
 
         <!-- 商品分类弹出框 -->
-        <mt-popup v-model="dialogTypeBol" position="bottom" style="height: 90%;">
+        <mt-popup v-model="dialogTypeBol" position="bottom" style="height: 90%;" :closeOnClickModal=false>
             <div class="dialog_type_wrapper">
-                <div class="dialog_type_title">
-                    常用品类
-                </div>
-                <div class="dialog_type_content _fix-dialog_type_content">
-                    <div class="type_1 _add-type_1">
-                        <div class="type_item _add-type_item" v-if="index < 4" v-for="(item,index) in oneTypeList" :key="index" :class="{on: item.id === resize.oneClass}" @click="selectOneType(item.id,index)">{{ item.name }}</div>
+                <div v-if="twoTypeUsedList.length > 0">
+                    <div class="dialog_type_title">
+                        常用品类
+                    </div>
+                    <div class="dialog_type_content _fix-dialog_type_content">
+                        <div class="type_1 _add-type_1">
+                            <div class="type_item _add-type_item" v-for="(item, index) in twoTypeUsedList" :key="index" :class="{on: item.id === resize.twoClass}" @click="selectUsedTwoType(item, index)">
+                                {{ item.name }}
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="dialog_type_title">
@@ -271,11 +278,15 @@
                 </div>
                 <div class="dialog_type_content">
                     <div class="type_1">
-                        <div class="type_item" v-for="(item,index) in oneTypeList" :key="index" :class="{on: item.id === resize.oneClass}" @click="selectOneType(item.id,index)">{{ item.name }}</div>
+                        <div class="type_item" v-for="(item, index) in oneTypeList" :key="index" :class="{on: item.id === resize.oneClass}" @click="selectOneType(item, index)">
+                            {{ item.name }}
+                        </div>
                     </div>
                     <div class="type_2">
                         <div class="type_2_wrapper clearfix">
-                            <div class="type_item" v-for="(item,index) in twoTypeList" :key="index" :class="{on: item.id === resize.twoClass}" @click="selectTwoType(item.id,index)">{{ item.name }}</div>
+                            <div class="type_item" v-for="(item, index) in twoTypeList" :key="index" :class="{on: item.id === resize.twoClass}" @click="selectTwoType(item, index)">
+                                {{ item.name }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -308,6 +319,8 @@
                 dialogTypeBol: false,
                 oneTypeList: [],
                 twoTypeList: [],
+                oneTypeListName: '',
+                twoTypeListName: '',
                 clickSure: true,
                 device: 'WAP',
                 showOfHideStep: true,
@@ -315,6 +328,7 @@
                 flagGoodsSj:false,                                  // 单买价              
                 flagGoodsGroup: false,                              // 团购价
                 flagGoodsGroupNum: false,                           // 团购人数
+                twoTypeUsedList: [],                                // 常用二级分类
             }
         },
         watch: {
@@ -370,11 +384,13 @@
                 item.proValId = secobj.id;
                 item.proShowHide = false;
             },
+            // 未知
             selectDefaultProp(item, index, secobj) {
                 item.select = index;
                 item.content = secobj;
                 item.showOfHide = false;
             },
+            // 未知
             selectDefault(index) {
                 for (let i = 0; i < this.resize.defaultArray.length; i++) {
                     this.resize.defaultArray[i].showOfHide = false;
@@ -390,11 +406,13 @@
             },
             // 点击二级分类时获取属性
             getProVal(id) {
+                if(!id) return;
                 let data = {
                     catId: id,
                     sysId: 1,
                     device: this.device,
-                    position: 0
+                    position: 0,
+                    isDisplay: 1,
                 }
                 return new Promise((resolve, reject) => {
                     this.$api.get('/oteao/propInfo/queryPropVal', data, res => {
@@ -407,15 +425,23 @@
                     })
                 })
             },
+            // 确定一二级分类按钮
             sureType() {
+                // this.resize.form.goodTypes = this.oneTypeList[this.resize.oneIndex].name + '-' + this.twoTypeList[this.resize.twoIndex].name;
+                this.resize.form.goodTypes = this.oneTypeListName + '-' + this.twoTypeListName;
                 this.dialogTypeBol = false;
-                this.resize.form.goodTypes = this.oneTypeList[this.resize.oneIndex].name + '-' + this.twoTypeList[this.resize.twoIndex].name;
             },
-            selectOneType(id, index) {
+            // 点击一级分类
+            selectOneType(item, index) {
                 this.twoTypeList = [];
-                this.resize.oneClass = id;
+                this.resize.twoClass = null;
+                 this.clickSure = true;
+                this.resize.oneClass = item.id;
                 this.resize.oneIndex = index;
-                this.getTypeList(id).then((res) => {
+                this.oneTypeListName = item.name;
+                console.log(item.catName)
+                // 选择一级分类后确定二级分类
+                this.getTypeList(item.id).then((res) => {
                     let parentList = res.data;
                     for (let obj of parentList) {
                         this.twoTypeList.push({
@@ -425,9 +451,30 @@
                     }
                 })
             },
-            selectTwoType(id, index) {
-                this.resize.twoClass = id;
+            // 选择二级分类
+            selectTwoType(item, index) {
+                this.resize.twoClass = item.id;
                 this.resize.twoIndex = index;
+                this.twoTypeListName = item.name;
+                this.clickSure = false;
+            },
+            // 选择二级常用分类
+            selectUsedTwoType(item, index){
+                this.resize.twoClass = item.id;
+                this.resize.oneClass = item.parentCatId;
+                this.oneTypeListName = item.parentCatName;                
+                this.twoTypeListName = item.name;
+                // 选择二级常用分类后更新二级分类
+                this.getTypeList(item.parentCatId).then((res) => {
+                    let parentList = res.data;
+                    this.twoTypeList = [];                    
+                    for (let obj of parentList) {
+                        this.twoTypeList.push({
+                            id: obj.id,
+                            name: obj.catName
+                        })
+                    }
+                })
                 this.clickSure = false;
             },
             cancelType() {
@@ -438,10 +485,12 @@
                 this.resize.oneIndex = null;
                 this.clickSure = true;
                 this.twoTypeList = [];
+                this.resize.form.goodTypes = '';
             },
             selectGoodType() {
                 this.dialogTypeBol = true;
             },
+            // 获取二级分类
             getTypeList(parentId) {
                 let data = {
                     sysId: 1,
@@ -458,6 +507,7 @@
                     })
                 })
             },
+            // 获取一级分类
             getOneTypeList() {
                 let data = {
                     sysId: 1
@@ -559,6 +609,7 @@
                     return;
                 }
             },
+            // 获取所有品牌列表
             getBrandList() {
                 let data = {
                     sysId: 1
@@ -574,25 +625,26 @@
                     })
                 })
             },
-            getDwList() {
-                let data = {
-                    dictionaryId: 14
-                }
-                return new Promise((resolve, reject) => {
-                    this.$api.get('/oteao/dictionaryData/getDataByType', data, res => {
-                        resolve(res);
-                    }, res => {
-                        return Toast({
-                            message: res.errorMsg,
-                            iconClass: 'icon icon-fail'
-                        });
-                    })
-                })
-            },
+            // 获取单位数据
+            // getDwList() {
+            //     let data = {
+            //         dictionaryId: 14
+            //     }
+            //     return new Promise((resolve, reject) => {
+            //         this.$api.get('/oteao/dictionaryData/getDataByType', data, res => {
+            //             resolve(res);
+            //         }, res => {
+            //             return Toast({
+            //                 message: res.errorMsg,
+            //                 iconClass: 'icon icon-fail'
+            //             });
+            //         })
+            //     })
+            // },
             // 跳转如何创建商品页
             funcHowToCreat() {
-                return Toast({
-                    message: '将要跳转'
+                this.$router.push({
+                    name: '如何创建商品'
                 })
             },
             // 比较几个价格
@@ -603,8 +655,28 @@
                 } else {
                     this.resize.form[str] = parseFloat(delTrim).toFixed(2);
                 }
-                this.flagGoodsSj = this.resize.form.goodsSj >= this.resize.form.goodsPtsj;
-                this.flagGoodsGroup = this.resize.form.goodsGroup >= this.resize.form.goodsSj;            
+                // goodsPtsj市场价
+                // goodsSj单买价
+                // goodsGroup团购价
+                // 字符串通过charCodeAt(0)转换成ASCII码比较大小
+                this.flagGoodsSj = Number(this.resize.form.goodsSj) >= Number(this.resize.form.goodsPtsj);
+                this.flagGoodsGroup = Number(this.resize.form.goodsGroup) >= Number(this.resize.form.goodsSj);  
+                // if (Number(this.resize.form.goodsSj) >= Number(this.resize.form.goodsPtsj)) {
+                //     this.flagGoodsSj = true;
+                //     console.log('this.flagGoodsSj is true', this.flagGoodsSj)
+                // }
+                // if(Number(this.resize.form.goodsSj) < Number(this.resize.form.goodsPtsj)) {
+                //     this.flagGoodsSj = false;
+                //     console.log('this.flagGoodsSj is false', this.flagGoodsSj)
+                // }
+                // if (Number(this.resize.form.goodsGroup) >= Number(this.resize.form.goodsSj)) {
+                //     this.flagGoodsGroup = true;
+                //     console.log('this.flagGoodsGroup is true', this.flagGoodsGroup)
+                // }
+                // if(Number(this.resize.form.goodsGroup) < Number(this.resize.form.goodsSj)) {
+                //     this.flagGoodsGroup = false;
+                //     console.log('this.flagGoodsGroup is false', this.flagGoodsGroup)
+                // }
             },
             // 控制人数在2-10
             toFixedBelow(val, str) {
@@ -660,7 +732,7 @@
         created() {
             // 设置title
             this.$store.commit('SET_TITLE', '新品上架');
-
+            // 获取一级分类
             this.getOneTypeList().then((res) => {
                 let parentList = res.data;
                 for (let obj of parentList) {
@@ -670,6 +742,29 @@
                     })
                 }
             });
+            // 获取常用分类
+            this.$api.get('/oteao/productInfo/currentCategroyForSeller', {}, res => {
+                let parentList = res.data;
+                // 第一次创建商品时弹出商品卖点提示
+                if(!parentList.length){
+                    this.flagGoodsOwnGood = true;
+                }
+                for (let obj of parentList) {
+                    this.twoTypeUsedList.push({
+                        id: obj.catId,
+                        name: obj.catName,
+                        parentCatId: obj.parentCatId,
+                        parentCatName: obj.parentCatName
+                    })
+                }
+            }, res => {
+                return Toast({
+                    message: res.errorMsg,
+                    iconClass: 'icon icon-fail'
+                });
+            })
+
+            // 获取所有品牌列表
             this.getBrandList().then((res) => {
                 let parentList = res.data;
                 for (let obj of parentList) {
@@ -679,15 +774,15 @@
                     })
                 }
             });
-            this.getDwList().then((res) => {
-                let parentList = res.data;
-                for (let obj of parentList) {
-                    this.danWei.push({
-                        id: obj.id,
-                        name: obj.dataName
-                    })
-                }
-            });
+            // this.getDwList().then((res) => {
+            //     let parentList = res.data;
+            //     for (let obj of parentList) {
+            //         this.danWei.push({
+            //             id: obj.id,
+            //             name: obj.dataName
+            //         })
+            //     }
+            // });
         },
         beforeRouteEnter(to, from, next) {
             if (store.state.member.member.id) {
@@ -733,6 +828,7 @@
             letter-spacing: 0rem;
             color: #333;
             align-items: center;
+            padding-left: 0.3rem;
         }
         ._add-small-box{
             width: 0.08rem;
@@ -742,17 +838,17 @@
             left: 0rem;
         }
         ._add-goods-good-tips{
-            width: 4.52rem;
+            width: 4.92rem;
             height: 1.12rem;
             background-color: #525150;
             box-shadow: 0rem 0.02rem 0.1rem 0rem rgba(0, 0, 0, 0.4);
             position: absolute;
-            left: 1.90rem;
-            top: 0.4rem;
+            left: 2.05rem;
+            top: 0.62rem;
             ._add-tips{
                 padding: 0.21rem 0.23rem;
-                width: 4.42rem;
-                font-size: 0.20rem;
+                width: 4.92rem;
+                font-size: 0.24rem;
                 line-height: 0.36rem;
                 color: #ffffff;
                 text-align: left;
@@ -810,7 +906,7 @@
             flex: unset!important;
             ._add-type_1{
                 display: flex;
-                justify-content: space-between;
+                /* justify-content: space-between; */
                 ._add-type_item{
                     width: 1.40rem!important;
                     margin: 0rem!important;

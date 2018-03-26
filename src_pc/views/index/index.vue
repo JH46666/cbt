@@ -74,7 +74,7 @@
                 <div class="big-logo"></div>
                 <div class="txt-box">
                     <h3>五大创新产业优势</h3>
-                    <h4>最专业的垂直化B2B+O2O平台</h4>
+                    <h4>最专业的垂直化B2B+OMO平台</h4>
                     <ul class="list-box clearfix">
                         <li>
                             <i class="one"></i>
@@ -121,7 +121,7 @@
                             <div class="f_l icon3"></div>
                             <div class="f_r">
                                 <h4>真安全</h4>
-                                <p>资金安全，结算灵活。茶帮通平台联合国内知名支付服务商——腾付通及支付宝，提供便捷快速的支付服务；同时，提供资金托管服务，对平台交易资金进行担保，实现实时到账。</p>
+                                <p>资金安全，结算灵活。茶帮通平台联合国内知名支付服务商——微信及支付宝，提供便捷快速的支付服务；同时，提供资金托管服务，对平台交易资金进行担保，实现实时到账。</p>
                             </div>
                         </li>
                     </ul>
@@ -371,9 +371,9 @@
     export default{
         data(){
             return {
-                memeberFlag: false,  
-                sellerFlag: false,  
-                showTop: false,  
+                memeberFlag: false,
+                sellerFlag: false,
+                showTop: false,
                 hasFixed: false,
             }
         },
@@ -404,6 +404,5 @@
     }
 </script>
 <style lang="less" scoped>
-    @import '../../styles/index/index.less'; 
+    @import '../../styles/index/index.less';
 </style>
-

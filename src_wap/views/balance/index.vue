@@ -28,7 +28,7 @@
                                 <p class="goods-bd">
                                     <span class="price">￥{{ todo.priorityPrice | toFix2  }}</span>
                                     <span class="pro_number clearfix">
-                                        <span class="decrease" :class="{isGary:todo.buyNum === 1}" @click="numDecrease(todo)"><i class="iconfont">&#xe851;</i></span>
+                                        <span class="decrease" :class="{isGary:todo.buyNum === 1||todo.buyNum == todo.buyLowLimit}" @click="numDecrease(todo)"><i class="iconfont">&#xe851;</i></span>
                                         <input class="input-num" type="number" v-model="todo.buyNum" @blur="numChange(todo)">
                                         <span class="plus" @click="numPlus(todo)"><i class="iconfont">&#xe638;</i></span>
                                     </span>
@@ -196,6 +196,7 @@
                     get_self: '门店自提'
                 },
                 activePannel: {},           // 当前激活的店铺
+                oldVal:1 //商品数量旧值
             }
         },
         computed: {
@@ -280,6 +281,9 @@
             },
             // 弹出付款方式弹窗
             upPayType(index) {
+                if(this.pannel[0].cartList[0].businessType=='ORG_SALES'){
+                  return;
+                }
                 this.activePannel = this.pannel[index];
                 this.$refs.payType.setActive(this.activePannel)
                 this.showPayType = true;
@@ -341,42 +345,44 @@
             },
             // 更新数据
             upDate() {
+                this.initData().then((res)=>{
+                  let orgSettleRequestList = [];
+                  // 遍历每个店铺，更新数据
+                  this.pannel.forEach(val => {
+                      orgSettleRequestList.push({
+                          "deliveryMethodCode": val.currentDeliveryMethod,
+                          "invoiceCode": "NOT_INVOICE",
+                          "invoiceTitle": "string",
+                          "isUseIntegral": 0,
+                          "orderRemark": val.remark,
+                          "payMethodCode": val.currentPayMethod,
+                          "sellerOrgId": val.orgId,
+                          "useRedPacketId": val.useRedPacketId === null ? -1 : val.useRedPacketId
+                      })
+                  })
 
-                let orgSettleRequestList = [];
-                // 遍历每个店铺，更新数据
-                this.pannel.forEach(val => {
-                    orgSettleRequestList.push({
-                        "deliveryMethodCode": val.currentDeliveryMethod,
-                        "invoiceCode": "NOT_INVOICE",
-                        "invoiceTitle": "string",
-                        "isUseIntegral": 0,
-                        "orderRemark": val.remark,
-                        "payMethodCode": val.currentPayMethod,
-                        "sellerOrgId": val.orgId,
-                        "useRedPacketId": val.useRedPacketId === null ? -1 : val.useRedPacketId
-                    })
+
+                  let data = {
+                      "cartIds": this.cartList,
+                      "device": "WAP",
+                      orgSettleRequestList,
+                      "receiveAddrId": this.address.id,
+                      "sysId": 1,
+                      "useBackBalance": 0,
+                      "useStoreBalance": 0
+                  }
+
+                  this.$api.post('/oteao/shoppingCart/settle',JSON.stringify(data),res => {
+
+                      // 恢复之前的订单备注
+                      res.data.oteaoCart.forEach((val,i) => {
+                          val.remark = this.getRemark()[i];
+                      })
+                      this.myData = res.data;
+
+                  })
                 })
 
-
-                let data = {
-                    "cartIds": this.cartList,
-                    "device": "WAP",
-                    orgSettleRequestList,
-                    "receiveAddrId": this.address.id,
-                    "sysId": 1,
-                    "useBackBalance": 0,
-                    "useStoreBalance": 0
-                }
-
-                this.$api.post('/oteao/shoppingCart/settle',JSON.stringify(data),res => {
-
-                    // 恢复之前的订单备注
-                    res.data.oteaoCart.forEach((val,i) => {
-                        val.remark = this.getRemark()[i];
-                    })
-                    this.myData = res.data;
-
-                })
             },
             // 提交订单
             upOrder() {
@@ -419,13 +425,13 @@
                     "receiveAddrId": this.address.id,
                     "sysId": 1,
                     "useBackBalance": 0,
-                    "useStoreBalance": 0
+                    "useStoreBalance": 0,
+                }
+                if(this.$tool.isWx){
+                  data.faceImg = store.state.member.wechatHeadImg;
                 }
                 // 禁用提交按钮，防止重复提交
                 this.disabled = true;
-
-
-
 
                 this.$api.post('/oteao/shoppingCart/submitOrder',JSON.stringify(data),res => {
 
@@ -492,7 +498,7 @@
                 sessionStorage.setItem('paymethod',JSON.stringify(this.pannel.map(val => val.currentPayMethod)));
 
                 // 快递方式
-                sessionStorage.setItem('express',JSON.stringify(this.pannel.map(val => val.currentDeliveryMethod)));
+                // sessionStorage.setItem('express',JSON.stringify(this.pannel.map(val => val.currentDeliveryMethod)));
 
             },
             // 恢复数据
@@ -500,20 +506,20 @@
                 let remark = JSON.parse(sessionStorage.remark);
                 let redpacket = JSON.parse(sessionStorage.redpacket);
                 let paymethod = JSON.parse(sessionStorage.paymethod);
-                let express = JSON.parse(sessionStorage.express);
+                // let express = JSON.parse(sessionStorage.express);
 
 
                 this.pannel.forEach((val, i) => {
                     val.remark = remark[i];
                     val.useRedPacketId = redpacket[i];
                     val.currentPayMethod = paymethod[i];
-                    val.currentDeliveryMethod = express[i];
+                    // val.currentDeliveryMethod = express[i];
                 })
 
                 delete sessionStorage.remark;
                 delete sessionStorage.redpacket;
                 delete sessionStorage.paymethod;
-                delete sessionStorage.express;
+                // delete sessionStorage.express;
 
             },
             //更新选中的数量
@@ -529,6 +535,7 @@
                         item.buyUpperLimit = res.data.buyUpperLimit;
                         // 更新购物车数量
                         // this.$store.dispatch('queryCartTotal');
+                        this.oldVal = newVal;
                         this.upDate();
                         resolve(res);
                     },res => {
@@ -547,6 +554,7 @@
                 if(newVal < 1) return;
 
                 if(!!item.buyLowLimit) {
+                  console.log(11)
                     if(newVal < item.buyLowLimit) return;
                 }
                 this.updateSeleNum(item,newVal,oldVal).then(res => {
@@ -556,7 +564,9 @@
                     }
                     item.buyNum = res.data.buyNum;
                     item.oldBuy = res.data.buyNum;
-                }).catch(res => {})
+                }).catch(res => {
+                  this.$toast(res.message);
+                })
             },
             // 加
             numPlus(item){
@@ -575,7 +585,9 @@
                     }
                     item.buyNum = res.data.buyNum;
                     item.oldBuy = res.data.buyNum;
-                }).catch(res => {})
+                }).catch(res => {
+                  this.$toast(res.message);
+                })
 
             },
             //input输入数量
@@ -605,14 +617,15 @@
                         item.buyNum = res.data.buyNum;
                         item.oldBuy = res.data.buyNum;
                     }).catch(res => {
-                        item.buyNum = item.oldBuy;
+                        this.$toast(res.message);
+                        item.buyNum = this.oldVal;
                     })
 
                 }else{
-                    Toast('请输入正确的数值')
+                    this.$toast('请输入正确的数值')
                     item.buyNum = item.buyLowLimit || 1;
                 }
-            },
+            }
         },
         created() {
             // 设置title

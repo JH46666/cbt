@@ -20,7 +20,7 @@
                         <h3 class="title">
                             订单号: {{ item.orderNo }}
                         </h3>
-                        <span class="type" v-if="item.lessGroup">待成团，还差<span style="color: #f08200">{{ item.lessGroup }}</span>人</span>
+                        <span class="type" v-if="item.lessGroup && item.groupSuccess != 1">待成团，差<span style="color: #f08200">{{ item.lessGroup }}</span>人</span>
                         <span class="type" v-else>{{ $store.state.order.status[item.orderStatus] }}</span>
                     </div>
                     <template v-for="(todo,index) in item.products">
@@ -45,7 +45,7 @@
                                 <mt-button size="small" @click.stop="closeOrder(item)">关闭订单</mt-button>
                                 <mt-button size="small" @click.stop="editPrice(item)">修改价格</mt-button>
                             </template>
-                            <template v-if="item.orderStatus === 'PACKING' && item.groupSuccess==3">
+                            <template v-if="item.orderStatus === 'PACKING' && item.groupSuccess!=2">
                                 <mt-button size="small" @click.stop="closeOrder(item)">关闭订单</mt-button>
                                 <mt-button size="small" class="gold" @click.stop="$router.push({name:'发货',query:{orderNo:item.orderNo}})">发货</mt-button>
                             </template>

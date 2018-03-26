@@ -6,18 +6,18 @@
                 <div class="_add-title-small-box"></div>
                 商品轮播图
             </div>
-            <div class="_add-title-tips">
+            <!-- <div class="_add-title-tips">
                 <i class="iconfont icon-chuangjianshangpinshuoming"></i>
                 <div>传图规范</div>
-            </div>
+            </div> -->
         </div>
         <div class="floor main-imgs _add-main-imgs">
-            <p style="font-size: 0.26rem; color: #333;">1-5张，建议800*800像素，单张图片小于8M的清晰商品照片</p>
+            <p style="font-size: 0.26rem; color: #666;">1-5张，建议800*800像素等宽高，单张图片小于8M的清晰商品照片</p>
             <div class="main-img-box _fix-main-img-box">
                     <div class="_fix-img-box" v-for="(item,index) in resize.imgs.mainImg" @click="getPrevImgSrc(index,'main')">
                         <img :src="item"/>
-                        <a class="delete-btn _fix-delete-btn" href="javascript: void(0);" @click="deleteImg(index,'main')">
-                            <i class="iconfont">&#xe651;</i>
+                        <a class="delete-btn _fix-delete-btn" href="javascript: void(0);" @click.stop="deleteImg(index,'main')">
+                            <i class="iconfont icon-tupianshangshanchuanniu"></i>
                         </a>
                     </div>
                     <!-- 上传图标 -->
@@ -39,18 +39,18 @@
                 <div class="_add-title-small-box"></div>
                  商品详情展示
             </div>
-            <div class="_add-title-tips">
+            <div class="_add-title-tips" @click="picturesRule">
                 <i class="iconfont icon-chuangjianshangpinshuoming"></i>
                 <div>传图规范</div>
             </div>
         </div>
         <div class="floor detail-imgs _fix-detail-imgs">
-            <p style="font-size: 0.26rem; color: #333;">1-10张，尺寸宽度介于640像素至750像素之间，单张图片小于8M，图片尽量保持尺寸一致</p>
+            <p style="font-size: 0.26rem; color: #666;">1-10张，尺寸宽度强烈建议使用750像素，单张图片小于8M，图片尽量保持尺寸一致及风格的统一</p>
             <div class="main-img-box _fix-main-img-box">
                 <div class="_fix-img-box" v-for="(item,index) in resize.imgs.detailImg1" @click="getPrevImgSrc(index,'detailImg1')">
                     <img :src="item"/>
-                    <a class="delete-btn _fix-delete-btn" href="javascript: void(0);" @click="deleteImg(index,'main')">
-                        <i class="iconfont">&#xe651;</i>
+                    <a class="delete-btn _fix-delete-btn" href="javascript: void(0);" @click.stop="deleteImg(index,'one')">
+                        <i class="iconfont icon-tupianshangshanchuanniu"></i>
                     </a>
                 </div>
                 <!-- 上传图标 -->
@@ -68,13 +68,14 @@
         </div>
         <!-- 底部按钮 -->
         <div class="flex btns">
-            <mt-button type="primary" :disabled="disabledBol || loading1" @click="saveMethod('0')" style="background-color: rgba(240, 130, 0, 0.7); color: #fff;">
-                <img src="../../assets/images/loading3.gif" height="20" width="20" slot="icon" :class="{on: loading1 && !flag}">
-                保存
+            <mt-button type="primary" @click="$router.go(-1)">上一步</mt-button>
+            <mt-button type="primary" :disabled="disabledBol || loading1" @click="saveMethod('0')">
+                <img src="../../assets/images/loading3.gif" height="20" width="20" slot="icon" :class="{on: loading1 && !flag}"> 保存
             </mt-button>
+        </div>
+        <div class="save-rackup">
             <mt-button type="primary" :disabled="disabledBol || loading2" @click="saveMethod('1')">
-                <img src="../../assets/images/loading3.gif" height="20" width="20" slot="icon" :class="{on: loading2 && flag}">
-                保存并上架
+                <img src="../../assets/images/loading3.gif" height="20" width="20" slot="icon" :class="{on: loading2 && flag}"> 保存并上架
             </mt-button>
         </div>
         <!-- 预览大图 -->
@@ -310,7 +311,7 @@ import $api from 'api';
                     })
                 }
                 // 商品详情图url
-                for (let i = 0; i < this.urls.main.length; i++) {
+                for (let i = 0; i < this.urls.one.length; i++) {
                     detailImg.push(
                         this.urls.one[i]
                     )
@@ -434,36 +435,42 @@ import $api from 'api';
                     "detailImgs": detailImg,
                     "productImgs": mainImg
                 }
+                // 组合标题
+                let titles = '';
                 for(let i=0;i<this.resize.proValList.length;i++){
                     if(this.resize.proValList[i].propValList.length === 0){
                         data.catProps.push({
                             propType: 2,
                             propId: this.resize.proValList[i].id,
                             propertyVal: this.resize.proValList[i].proVal
-                        })
+                        });
+                        titles = titles + this.resize.proValList[i].proVal;
                     }else{
                         data.catProps.push({
                             propType: 1,
                             propId: this.resize.proValList[i].id,
                             propertyVal: this.resize.proValList[i].proVal,
                             propValId: this.resize.proValList[i].proValId
-                        })
+                        });
+                        titles = titles + this.resize.proValList[i].proVal;
                     }
                 }
+                // 组合标题 = 商品卖点 + 商品品类 + 属性
+                titles = this.resize.form.goodsSell + this.resize.form.goodTypes.replace(/-/g,'') + titles;
                 if(this.resize.selId.pp){
                     this.$api.post(`/oteao/productInfo/createProductInfo` +
                         `?frontOrgProInfoDetailVo.catId=${ encodeURI(this.resize.twoClass) }` +
-                        `&frontOrgProInfoDetailVo.brandId=${ encodeURI(this.resize.selId.pp) }` +
-                        `&frontOrgProInfoDetailVo.proName=${ encodeURI(this.resize.form.goodsSell) }` +
+                        `&frontOrgProInfoDetailVo.brandId=${ encodeURI(this.resize.selId.pp) }` +                               // 品牌
+                        `&frontOrgProInfoDetailVo.proName=${ encodeURI(titles) }` +                                             // 组合标题
                         // `&frontOrgProInfoDetailVo.unint=${ encodeURI(this.resize.form.goodsDw) }` +
-                        `&frontOrgProInfoDetailVo.weight=${ encodeURI(this.resize.form.goodsMz) }` +
+                        `&frontOrgProInfoDetailVo.weight=${ encodeURI(this.resize.form.goodsMz) }` +                            // 重量
                         // `&frontOrgProInfoDetailVo.netWeight=${ encodeURI(this.resize.form.goodsJz) }` +
-                        // `&frontOrgProInfoDetailVo.reason=${ encodeURI(this.resize.form.goodsSell) }` +
+                        `&frontOrgProInfoDetailVo.reason=${ encodeURI(this.resize.form.goodsSell) }` +                          // 商品卖点
                         `&frontOrgProInfoDetailVo.stockNum=${ encodeURI(this.resize.form.goodsKc) }` +
-                        `&frontOrgProInfoDetailVo.proPrice=${ encodeURI(this.resize.form.goodsSj) }` +
-                        `&frontOrgProInfoDetailVo.retailPrice=${encodeURI(this.resize.form.goodsPtsj) }` +
-                        `&frontOrgProInfoDetailVo.memberNum=${encodeURI(this.resize.form.goodsGroupNum)}` +
-                        `&frontOrgProInfoDetailVo.groupPrice=${encodeURI(this.resize.form.goodsGroup)}` +
+                        `&frontOrgProInfoDetailVo.proPrice=${ encodeURI(this.resize.form.goodsSj) }` +                          // 单买价
+                        `&frontOrgProInfoDetailVo.retailPrice=${encodeURI(this.resize.form.goodsPtsj) }` +                      // 市场价
+                        `&frontOrgProInfoDetailVo.memberNum=${encodeURI(this.resize.form.goodsGroupNum)}` +                     // 团购人数
+                        `&frontOrgProInfoDetailVo.groupPrice=${encodeURI(this.resize.form.goodsGroup)}` +                       // 团购价
                         `&frontOrgProInfoDetailVo.isSaveOnShelf=${ encodeURI(stata) }`,JSON.stringify(data),res => {
                             this.sucFlag = true;
                             this.loading1 = false;
@@ -482,6 +489,7 @@ import $api from 'api';
                 }else{
                     this.$api.post(`/oteao/productInfo/createProductInfo` +
                         `?frontOrgProInfoDetailVo.catId=${ encodeURI(this.resize.twoClass) }` +
+                        `&frontOrgProInfoDetailVo.proName=${encodeURI(titles)}` +                                             // 组合标题
                         `&frontOrgProInfoDetailVo.proName=${ encodeURI(this.resize.form.goodsSell) }` +
                         // `&frontOrgProInfoDetailVo.unint=${ encodeURI(this.resize.form.goodsDw) }` +
                         `&frontOrgProInfoDetailVo.weight=${ encodeURI(this.resize.form.goodsMz) }` +
@@ -613,6 +621,12 @@ import $api from 'api';
                 console.log(this.previewFlag);    
                 this.previewFlag = !this.previewFlag;
                 console.log(this.previewFlag);
+            },
+            // 如何创建商品
+            picturesRule(){
+                this.$router.push({
+                    name: '茶帮通商品详情规范'
+                })
             }
         },
         beforeRouteEnter(to, from, next) {
@@ -696,6 +710,9 @@ import $api from 'api';
                 ._fix-delete-btn{
                     top: -0.17rem;
                     right: -0.17rem;
+                }
+                & img{
+                   max-height: 1.55rem;
                 }
             }
             ._add-upload-box{

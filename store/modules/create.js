@@ -10,8 +10,8 @@ const create = {
                 // goodsJz: '',
                 goodsMz: '',                            // 重量
                 goodsKc: '',                            // 库存
-                goodsSj: '',                            // 单买价
                 goodsPtsj: '',                          // 市场价
+                goodsSj: '',                            // 单买价
                 // goodsGoodType: '',
                 goodsGroup:'',                          // 团购价
                 goodsGroupNum:'',                       // 团购人数
@@ -80,8 +80,8 @@ const create = {
                     // goodsJz: '',
                     goodsMz: '',
                     goodsKc: '',
-                    goodsSj: '',
                     goodsPtsj: '',
+                    goodsSj: '',
                     // goodsGoodType: '',
                     goodsGroup: '',                          // 团购价
                     goodsGroupNum: '',                       // 团购人数

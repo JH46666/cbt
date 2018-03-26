@@ -9,11 +9,12 @@
     tasteStar       Number          0               味道等级
     mainTit         String          ''              主标题
     subTit          String          ''              副标题
-    price           Number          0               价格
-    garyPrice       Number          0               灰价格
+    price           Number          0               团购价格
+    garyPrice       Number          0               单买价格
+    hideGroupsPrice Number          0               隐藏价格
     unit            String          斤              单位
     isLogin         Boolean         false
-    
+
     新增prop
     salesPrice      Number          0               特价
 
@@ -65,7 +66,7 @@
                         <span class="goods-garyPrice">{{'￥'+ toFixed(garyPrice)}}</span>
                     </template>
                     <template v-else>
-                        <span>{{'￥'+ toFixed(price).replace(/^[1-9]/g,'?')}}</span>
+                        <span>{{'￥'+ hideGroupsPrice}}</span>
                         <span class="goods-garyPrice">{{'￥'+ toFixed(garyPrice)}}</span>
                     </template>
                 </div>
@@ -99,6 +100,10 @@ export default {
         garyPrice: {
             type: Number,
             default: 0
+        },
+        hideGroupsPrice: {
+            type: String,
+            default: ''
         },
         unit: {
             type: String,

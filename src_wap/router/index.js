@@ -100,7 +100,33 @@ const router = new Router({
 					meta: {
 						hideFooter: true
 					}
-				}
+				},
+				{
+					path: 'rules',
+					name: '拼团需知',
+					component: resolve => require(['@/views/share/collageddetail.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+
+				{
+					path: 'creategoods',
+					name: '如何创建商品',
+					component: resolve => require(['@/views/seller/creategoods.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+				{
+					path: 'detailspf',
+					name: '茶帮通商品详情规范',
+					component: resolve => require(['@/views/seller/detailspf.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+
 			]
 		},
 		{
@@ -482,6 +508,14 @@ const router = new Router({
 						hideFooter: true
 					}
 				},
+				{
+					path: 'myMessage',
+					name: '我的消息',
+					component: resolve => require(['@/views/seller/message.vue'], resolve),
+					meta: {
+						hideFooter: true
+					}
+				}
 			]
 		},
 		{

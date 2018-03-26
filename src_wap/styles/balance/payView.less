@@ -2,31 +2,35 @@
 
 #pay-view{
     .hd{
-        .h(3.04rem);
+        // .h(3.04rem);
         .bg(#fff);
         margin-bottom: .24rem;
         .delivery-text,
         .success-text,
         .fail-text{
-            .fontSize(.42rem);
+            .fontSize(.4rem);
             .algin(c);
-            .paddingT(.35rem);
-            margin-bottom: .45rem;
+            .paddingT(.6rem);
+            margin-bottom: .33rem;
+            span{
+              color: #f08200;
+              margin: 0 0.1rem;
+            }
         }
         .success-btn-wrap,
         .delivery-btn-wrap,
         .fail-btn-wrap{
             .algin(c);
+            padding-bottom: 0.6rem;
             .mint-button{
-                .reduis(20px);
+                .reduis(.36rem);
                 .bg(#fff);
-                .w(1.78rem);
-                .h(.56rem);
-                .fontSize(.3rem);
-                .line(.54rem);
+                .w(2.01rem);
+                .h(.73rem);
+                .fontSize(.28rem);
                 .color(@b-6);
                 margin: 0 .41rem;
-                border: 1px solid @borCol;
+                border: 1px solid #999;
                 box-shadow: none;
                 &::after{
                     .w(100%);
@@ -34,13 +38,10 @@
                 }
             }
             .mint-button+.mint-button{
-                border-color: @mainCol;
-                .color(@mainCol);
+                background-color: #f08200;
+                color: #fff;
+                border-color: #f08200;
             }
-        }
-        .success-btn-wrap .mint-button+.mint-button{
-            border: 1px solid @borCol;
-            .color(@b-6);
         }
         i{
             .iconfont;
@@ -53,6 +54,24 @@
         .delivery-text i,
         .success-text i{
             .color(#10bd38);
+        }
+        .last-time{
+          text-align: center;
+          margin-bottom: 0.62rem;
+          height: 0.28rem;
+          font-size: 0.28rem;
+          line-height: 0.28rem;
+          color: #333333;
+        }
+        .back-home{
+          text-align: center;
+          font-size: 0.28rem;
+          line-height: 0.8rem;
+          letter-spacing: 0rem;
+          width: 7.5rem;
+          height: 0.8rem;
+          background-color: #fafafa;
+          color: #f08200;
         }
     }
     .bd{
@@ -96,5 +115,122 @@
         border: 1px solid @mainCol;
         box-shadow: none;
         margin: 0 auto;
+    }
+    .suggest_wrapper{
+        margin-top: 0.2rem;
+        .bg(#fff);
+        .suggest_head{
+            .suggest_title{
+                width: 100%;
+                height: .8rem;
+                .line(.8rem);
+                text-align: center;
+                color: #666666;
+                position: relative;
+                &::before,&::after{
+                    content: "";
+                    .position(a);
+                    .w(2.35rem);
+                    .h(2px);
+                    top: 50%;
+                    margin-top: -1px;
+                }
+                &::before{
+                    left: .3rem;
+                    background: -webkit-linear-gradient(left,#fff 12.5%,#f2f1f1 50%,#e6e5e6 100%);
+                    background: -o-linear-gradient(right,#fff 12.5%,#f2f1f1 50%,#e6e5e6 100%);
+                    background: linear-gradient(to right, #fff 12.5%,#f2f1f1 50%,#e6e5e6 100%);
+                }
+                &::after{
+                    right: .3rem;
+                    background: -webkit-linear-gradient(left,#e6e5e6 6.25%,#f2f1f1 50%,#fff 87.5%);
+                    background: -o-linear-gradient(right,#e6e5e6 6.25%,#f2f1f1 50%,#fff 87.5%);
+                    background: linear-gradient(to right, #e6e5e6 6.25%,#f2f1f1 50%,#fff 87.5%);
+                }
+                div{
+                  display: inline-block;
+                  background: url('../../assets/images/may_like.png') no-repeat left center,url('../../assets/images/may_like.png') no-repeat right center;
+                  background-size: .22rem;
+                  // background-position: left center;
+                  padding: 0 .32rem;
+                }
+            }
+            border-bottom: 1px solid #e6e6e6;
+        }
+        .suggest_content{
+            width: 100%;
+            .fontSize(0);
+            overflow: hidden;
+            .suggest_item{
+                float: left;
+                width: 50%;
+                height: 5.4rem;
+                padding: 0 .3rem;
+                border-bottom: 1px solid #e5e5e5;
+                .sugget_img{
+                    margin: .3rem auto .2rem;
+                    width: 2.6rem;
+                    height: 2.6rem;
+                    // background-image: url('../../assets/images/error.jpg');
+                    background-repeat: no-repeat;
+                    background-size: 100%;
+                    .position(r);
+                    img{
+                        width: 100%;
+                        position: relative;
+                        top: 50%;
+                        -webkit-transform: translateY(-50%);
+                        transform: translateY(-50%);
+                    }
+                }
+                .suggest_text{
+                    width: 100%;
+                    min-height: .82rem;
+                    .color(#333);
+                    .fontSize(.28rem);
+                    .line(1.5);
+                    .moreLine;
+                    margin: 0 auto;
+                }
+                .seggest_resaon{
+                    .color(#999);
+                    .fontSize(.24rem);
+                    width: 100%;
+                    height: .5rem;
+                    margin: 0 auto;
+                    .line(.5rem);
+                    .oneLine;
+                }
+                .product-price{
+                  margin-top: 0.29rem;
+                  .flex;
+                  align-items: flex-end;
+                  .off_shelf_tips{
+                      .color(@mainCol);
+                      .fontSize(.28rem);
+                      margin-left: 0.1rem;
+                      font-size: 0.4rem;
+                      line-height: 0.34rem;
+                      letter-spacing: 0rem;
+                      color: #f08200;
+                  }
+                  .detail_now_price{
+                      .color(#f08200);
+                      .line(1);
+                      .fontSize(.28rem);
+                      margin-right: 0.1rem;
+                  }
+                  .detail_suggest_price{
+                      .color(#999);
+                      .line(1);
+                      .fontSize(.22rem);
+                      text-decoration: line-through;
+                  }
+                }
+            }
+            .suggest_item:nth-child(2n+1) {
+                border-right: 1px solid #e5e5e5;
+            }
+        }
     }
 }
