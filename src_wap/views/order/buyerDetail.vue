@@ -31,7 +31,9 @@
                     </div>
                 </div>
                 <!-- 待发货 -->
-                <div v-if="orderDetailData.orderStatus === 'PACKING' && orderDetailData.groupSuccess != 2" style="width: 100%; display: block; position: relative;">
+                <div v-if="orderDetailData.orderStatus === 'PACKING' && orderDetailData.groupSuccess == 3"><img src="../../assets/images/order_3.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
+                <!-- 待发货，已成团 -->
+                <div v-if="orderDetailData.orderStatus === 'PACKING' && orderDetailData.groupSuccess == 1" style="width: 100%; display: block; position: relative;">
                     <div><img src="../../assets/images/order_3.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                     <!-- 拼团成员头像 -->
                     <div class="groupping-member-info">
@@ -218,9 +220,9 @@
                                 <img src="../../assets/images/emskd.png" v-if="order.expressCode == 'ship_ems' || order.expressCode == 'EMS'" /> {{ order.expressName }}
                                 <span>{{ order.expressNo }}</span>
                             </div>
-                            <div class="order_num">
+                            <!-- <div class="order_num">
                                 <mt-button plain v-if="order.subOrderStatus === 'DELIVERED' || order.subOrderStatus === 'CBT_BUYER'" class="pay_now" @click.native="confrimMethodsMoreChild(order.subOrderNo,orderDetailData.orderNo)">确认收货</mt-button>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </template>
