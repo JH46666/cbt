@@ -5,13 +5,13 @@
     <div class="steps-text">
       <p>点选“选择商品分类”，选择您要上架的茶对应的品类，如您要上架的商品是正山小种，即选择红茶-正山小种。</p>
     </div>
-    <img src="http://imgcbt.oss-cn-hangzhou.aliyuncs.com/WAPIMG/share/01fb.png" alt="">
-    <img src="http://imgcbt.oss-cn-hangzhou.aliyuncs.com/WAPIMG/share/02fb.png" alt="">
+    <img src="http://img0.oteao.com/WAPIMG/share/01fb.png" alt="">
+    <img src="http://img1.oteao.com/WAPIMG/share/02fb.png" alt="">
   </div>
   <h5 class="title" @click="clickfun(2)">2.商品基本信息</h5>
   <div class="steps" v-if="isShowArr[1]">
     <div class="steps-text">
-      <p class="tips-text-wrap"> <span class="tips_icons"><img src="http://imgcbt.oss-cn-hangzhou.aliyuncs.com/WAPIMG/share/cbt_ts.png" alt=""></span>
+      <p class="tips-text-wrap"> <span class="tips_icons"><img src="http://img2.oteao.com/WAPIMG/share/cbt_ts.png" alt=""></span>
       栏位均为 <span class="color-red">必填项</span> ，填写商品基本信息</p>
       <p><span class="small-t">商品卖点：</span><br>
       <span class="color-red">展示组成=商品卖点+商品品类+工艺+香型+采摘时间</span><br>如：黄勇大师手作，仅限100斤 获奖茶-铁观音清香型2018年春茶。
@@ -24,14 +24,14 @@
       <p><span class="small-t">库存：</span><br>纯整数数字填写，请填写商品的实际库存量。
       </p>
     </div>
-      <img src="http://imgcbt.oss-cn-hangzhou.aliyuncs.com/WAPIMG/share/03fb.png" alt="">
+      <img src="http://img3.oteao.com/WAPIMG/share/03fb.png" alt="">
   </div>
   <h5 class="title" @click="clickfun(3)">3.商品价格信息</h5>
   <div class="steps" v-if="isShowArr[2]">
     <div class="steps-text">
       <p class="tips-text-wrap">
       <span class="tips_icons">
-      <img src="http://imgcbt.oss-cn-hangzhou.aliyuncs.com/WAPIMG/share/cbt_ts.png" alt="">
+      <img src="http://img4.oteao.com/WAPIMG/share/cbt_ts.png" alt="">
       </span>栏位均为 
       <span class="color-red">必填项</span> ，影响到商品的购买
       </p>
@@ -43,43 +43,43 @@
       <p><span class="small-t">团购人数：</span><br>介于2-10人，即支付购买人数要满足“团购的人数”，才代表开团成功。
       </p>
     </div>
-    <img src="http://imgcbt.oss-cn-hangzhou.aliyuncs.com/WAPIMG/share/04fb.png" alt="">
+    <img src="http://img0.oteao.com/WAPIMG/share/04fb.png" alt="">
     <div id="small-m">对应价格在前台展示位置</div>
-    <img src="http://imgcbt.oss-cn-hangzhou.aliyuncs.com/WAPIMG/share/05fb.png" alt="">
+    <img src="http://img1.oteao.com/WAPIMG/share/05fb.png" alt="">
   </div>
   <h5 class="title" @click="clickfun(4)">4.商品属性信息</h5>
   <div class="steps" v-if="isShowArr[3]">
     <div class="steps-text">
       <p class="tips-text-wrap"> 
       <span class="tips_icons">
-      <img src="http://imgcbt.oss-cn-hangzhou.aliyuncs.com/WAPIMG/share/cbt_ts.png" alt="">
+      <img src="http://img2.oteao.com/WAPIMG/share/cbt_ts.png" alt="">
       </span>属性信息为
       <span class="color-red">选填项</span> ，填写可提升商品的搜索曝光率
       </p>
       <p>属性信息如采摘季节、产地等，用于商品详情的展示</p>
     </div>
-    <img src="http://imgcbt.oss-cn-hangzhou.aliyuncs.com/WAPIMG/share/06fb.png" alt="">
+    <img src="http://img3.oteao.com/WAPIMG/share/06fb.png" alt="">
     <p>商品属性信息前台展示效果</p>
-    <img src="http://imgcbt.oss-cn-hangzhou.aliyuncs.com/WAPIMG/share/07fb.png" alt="">
+    <img src="http://img4.oteao.com/WAPIMG/share/07fb.png" alt="">
   </div>
   <h5 class="title" @click="clickfun(5)">5.商品轮播图</h5>
   <div class="steps" v-if="isShowArr[4]">
     <div class="steps-text">
-      <p class="tips-text-wrap"> <span class="tips_icons"><img src="http://imgcbt.oss-cn-hangzhou.aliyuncs.com/WAPIMG/share/cbt_ts.png" alt=""></span>第一张图为商品主图即封面图，将展示于搜索页面、活动页面等，主图白底更佳哦~</p>
+      <p class="tips-text-wrap"> <span class="tips_icons"><img src="http://img0.oteao.com/WAPIMG/share/cbt_ts.png" alt=""></span>第一张图为商品主图即封面图，将展示于搜索页面、活动页面等，主图白底更佳哦~</p>
       <p>支持拍照或相册传图方式，最少需上传1张，最多可传5张商品图片，上传后若不满意，可点选右上角“×”按钮将图片移除重新上传。<br>上传的图片建议800*800像素，等宽高，单张图片小于8M的清晰商品照片。</p>
     </div>
-    <img src="http://imgcbt.oss-cn-hangzhou.aliyuncs.com/WAPIMG/share/08fb.png" alt="">
+    <img src="http://img1.oteao.com/WAPIMG/share/08fb.png" alt="">
     <!-- <div class="steps-text"> -->
     <p>商品轮播图前台展示效果</p>
     <!-- </div> -->
-    <img src="http://imgcbt.oss-cn-hangzhou.aliyuncs.com/WAPIMG/share/09fb.png" alt="">
+    <img src="http://img2.oteao.com/WAPIMG/share/09fb.png" alt="">
   </div>
   <h5 class="title" @click="clickfun(6)">6.商品详情展示</h5>
   <div class="steps" v-if="isShowArr[5]">
     <div class="steps-text">
       <p>支持图片拍照或相册图片上传，最多可传10张。建议图片宽度使用750像素，并且单张图片不得超过8M，系统会根据您上传的顺序，将图片拼接展示于商品详情中，考虑商品展示的美观度，图片尽量保持尺寸的一致及风格的统一。</p>
     </div>
-    <img src="http://imgcbt.oss-cn-hangzhou.aliyuncs.com/WAPIMG/share/10fb.png" alt="">
+    <img src="http://img3.oteao.com/WAPIMG/share/10fb.png" alt="">
     <div class="steps-text">
       <p>上一步：点选后，将返回商品信息填写页，系统会为您暂时保存你上传过的商品轮播图 及详情页面 。<br>
       “保存”：系统会将保存您的商品资料，但买家看不到您的商品，您可在商品管理-未上架商品中找到该商品；<br>
