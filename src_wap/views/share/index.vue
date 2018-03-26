@@ -29,6 +29,7 @@
       <div class="group-title">
         <div v-if="onShelf && !groupComplete && !isOutTime"><div>已开团，仅剩<span>{{groupData.groupPurchase.groupNumber - groupData.groupPurchase.offerNumber}}</span>人名额</div></div>
         <div v-else-if="onShelf && !groupComplete && isOutTime"><div>来晚了，该团超时结束啦</div></div>
+        <div v-else-if="onShelf && groupComplete && !isOwn"><div>来晚了，该团人数已满</div></div>
         <div v-else-if="groupComplete" style="color: #13c21c;"><div>拼团成功</div></div>
         <div v-else-if="!onShelf && !groupComplete"><div>来晚了，商品售罄下架了</div></div>
       </div>
@@ -37,7 +38,7 @@
       <div class="group-lasttime three" v-else-if="!onShelf || isOutTime"><i class="iconfont">&#xe6b1;</i>已结束</div>
 
       <div class="group-tip" v-if="onShelf && !groupComplete && !isOutTime">好货手慢无，快来拼团啦~</div>
-      <div class="group-tip" v-else-if="onShelf && groupComplete">商家正在努力发货，您可以逛逛更多好货噢~</div>
+      <div class="group-tip" v-else-if="onShelf && groupComplete && isOwn">商家正在努力发货，您可以逛逛更多好货噢~</div>
       <div class="group-tip" v-else-if="!onShelf ">商品售罄，您可以再看看其他商品噢~</div>
       <div class="group-tip" v-else>您可以再开启或拼别人的团噢~</div>
       <div class="group-members">
@@ -56,16 +57,16 @@
       <div class="join-btn" v-if="isOwn && onShelf && !groupComplete && !isOutTime" @click="shareDialogFlag = true">
         分享拼团
       </div>
-      <div class="join-btn" v-if="(isOwn && !onShelf)||(isOwn && groupComplete && onShelf) " @click="$router.push('/')">
+      <div class="join-btn" v-if="(isOwn && !onShelf)||(isOwn && groupComplete && onShelf)||(!isOwn && !onShelf) " @click="$router.push('/')">
         去首页逛逛
       </div>
-      <div class="join-btn" v-if="!groupComplete && isOutTime && onShelf" @click="addCartInfo(1)">
+      <div class="join-btn" v-if="(!groupComplete && isOutTime && onShelf)||(!isOwn && groupComplete && onShelf)" @click="addCartInfo(1)">
         发起拼团
       </div>
-      <div class="know-btn" v-if="isOwn && groupComplete" @click="$router.push('/order/buyerdetail?orderNo='+orderNo)">
+      <!-- <div class="know-btn" v-if="isOwn && groupComplete" @click="$router.push('/order/buyerdetail?orderNo='+orderNo)">
         查看订单
-      </div>
-      <div class="know-btn" v-else @click="$router.push('/rules')">
+      </div> -->
+      <div class="know-btn"  @click="$router.push('/rules')">
         拼团需知
       </div>
 
@@ -261,7 +262,7 @@ export default {
         if("ON_SHELF" == this.detailData.productExtInfo.state){
           this.onShelf = true;
         }
-        this.copyShareTitle = '【仅剩'+(this.groupData.groupPurchase.groupNumber - this.groupData.groupPurchase.offerNumber)+'个名额】我超低价拼了'+this.detailData.productExtInfo.title+'，快来和我一起拼团吧'+window.location.href+'点击链接，参与拼团【来自茶帮通茶友分享】';
+        this.copyShareTitle = '【仅剩'+(this.groupData.groupPurchase.groupNumber - this.groupData.groupPurchase.offerNumber)+'个名额】我拼了'+this.detailData.productExtInfo.title+'，快来和我一起拼团吧'+window.location.href+'点击链接，参与拼团【来自茶帮通茶友分享】';
       })
       //获取为您推荐集合
       this.$api.get('/oteao/productCollection/getCollectionDetail',{
@@ -339,6 +340,8 @@ export default {
       this.$toast('复制成功')
     },
     sortTime(startTime,systemTime){
+      startTime = startTime.replace(/\-/g, "/");
+      systemTime = systemTime.replace(/\-/g, "/");
       const endTime = new Date(startTime);
       const nowTime = new Date(systemTime);
       let leftTime = parseInt((endTime.getTime()-nowTime.getTime()))+24*60*60*1000
@@ -457,7 +460,7 @@ export default {
       let shareTitle = '【仅剩'+(this.groupData.groupPurchase.groupNumber - this.groupData.groupPurchase.offerNumber)+'个名额】我超低价拼了'+this.detailData.productExtInfo.title+'，快来和我一起拼团吧'+window.location.href+'点击链接，参与拼团【来自茶帮通茶友分享】';
       let shareDesc = '雷军、李开复领投茶电商交易平台，茶帮通让茶叶买卖更轻松【茶帮通】';
       let shareLink = window.location.href;
-      let shareImg = this.detailData.productImgList[0].imgUrl;
+      let shareImg = 'https:'+this.detailData.productImgList[0].imgUrl;
         wx.ready(function(){
           wx.onMenuShareAppMessage({
               title: shareTitle, // 分享标题

@@ -165,7 +165,8 @@
         <div class="order">
             <!-- 店铺名称 是否自营 -->
             <div class="order_shop" v-if="orderDetailData.sellerOrgId == null">
-                <img src="../../assets/images/list_logo.png" /> 自营
+                <img src="../../assets/images/list_logo.png" style="position: relative; top: -0.04rem;" />
+                <span>自营</span>
             </div>
             <div class="order_shop" v-else>
                 <i class="iconfont">&#xe66d;</i> {{ orderDetailData.shopName }}
