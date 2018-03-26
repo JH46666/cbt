@@ -108,7 +108,25 @@ const router = new Router({
 					meta: {
 						hideFooter: true
 					}
-				}
+				},
+				
+				{
+					path: 'creategoods',
+					name: '如何创建商品',
+					component: resolve => require(['@/views/seller/creategoods.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+				{
+					path: 'detailspf',
+					name: '茶帮通商品详情规范',
+					component: resolve => require(['@/views/seller/detailspf.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+
 			]
 		},
 		{
