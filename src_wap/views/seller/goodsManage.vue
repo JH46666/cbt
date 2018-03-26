@@ -76,7 +76,7 @@
                             <div class="_add-tuan">
                                 <div class="_add-groupnum">{{ item.memberNum }}人团价&emsp;&nbsp;</div>
                                 <div class="price _fix-price">￥{{ toFixed(item.priceFightGroup) }}</div>
-                                <div class="_add-single-price">单卖价：￥{{ toFixed(item.proPrice) }}</div>
+                                <div class="_add-single-price">单买价：￥{{ toFixed(item.proPrice) }}</div>
                             </div>
                             <p class="time_tag" v-if="item.isSales">限时特价</p>
                         </div>

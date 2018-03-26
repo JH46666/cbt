@@ -305,8 +305,6 @@
                 >
                     复制
                 </div>
-                <!-- <input type="text" v-model="copyOrderNo" style="width: 0rem; height: 0rem;" ref="clipboardData" id="copy_text"/> -->
-                <!-- <input type="text" value="456" style="width: 0rem; height: 0rem;" ref="clipboardData" id="copy_text"/> -->
             </div>
             <div class="order_date_item" v-if="orderDetailData.createTime">
                 <span>下单时间：</span>
