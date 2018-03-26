@@ -989,7 +989,6 @@ export default {
         sortTime(startTime,systemTime){
           startTime = startTime.substr(0,10)+"T"+startTime.substr(11,8);
           systemTime = systemTime.substr(0,10)+"T"+systemTime.substr(11,8)
-          console.log(startTime)
           const endTime = new Date(startTime);
           const nowTime = new Date(systemTime);
           let leftTime = parseInt((endTime.getTime()-nowTime.getTime()))+24*60*60*1000

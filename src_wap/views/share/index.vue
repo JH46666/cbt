@@ -341,8 +341,8 @@ export default {
       this.$toast('复制成功')
     },
     sortTime(startTime,systemTime){
-      startTime = startTime.replace(/\-/g, "/");
-      systemTime = systemTime.replace(/\-/g, "/");
+      startTime = startTime.substr(0,10)+"T"+startTime.substr(11,8);
+      systemTime = systemTime.substr(0,10)+"T"+systemTime.substr(11,8)
       const endTime = new Date(startTime);
       const nowTime = new Date(systemTime);
       let leftTime = parseInt((endTime.getTime()-nowTime.getTime()))+24*60*60*1000
@@ -458,8 +458,10 @@ export default {
           signature: this.wxConfig.signature, // 必填，签名，见附录1
           jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
       });
-      let shareTitle = '【仅剩'+(this.groupData.groupPurchase.groupNumber - this.groupData.groupPurchase.offerNumber)+'个名额】我拼了'+this.detailData.productExtInfo.title+'，快来和我一起拼团吧'+window.location.href+'点击链接，参与拼团【来自茶帮通茶友分享】';
-      let shareDesc = '雷军、李开复领投茶电商交易平台，茶帮通让茶叶买卖更轻松【茶帮通】';
+      // let shareTitle = '【仅剩'+(this.groupData.groupPurchase.groupNumber - this.groupData.groupPurchase.offerNumber)+'个名额】我拼了'+this.detailData.productExtInfo.title+'，快来和我一起拼团吧'+window.location.href+'点击链接，参与拼团【来自茶帮通茶友分享】';
+      // let shareDesc = '雷军、李开复领投茶电商交易平台，茶帮通让茶叶买卖更轻松【茶帮通】';
+      let shareTitle = '茶帮通';
+      let shareDesc = '茶帮通';
       let shareLink = window.location.href;
       let shareImg = 'https:'+this.detailData.productImgList[0].imgUrl;
         wx.ready(function(){
