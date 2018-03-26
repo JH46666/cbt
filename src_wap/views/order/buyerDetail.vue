@@ -104,6 +104,8 @@
                 <div v-else-if="!orderDetailData.isComment && orderDetailData.orderStatus === 'FINISH'"><img src="../../assets/images/order_1.png" />待评价</div>
                 <!-- 取消 -->
                 <div v-else-if="orderDetailData.orderStatus === 'CANCEL'"><img src="../../assets/images/order_6.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
+                <!-- 关闭 -->
+                <div v-else-if="orderDetailData.orderStatus === 'CLOSE' && orderDetailData.groupSuccess == 3"><img src="../../assets/images/order_6.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                 <!-- 关闭，未成团 -->
                 <div v-else-if="orderDetailData.orderStatus === 'CLOSE' && orderDetailData.groupSuccess == 2"  style="width: 100%; display: block; position: relative;">
                     <div><img src="../../assets/images/cbt_icddxqqx.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
