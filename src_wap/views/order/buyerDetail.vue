@@ -100,10 +100,54 @@
                 </div>
                 <!-- 待付款 -->
                 <div v-else-if="orderDetailData.orderStatus === 'WAIT_PAY'"><img src="../../assets/images/order_4.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
-                <!-- 已评价 -->
-                <div v-else-if="orderDetailData.orderStatus === 'FINISH' && orderDetailData.isComment"><img src="../../assets/images/order_1.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
-                <!-- 待评价 -->
-                <div v-else-if="!orderDetailData.isComment && orderDetailData.orderStatus === 'FINISH'"><img src="../../assets/images/order_1.png" />待评价</div>
+                <!-- 已评价，未成团 -->
+                <div v-else-if="orderDetailData.orderStatus === 'FINISH' && orderDetailData.isComment  && orderDetailData.groupSuccess == 3"><img src="../../assets/images/order_1.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
+                <!-- 已评价，已成团 -->
+                <div v-else-if="orderDetailData.orderStatus === 'FINISH' && orderDetailData.isComment  && orderDetailData.groupSuccess == 1">
+                    <div><img src="../../assets/images/order_1.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
+                    <div class="groupping-member-info">
+                        <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key=index>
+                            <div style="color: #fff; font-size: 0.50rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
+                            <!-- <img src="../../assets/images/p.gif" alt=""> -->
+                            <img :src=item.memberFace alt="" v-if="item.memberFace">
+                            <div class="master-face" v-if="index == 0">
+                                团长
+                            </div>
+                        </div>
+                        <template v-if="grouppingMemberInfo.length < 5">
+                            <div class="groupping-member-icon" :key=index v-for="n in (grouppingInfo.groupNumber - grouppingInfo.offerNumber)">
+                                <img src="../../assets/images/cbt_icwctportrait.png" alt="">
+                            </div>
+                        </template>
+                    </div>
+                    <div>
+                        <img src="../../assets/images/cbt_xqptcg.png" alt="" style="width: 1.00rem; height: 1.00rem; position: absolute; right: 0rem; top: 0rem">
+                    </div>
+                </div>
+                <!-- 待评价，未成团 -->
+                <div v-else-if="!orderDetailData.isComment && orderDetailData.orderStatus === 'FINISH' && orderDetailData.groupSuccess == 3"><img src="../../assets/images/order_1.png" />待评价</div>
+                <!-- 待评价，已成团 -->
+                <div v-else-if="!orderDetailData.isComment && orderDetailData.orderStatus === 'FINISH' && orderDetailData.groupSuccess == 1">
+                    <div><img src="../../assets/images/order_1.png" />待评价</div>
+                    <div class="groupping-member-info">
+                        <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key=index>
+                            <div style="color: #fff; font-size: 0.50rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
+                            <!-- <img src="../../assets/images/p.gif" alt=""> -->
+                            <img :src=item.memberFace alt="" v-if="item.memberFace">
+                            <div class="master-face" v-if="index == 0">
+                                团长
+                            </div>
+                        </div>
+                        <template v-if="grouppingMemberInfo.length < 5">
+                            <div class="groupping-member-icon" :key=index v-for="n in (grouppingInfo.groupNumber - grouppingInfo.offerNumber)">
+                                <img src="../../assets/images/cbt_icwctportrait.png" alt="">
+                            </div>
+                        </template>
+                    </div>
+                    <div>
+                        <img src="../../assets/images/cbt_xqptcg.png" alt="" style="width: 1.00rem; height: 1.00rem; position: absolute; right: 0rem; top: 0rem">
+                    </div>
+                </div>
                 <!-- 取消 -->
                 <div v-else-if="orderDetailData.orderStatus === 'CANCEL'"><img src="../../assets/images/order_6.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                 <!-- 关闭 -->
@@ -785,8 +829,8 @@ export default {
         },
         // 计算剩余时间
         sortTime(startTime, systemTime) {
-            startTime = startTime.replace(/\-/g, "/");
-            systemTime = systemTime.replace(/\-/g, "/");
+            startTime = startTime.substr(0, 10) + "T" + startTime.substr(11, 8);
+            systemTime = systemTime.substr(0, 10) + "T" + systemTime.substr(11, 8)
             const endTime = new Date(startTime);
             const nowTime = new Date(systemTime);
             let leftTime = parseInt((endTime.getTime() - nowTime.getTime())) + 24 * 60 * 60 * 1000

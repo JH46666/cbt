@@ -78,16 +78,16 @@
                 <img src="../../assets/images/loading3.gif" height="20" width="20" slot="icon" :class="{on: loading2 && flag}"> 保存并上架
             </mt-button>
         </div>
+        <!-- 底部空白 -->
+        <div class="bottom-blank" style="background-color: #fff"></div>
         <!-- 预览大图 -->
-        <div>
-            <div class="popup suc_popup _add-preview" v-if="previewFlag">
-                <div class="preview-inner">
-                    <div class="preview-img">
-                        <img :src="previewImgSrc" alt="">
-                    </div>
-                    <div class="preview-close-btn" @click="closePreviewBtn">
-                        <i class="iconfont icon-danchuangguanbianniu"></i>
-                    </div>
+        <div class="popup suc_popup _add-preview" v-if="previewFlag">
+            <div class="preview-inner">
+                <div class="preview-img">
+                    <img :src="previewImgSrc" alt="">
+                </div>
+                <div class="preview-close-btn" @click="closePreviewBtn">
+                    <i class="iconfont icon-danchuangguanbianniu"></i>
                 </div>
             </div>
         </div>
@@ -157,11 +157,21 @@
                 } else {
                     return true;
                 }
-            }
+            },
         },
         created() {
             // 设置title
             this.$store.commit('SET_TITLE', '商品修改');
+        },
+        mounted(){
+            // 获取手机屏幕高度
+            var clientH = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+            var bottomBlank = $('.bottom-blank').eq(0);
+            // console.log('H:', clientH);
+            // console.log(bottomBlank.offset().top);
+            bottomBlank.css({
+                height: clientH - this.bottomBlank.offset().top
+            });
         },
         methods: {
             random_string(len) {
