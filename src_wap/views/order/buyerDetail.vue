@@ -3,7 +3,7 @@
         <div class="detail_type" :class="{'height2': height2}">
             <div class="type" :class="{'width100': width100}">
                 <!-- 拼团中 -->
-                <div v-if="orderDetailData.groupSuccess === 2" class="groupping">
+                <div v-if="orderDetailData.groupSuccess === 2 && orderDetailData.orderStatus !== 'CANCEL'" class="groupping">
                     <div style="position: relative;">
                         <div><img src="../../assets/images/cbt_icddxqpt.png" />
                         拼团中,差<span style="color: #f08200">{{ grouppingInfo.groupNumber - grouppingInfo.offerNumber }}</span>人
@@ -105,7 +105,7 @@
                 <!-- 取消 -->
                 <div v-else-if="orderDetailData.orderStatus === 'CANCEL'"><img src="../../assets/images/order_6.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                 <!-- 关闭，未成团 -->
-                <div v-else-if="orderDetailData.orderStatus === 'CANCEL' && orderDetailData.groupSuccess == 2"  style="width: 100%; display: block; position: relative;">
+                <div v-else-if="orderDetailData.orderStatus === 'CLOSE' && orderDetailData.groupSuccess == 2"  style="width: 100%; display: block; position: relative;">
                     <div><img src="../../assets/images/cbt_icddxqqx.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                     <div class="groupping-member-info">
                         <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key=index>
@@ -124,6 +124,28 @@
                     </div>
                     <div>
                         <img src="../../assets/images/cbt_xqptsb.png" alt="" style="width: 1.00rem; height: 1.00rem; position: absolute; right: 0rem; top: 0rem">
+                    </div>
+                </div>
+                <!-- 关闭，已成团 -->
+                <div v-else-if="orderDetailData.orderStatus === 'CLOSE' && orderDetailData.groupSuccess == 1"  style="width: 100%; display: block; position: relative;">
+                    <div><img src="../../assets/images/cbt_icddxqqx.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
+                    <div class="groupping-member-info">
+                        <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key=index>
+                            <div style="color: #fff; font-size: 0.50rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
+                            <!-- <img src="../../assets/images/p.gif" alt=""> -->
+                            <img :src=item.memberFace alt="" v-if="item.memberFace">
+                            <div class="master-face" v-if="index == 0">
+                                团长
+                            </div>
+                        </div>
+                        <template v-if="grouppingMemberInfo.length < 5">
+                            <div class="groupping-member-icon" :key=index v-for="n in (grouppingInfo.groupNumber - grouppingInfo.offerNumber)">
+                                <img src="../../assets/images/cbt_icwctportrait.png" alt="">
+                            </div>
+                        </template>
+                    </div>
+                    <div>
+                        <img src="../../assets/images/cbt_xqptcg.png" alt="" style="width: 1.00rem; height: 1.00rem; position: absolute; right: 0rem; top: 0rem">
                     </div>
                 </div>
             </div>
@@ -1133,12 +1155,16 @@ export default {
             else if (this.orderDetailData.orderStatus === 'PAY_WAIT_AUDIT' && this.orderDetailData.groupSuccess == 1) return true;
             else if (this.orderDetailData.orderStatus === 'DELIVERED' && this.orderDetailData.groupSuccess == 1) return true;
             else if (this.orderDetailData.orderStatus === 'PACKING' && this.orderDetailData.groupSuccess != 2) return true;
+            else if(this.orderDetailData.orderStatus === 'CLOSE' && this.orderDetailData.groupSuccess == 2) return true;
+            else if(this.orderDetailData.orderStatus === 'CLOSE' && this.orderDetailData.groupSuccess == 1) return true;
         },
         width100() {
             if (this.orderDetailData.groupSuccess === 2) return true;
             else if (this.orderDetailData.orderStatus === 'PAY_WAIT_AUDIT' && this.orderDetailData.groupSuccess == 1) return true;
             else if (this.orderDetailData.orderStatus === 'DELIVERED' && this.orderDetailData.groupSuccess == 1) return true;
             else if (this.orderDetailData.orderStatus === 'PACKING' && this.orderDetailData.groupSuccess != 2) return true;
+            else if(this.orderDetailData.orderStatus === 'CLOSE' && this.orderDetailData.groupSuccess == 2) return true;
+            else if(this.orderDetailData.orderStatus === 'CLOSE' && this.orderDetailData.groupSuccess == 1) return true;
         }
     },
     watch: {
