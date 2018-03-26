@@ -540,7 +540,7 @@
                 return new Promise((resolve,reject) => {
                     this.$store.dispatch('queryCart',{}).then(res=>{
                         let list = res.data.oteaoCart;
-                        
+
                         // 保留之前勾选状态
                         if(beforeCheck) {
                             let before = this.getProsku();
