@@ -168,13 +168,27 @@
                 <div class="suggest_item" v-for="(item,index) in listData" :key="index" @click="$router.push({name: '商品详情',query:{proSku: item.proSku}})">
                     <div class="sugget_img"><img :src="item.proImg" /></div>
                     <p class="suggest_text">{{ item.proName }}</p>
-                    <p class="seggest_resaon">{{ item.subTitle }}</p>
+                    <div class="product-price">
+                        <template  v-if="!$tool.isLogin()">
+                            <div class="off_shelf_tips">
+                                ￥{{item.hidePriceGroups}}
+                            </div>
+                            <div class="detail_suggest_price">￥{{ item.marketPrice | toFix2 }}</div>
+                        </template>
+                        <template v-else>
+                            <div class="detail_now_price">
+                                ￥{{item.priceGroups | toFix2  }}
+                            </div>
+                            <div class="detail_suggest_price">￥{{ item.marketPrice | toFix2 }}</div>
+                        </template>
+                    </div>
+                    <!-- <p class="seggest_resaon">{{ item.subTitle }}</p>
                     <div class="suggest_type">
                         <span v-if="!$tool.isLogin()">询价</span>
                         <span v-else>￥{{ item.priceGroups | toFix2 }}</span>
-                        <!-- <span v-if="item.businessType === 'SELF_SALES'">自营</span> -->
+                        <span v-if="item.businessType === 'SELF_SALES'">自营</span>
                         <span :class="{'on':item.tagNum <= 4}">{{ sellerType[item.tagNum-1] }}</span>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
