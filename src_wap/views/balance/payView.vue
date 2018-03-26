@@ -112,13 +112,13 @@
                           <div class="off_shelf_tips">
                               ￥{{item.hidePriceGroups}}
                           </div>
-                          <div class="detail_suggest_price">￥{{ item.proPrice | toFix2 }}</div>
+                          <div class="detail_suggest_price">￥{{ item.marketPrice | toFix2 }}</div>
                       </template>
                       <template v-else>
                           <div class="detail_now_price">
                               ￥{{item.priceGroups | toFix2  }}
                           </div>
-                          <div class="detail_suggest_price">￥{{ item.proPrice | toFix2 }}</div>
+                          <div class="detail_suggest_price">￥{{ item.marketPrice | toFix2 }}</div>
                       </template>
                     </div>
                 </div>
