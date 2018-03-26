@@ -18,7 +18,7 @@
                     <i class="icon-zhifuchenggong"></i>支付成功
                 </div>
                 <div class="success-btn-wrap">
-                    <mt-button type="default" @click="$router.push('/order/buyerlist?orderStatus=null')">查看订单</mt-button>
+                    <mt-button type="default" @click="$router.push('/order/buyerdetail?orderNo='+myData.orderInfo.orderNo)">查看订单</mt-button>
                 </div>
               </template>
               <template v-if="myData.payOrder.groupType!=0">
