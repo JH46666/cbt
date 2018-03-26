@@ -391,11 +391,11 @@
                 let kefuName = "茶帮通客服";
                 let addId = 1;
                 let _this = this;
-                if (this.shopInfo.orgId) {
-                    kefuName = this.shopInfo.shopName;
-                    addId = this.shopInfo.orgId+'_1';
+                if (this.myData.member.memberId) {
+                    kefuName = this.myData.member.nickName;
+                    addId = this.myData.member.memberId+'_1';
                 }
-                this.$http.get(`/erp/layim/addFriend?friend=${addId}&userId=${selfId}`).then(res => {
+                this.$http.get(`/erp/layim/addFriendByMember?friend=${addId}&userId=${selfId}`).then(res => {
                     let friendId = res.data.data;
                     if (friendId == selfId) {
                         Toast({
