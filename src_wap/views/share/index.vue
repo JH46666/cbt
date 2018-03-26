@@ -32,11 +32,13 @@
         <div v-else-if="groupComplete" style="color: #13c21c;"><div>拼团成功</div></div>
         <div v-else-if="!onShelf && !groupComplete"><div>来晚了，商品售罄下架了</div></div>
       </div>
-      <div class="group-lasttime" v-if="onShelf && !groupComplete && !isOutTime">{{formateDate(leftTime)}}后结束</div>
-      <div class="group-lasttime" v-else-if="groupComplete">此团满员啦</div>
-      <div class="group-lasttime" v-else-if="!onShelf || isOutTime">已结束</div>
+      <div class="group-lasttime one" v-if="onShelf && !groupComplete && !isOutTime"><i class="iconfont">&#xe6b1;</i>{{formateDate(leftTime)}}后结束</div>
+      <div class="group-lasttime two" v-else-if="groupComplete"><i class="iconfont">&#xe6b0;</i>此团满员啦</div>
+      <div class="group-lasttime three" v-else-if="!onShelf || isOutTime"><i class="iconfont">&#xe6b1;</i>已结束</div>
 
       <div class="group-tip" v-if="onShelf && !groupComplete && !isOutTime">好货手慢无，快来拼团啦~</div>
+      <div class="group-tip" v-else-if="onShelf && groupComplete">商家正在努力发货，您可以逛逛更多好货噢~</div>
+      <div class="group-tip" v-else-if="!onShelf ">商品售罄，您可以再看看其他商品噢~</div>
       <div class="group-tip" v-else>您可以再开启或拼别人的团噢~</div>
       <div class="group-members">
         <div v-for="(item,index) in groupData.groupPurchaseDetails">
@@ -61,9 +63,9 @@
         发起拼团
       </div>
       <div class="know-btn" v-if="isOwn && groupComplete" @click="$router.push('/order/buyerdetail?orderNo='+orderNo)">
-        查看订单详情
+        查看订单
       </div>
-      <div class="know-btn" v-else>
+      <div class="know-btn" v-else @click="$router.push('/rules')">
         拼团需知
       </div>
 
@@ -108,13 +110,13 @@
                       <div class="off_shelf_tips">
                           ￥{{item.hidePriceGroups}}
                       </div>
-                      <div class="detail_suggest_price">￥{{ item.proPrice | toFix2 }}</div>
+                      <div class="detail_suggest_price">￥{{ item.marketPrice | toFix2 }}</div>
                   </template>
                   <template v-else>
                       <div class="detail_now_price">
                           ￥{{item.priceGroups | toFix2  }}
                       </div>
-                      <div class="detail_suggest_price">￥{{ item.proPrice | toFix2 }}</div>
+                      <div class="detail_suggest_price">￥{{ item.marketPrice | toFix2 }}</div>
                   </template>
                 </div>
             </div>
@@ -254,10 +256,11 @@ export default {
         for(let item of this.groupData.groupPurchaseDetails){
           if(item.memberId==this.loginId){
             this.isOwn = true;
-            return;
           }
         }
-        if("ON_SHELF" == this.detailData.productExtInfo.state)this.onShelf = true;
+        if("ON_SHELF" == this.detailData.productExtInfo.state){
+          this.onShelf = true;
+        }
         this.copyShareTitle = '【仅剩'+(this.groupData.groupPurchase.groupNumber - this.groupData.groupPurchase.offerNumber)+'个名额】我超低价拼了'+this.detailData.productExtInfo.title+'，快来和我一起拼团吧'+window.location.href+'点击链接，参与拼团【来自茶帮通茶友分享】';
       })
       //获取为您推荐集合
@@ -269,9 +272,11 @@ export default {
           this.listData = res.data.proExtInfoVoList;
       })
     })
-    this.getOrderList(this.orderId).then((res) =>{
-        this.orderNo = res.data.mainOrder.mainrNo;
-    });
+    if(this.isOwn){
+      this.getOrderList(this.orderId).then((res) =>{
+          this.orderNo = res.data.mainOrder.mainrNo;
+      });
+    }
   },
   methods: {
     searchGroup(){
@@ -330,7 +335,7 @@ export default {
             return `0${time}`
         }
     },
-    onCopy(){
+    onCopy(e){
       this.$toast('复制成功')
     },
     sortTime(startTime,systemTime){
@@ -540,7 +545,7 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
-        ._add-left{          
+        ._add-left{
                 width: 0.74rem;
                 height: 0.02rem;
                 align-self: center;
@@ -554,7 +559,7 @@ export default {
                 width: 0.10rem;
                 height: 0.10rem;
                 position: absolute;
-                right: -0.12rem; 
+                right: -0.12rem;
                 display: flex;
                 align-self: center;
                 transform: rotateZ(45deg);
@@ -575,7 +580,7 @@ export default {
                 width: 0.10rem;
                 height: 0.10rem;
                 position: absolute;
-                left: -0.12rem; 
+                left: -0.12rem;
                 display: flex;
                 align-self: center;
                 transform: rotateZ(45deg);

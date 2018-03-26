@@ -272,6 +272,7 @@
                     this.setSubCat(this.activeSubIndex,this.activeSubId);
                     this.sortData[0].sortIndex = sortIndex;
                     this.clearSession();
+                    this.searchResult();
                 });
             }else{
                 this.$api.get('/oteao/proCat/queryCatTree',{sysId: 1},res=>{

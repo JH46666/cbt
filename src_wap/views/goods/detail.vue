@@ -178,7 +178,7 @@
             <div class="groupbuy-explain">
                 <div class="title">
                     <div>拼团玩法</div>
-                    <div>拼团需知<i class="icon-icon07"></i></div>
+                    <div @click="$router.push('/rules')">拼团需知<i class="icon-icon07"></i></div>
                 </div>
                 <div class="groupbuy-content-ts">
                     支付开团，人数不足24h自动退款
