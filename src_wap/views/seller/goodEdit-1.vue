@@ -778,7 +778,7 @@
                     this.resize.form.goodsGroup = parseFloat(this.detailObj.productPrice[2].price).toFixed(2);      // 团购价
                     this.resize.form.goodsGroupNum = this.detailObj.productInfo.memberNum;                          // 团购人数
                     this.resize.form.goodTypes = this.detailObj.productInfo.catName;                                // 分类
-                    this.resize.form.goodsSell = this.detailObj.productExtInfo.subTitle;                            // 商品卖点
+                    this.resize.form.goodsSell = this.detailObj.productExtInfo.title;                            // 商品卖点
                     this.resize.form.goodsKc = this.detailObj.productExtInfo.stockNum;                              // 库存
                     // this.resize.defaultArray[0].content = this.detailObj.productExtInfo.fragrance;
                     // for (let i = 0; i < this.resize.defaultArray[0].prop.length; i++) {
@@ -1032,7 +1032,7 @@
             flex: unset!important;
             ._add-type_1 {
                 display: flex;
-                justify-content: space-between;
+                /* justify-content: space-between; */
                 ._add-type_item {
                     width: 1.40rem!important;
                     margin: 0rem!important;

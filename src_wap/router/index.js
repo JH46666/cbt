@@ -508,6 +508,14 @@ const router = new Router({
 						hideFooter: true
 					}
 				},
+				{
+					path: 'myMessage',
+					name: '我的消息',
+					component: resolve => require(['@/views/seller/message.vue'], resolve),
+					meta: {
+						hideFooter: true
+					}
+				}
 			]
 		},
 		{
