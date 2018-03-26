@@ -88,7 +88,7 @@
                                 <div class="detail_type" :class="{'green':detailData.orgShopCenterVo&&detailData.orgShopCenterVo.shopType<=4}">
                                     {{ detailData.orgShopCenterVo ? businessName[detailData.orgShopCenterVo.shopType - 1] : businessName[4] }}
                                 </div>
-                                <div>{{ detailData.productExtInfo.title }}</div>
+                                <div class="detail-goods-title">{{ detailData.productExtInfo.title }}</div>
                             </div>
                             <div class="detail_price">
                                 <div class="detail-groupnum">
