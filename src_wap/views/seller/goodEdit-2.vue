@@ -73,7 +73,7 @@
                 <img src="../../assets/images/loading3.gif" height="20" width="20" slot="icon" :class="{on: loading1 && !flag}"> 保存
             </mt-button>
         </div>
-        <div class="save-rackup" v-if="$route.query.state == OFF_SHELF">
+        <div class="save-rackup" v-if="$route.query.state == 'OFF_SHELF'">
             <mt-button type="primary" :disabled="disabledBol || loading2" @click="saveMethod('1')">
                 <img src="../../assets/images/loading3.gif" height="20" width="20" slot="icon" :class="{on: loading2 && flag}"> 保存并上架
             </mt-button>
