@@ -320,9 +320,11 @@
             },
             // 计算剩余时间
             sortTime(startTime, systemTime) {
+                startTime = startTime.replace(/\-/g, "/");
+                systemTime = systemTime.replace(/\-/g, "/");
                 const endTime = new Date(startTime);
                 const nowTime = new Date(systemTime);
-                let leftTime = parseInt((endTime.getTime() - nowTime.getTime())) + 24 * 60 * 60 * 1000;
+                let leftTime = parseInt((endTime.getTime() - nowTime.getTime())) + 24 * 60 * 60 * 1000
                 return leftTime;
             },
             // 格式化时间
