@@ -57,7 +57,7 @@
                                         :mainTit="item.proTitle"
                                         :subTit="item.subTitle"
                                         :price="item.priceGroups"
-                                        :garyPrice="item.proPrice"
+                                        :garyPrice="item.marketPrice"
                                         :hideGroupsPrice="item.hidePriceGroups"
                                         :salesPrice="item.salesPrice"
                                         :unit="item.unint"
@@ -499,7 +499,8 @@
                     sysId: 1,
                     propertiesValList: propValList,
                     minSupplyPrice:this.minSupplyPrice,
-                    maxSupplyPrice:this.maxSupplyPrice
+                    maxSupplyPrice:this.maxSupplyPrice,
+                    priceType:487
                 }
                 this.$api.post(`/oteao/productInfo/seachProduct?page.pageNumber=${this.pageNumber}&page.pageSize=${this.pageSize}`,JSON.stringify(data),res=>{
                     if(!res.data.length){
