@@ -160,8 +160,9 @@
         .suggest_content{
             width: 100%;
             .fontSize(0);
+            overflow: hidden;
             .suggest_item{
-                display: inline-block;
+                float: left;
                 width: 50%;
                 height: 5.4rem;
                 padding: 0 .3rem;
@@ -226,6 +227,9 @@
                       text-decoration: line-through;
                   }
                 }
+            }
+            .suggest_item:nth-child(2n+1) {
+                border-right: 1px solid #e5e5e5;
             }
         }
     }
