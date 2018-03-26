@@ -332,7 +332,8 @@
             </div>
         </div>
         <!-- 底部按钮 -->
-        <div class="order_btn"  v-if="orderListDetail.mainOrder != null && orderListDetail.subOrder == null">
+        <!-- <div class="order_btn"  v-if="orderListDetail.mainOrder != null && orderListDetail.subOrder == null"> -->
+        <div class="order_btn">
             <!-- 待付款 -->
             <template v-if="orderDetailData.orderStatus === 'WAIT_PAY'">
                 <mt-button plain class="pay_now" @click.native="payMethod(orderDetailData.payId)">
@@ -363,8 +364,14 @@
                     退款
                 </mt-button>
             </template>
+            <!-- 支付成功、待审核（单独购买） -->
+            <template v-if="orderDetailData.orderStatus === 'PAY_WAIT_AUDIT' && orderDetailData.groupSuccess == '3'">
+                <mt-button plain @click.native="refund(orderDetailData)">
+                    退款
+                </mt-button>
+            </template>
             <!-- 打包中（自营） -->
-            <template v-if="!orderDetailData.shopName && orderDetailData.orderStatus == 'PACKING'">
+            <template v-if="orderDetailData.unitName && orderDetailData.orderStatus == 'PACKING'">
                 <mt-button plain @click.native="refund(orderDetailData)">
                     退款
                 </mt-button>
@@ -489,7 +496,6 @@ export default {
                 orgId: ''
             },
             isThirdShop: '',                            // 茶帮通或者第三方
-            copyOrderNo: '',
         }
     },
     head: {
@@ -595,6 +601,7 @@ export default {
         cancelMethod(obj, str) {
            if(str =="groupping"){
                 this.popupTipsFlag = true;
+                this.cancelTipsFlag = true;
             }
             else{
                 this.closeUp = true;
