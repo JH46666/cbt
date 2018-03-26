@@ -622,7 +622,7 @@
                     })
 
                 }else{
-                    Toast('请输入正确的数值')
+                    this.$toast('请输入正确的数值')
                     item.buyNum = item.buyLowLimit || 1;
                 }
             }
