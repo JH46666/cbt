@@ -171,7 +171,7 @@
                     <p class="seggest_resaon">{{ item.subTitle }}</p>
                     <div class="suggest_type">
                         <span v-if="!$tool.isLogin()">询价</span>
-                        <span v-else>￥{{ item.proPrice | toFix2 }}</span>
+                        <span v-else>￥{{ item.priceGroups | toFix2 }}</span>
                         <!-- <span v-if="item.businessType === 'SELF_SALES'">自营</span> -->
                         <span :class="{'on':item.tagNum <= 4}">{{ sellerType[item.tagNum-1] }}</span>
                     </div>
