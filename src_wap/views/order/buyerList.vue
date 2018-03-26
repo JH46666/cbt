@@ -242,7 +242,7 @@ export default {
             grouppingLeftTime: {},                // 团购剩余时间
             leftTimeList:[],                      // 团购剩余时间，无格式
             popupTipsFlag: false,                 // 弹窗
-            cancelTipsFlag: false,                // 取消订单弹窗   
+            cancelTipsFlag: false,                // 取消订单弹窗
             refundTipsFlag: false,                // 退款弹窗
             isThirdShop: '',                      // 茶帮通或者第三方
         }
@@ -483,7 +483,7 @@ export default {
                     }
                 // }).then((res)=>{
                     // this.timeOut();
-                // });  
+                // });
             })
             this.noInfinity = false;
         },
@@ -510,7 +510,7 @@ export default {
                 this.selectClass = 0;
             }
             return new Promise((resolve, reject) => {
-                this.$api.post('/oteao/order/preOrderList', data, res => {               
+                this.$api.post('/oteao/order/preOrderList', data, res => {
                     resolve(res);
                 }, res => {
                     return Toast({

@@ -817,7 +817,7 @@ export default {
                     this.groupIndex = index;
                   }else{
                     Toast({
-                        message: '此团满员啦',
+                        message: '该团拼满啦，看看别的团吧~',
                         iconClass: 'icon icon-fail'
                     });
                   }
@@ -987,8 +987,8 @@ export default {
 
         },
         sortTime(startTime,systemTime){
-          startTime = startTime.replace(/\-/g, "/");
-          systemTime = systemTime.replace(/\-/g, "/");
+          startTime = startTime.substr(0,10)+"T"+startTime.substr(11,8);
+          systemTime = systemTime.substr(0,10)+"T"+systemTime.substr(11,8)
           const endTime = new Date(startTime);
           const nowTime = new Date(systemTime);
           let leftTime = parseInt((endTime.getTime()-nowTime.getTime()))+24*60*60*1000
