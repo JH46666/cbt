@@ -443,7 +443,7 @@ export default {
           jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
       });
       let shareTitle = '【仅剩'+(this.groupData.groupPurchase.groupNumber - this.groupData.groupPurchase.offerNumber)+'个名额】我超低价拼了'+this.detailData.productExtInfo.title+'，快来和我一起拼团吧'+window.location.href+'点击链接，参与拼团【来自茶帮通茶友分享】';
-      let shareDesc = '雷军、李开复领投茶电商交易平台，茶帮通让茶叶买卖更轻松。';
+      let shareDesc = '雷军、李开复领投茶电商交易平台，茶帮通让茶叶买卖更轻松【茶帮通】';
       let shareLink = window.location.href;
       let shareImg = this.detailData.productImgList[0].imgUrl;
         wx.ready(function(){
