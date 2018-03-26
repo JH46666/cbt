@@ -489,7 +489,6 @@ export default {
                 orgId: ''
             },
             isThirdShop: '',                            // 茶帮通或者第三方
-            copyOrderNo: '',
         }
     },
     head: {
@@ -595,6 +594,7 @@ export default {
         cancelMethod(obj, str) {
            if(str =="groupping"){
                 this.popupTipsFlag = true;
+                this.cancelTipsFlag = true;
             }
             else{
                 this.closeUp = true;
