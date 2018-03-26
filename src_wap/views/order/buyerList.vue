@@ -128,9 +128,12 @@
                                         class="pay_now" @click.native="confrimMethod(item.orderNo)">
                                         确认收货
                                     </mt-button>
-                                    <mt-button plain v-if="(item.orderStatus === 'DELIVERED' || item.orderStatus === 'CBT_BUYER') && item.sellerOrgId==null && item.subOrderSize == 1"
+                                    <mt-button plain v-if="(item.orderStatus === 'DELIVERED' || item.orderStatus === 'CBT_BUYER') && item.sellerOrgId==null && item.subOrderSize >= 1"
                                         class="pay_now" @click.native="confrimMethodsMoreChild(item.subOrderNo,item.orderNo)">
                                         确认收货
+                                    </mt-button>
+                                    <mt-button plain v-if="(item.orderStatus === 'DELIVERED' || item.orderStatus === 'CBT_BUYER')" @click.native="refund(item)">
+                                        退款
                                     </mt-button>
                                 </template>
                                 <!-- 完成（未评价） -->
