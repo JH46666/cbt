@@ -1103,7 +1103,7 @@ export default {
             let _this = this;
             if(this.detailData.productInfo.orgId){
                 kefuName = this.detailData.orgShopCenterVo.shopName;
-                addId = this.detailData.productInfo.orgId;
+                addId = this.detailData.productInfo.orgId+'_2';
             }
            this.$http.get(`/erp/layim/addFriend?friend=${addId}&userId=${selfId}`).then(res=>{
                let friendId = res.data.data;
@@ -1390,7 +1390,7 @@ export default {
        openKfDialog() {
         //    this.showOrHide = true;
             store.dispatch('getMemberData').then((res) => {
-                let data = {username: store.state.member.member.id,password: store.state.member.member.id};
+                let data = {username: store.state.member.member.id+'_1',password: store.state.member.member.id+'_1'};
                 let ret = '';
                 for (let it in data) {
                     ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&';
