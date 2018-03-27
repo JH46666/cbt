@@ -3,7 +3,7 @@
         <div class="detail_type" :class="{'height2': height2}">
             <div class="type" :class="{'width100': width100}">
                 <!-- 拼团中 -->
-                <div v-if="orderDetailData.groupSuccess === 2 && orderDetailData.orderStatus !== 'CANCEL'" class="groupping">
+                <div v-if="orderDetailData.groupSuccess === 2 && orderDetailData.orderStatus !== 'CANCEL' && orderDetailData.orderStatus !== 'CLOSE'" class="groupping">
                     <div style="position: relative;">
                         <div><img src="../../assets/images/cbt_icddxqpt.png" />
                         拼团中,差<span style="color: #f08200">{{ grouppingInfo.groupNumber - grouppingInfo.offerNumber }}</span>人
@@ -16,7 +16,7 @@
                     <!-- 拼团成员头像 -->
                     <div class="groupping-member-info">
                         <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key=index>
-                            <div style="color: #fff; font-size: 0.50rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
+                            <div style="color: #fff; font-size: 0.28rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
                             <!-- <img src="../../assets/images/p.gif" alt=""> -->
                             <img :src=item.memberFace alt="" v-if="item.memberFace">
                             <div class="master-face" v-if="index == 0">
@@ -38,7 +38,7 @@
                     <!-- 拼团成员头像 -->
                     <div class="groupping-member-info">
                         <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key=index>
-                            <div style="color: #fff; font-size: 0.50rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
+                            <div style="color: #fff; font-size: 0.28rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
                             <img :src=item.memberFace alt="" v-if="item.memberFace">
                             <div class="master-face" v-if="index == 0">
                                 团长
@@ -61,7 +61,7 @@
                     <div><img src="../../assets/images/order_3.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                     <div class="groupping-member-info">
                         <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key=index>
-                            <div style="color: #fff; font-size: 0.50rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
+                            <div style="color: #fff; font-size: 0.28rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
                             <!-- <img src="../../assets/images/p.gif" alt=""> -->
                             <img :src=item.memberFace alt="" v-if="item.memberFace">
                             <div class="master-face" v-if="index == 0">
@@ -83,7 +83,7 @@
                     <div><img src="../../assets/images/order_2.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                     <div class="groupping-member-info">
                         <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key=index>
-                            <div style="color: #fff; font-size: 0.50rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
+                            <div style="color: #fff; font-size: 0.28rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
                             <!-- <img src="../../assets/images/p.gif" alt=""> -->
                             <img :src=item.memberFace alt="" v-if="item.memberFace">
                             <div class="master-face" v-if="index == 0">
@@ -107,7 +107,7 @@
                     <div><img src="../../assets/images/order_1.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                     <div class="groupping-member-info">
                         <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key=index>
-                            <div style="color: #fff; font-size: 0.50rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
+                            <div style="color: #fff; font-size: 0.28rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
                             <!-- <img src="../../assets/images/p.gif" alt=""> -->
                             <img :src=item.memberFace alt="" v-if="item.memberFace">
                             <div class="master-face" v-if="index == 0">
@@ -131,7 +131,7 @@
                     <div><img src="../../assets/images/order_1.png" />待评价</div>
                     <div class="groupping-member-info">
                         <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key=index>
-                            <div style="color: #fff; font-size: 0.50rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
+                            <div style="color: #fff; font-size: 0.28rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
                             <!-- <img src="../../assets/images/p.gif" alt=""> -->
                             <img :src=item.memberFace alt="" v-if="item.memberFace">
                             <div class="master-face" v-if="index == 0">
@@ -157,7 +157,7 @@
                     <div><img src="../../assets/images/cbt_icddxqqx.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                     <div class="groupping-member-info">
                         <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key=index>
-                            <div style="color: #fff; font-size: 0.50rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
+                            <div style="color: #fff; font-size: 0.28rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
                             <!-- <img src="../../assets/images/p.gif" alt=""> -->
                             <img :src=item.memberFace alt="" v-if="item.memberFace">
                             <div class="master-face" v-if="index == 0">
@@ -179,7 +179,7 @@
                     <div><img src="../../assets/images/cbt_icddxqqx.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                     <div class="groupping-member-info">
                         <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key=index>
-                            <div style="color: #fff; font-size: 0.50rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
+                            <div style="color: #fff; font-size: 0.28rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
                             <!-- <img src="../../assets/images/p.gif" alt=""> -->
                             <img :src=item.memberFace alt="" v-if="item.memberFace">
                             <div class="master-face" v-if="index == 0">
@@ -498,14 +498,14 @@
             </template>
             <!-- 己发货 -->
             <template>
-                <mt-button plain v-if="(orderDetailData.orderStatus === 'DELIVERED' || orderDetailData.orderStatus === 'CBT_BUYER') && (orderDetailData.sellerOrgId!=null||(orderDetailData.sellerOrgId==null && !orderDetailData.subOrderSize))"
+                <!-- <mt-button plain v-if="(orderDetailData.orderStatus === 'DELIVERED' || orderDetailData.orderStatus === 'CBT_BUYER') && (orderDetailData.sellerOrgId!=null||(orderDetailData.sellerOrgId==null && !orderDetailData.subOrderSize))"
                     class="pay_now" @click.native="confrimMethod(orderDetailData.orderNo)">
                     确认收货
                 </mt-button>
                 <mt-button plain v-if="(orderDetailData.orderStatus === 'DELIVERED' || orderDetailData.orderStatus === 'CBT_BUYER') && orderDetailData.sellerOrgId==null && orderDetailData.subOrderSize == 1"
                     class="pay_now" @click.native="confrimMethodsMoreChild(orderDetailData.subOrderNo,orderDetailData.orderNo)">
                     确认收货
-                </mt-button>
+                </mt-button> -->
                 <mt-button plain v-if="(orderDetailData.orderStatus === 'DELIVERED' || orderDetailData.orderStatus === 'CBT_BUYER')" @click.native="refund(orderDetailData)">
                     退款
                 </mt-button>

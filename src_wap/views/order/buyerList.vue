@@ -17,7 +17,7 @@
                                 <i class="iconfont">&#xe66d;</i>
                                 {{ item.shopName }}
                             </div>
-                            <div class="order_status" v-if="item.groupSuccess == 2">
+                            <div class="order_status" v-if="item.groupSuccess == 2  && orderDetailData.orderStatus !== 'CANCEL' && orderDetailData.orderStatus !== 'CLOSE'">
                                  待成团，差<span style="color: #f08200">{{ item.lessGroup }}</span>人
                                 <!-- <div class="left" style="width: rem; display: flex; margin-top: 0.1rem;">
                                     <span class="icon-wrap" style="align-items: center; display: flex;">
