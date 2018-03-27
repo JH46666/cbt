@@ -217,11 +217,13 @@
                                 </div>
                                 <div class="comment_head_time">{{ item.createTime }}</div>
                             </div>
-                            <p class="comment_footer" ref="comment" :class="{on:item.onFlag!==''&& item.onFlag}">
+                            <p class="comment_footer" ref="comment" :class="{on: item.onFlag}" @click="more($event)">
                                 {{ item.content }}
                                 <span v-if="item.replyContent"><span style="color:#c29e74;display:block;">回复：</span>{{item.replyContent}}</span>
-                                <span class="bg-white"><i class="iconfont down" :class="{on:item.pullFlag!=='' && item.pullFlag}" @click="pullOrDown(item)" :key="index+'11'">&#xe619;</i></span>
-                                <span class="bg-white"><i class="iconfont pull" :class="{on:item.upFlag!=='' && item.upFlag}" @click="pullOrDown(item)" :key="index+'12'">&#xe618;</i></span>
+                                <!-- <span class="bg-white"><i class="iconfont down" :class="{on:item.pullFlag!=='' && item.pullFlag}" @click="pullOrDown(item)" :key="index+'11'">&#xe619;</i></span>
+                                <span class="bg-white"><i class="iconfont pull" :class="{on:item.upFlag!=='' && item.upFlag}" @click="pullOrDown(item)" :key="index+'12'">&#xe618;</i></span> -->
+                                <i class="iconfont icon-single-down more"></i>
+                                <i class="iconfont icon-shang more" style="display: none;"></i>
                             </p>
                         </mt-cell>
                     </template>
@@ -570,7 +572,40 @@ export default {
 
         this.addLike();
     },
+    // updated里才能操作refs
+    updated() {
+        // console.log(this.$refs) 
+        // console.log($(this.$refs.comment[0]).height());
+        // console.log($(this.$refs.comment[0]).css('font-size').slice(0, -2));        
+        //  console.log($(item).height());
+        for (let item of $(this.$refs.comment)) {
+            if ($(item).height() >= 3 * $(item).css('font-size').slice(0, -2) * 1.5) {
+                console.log($(item).height());
+                console.log(3 * $(item).css('font-size').slice(0, -2));
+                console.log($(item).height() >= Number(3 * $(item).css('font-size').slice(0, -2)))
+                $(item).addClass('on');
+                $(item).css({
+                    display: '-webkit-box',
+                    '-webkit-line-clamp': '3',
+                    overflow: 'hidden',
+                    'word-break': 'break-all',
+                    'text-overflow': 'ellipsis',
+                    '-webkit-box-orient': 'vertical',
+                })
+            }
+        }
+    },
     methods: {
+        // 点击查看完成评论
+        more(e) {
+            // console.log($(e.target).hasClass('on'));
+            if ($(e.target).hasClass('on active')) {
+                $(e.target).removeClass('active').find('.icon-single-down').toggle().end().find('.icon-shang').toggle();
+            }
+            else if ($(e.target).hasClass('on')) {
+                $(e.target).addClass('active').find('.icon-single-down').toggle().end().find('.icon-shang').toggle();
+            }
+        },
         visitLog(){
             let visitData = {
                 'visitLog.orgId': this.detailData.productInfo.orgId,
@@ -1588,5 +1623,39 @@ export default {
 </script>
 
 <style lang="less">
-@import '~@/styles/less/detail.less';
+    @import '~@/styles/less/detail.less';
+    .comment_footer{
+        margin-top: .2rem;
+        .color(#666);
+        .line(1.5);
+        max-height: 1.26rem;
+        width: 100%;
+        .fontSize(.28rem);
+
+        // text-indent: .48rem;
+        .position(r);
+        /* display: -webkit-box;
+        -webkit-line-clamp: 3;
+        overflow: hidden;
+        word-break: break-all;
+        text-overflow: ellipsis;
+        -webkit-box-orient: vertical; */
+        /* 更多图标 */
+        &.on{
+            .more{
+                position: absolute;
+                right: 0rem;
+                display: block;
+            }
+        }
+        &.on.active{
+            -webkit-line-clamp: unset!important;
+            max-height: unset!important;
+        }
+        .more{
+            position: absolute;
+            right: 0rem;
+            display: none;
+        }
+    }
 </style>
