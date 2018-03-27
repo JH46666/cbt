@@ -46,8 +46,19 @@ const cart = {
                     resolve(res);
                 },res=>{
                   if(groupType==2){
+                    let msg = ''
+                    switch (res.code) {
+                      case 4072:msg = "没有团购价!";break;
+                      case 4073:msg = "没有这个团购!";break;
+                      case 4074:msg = "该团超时啦，看看别的团吧~";break;
+                      case 4075:msg = "该团拼满啦，看看别的团吧~";break;
+                      case 4076:msg = "开团失败!";break;
+                      case 4077:msg = "你已参加过这个团购了!";break;
+                      case 4078:msg = "不可以购买自己的商品哟~";break;
+                      default: msg = "来晚了呦，商品卖光啦~";
+                    }
                     return Toast({
-                        message: res.message,
+                        message: msg,
                         iconClass: 'icon icon-fail'
                     });
                   }else if(res.code == 4078){

@@ -7,7 +7,7 @@
                     <i class="icon-zhifushibai"></i>支付失败
                 </div>
                 <div class="fail-btn-wrap">
-                    <mt-button type="default" @click="$router.push('/order/buyerlist?orderStatus=null')">查看订单</mt-button>
+                    <mt-button type="default" @click="$router.push('/order/buyerdetail?orderNo='+myData.orderInfo.orderNo)">查看订单</mt-button>
                     <mt-button type="default" @click="$router.push({name: '收银台',query: {payId: $route.query.payId,type:$route.query.type}})">立即支付</mt-button>
                 </div>
             </template>

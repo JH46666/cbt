@@ -3,7 +3,7 @@
   <h5 class="title" @click="clickfun(1)">1.选择分类</h5>
   <div class="steps" v-if="isShowArr[0]" >
     <div class="steps-text">
-      <p>点选“选择商品分类”，选择您要上架的茶对应的品类，如您要上架的商品是正山小种，即选择红茶-正山小种。</p>
+      <p>点选“商品分类”，选择您要上架的茶对应的品类，如您要上架的商品是正山小种，即选择红茶-正山小种。</p>
     </div>
     <img src="http://img0.oteao.com/WAPIMG/share/01fb.png" alt="">
     <img src="http://img1.oteao.com/WAPIMG/share/02fb.png" alt="">
@@ -32,10 +32,10 @@
       <p class="tips-text-wrap">
       <span class="tips_icons">
       <img src="http://img4.oteao.com/WAPIMG/share/cbt_ts.png" alt="">
-      </span>栏位均为 
+      </span>栏位均为
       <span class="color-red">必填项</span> ，影响到商品的购买
       </p>
-      <p><span class="small-t">市场价：</span><br>仅用于商品的建议价格展示，须大于单买价<br> 
+      <p><span class="small-t">市场价：</span><br>仅用于商品的建议价格展示，须大于单买价<br>
       <p><span class="small-t">单买价：</span><br>一个人单独购买的价格，不需要与他人拼团，此价格需大于团购价。
       </p>
       <p><span class="small-t">团购价:</span><br>拼团价格，此栏位与团购人数是捆绑关系，用于拼团价格显示。
@@ -50,7 +50,7 @@
   <h5 class="title" @click="clickfun(4)">4.商品属性信息</h5>
   <div class="steps" v-if="isShowArr[3]">
     <div class="steps-text">
-      <p class="tips-text-wrap"> 
+      <p class="tips-text-wrap">
       <span class="tips_icons">
       <img src="http://img2.oteao.com/WAPIMG/share/cbt_ts.png" alt="">
       </span>属性信息为
@@ -85,7 +85,7 @@
       “保存”：系统会将保存您的商品资料，但买家看不到您的商品，您可在商品管理-未上架商品中找到该商品；<br>
       “保存并上架”：商品成功上架，客户可以在茶帮通搜到这款商品啦~</p>
     </div>
-  </div> 
+  </div>
 
 </div>
 </template>
@@ -248,4 +248,3 @@ img {
   top: 0.05rem;
 }
 </style>
-
