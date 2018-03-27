@@ -380,6 +380,8 @@
                       })
                       this.myData = res.data;
 
+                      this.recoveryData();
+
                   })
                 })
 
@@ -467,7 +469,7 @@
                             this.$router.push('/')
                         })
                     }
-                    this.$toast(res.errorMsg);
+                    this.$toast(res.cnMessage);
                     this.disabled = false;
                 })
             },
@@ -514,7 +516,6 @@
                     val.currentPayMethod = paymethod[i];
                     val.currentDeliveryMethod = express[i];
                 })
-
                 delete sessionStorage.remark;
                 delete sessionStorage.redpacket;
                 delete sessionStorage.paymethod;
@@ -523,7 +524,7 @@
             },
             //更新选中的数量
             updateSeleNum(item,newVal,oldVal){
-                this.backupsData();
+                this.backupsData()
                 return new Promise((resolve,reject) => {
                     this.$api.post('/oteao/shoppingCart/updateBuyNum',{
                         id: item.id,
@@ -565,7 +566,6 @@
                 }
                 this.updateSeleNum(item,newVal,oldVal).then(res => {
                     // 禁用商品直接重新拉取数据
-                    this.recoveryData()
                     if(res.data.isDisable) {
                         return this.upDate();
                     }
@@ -577,6 +577,8 @@
             },
             // 加
             numPlus(item){
+
+                this.backupsData();
                 // 旧的数量
                 let oldVal = item.buyNum;
                 // 新的数量
@@ -607,14 +609,14 @@
                         if(item.buyNum < item.buyLowLimit) {
                             item.buyNum = item.buyLowLimit;
                             item.oldBuy = item.buyLowLimit;
-                            return Toast('小于最低购买量')
+                            this.$toast('小于最低购买量')
                         }
                     }
 
                     if(!!item.buyUpperLimit) {
                         if(item.buyNum > item.buyUpperLimit) {
                             // item.buyNum = item.oldBuy;
-                            Toast('超过最高购买量')
+                            this.$toast('超过最高购买量')
                         }
                     }
                     this.updateSeleNum(item,item.buyNum).then(res => {
