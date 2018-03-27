@@ -584,14 +584,15 @@ export default {
                 console.log(3 * $(item).css('font-size').slice(0, -2));
                 console.log($(item).height() >= Number(3 * $(item).css('font-size').slice(0, -2)))
                 $(item).addClass('on');
-                $(item).css({
-                    display: '-webkit-box',
-                    '-webkit-line-clamp': '3',
-                    overflow: 'hidden',
-                    'word-break': 'break-all',
-                    'text-overflow': 'ellipsis',
-                    '-webkit-box-orient': 'vertical',
-                })
+                 $(item).css({
+                    // display: '-webkit-box',
+                    // '-webkit-line-clamp': '3',
+                    // overflow: 'hidden',
+                    // 'word-break': 'break-all',
+                    // 'text-overflow': 'ellipsis',
+                    // '-webkit-box-orient': 'vertical',
+                        'max-height': 65
+                    })
             }
         }
     },
@@ -600,10 +601,10 @@ export default {
         more(e) {
             // console.log($(e.target).hasClass('on'));
             if ($(e.target).hasClass('on active')) {
-                $(e.target).removeClass('active').find('.icon-single-down').toggle().end().find('.icon-shang').toggle();
+                $(e.target).removeClass('active').find('.icon-single-down').toggle('normal').end().find('.icon-shang').toggle('normal');
             }
             else if ($(e.target).hasClass('on')) {
-                $(e.target).addClass('active').find('.icon-single-down').toggle().end().find('.icon-shang').toggle();
+                $(e.target).addClass('active').find('.icon-single-down').toggle('normal').end().find('.icon-shang').toggle('normal');
             }
         },
         visitLog(){
@@ -1642,10 +1643,12 @@ export default {
         -webkit-box-orient: vertical; */
         /* 更多图标 */
         &.on{
-            .more{
+             .more{
                 position: absolute;
-                right: 0rem;
+                right: -0.15rem;
+                bottom: -0.15rem;
                 display: block;
+                color: #f08200;
             }
         }
         &.on.active{
