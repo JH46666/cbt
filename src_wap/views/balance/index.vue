@@ -302,7 +302,7 @@
             closeRedpacket(data) {
                 this.showRedpacket = false;
                 if(data === 'confirm') {
-                    this.upDate();
+                    this.redpackUpdate();
                 }
             },
             // 点击底下地址返回顶部
@@ -319,6 +319,7 @@
             },
             // 初始化数据
             initData() {
+                this.backupsData() //先备份
                 return new Promise((resolve,reject) => {
                     this.$api.post('/oteao/shoppingCart/initSettle',{
                         cartIds: this.cartList,
@@ -339,9 +340,45 @@
                             this.$toast(res.message);
                         }
                         this.$toast(res.message);
-                        this.$router.go(-1)
+                        // this.$router.go(-1)
                     })
                 })
+            },
+            redpackUpdate(){
+              let orgSettleRequestList = [];
+              // 遍历每个店铺，更新数据
+              this.pannel.forEach(val => {
+                  orgSettleRequestList.push({
+                      "deliveryMethodCode": val.currentDeliveryMethod,
+                      "invoiceCode": "NOT_INVOICE",
+                      "invoiceTitle": "string",
+                      "isUseIntegral": 0,
+                      "orderRemark": val.remark,
+                      "payMethodCode": val.currentPayMethod,
+                      "sellerOrgId": val.orgId,
+                      "useRedPacketId": val.useRedPacketId === null ? -1 : val.useRedPacketId
+                  })
+              })
+
+
+              let data = {
+                  "cartIds": this.cartList,
+                  "device": "WAP",
+                  orgSettleRequestList,
+                  "receiveAddrId": this.address.id,
+                  "sysId": 1,
+                  "useBackBalance": 0,
+                  "useStoreBalance": 0
+              }
+
+              this.$api.post('/oteao/shoppingCart/settle',JSON.stringify(data),res => {
+
+                  // 恢复之前的订单备注
+                  res.data.oteaoCart.forEach((val,i) => {
+                      val.remark = this.getRemark()[i];
+                  })
+                  this.myData = res.data;
+              })
             },
             // 更新数据
             upDate() {
@@ -524,7 +561,6 @@
             },
             //更新选中的数量
             updateSeleNum(item,newVal,oldVal){
-                this.backupsData()
                 return new Promise((resolve,reject) => {
                     this.$api.post('/oteao/shoppingCart/updateBuyNum',{
                         id: item.id,
