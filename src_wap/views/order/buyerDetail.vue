@@ -221,7 +221,9 @@
             </div>
             <!-- 订单列表 -->
             <div class="order_wrapper">
+                <!-- orderListDetail是orderProductList的数据 -->
                 <template v-if="orderListDetail.subOrder!=null && orderListDetail.mainOrder == null">
+                <!-- <template> -->
                     <div class="order_item" v-for="(order,num) in orderListDetail.subOrder" :key="num">
                         <div class="order_state">
                             <span>{{ orderStatus[order.subOrderStatus] }}</span>
@@ -264,9 +266,21 @@
                                 <img src="../../assets/images/emskd.png" v-if="order.expressCode == 'ship_ems' || order.expressCode == 'EMS'" /> {{ order.expressName }}
                                 <span>{{ order.expressNo }}</span>
                             </div>
-                            <!-- <div class="order_num">
-                                <mt-button plain v-if="order.subOrderStatus === 'DELIVERED' || order.subOrderStatus === 'CBT_BUYER'" class="pay_now" @click.native="confrimMethodsMoreChild(order.subOrderNo,orderDetailData.orderNo)">确认收货</mt-button>
-                            </div> -->
+                            <div class="order_num">
+                                <!-- <mt-button plain v-if="order.subOrderStatus === 'DELIVERED' || order.subOrderStatus === 'CBT_BUYER'" class="pay_now" @click.native="confrimMethodsMoreChild(order.subOrderNo,orderDetailData.orderNo)">确认收货</mt-button> -->
+                                <!-- <mt-button plain v-if="(orderDetailData.orderStatus === 'DELIVERED' || orderDetailData.orderStatus === 'CBT_BUYER') && (orderDetailData.sellerOrgId!=null||(orderDetailData.sellerOrgId==null && !orderDetailData.subOrderSize))"
+                                    class="pay_now" @click.native="confrimMethod(orderDetailData.orderNo)">
+                                    确认收货
+                                </mt-button> -->
+                                <!-- <mt-button plain v-if="(orderDetailData.orderStatus === 'DELIVERED' || orderDetailData.orderStatus === 'CBT_BUYER') && orderDetailData.sellerOrgId==null && orderDetailData.subOrderSize == 1"
+                                    class="pay_now" @click.native="confrimMethodsMoreChild(orderDetailData.subOrderNo,orderDetailData.orderNo)">
+                                    确认收货
+                                </mt-button> -->
+                                <mt-button plain v-if="(order.subOrderStatus === 'DELIVERED' || order.subOrderStatus === 'CBT_BUYER') && (orderListDetail.subOrder && orderListDetail.subOrder.length > 1)"
+                                    class="pay_now" @click.native="confrimMethodsMoreChild(order.subOrderNo,orderDetailData.orderNo)">
+                                    确认收货
+                                </mt-button>
+                            </div>
                         </div>
                     </div>
                 </template>
@@ -316,6 +330,13 @@
                                 <span>{{ orderDetailData.expressNo }}</span>
                             </div>
                         </div>
+                        <!-- <div class="order_num" style="position: relative;" v-if="orderDetailData.orderStatus === 'DELIVERED' || orderDetailData.orderStatus === 'CBT_BUYER'">
+                            <mt-button plain class="pay_now" style="font-size: 0.26rem; width: 1.64rem; height: 0.56rem; border-radius: 0.4rem; 
+                                border-color: rgba(0,0,0,.2); position: absolute; right: 0rem; top: -0.70rem; border-color: #f08200; color: #f08200;"
+                                @click.native="confrimMethod(orderDetailData.orderNo)">
+                                确认收货
+                            </mt-button>
+                        </div> -->
                     </div>
                 </template>
             </div>
@@ -498,11 +519,16 @@
             </template>
             <!-- 己发货 -->
             <template>
-                <!-- <mt-button plain v-if="(orderDetailData.orderStatus === 'DELIVERED' || orderDetailData.orderStatus === 'CBT_BUYER') && (orderDetailData.sellerOrgId!=null||(orderDetailData.sellerOrgId==null && !orderDetailData.subOrderSize))"
+                 <!-- && orderListDetail.subOrder.lenght == 0 -->
+                 <mt-button plain v-if="(orderDetailData.orderStatus === 'DELIVERED' || orderDetailData.orderStatus === 'CBT_BUYER') && (orderListDetail.subOrder && orderListDetail.subOrder.length <= 1)"
                     class="pay_now" @click.native="confrimMethod(orderDetailData.orderNo)">
                     确认收货
                 </mt-button>
-                <mt-button plain v-if="(orderDetailData.orderStatus === 'DELIVERED' || orderDetailData.orderStatus === 'CBT_BUYER') && orderDetailData.sellerOrgId==null && orderDetailData.subOrderSize == 1"
+                <!-- <mt-button plain v-if="(orderDetailData.orderStatus === 'DELIVERED' || orderDetailData.orderStatus === 'CBT_BUYER') && (orderDetailData.sellerOrgId!=null||(orderDetailData.sellerOrgId==null && !orderDetailData.subOrderSize))"
+                    class="pay_now" @click.native="confrimMethod(orderDetailData.orderNo)">
+                    确认收货
+                </mt-button> -->
+                <!-- <mt-button plain v-if="(orderDetailData.orderStatus === 'DELIVERED' || orderDetailData.orderStatus === 'CBT_BUYER') && orderDetailData.sellerOrgId==null && orderDetailData.subOrderSize == 1"
                     class="pay_now" @click.native="confrimMethodsMoreChild(orderDetailData.subOrderNo,orderDetailData.orderNo)">
                     确认收货
                 </mt-button> -->
@@ -1245,6 +1271,7 @@ export default {
             });
             this.getOrderList(this.orderDetailData.orderId).then((res) =>{
                 this.orderListDetail = res.data;
+                // console.log(this.orderListDetail.subOrder.length);
             });
             // 获取商家信息
             this.shopInfo.shopName = res.data.shopName;
