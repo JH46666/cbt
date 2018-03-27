@@ -474,7 +474,7 @@
                             propertyVal: this.resize.proValList[i].proVal
                         })
                         // 采摘时间、香型、工艺
-                        if (this.resize.proValList[i].propName.indexof(['采摘时间', '香型', '工艺']) != -1) {
+                        if (['采摘时间', '香型', '工艺'].indexof(this.resize.proValList[i].propName) != -1) {
                             titles = titles + this.resize.proValList[i].proVal;
                         }
                     } else {
@@ -484,8 +484,8 @@
                             propertyVal: this.resize.proValList[i].proVal,
                             propValId: this.resize.proValList[i].proValId
                         })
-                         // 采摘时间、香型、工艺
-                        if (this.resize.proValList[i].propName.indexof(['采摘时间', '香型', '工艺']) != -1) {
+                        // 采摘时间、香型、工艺
+                         if (['采摘时间', '香型', '工艺'].indexof(this.resize.proValList[i].propName) != -1) {
                             titles = titles + this.resize.proValList[i].proVal;
                         }
                     }
