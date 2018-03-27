@@ -465,6 +465,7 @@
                 }
                 // 组合标题
                 let titles = '';
+                // this.resize.proValList通过queryPropVal接口查询
                 for (let i = 0; i < this.resize.proValList.length; i++) {
                     if (this.resize.proValList[i].propValList.length === 0) {
                         data.catProps.push({
@@ -472,7 +473,10 @@
                             propId: this.resize.proValList[i].id,
                             propertyVal: this.resize.proValList[i].proVal
                         })
-                        titles = titles + this.resize.proValList[i].proVal;
+                        // 采摘时间、香型、工艺
+                        if (this.resize.proValList[i].propName.indexof(['采摘时间', '香型', '工艺']) != -1) {
+                            titles = titles + this.resize.proValList[i].proVal;
+                        }
                     } else {
                         data.catProps.push({
                             propType: 1,
@@ -480,7 +484,10 @@
                             propertyVal: this.resize.proValList[i].proVal,
                             propValId: this.resize.proValList[i].proValId
                         })
-                        titles = titles + this.resize.proValList[i].proVal;
+                         // 采摘时间、香型、工艺
+                        if (this.resize.proValList[i].propName.indexof(['采摘时间', '香型', '工艺']) != -1) {
+                            titles = titles + this.resize.proValList[i].proVal;
+                        }
                     }
                 }
                 // 组合标题 = 商品卖点 + 商品品类 + 属性
