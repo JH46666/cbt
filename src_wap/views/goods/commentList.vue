@@ -20,7 +20,7 @@
         <template v-else>
           <div v-infinite-scroll="loadMore" infinite-scroll-disabled="true" infinite-scroll-distance="10">
             <mt-cell v-for="(item,index) in commentList" :key="index" >
-                <div class="comment_head">
+                <div class="comment_head" style="padding: 0.10rem 0;">
                     <div class="comment_head_wrapper">
                         <div class="comment_head_mumber">{{ regStar(item.nickName) }}</div>
                         <div class="comment_head_mumberlevel">{{ item.levelName }}</div>
