@@ -82,18 +82,14 @@
 
                         socket.on('open', function (e) {
                             console.log("监听到事件：open");
-                            alert("open");
                         });
                         socket.on('close', function (e) {
                             console.log("监听到事件：close");
-                            alert("close");
                         });
                         socket.on('error', function (e) {
                             console.log("监听到事件：error");
-                            alert("error");
                         });
                         socket.on('msg', function (e) {
-                          alert("msg");
                             var msg = JSON.parse(e.data);
                             console.log(msg);
                             var handleChat = function (msg) {
