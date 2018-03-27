@@ -477,6 +477,7 @@
                 })
                 this.clickSure = false;
             },
+            // 分类取消按钮
             cancelType() {
                 this.dialogTypeBol = false;
                 this.resize.oneClass = null;
