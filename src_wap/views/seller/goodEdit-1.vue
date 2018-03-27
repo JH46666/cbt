@@ -31,7 +31,7 @@
                             <div class="_add-goods-good-tips" v-if="flagGoodsOwnGood">
                                 <div class="_add-tips">
                                     <div>商品标题组成</div>
-                                    商品卖点+商品品类+工艺+香气+采摘时间
+                                    商品卖点+商品品类+工艺+香型+采摘时间
                                 </div>
                                 <div class="_add-geometric-3"></div>
                                 <div class="_add-geometric-X" @click="flagGoodsOwnGood = !flagGoodsOwnGood">
