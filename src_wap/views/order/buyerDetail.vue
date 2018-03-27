@@ -103,7 +103,7 @@
                 <!-- 已评价，未成团 -->
                 <div v-else-if="orderDetailData.orderStatus === 'FINISH' && orderDetailData.isComment  && orderDetailData.groupSuccess == 3"><img src="../../assets/images/order_1.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                 <!-- 已评价，已成团 -->
-                <div v-else-if="orderDetailData.orderStatus === 'FINISH' && orderDetailData.isComment  && orderDetailData.groupSuccess == 1">
+                <div v-else-if="orderDetailData.orderStatus === 'FINISH' && orderDetailData.isComment  && orderDetailData.groupSuccess == 1" style="width: 100%; display: block; position: relative;">
                     <div><img src="../../assets/images/order_1.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                     <div class="groupping-member-info">
                         <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key=index>
@@ -127,7 +127,7 @@
                 <!-- 待评价，未成团 -->
                 <div v-else-if="!orderDetailData.isComment && orderDetailData.orderStatus === 'FINISH' && orderDetailData.groupSuccess == 3"><img src="../../assets/images/order_1.png" />待评价</div>
                 <!-- 待评价，已成团 -->
-                <div v-else-if="!orderDetailData.isComment && orderDetailData.orderStatus === 'FINISH' && orderDetailData.groupSuccess == 1">
+                <div v-else-if="!orderDetailData.isComment && orderDetailData.orderStatus === 'FINISH' && orderDetailData.groupSuccess == 1" style="width: 100%; display: block; position: relative;">
                     <div><img src="../../assets/images/order_1.png" />待评价</div>
                     <div class="groupping-member-info">
                         <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key=index>
@@ -1242,16 +1242,20 @@ export default {
             else if (this.orderDetailData.orderStatus === 'PAY_WAIT_AUDIT' && this.orderDetailData.groupSuccess == 1) return true;
             else if (this.orderDetailData.orderStatus === 'DELIVERED' && this.orderDetailData.groupSuccess == 1) return true;
             else if (this.orderDetailData.orderStatus === 'PACKING' && this.orderDetailData.groupSuccess != 2) return true;
-            else if(this.orderDetailData.orderStatus === 'CLOSE' && this.orderDetailData.groupSuccess == 2) return true;
-            else if(this.orderDetailData.orderStatus === 'CLOSE' && this.orderDetailData.groupSuccess == 1) return true;
+            else if (this.orderDetailData.orderStatus === 'CLOSE' && this.orderDetailData.groupSuccess == 2) return true;
+            else if (this.orderDetailData.orderStatus === 'CLOSE' && this.orderDetailData.groupSuccess == 1) return true;
+            else if (this.orderDetailData.orderStatus === 'FINISH' && this.orderDetailData.isComment && this.orderDetailData.groupSuccess == 1) return true;
+            else if (this.orderDetailData.orderStatus === 'FINISH' && !this.orderDetailData.isComment && this.orderDetailData.groupSuccess == 1) return true;
         },
         width100() {
             if (this.orderDetailData.groupSuccess === 2) return true;
             else if (this.orderDetailData.orderStatus === 'PAY_WAIT_AUDIT' && this.orderDetailData.groupSuccess == 1) return true;
             else if (this.orderDetailData.orderStatus === 'DELIVERED' && this.orderDetailData.groupSuccess == 1) return true;
             else if (this.orderDetailData.orderStatus === 'PACKING' && this.orderDetailData.groupSuccess != 2) return true;
-            else if(this.orderDetailData.orderStatus === 'CLOSE' && this.orderDetailData.groupSuccess == 2) return true;
-            else if(this.orderDetailData.orderStatus === 'CLOSE' && this.orderDetailData.groupSuccess == 1) return true;
+            else if (this.orderDetailData.orderStatus === 'CLOSE' && this.orderDetailData.groupSuccess == 2) return true;
+            else if (this.orderDetailData.orderStatus === 'CLOSE' && this.orderDetailData.groupSuccess == 1) return true;
+            else if (this.orderDetailData.orderStatus === 'FINISH' && this.orderDetailData.isComment && this.orderDetailData.groupSuccess == 1) return true;
+            else if (this.orderDetailData.orderStatus === 'FINISH' && !this.orderDetailData.isComment && this.orderDetailData.groupSuccess == 1) return true;
         }
     },
     watch: {

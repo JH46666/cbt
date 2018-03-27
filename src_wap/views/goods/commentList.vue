@@ -290,6 +290,10 @@ import { mapState } from 'vuex'
         border-bottom: 1px solid #e5e5e5;
         min-height: .98rem;
         margin-bottom: 0.2rem;
+        .mint-cell-wrapper{
+            background-image: unset;
+            background-size: unset;
+        }
         &:nth-child(1){
             border-top: 0 none;
         }
