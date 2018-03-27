@@ -163,7 +163,7 @@
         </mt-popup>
 
         <!-- 商品分类弹出框 -->
-        <mt-popup v-model="dialogTypeBol" position="bottom" style="height: 9.88rem; margin-bottom: 0.99rem;" :closeOnClickModal=false>
+        <mt-popup v-model="dialogTypeBol" position="bottom" style="height: 8.88rem; margin-bottom: 0.99rem;" :closeOnClickModal=false>
             <div class="dialog_type_wrapper" style="height: 100%">
                 <div v-if="twoTypeUsedList.length > 0">
                     <div class="dialog_type_title">
@@ -784,7 +784,7 @@
                     this.resize.form.goodsGroup = parseFloat(this.detailObj.productPrice[2].price).toFixed(2);      // 团购价
                     this.resize.form.goodsGroupNum = this.detailObj.productInfo.memberNum;                          // 团购人数
                     this.resize.form.goodTypes = this.detailObj.productInfo.catName;                                // 分类
-                    this.resize.form.goodsSell = this.detailObj.productExtInfo.reason;                              // 商品卖点
+                    this.resize.form.goodsSell = this.detailObj.productExtInfo.subtitle;                            // 商品卖点
                     this.resize.form.goodsKc = this.detailObj.productExtInfo.stockNum;                              // 库存
                     // this.resize.defaultArray[0].content = this.detailObj.productExtInfo.fragrance;
                     // for (let i = 0; i < this.resize.defaultArray[0].prop.length; i++) {

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="overflow-y: unset;">
     <!-- 评价 -->
     <div class="comment_wrapper">
         <div class="scroll-div" ></div>
@@ -343,7 +343,7 @@ import { mapState } from 'vuex'
                     .more{
                         position: absolute;
                         right: -0.15rem;
-                        bottom: -0.15rem;
+                        bottom: -0.10rem;
                         display: block;
                         color: #f08200;
                     }
