@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import store from 'store'
 import * as $tool from 'utils/index.js';
+import $api from '../../api';
 
 Vue.use(Router)
 
@@ -603,6 +604,12 @@ router.beforeEach((to,from,next) => {
 			// chiputaobutuputaopi 与文哥商量的 key 值
 			// console.log(encodeURI(location.origin + `/api/wap/wechatAutoLogin?chiputaobutuputaopi=${location.origin}/#/${to.fullPath}`))
 			location.href = encodeURI(location.origin + `/api/wap/wechatAutoLogin?chiputaobutuputaopi=${location.origin}`) + `/%23` + encodeURI(to.fullPath)
+			// let url = encodeURI(location.origin + `/api/wap/wechatAutoLogin?chiputaobutuputaopi=${location.origin}`) + `/%23` + encodeURI(to.fullPath);
+			// new Promise((resolve,reject)=>{
+      //   this.$api.get(url,res=>{
+      //     resolve(res)
+      //   })
+      // })
 		} else {
 			next()
 		}

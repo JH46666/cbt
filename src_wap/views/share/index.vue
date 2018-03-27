@@ -8,9 +8,9 @@
         <div class="product-title">{{ detailData.productExtInfo.title }}</div>
         <div class="product-price">
           <div class="detail-groupnum">
-                {{detailData.productInfo.memberNum}}人拼团价
+                {{groupData.groupPurchase.groupNumber}}人拼团价
           </div>
-          <template  v-if="!loginId && state != 'ACTIVE'">
+          <template  v-if="!loginId || state != 'ACTIVE'">
               <div class="detail_now_price">
                   ￥{{detailData.productInfo.hideGroupsPrice}}
               </div>
@@ -38,7 +38,7 @@
       <div class="group-lasttime three" v-else-if="!onShelf || isOutTime"><i class="iconfont">&#xe6b1;</i>已结束</div>
 
       <div class="group-tip" v-if="onShelf && !groupComplete && !isOutTime">好货手慢无，快来拼团啦~</div>
-      <div class="group-tip" v-else-if="onShelf && groupComplete && isOwn">您可以看看其他商品噢~</div>
+      <div class="group-tip" v-else-if="onShelf && groupComplete && isOwn">您可以再看看其他商品噢~</div>
       <div class="group-tip" v-else-if="onShelf && groupComplete && !isOwn">您可以再开启或拼别人的团噢~</div>
       <div class="group-tip" v-else-if="!onShelf ">商品售罄，您可以再看看其他商品噢~</div>
       <div class="group-tip" v-else>您可以再开启或拼别人的团噢~</div>
@@ -260,10 +260,10 @@ export default {
             this.isOwn = true;
           }
         }
-        if("ON_SHELF" == this.detailData.productExtInfo.state){
+        if("ON_SHELF" == this.detailData.productExtInfo.state && this.detailData.productExtInfo.compelOutStock != 1 && this.detailData.productExtInfo.stockNum>=this.detailData.productExtInfo.buyLowLimit && this.groupData.groupPurchase.groupNumber<this.detailData.productExtInfo.stockNum){
           this.onShelf = true;
         }
-        this.copyShareTitle = '【仅剩'+(this.groupData.groupPurchase.groupNumber - this.groupData.groupPurchase.offerNumber)+'个名额】我拼了'+this.detailData.productExtInfo.title+'，快来和我一起拼团吧'+window.location.href+'点击链接，参与拼团【来自茶帮通茶友分享】';
+        this.copyShareTitle = '【仅剩'+(this.groupData.groupPurchase.groupNumber - this.groupData.groupPurchase.offerNumber)+'个名额】我拼了'+this.detailData.productExtInfo.title+'，快来和我一起拼团吧'+window.location.href.split('&')[0]+'点击链接，参与拼团【来自茶帮通茶友分享】';
       })
       //获取为您推荐集合
       this.$api.get('/oteao/productCollection/getCollectionDetail',{
@@ -458,11 +458,11 @@ export default {
           signature: this.wxConfig.signature, // 必填，签名，见附录1
           jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
       });
-      let shareTitle = '【仅剩'+(this.groupData.groupPurchase.groupNumber - this.groupData.groupPurchase.offerNumber)+'个名额】我拼了'+this.detailData.productExtInfo.title+'，快来和我一起拼团吧'+window.location.href+'点击链接，参与拼团【来自茶帮通茶友分享】';
+      let shareTitle = '【仅剩'+(this.groupData.groupPurchase.groupNumber - this.groupData.groupPurchase.offerNumber)+'个名额】我拼了'+this.detailData.productExtInfo.title;
       let shareDesc = '雷军、李开复领投茶电商交易平台，茶帮通让茶叶买卖更轻松【茶帮通】';
       // let shareTitle = '茶帮通';
       // let shareDesc = '茶帮通';
-      let shareLink = window.location.href;
+      let shareLink = 'https://mdemo.oteao.com/#/share?orderId='+this.orderId;
       let shareImg = 'https:'+this.detailData.productImgList[0].imgUrl;
         wx.ready(function(){
           wx.onMenuShareAppMessage({
