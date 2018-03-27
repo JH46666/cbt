@@ -463,7 +463,7 @@ export default {
       let shareDesc = '雷军、李开复领投茶电商交易平台，茶帮通让茶叶买卖更轻松【茶帮通】';
       // let shareTitle = '茶帮通';
       // let shareDesc = '茶帮通';
-      let shareLink = 'https://mdemo.oteao.com/#/share?orderId='+this.orderId;
+      let shareLink = window.location.href.split('&')[0];
       let shareImg = 'https:'+this.detailData.productImgList[0].imgUrl;
         wx.ready(function(){
           wx.onMenuShareAppMessage({
