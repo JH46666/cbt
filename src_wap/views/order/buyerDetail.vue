@@ -498,14 +498,14 @@
             </template>
             <!-- 己发货 -->
             <template>
-                <mt-button plain v-if="(orderDetailData.orderStatus === 'DELIVERED' || orderDetailData.orderStatus === 'CBT_BUYER') && (orderDetailData.sellerOrgId!=null||(orderDetailData.sellerOrgId==null && !orderDetailData.subOrderSize))"
+                <!-- <mt-button plain v-if="(orderDetailData.orderStatus === 'DELIVERED' || orderDetailData.orderStatus === 'CBT_BUYER') && (orderDetailData.sellerOrgId!=null||(orderDetailData.sellerOrgId==null && !orderDetailData.subOrderSize))"
                     class="pay_now" @click.native="confrimMethod(orderDetailData.orderNo)">
                     确认收货
                 </mt-button>
                 <mt-button plain v-if="(orderDetailData.orderStatus === 'DELIVERED' || orderDetailData.orderStatus === 'CBT_BUYER') && orderDetailData.sellerOrgId==null && orderDetailData.subOrderSize == 1"
                     class="pay_now" @click.native="confrimMethodsMoreChild(orderDetailData.subOrderNo,orderDetailData.orderNo)">
                     确认收货
-                </mt-button>
+                </mt-button> -->
                 <mt-button plain v-if="(orderDetailData.orderStatus === 'DELIVERED' || orderDetailData.orderStatus === 'CBT_BUYER')" @click.native="refund(orderDetailData)">
                     退款
                 </mt-button>
