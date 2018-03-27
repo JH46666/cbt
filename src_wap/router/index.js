@@ -606,7 +606,7 @@ router.beforeEach((to,from,next) => {
 			// location.href = encodeURI(location.origin + `/api/wap/wechatAutoLogin?chiputaobutuputaopi=${location.origin}`) + `/%23` + encodeURI(to.fullPath)
 			let url = encodeURI(location.origin + `/api/wap/wechatAutoLogin?chiputaobutuputaopi=${location.origin}`) + `/%23` + encodeURI(to.fullPath);
 			new Promise((resolve,reject)=>{
-        this.$api.get(url,{},res=>{
+        $api.get(url,{},res=>{
           resolve(res)
         })
       })

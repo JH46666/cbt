@@ -58,7 +58,7 @@
                         </mt-swipe-item>
                     </mt-swipe>
                     <!--   -->
-                    <div class="detail_special" v-if="detailData.productExtInfo.isSales && detailData.productExtInfo.state === 'ON_SHELF' && loginId && state === 'ACTIVE'">
+                    <!-- <div class="detail_special" v-if="detailData.productExtInfo.isSales && detailData.productExtInfo.state === 'ON_SHELF' && loginId && state === 'ACTIVE'">
                         <div class="detail_special_wrapper">
                             <div class="detail_special_price">
                                 <span>特价</span>
@@ -76,7 +76,7 @@
                                 <span class="date_num">{{ special.sec }}</span>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="detail_img_index">
                         <span>{{ imgIndex }}</span>/{{ detailData.productImgList.length }}
                     </div>
@@ -98,13 +98,13 @@
                                     <div class="detail_now_price">
                                         ￥{{detailData.productInfo.hideGroupsPrice}}
                                     </div>
-                                    <div class="detail_suggest_price">￥{{ detailData.productPrice[1].price | toFix2 }}</div>
+                                    <div class="detail_suggest_price">￥{{ marketPrice | toFix2 }}</div>
                                 </template>
                                 <template v-if="detailData.productPrice.length != 0  && loginId && state === 'ACTIVE'">
                                         <div class="detail_now_price">
                                             ￥{{detailData.productInfo.priceFightGrops | toFix2  }}
                                         </div>
-                                        <div class="detail_suggest_price">￥{{ detailData.productPrice[1].price | toFix2 }}</div>
+                                        <div class="detail_suggest_price">￥{{ marketPrice | toFix2 }}</div>
                                 </template>
                             </div>
                         </div>
@@ -486,7 +486,8 @@ export default {
             infoDialogFlag:false,
             listDialogFlag:false,
             groupIndex:0,
-            groupnum:0
+            groupnum:0,
+            marketPrice:0 //市场价
         }
     },
     computed:{
@@ -523,6 +524,11 @@ export default {
             }
             if(this.detailData.productInfo.orgId){
                 this.visitLog();
+            }
+            for(let item of res.data.productPrice){
+              if(item.priceType == 36){
+                this.marketPrice = item.price;
+              }
             }
             // 获取团购列表
             this.getGroupPurchase().then((res)=>{
