@@ -524,6 +524,11 @@
                     class="pay_now" @click.native="confrimMethod(orderDetailData.orderNo)">
                     确认收货
                 </mt-button>
+                <!-- 第三方 -->
+                <mt-button plain v-if="(orderDetailData.orderStatus === 'DELIVERED' || orderDetailData.orderStatus === 'CBT_BUYER') && !orderListDetail.subOrder"
+                    class="pay_now" @click.native="confrimMethod(orderDetailData.orderNo)">
+                    确认收货
+                </mt-button>
                 <!-- <mt-button plain v-if="(orderDetailData.orderStatus === 'DELIVERED' || orderDetailData.orderStatus === 'CBT_BUYER') && (orderDetailData.sellerOrgId!=null||(orderDetailData.sellerOrgId==null && !orderDetailData.subOrderSize))"
                     class="pay_now" @click.native="confrimMethod(orderDetailData.orderNo)">
                     确认收货

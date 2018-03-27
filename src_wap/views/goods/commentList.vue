@@ -82,7 +82,7 @@ import { mapState } from 'vuex'
         updated(){
             // console.log(this.$refs) 
             // console.log($(this.$refs.comment[0]).height());
-            // console.log($(this.$refs.comment[0]).css('font-size').slice(0, -2));        
+            // console.log($(this.$refs.comment[0]).css('font-size').slice(0, -2));
             //  console.log($(item).height());
             for(let item of $(this.$refs.comment)){
                 if($(item).height() >= 3 * $(item).css('font-size').slice(0, -2) * 1.5){
@@ -91,12 +91,13 @@ import { mapState } from 'vuex'
                     console.log($(item).height() >= Number(3 * $(item).css('font-size').slice(0, -2)))
                     $(item).addClass('on');
                     $(item).css({
-                    display: '-webkit-box',
-                    '-webkit-line-clamp': '3',
-                    overflow: 'hidden',
-                    'word-break': 'break-all',
-                    'text-overflow': 'ellipsis',
-                    '-webkit-box-orient': 'vertical',
+                    // display: '-webkit-box',
+                    // '-webkit-line-clamp': '3',
+                    // overflow: 'hidden',
+                    // 'word-break': 'break-all',
+                    // 'text-overflow': 'ellipsis',
+                    // '-webkit-box-orient': 'vertical',
+                        'max-height': 65
                     })
                 }
             }
@@ -106,10 +107,10 @@ import { mapState } from 'vuex'
             more(e){
                 // console.log($(e.target).hasClass('on'));
                 if ($(e.target).hasClass('on active')) {
-                    $(e.target).removeClass('active').find('.icon-single-down').toggle().end().find('.icon-shang').toggle();
+                    $(e.target).removeClass('active').find('.icon-single-down').toggle('normal').end().find('.icon-shang').toggle('normal');
                 }
                 else if ($(e.target).hasClass('on')) {
-                    $(e.target).addClass('active').find('.icon-single-down').toggle().end().find('.icon-shang').toggle();
+                    $(e.target).addClass('active').find('.icon-single-down').toggle('normal').end().find('.icon-shang').toggle('normal');
                 }
             },
             // 获取评论列表
@@ -341,8 +342,10 @@ import { mapState } from 'vuex'
                 &.on{
                     .more{
                         position: absolute;
-                        right: 0rem;
+                        right: -0.15rem;
+                        bottom: -0.15rem;
                         display: block;
+                        color: #f08200;
                     }
                 }
                 &.on.active{
