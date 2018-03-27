@@ -259,8 +259,8 @@
         </mt-popup>
 
         <!-- 商品分类弹出框 -->
-        <mt-popup v-model="dialogTypeBol" position="bottom" style="height: 90%;" :closeOnClickModal=false>
-            <div class="dialog_type_wrapper">
+        <mt-popup v-model="dialogTypeBol" position="bottom" style="height: 9.88rem; margin-bottom: 0.99rem;" :closeOnClickModal=false>
+            <div class="dialog_type_wrapper" style="height: 100%;">
                 <div v-if="twoTypeUsedList.length > 0">
                     <div class="dialog_type_title">
                         常用品类
@@ -276,7 +276,7 @@
                 <div class="dialog_type_title">
                     选择品类
                 </div>
-                <div class="dialog_type_content">
+                <div class="dialog_type_content" style="display: unset;">
                     <div class="type_1">
                         <div class="type_item" v-for="(item, index) in oneTypeList" :key="index" :class="{on: item.id === resize.oneClass}" @click="selectOneType(item, index)">
                             {{ item.name }}
@@ -290,12 +290,18 @@
                         </div>
                     </div>
                 </div>
-                <div class="dialog_type_bottom _fix-dialog_type_bottom">
+                <!-- <div class="dialog_type_bottom _fix-dialog_type_bottom">
                     <mt-button type="primary" @click.native="cancelType">取消</mt-button>
                     <mt-button type="primary" @click.native="sureType" :disabled="clickSure">确定</mt-button>
-                </div>
+                </div> -->
             </div>
         </mt-popup>
+        <div v-if="dialogTypeBol" class="dialog_type_wrapper" style="position: fixed; z-index: 2020; bottom: 0rem; height: 0.99rem;">
+            <div class="dialog_type_bottom _fix-dialog_type_bottom">
+                <mt-button type="primary" @click.native="cancelType">取消</mt-button>
+                <mt-button type="primary" @click.native="sureType" :disabled="clickSure">确定</mt-button>
+            </div>
+        </div>
     </div>
     </div>
 </template>
@@ -909,8 +915,8 @@
                 display: flex;
                 /* justify-content: space-between; */
                 ._add-type_item{
-                    width: 1.40rem!important;
-                    margin: 0rem!important;
+                    /* width: 1.40rem!important; */
+                    /* margin: 0rem!important; */
                 }
             }
         }
