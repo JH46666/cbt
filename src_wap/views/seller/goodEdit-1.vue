@@ -147,7 +147,7 @@
                 </div>
             </div>
             <!-- <div class="btn_wrapper" v-if="showOfHideStep"> -->
-            <div class="btn_wrapper">
+            <div class="btn_wrapper" style="z-index: -10;">
                 <mt-button type="primary" :disabled="disabledBol" @click="goStep3">下一步</mt-button>
             </div>
         </div>
@@ -434,7 +434,7 @@
                 this.twoTypeList = [];
                 this.oneTypeListName = '';
                 this.twoTypeListName = '';
-                this.resize.form.goodTypes = this.oneTypeListName + '-' + this.twoTypeListName;
+                this.resize.form.goodTypes = '';
             },
             selectGoodType() {
                 this.dialogTypeBol = true;
@@ -1039,11 +1039,12 @@
             ._add-type_1 {
                 display: flex;
                 /* justify-content: space-between; */
+                padding-top: 0rem; 
                 ._add-type_item {
-                    /* width: 1.40rem!important; */
-                    /* padding-left: 0.10rem; */
-                    /* padding-right: 0.10rem;  */
-                    /* margin: 0rem!important; */
+                    width: unset!important;
+                    padding-left: 0.20rem;
+                    padding-right: 0.20rem; 
+                    margin-top: 0.40rem!important;
                     /* width: auto!important; */
                     /* margin-right: 0.1rem!important; */
                 }
