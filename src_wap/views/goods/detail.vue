@@ -574,9 +574,9 @@ export default {
     },
     // updated里才能操作refs
     updated() {
-        // console.log(this.$refs) 
+        // console.log(this.$refs)
         // console.log($(this.$refs.comment[0]).height());
-        // console.log($(this.$refs.comment[0]).css('font-size').slice(0, -2));        
+        // console.log($(this.$refs.comment[0]).css('font-size').slice(0, -2));
         //  console.log($(item).height());
         for (let item of $(this.$refs.comment)) {
             if ($(item).height() >= 3 * $(item).css('font-size').slice(0, -2) * 1.5) {
@@ -1336,6 +1336,10 @@ export default {
                             id:res.data.id
                         });
                     });
+                    //监听返回
+                    layim.on('back', function(){
+                      $(".layui-m-layer").css('z-index','10');
+                    });
                     //监听自定义工具栏点击，以添加代码为例
                     layim.off('tool(history)').on('tool(history)', function(insert,f,thatChat){
                         var friendId = thatChat.data.id
@@ -1440,6 +1444,7 @@ export default {
                 this.$http.post("/erp/account/ajaxLogin",ret).then(res=>{
                     let userid = res.data.data;//res.data.data.split(",")[0];
                     this.getBase(userid);
+                    $(".layui-m-layer").css('z-index','120');
                 });
             }).catch(res => {
                 this.$router.replace('/login');

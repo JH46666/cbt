@@ -266,6 +266,7 @@
                     } else {
                         this.getBase(this.userid);
                     }
+                    $(".layui-m-layer").css('z-index','10');
                 });
 
             },
