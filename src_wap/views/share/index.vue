@@ -38,7 +38,7 @@
       <div class="group-lasttime three" v-else-if="!onShelf || isOutTime"><i class="iconfont">&#xe6b1;</i>已结束</div>
 
       <div class="group-tip" v-if="onShelf && !groupComplete && !isOutTime">好货手慢无，快来拼团啦~</div>
-      <div class="group-tip" v-else-if="onShelf && groupComplete && isOwn">您可以看看其他商品噢~</div>
+      <div class="group-tip" v-else-if="onShelf && groupComplete && isOwn">您可以再看看其他商品噢~</div>
       <div class="group-tip" v-else-if="onShelf && groupComplete && !isOwn">您可以再开启或拼别人的团噢~</div>
       <div class="group-tip" v-else-if="!onShelf ">商品售罄，您可以再看看其他商品噢~</div>
       <div class="group-tip" v-else>您可以再开启或拼别人的团噢~</div>
