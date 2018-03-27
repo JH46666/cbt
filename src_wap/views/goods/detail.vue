@@ -203,9 +203,9 @@
                 </div>
                 <div class="mint_cell_wrapper"  >
                     <template v-if="commentList.length === 0 ">
-                        <div class="no-comment">
-                            <img src="../../assets/images/no-comment.png" alt="">
-                            <p>暂时还没有评价呦~</p>
+                        <div class="no-comment" style="min-height: unset; padding: 0.50rem 0;">
+                            <!-- <img src="../../assets/images/no-comment.png" alt=""> -->
+                            <p>暂无评价呦~</p>
                         </div>
                     </template>
                     <template v-else>

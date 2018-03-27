@@ -1,5 +1,5 @@
 <template>
-  <div style="overflow-y: unset;">
+  <div style="overflow-x: hidden;">
     <!-- 评价 -->
     <div class="comment_wrapper">
         <div class="scroll-div" ></div>
@@ -12,15 +12,15 @@
     </div>
     <div class="mint_cell_wrapper"  >
         <template v-if="commentList.length === 0 ">
-            <div class="no-comment">
-                <img src="../../assets/images/no-comment.png" alt="">
-                <p>暂时还没有评价呦~</p>
+            <div class="no-comment" style="min-height: unset; padding: 0.50rem 0;">
+                <!-- <img src="../../assets/images/no-comment.png" alt=""> -->
+                <p>暂无评价呦~</p>
             </div>
         </template>
         <template v-else>
           <div v-infinite-scroll="loadMore" infinite-scroll-disabled="true" infinite-scroll-distance="10">
             <mt-cell v-for="(item,index) in commentList" :key="index" >
-                <div class="comment_head">
+                <div class="comment_head" style="padding: 0.10rem 0;">
                     <div class="comment_head_wrapper">
                         <div class="comment_head_mumber">{{ regStar(item.nickName) }}</div>
                         <div class="comment_head_mumberlevel">{{ item.levelName }}</div>
