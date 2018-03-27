@@ -498,7 +498,7 @@
                 sessionStorage.setItem('paymethod',JSON.stringify(this.pannel.map(val => val.currentPayMethod)));
 
                 // 快递方式
-                // sessionStorage.setItem('express',JSON.stringify(this.pannel.map(val => val.currentDeliveryMethod)));
+                sessionStorage.setItem('express',JSON.stringify(this.pannel.map(val => val.currentDeliveryMethod)));
 
             },
             // 恢复数据
@@ -506,24 +506,24 @@
                 let remark = JSON.parse(sessionStorage.remark);
                 let redpacket = JSON.parse(sessionStorage.redpacket);
                 let paymethod = JSON.parse(sessionStorage.paymethod);
-                // let express = JSON.parse(sessionStorage.express);
-
+                let express = JSON.parse(sessionStorage.express);
 
                 this.pannel.forEach((val, i) => {
                     val.remark = remark[i];
                     val.useRedPacketId = redpacket[i];
                     val.currentPayMethod = paymethod[i];
-                    // val.currentDeliveryMethod = express[i];
+                    val.currentDeliveryMethod = express[i];
                 })
 
                 delete sessionStorage.remark;
                 delete sessionStorage.redpacket;
                 delete sessionStorage.paymethod;
-                // delete sessionStorage.express;
+                delete sessionStorage.express;
 
             },
             //更新选中的数量
             updateSeleNum(item,newVal,oldVal){
+                this.backupsData();
                 return new Promise((resolve,reject) => {
                     this.$api.post('/oteao/shoppingCart/updateBuyNum',{
                         id: item.id,
@@ -540,6 +540,12 @@
                         this.upDate();
                         resolve(res);
                     },res => {
+                      this.$api.post('/oteao/shoppingCart/getCartItemBuyNum',{
+                          cartId: item.id,
+                      },res => {
+                        item.buyNum = res.data
+                        this.upDate();
+                      })
                         reject(res);
                     })
                 })
@@ -555,11 +561,11 @@
                 if(newVal < 1) return;
 
                 if(!!item.buyLowLimit) {
-                  console.log(11)
                     if(newVal < item.buyLowLimit) return;
                 }
                 this.updateSeleNum(item,newVal,oldVal).then(res => {
                     // 禁用商品直接重新拉取数据
+                    this.recoveryData()
                     if(res.data.isDisable) {
                         return this.upDate();
                     }
