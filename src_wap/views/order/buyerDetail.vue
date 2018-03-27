@@ -521,7 +521,7 @@
             <template>
                  <!-- && orderListDetail.subOrder.lenght == 0 -->
                  <mt-button plain v-if="(orderDetailData.orderStatus === 'DELIVERED' || orderDetailData.orderStatus === 'CBT_BUYER') && (orderListDetail.subOrder && orderListDetail.subOrder.length <= 1)"
-                    class="pay_now" @click.native="confrimMethod(orderDetailData.orderNo)">
+                    class="pay_now" @click.native="confrimMethodsMoreChild(orderListDetail.subOrder[0].subOrderNo,orderDetailData.orderNo)">
                     确认收货
                 </mt-button>
                 <!-- 第三方 -->
@@ -664,9 +664,9 @@ export default {
                         message: res.errorMsg,
                         iconClass: 'icon icon-fail'
                     });
-                    return setTimeout(()=>{
-                        location.reload();
-                    },200)
+                    // return setTimeout(()=>{
+                    //     location.reload();
+                    // },200)
                 })
             })
         },

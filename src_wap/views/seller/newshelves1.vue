@@ -259,7 +259,7 @@
         </mt-popup>
 
         <!-- 商品分类弹出框 -->
-        <mt-popup v-model="dialogTypeBol" position="bottom" style="height: 9.88rem; margin-bottom: 0.99rem;" :closeOnClickModal=false>
+        <mt-popup v-model="dialogTypeBol" position="bottom" style="height: 8.88rem; margin-bottom: 0.99rem;" :closeOnClickModal=false>
             <div class="dialog_type_wrapper" style="height: 100%;">
                 <div v-if="twoTypeUsedList.length > 0">
                     <div class="dialog_type_title">

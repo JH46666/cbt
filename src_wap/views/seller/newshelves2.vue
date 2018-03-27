@@ -172,7 +172,7 @@ import $api from 'api';
             // console.log('H:', clientH);
             // console.log(bottomBlank.offset().top);
             bottomBlank.css({
-                height: clientH - this.bottomBlank.offset().top
+                height: clientH - bottomBlank.offset().top
             });
         },
         methods:{
