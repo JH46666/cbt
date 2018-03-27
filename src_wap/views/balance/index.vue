@@ -609,14 +609,14 @@
                         if(item.buyNum < item.buyLowLimit) {
                             item.buyNum = item.buyLowLimit;
                             item.oldBuy = item.buyLowLimit;
-                            return Toast('小于最低购买量')
+                            this.$toast('小于最低购买量')
                         }
                     }
 
                     if(!!item.buyUpperLimit) {
                         if(item.buyNum > item.buyUpperLimit) {
                             // item.buyNum = item.oldBuy;
-                            Toast('超过最高购买量')
+                            this.$toast('超过最高购买量')
                         }
                     }
                     this.updateSeleNum(item,item.buyNum).then(res => {
