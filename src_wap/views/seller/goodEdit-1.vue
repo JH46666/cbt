@@ -421,6 +421,7 @@
                 this.resize.twoIndex = index;
                 this.clickSure = false;
             },
+            // 分类取消按钮
             cancelType() {
                 this.dialogTypeBol = false;
                 this.resize.oneClass = null;
@@ -429,6 +430,9 @@
                 this.resize.oneIndex = null;
                 this.clickSure = true;
                 this.twoTypeList = [];
+                this.oneTypeListName = '';
+                this.twoTypeListName = '';
+                this.resize.form.goodTypes = this.oneTypeListName + '-' + this.twoTypeListName;
             },
             selectGoodType() {
                 this.dialogTypeBol = true;
@@ -1034,8 +1038,12 @@
                 display: flex;
                 /* justify-content: space-between; */
                 ._add-type_item {
-                    width: 1.40rem!important;
+                    /* width: 1.40rem!important; */
+                    padding-left: 0.10rem;
+                    padding-right: 0.10rem; 
                     margin: 0rem!important;
+                    width: auto!important;
+                    margin-right: 0.1rem!important;
                 }
             }
         }
