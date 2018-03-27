@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="overflow-y: unset;">
     <!-- 评价 -->
     <div class="comment_wrapper">
         <div class="scroll-div" ></div>
