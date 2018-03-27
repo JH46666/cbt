@@ -138,6 +138,7 @@
                 sussTips: '成功上架！',
                 loading1: false,
                 loading2: false,
+                saveOrCreated:''
             }
         },
         computed: {
@@ -203,8 +204,10 @@
                 this.loading2 = true;
                 if (flag === '0') {
                     this.flag = 0;
+                    this.saveOrCreated = 'save';
                 } else {
                     this.flag = 1;
+                    this.saveOrCreated = 'created';
                     let status = store.state.member.shop.shopStatus;
                     if (status == -2) {
                         return this.$messageBox({
@@ -606,10 +609,16 @@
             },
             goShopMange() {
                 let status = '';
-                if (this.sussTips === '修改成功！') {
+                // if (this.sussTips === '修改成功！') {
+                //     status = 'OFF_SHELF';
+                // } else {
+                //     status = 'ON_SHELF';
+                // }
+                if(this.saveOrCreated == 'save'){
                     status = 'OFF_SHELF';
-                } else {
-                    status = 'ON_SHELF';
+                }
+                else{
+                     status = 'ON_SHELF';
                 }
                 this.$router.push({
                     name: '商品管理',
