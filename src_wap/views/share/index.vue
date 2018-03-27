@@ -4,7 +4,7 @@
       <div class="product-img">
         <img :src="detailData.productImgList[0].imgUrl"/>
       </div>
-      <div class="product-data">
+      <div class="product-data" @click="$router.push('/detail?proSku='+proSku)">
         <div class="product-title">{{ detailData.productExtInfo.title }}</div>
         <div class="product-price">
           <div class="detail-groupnum">
@@ -164,10 +164,10 @@
                 <div>或复制链接进行分享</div>
                 <div class="_add-right"></div>
           </div>
-          <div class="copylink-btn" v-clipboard:copy="copyShareTitle" v-clipboard:success="onCopy">
+          <button class="copylink-btn" v-clipboard:copy="copyShareTitle" v-clipboard:success="onCopy">
               复制分享链接
               <i class="iconfont icon-lianjie" style="margin-left: 0.05rem;"></i>
-            </div>
+            </button>
           <div class="close-btn" @click="closeShareDialog">
             <i class="iconfont">&#xe621;</i>
           </div>
@@ -441,7 +441,6 @@ export default {
        })
    },
    getWxConfig(){
-     console.log(window.location.href.split('#')[0] + '#' + window.location.href.split('#')[1])
      let data = {
        'url':window.location.href.split('#')[0] + '#' + window.location.href.split('#')[1]
      }
