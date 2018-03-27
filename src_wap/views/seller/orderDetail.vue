@@ -215,7 +215,8 @@
                 list: [],                       // 商品列表
                 grouppingInfo:{},               // 团购信息
                 grouppingLeftTime:'',           // 团购剩余时间
-                timer: null
+                timer: null,
+                myIMData:''
             }
         },
         methods: {
@@ -379,7 +380,7 @@
             getBase(userid) {
                 this.$http.get(`/erp/layim/base?userId=${userid}`).then(res => {
                     if (res.data.data) {
-                        this.myData = res.data.data;
+                        this.myIMData = res.data.data;
                         this.addFriend(userid);
                     } else {
                         return Toast(res.data.msg);
@@ -418,9 +419,9 @@
                         layim.config({
                             init: {
                                 //设置我的基础信息
-                                mine: _this.myData.mine,
-                                friend: _this.myData.friend,
-                                group: _this.myData.group
+                                mine: _this.myIMData.mine,
+                                friend: _this.myIMData.friend,
+                                group: _this.myIMData.group
                             }
                             //上传图片接口
                             , uploadImage: { url: '/erp/upload/file' }
