@@ -187,6 +187,11 @@ import store from 'store';
                                 mtype:t? socket.mtype.checkIsOnline:socket.mtype.checkOnlineCount,
                                 id:res.data.id
                             });
+                            $(".layui-m-layer").css('z-index','120');
+                        });
+                        //监听返回
+                        layim.on('back', function(){
+                          $(".layui-m-layer").css('z-index','10');
                         });
                         //监听自定义工具栏点击，以添加代码为例
                         layim.off('tool(history)').on('tool(history)', function(insert,f,thatChat){

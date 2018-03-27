@@ -1158,7 +1158,8 @@ export default {
                             ,title: '聊天记录' //工具名称
                             ,iconUnicode: '&#xe60e;' //图标字体的unicode，可不填
                             ,iconClass: '' //图标字体的class类名
-                        }]
+                        }],
+                        brief:true
                     });
 
                     socket.config({
@@ -1299,7 +1300,6 @@ export default {
                             id:res.data.id
                         });
                     });
-
                     //监听自定义工具栏点击，以添加代码为例
                     layim.off('tool(history)').on('tool(history)', function(insert,f,thatChat){
                         var friendId = thatChat.data.id
