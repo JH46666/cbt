@@ -295,7 +295,7 @@
                         for(let i=0; i<this.firstCat.length; i++){
                             if(this.firstCat[i].id == this.$route.query.parent){
                                 let on = Array.from(this.$refs.wrapper.children)
-                                this.searchFirstCat(i,this.firstCat[i].id,this.$refs.wrapper)
+                                this.setFirstCat(i,this.firstCat[i].id,this.$refs.wrapper)
                             }
                         }
                         if(this.$route.query.child != undefined){
