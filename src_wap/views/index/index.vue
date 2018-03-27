@@ -237,16 +237,17 @@ import { mapState } from 'vuex'
             },
             golink(item) {
                 if(item.link.length>0){
-                    if(item.flag){
-                        this.$router.push({
-                            name: '商品详情',
-                            query: {
-                                proSku: item.link
-                            }
-                        })
-                    }else{
-                        console.log('活动！！！！');
-                    }
+                  this.$router.push(item.link)
+                    // if(item.flag){
+                    //     this.$router.push({
+                    //         name: '商品详情',
+                    //         query: {
+                    //             proSku: item.link
+                    //         }
+                    //     })
+                    // }else{
+                    //     console.log('活动！！！！');
+                    // }
                 }
             },
             getHot() {
