@@ -443,7 +443,8 @@
                                 , title: '聊天记录' //工具名称
                                 , iconUnicode: '&#xe60e;' //图标字体的unicode，可不填
                                 , iconClass: '' //图标字体的class类名
-                            }]
+                            }],
+                            brief:true
                         });
 
                         socket.config({

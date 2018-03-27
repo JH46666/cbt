@@ -29,7 +29,7 @@
                                     <span class="price">￥{{ todo.priorityPrice | toFix2  }}</span>
                                     <span class="pro_number clearfix">
                                         <span class="decrease" :class="{isGary:todo.buyNum === 1||todo.buyNum == todo.buyLowLimit}" @click="numDecrease(todo)"><i class="iconfont">&#xe851;</i></span>
-                                        <input class="input-num" type="number" v-model="todo.buyNum" @blur="numChange(todo)">
+                                        <input class="input-num" type="number" maxlength="4" v-model="todo.buyNum" @blur="numChange(todo)">
                                         <span class="plus" @click="numPlus(todo)"><i class="iconfont">&#xe638;</i></span>
                                     </span>
                                 </p>
