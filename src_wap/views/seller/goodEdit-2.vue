@@ -491,7 +491,7 @@
                         `&frontOrgProInfoDetailVo.proName=${encodeURI(titles)}` +                                             // 组合标题
                         `&frontOrgProInfoDetailVo.catId=${encodeURI(this.resize.twoClass)}` +
                         `&frontOrgProInfoDetailVo.brandId=${encodeURI(this.resize.selId.pp)}` +
-                        `&frontOrgProInfoDetailVo.proName=${encodeURI(this.resize.form.goodsSell)}` +
+                        `&frontOrgProInfoDetailVo.reason=${encodeURI(this.resize.form.goodsSell)}` +
                         // `&frontOrgProInfoDetailVo.unint=${ encodeURI(this.resize.form.goodsDw) }` +
                         `&frontOrgProInfoDetailVo.weight=${encodeURI(this.resize.form.goodsMz)}` +
                         // `&frontOrgProInfoDetailVo.netWeight=${ encodeURI(this.resize.form.goodsJz) }` +
@@ -521,7 +521,7 @@
                         `?frontOrgProInfoDetailVo.proId=${encodeURI(this.resize.mainId)}` +
                         `&frontOrgProInfoDetailVo.proName=${encodeURI(titles)}` +                                             // 组合标题
                         `&frontOrgProInfoDetailVo.catId=${encodeURI(this.resize.twoClass)}` +
-                        `&frontOrgProInfoDetailVo.proName=${encodeURI(this.resize.form.goodsSell)}` +
+                        `&frontOrgProInfoDetailVo.reason=${encodeURI(this.resize.form.goodsSell)}` +
                         // `&frontOrgProInfoDetailVo.unint=${ encodeURI(this.resize.form.goodsDw) }` +
                         `&frontOrgProInfoDetailVo.weight=${encodeURI(this.resize.form.goodsMz)}` +
                         // `&frontOrgProInfoDetailVo.netWeight=${ encodeURI(this.resize.form.goodsJz) }` +
