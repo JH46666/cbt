@@ -535,7 +535,8 @@
                         item.buyUpperLimit = res.data.buyUpperLimit;
                         // 更新购物车数量
                         // this.$store.dispatch('queryCartTotal');
-                        this.oldVal = newVal;
+                        // this.oldVal = newVal;
+                        item.buyNum = res.data.buyNum;
                         this.upDate();
                         resolve(res);
                     },res => {
@@ -618,7 +619,7 @@
                         item.oldBuy = res.data.buyNum;
                     }).catch(res => {
                         this.$toast(res.message);
-                        item.buyNum = this.oldVal;
+                        // item.buyNum = this.oldVal;
                     })
 
                 }else{

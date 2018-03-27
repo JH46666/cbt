@@ -422,18 +422,20 @@ export default {
                     this.selected = null;
                });
            }
-
-           // 立即购买
-           let buyLowLimit = this.detailData.productExtInfo.buyLowLimit?this.detailData.productExtInfo.buyLowLimit:1;
-           this.$store.dispatch('addCart',{proId:this.detailData.productExtInfo.proId,buyNum:buyLowLimit,groupType:groupType,groupId:groupId}).then(res=>{
-               console.log(res);
-               this.$router.push({
-                   name: '结算中心',
-                   query: {
-                       cart: res.data.cartId
-                   }
-               })
-           },res=>{});
+           this.getProInfo().then((res) =>{
+               this.detailData = res.data;
+             // 立即购买
+             let buyLowLimit = this.detailData.productExtInfo.buyLowLimit?this.detailData.productExtInfo.buyLowLimit:1;
+             this.$store.dispatch('addCart',{proId:this.detailData.productExtInfo.proId,buyNum:buyLowLimit,groupType:groupType,groupId:groupId}).then(res=>{
+                 console.log(res);
+                 this.$router.push({
+                     name: '结算中心',
+                     query: {
+                         cart: res.data.cartId
+                     }
+                 })
+             },res=>{});
+           })
        }).catch((res)=>{
            return this.$router.push({name: '账户登录'});
        })
