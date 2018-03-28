@@ -331,7 +331,7 @@
                             </div>
                         </div>
                         <!-- <div class="order_num" style="position: relative;" v-if="orderDetailData.orderStatus === 'DELIVERED' || orderDetailData.orderStatus === 'CBT_BUYER'">
-                            <mt-button plain class="pay_now" style="font-size: 0.26rem; width: 1.64rem; height: 0.56rem; border-radius: 0.4rem; 
+                            <mt-button plain class="pay_now" style="font-size: 0.26rem; width: 1.64rem; height: 0.56rem; border-radius: 0.4rem;
                                 border-color: rgba(0,0,0,.2); position: absolute; right: 0rem; top: -0.70rem; border-color: #f08200; color: #f08200;"
                                 @click.native="confrimMethod(orderDetailData.orderNo)">
                                 确认收货
@@ -986,12 +986,12 @@ export default {
                         }],
                         brief:true
                     });
-
+                    let wsServer = window.location.host=='m.oteao.com'?'wss://im.oteao.com':'wss://mdemows.oteao.com';
                     socket.config({
                         log: true,
                         token: `/erp/layim/getToKenById?id=${selfId}`,
                         // token:'/erp/layim/token',
-                        server: 'wss://mdemows.oteao.com',
+                        server: wsServer,
                         //server:'ws://192.168.7.8:8888',
                         //server: 'wss://java.im.test.yipicha.com',
                         reconn: true
