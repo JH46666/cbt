@@ -1197,12 +1197,12 @@ export default {
                         }],
                         brief:true
                     });
-
+                    let wsServer = window.location.host=='m.oteao.com'?'wss://im.oteao.com':'wss://mdemows.oteao.com';
                     socket.config({
                         log:true,
                         token:`/erp/layim/getToKenById?id=${selfId}`,
                         // token:'/erp/layim/token',
-                        server:'wss://mdemows.oteao.com',
+                        server:wsServer,
                         //server:'ws://192.168.7.8:8888',
                         //server: 'wss://java.im.test.yipicha.com',
                         reconn: true
