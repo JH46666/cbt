@@ -57,8 +57,8 @@
                     <!-- 头部 caption -->
                     <div class="item-caption flex">
                         <div class="cap-l flex flex-1 align_items_c">
-                            <!-- <label class="check-cir" :class="{'checked':item.checked}" @click="item.checked = !item.checked"></label>
-                            <span>上架 {{item.createTime}}</span> -->
+                            <!-- <label class="check-cir" :class="{'checked':item.checked}" @click="item.checked = !item.checked"></label> -->
+                            <span>上架 {{item.createTime}}</span>
                         </div>
                         <div class="cap-r algin_r">
                             <span class="saled">已售<span class="number" v-if="item.salesNum"> {{item.salesNum}} </span><span class="number" v-else> 0 </span></span>
@@ -106,7 +106,7 @@
                     <!-- 头部 caption -->
                     <div class="item-caption flex">
                         <div class="cap-l flex flex-1 align_items_c">
-                            <label class="check-cir" :class="{'checked':item.checked}" @click="item.checked = !item.checked"></label>
+                            <!-- <label class="check-cir" :class="{'checked':item.checked}" @click="item.checked = !item.checked"></label> -->
                             <span>创建 {{item.createTime}}</span>
                         </div>
                         <div class="cap-r algin_r">
