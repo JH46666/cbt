@@ -27,14 +27,14 @@
                     </div>
                     <div class="comment_head_time">{{ item.createTime }}</div>
                 </div>
-                <p class="comment_footer" ref="comment" :class="{on: item.onFlag}" @click="more($event)">
+                <div class="comment_footer" ref="comment" :class="{on: item.onFlag}" @click="more($event)">
                     {{ item.content }}
                     <span v-if="item.replyContent"><span style="color:#c29e74;display:block;">回复：</span>{{item.replyContent}}</span>
                     <!-- <span class="bg-white"><i class="iconfont down" :class="{on:item.pullFlag!=='' && item.pullFlag}" @click="pullOrDown(item)" :key="index+'11'">&#xe619;</i></span>
                     <span class="bg-white"><i class="iconfont pull" :class="{on:item.upFlag!=='' && item.upFlag}" @click="pullOrDown(item)" :key="index+'12'">&#xe618;</i></span> -->
                     <i class="iconfont icon-single-down more"></i>
                     <i class="iconfont icon-shang more" style="display: none;"></i>
-                </p>
+                </div>
             </mt-cell>
             <div class="goods-loading" v-if="commentList.length < commentRecond">
               <mt-spinner type="fading-circle" color="#f08200" ></mt-spinner>
