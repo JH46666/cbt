@@ -107,10 +107,10 @@ import { mapState } from 'vuex'
             more(e){
                 // console.log($(e.target).hasClass('on'));
                 if ($(e.target).hasClass('on active')) {
-                    $(e.target).removeClass('active').find('.icon-single-down').toggle('normal').end().find('.icon-shang').toggle('normal');
+                    $(e.target).removeClass('active').find('.icon-single-down').stop().toggle('normal').end().find('.icon-shang').stop().toggle('normal');
                 }
                 else if ($(e.target).hasClass('on')) {
-                    $(e.target).addClass('active').find('.icon-single-down').toggle('normal').end().find('.icon-shang').toggle('normal');
+                    $(e.target).addClass('active').find('.icon-single-down').stop().toggle('normal').end().find('.icon-shang').stop().toggle('normal');
                 }
             },
             // 获取评论列表
@@ -353,7 +353,7 @@ import { mapState } from 'vuex'
                     }
                 }
                 &.on.active{
-                    -webkit-line-clamp: unset!important;
+                    /* -webkit-line-clamp: unset!important; */
                     max-height: unset!important;
                 }
                 .more{
