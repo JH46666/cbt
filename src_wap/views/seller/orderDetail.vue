@@ -476,12 +476,6 @@
                         socket.on('error', function (e) {
                             console.log("监听到事件：error");
                         });
-						socket.onmessage = function(res){
-						  res = JSON.parse(res);
-						  if(res.emit === 'chatMessage'){
-							layim.getMessage(res.data); //res.data即你发送消息传递的数据（阅读：监听发送的消息）
-						  }
-						};
                         socket.on('msg', function (e) {
                             var msg = JSON.parse(e.data);
                             console.log(msg);
