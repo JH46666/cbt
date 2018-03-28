@@ -69,12 +69,14 @@
                             }]
 
                         });
+
+                        let wsServer = window.location.host=='m.oteao.com'?'wss://im.oteao.com':'wss://mdemows.oteao.com';
                         socket.config({
                             log: true,
                             token: `/erp/layim/getToKenById?id=${_this.userid}`,
                             // token:'/erp/layim/token',
                             //server:'ws://192.168.7.8:8888',
-                            server: 'wss://mdemows.oteao.com',
+                            server: wsServer,
                             //server: 'wss://java.im.test.yipicha.com'
                             //server: 'ws://java.im.test.yipicha.com:8888',
                             reconn: true
