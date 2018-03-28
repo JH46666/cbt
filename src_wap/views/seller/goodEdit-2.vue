@@ -623,7 +623,7 @@
                 //     status = 'ON_SHELF';
                 // }
                 if(this.saveOrCreated == 'save'){
-                    status = 'OFF_SHELF';
+                    status = this.$route.query.state;
                 }
                 else{
                      status = 'ON_SHELF';
