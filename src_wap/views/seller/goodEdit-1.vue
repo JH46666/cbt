@@ -126,6 +126,7 @@
                 <!-- 商品属性 -->
                 <div class="good_type_list" v-if="resize.proValList.length != 0">
                     <div class="good_type_list_wrapper">
+                        <!-- this.resize.proValList通过queryPropVal接口查询 -->
                         <div class="item" v-for="(item,index) in resize.proValList" :key="index">
                             <label class="item-left" :for="index+14">
                                 {{ item.propName }}
@@ -286,6 +287,18 @@
                                 this.$set(this.resize.proValList[i], 'proValId', '');
                             }
                             // 匹配确定proIndex
+                            // for (let i = 0; i < this.resize.proValList.length; i++) {
+                            //     for (let n = 0; n < this.resize.proValList[i].propValList.length; n++) {
+                            //         for (let j = 0; j < this.getProvList.length; j++) {
+                            //             if (this.resize.proValList[i].propValList[n].id == this.getProvList[j].content) {
+                            //                 this.resize.proValList[i].proValId = this.getProvList[j].content;
+                            //                 this.resize.proValList[i].proIndex = n;
+                            //                 this.resize.proValList[i].proVal = this.getProvList[j].selval;
+                            //             }
+                            //         }
+                            //     }
+                            // }
+
                             for (let i = 0; i < this.resize.proValList.length; i++) {
                                 for (let n = 0; n < this.resize.proValList[i].propValList.length; n++) {
                                     for (let j = 0; j < this.getProvList.length; j++) {
@@ -295,8 +308,24 @@
                                             this.resize.proValList[i].proVal = this.getProvList[j].selval;
                                         }
                                     }
+                                        // console.log(this.getProvList[j].selval);
+                                        // console.log(this.getProvList[j]);
+                                        // if (this.getProvList[j].propType == 2) {
+                                        //     //  this.resize.proValList[i].proValId = this.getProvList[j].id;
+                                        //     this.resize.proValList[i].proVal = this.getProvList[j].selval;
+                                        //     console.log(this.getProvList[j].propType)
+                                        // }
                                 }
-                            }   
+                                // 文本型属性
+                                if (!this.resize.proValList[i].propValList.length) {
+                                    for (let j = 0; j < this.getProvList.length; j++) {
+                                        if (this.resize.proValList[i].id == this.getProvList[j].idNull) {
+                                            this.resize.proValList[i].proVal = this.getProvList[j].selval;
+                                        }
+                                    }
+                                }
+                            }
+
                             // for (let i = 0; i < this.resize.proValList.length; i++) {
                             //     for (let j = 0; j < this.getProvList.length; j++) {
                             //         if (this.resize.proValList[i].id == this.getProvList[j].id) {
@@ -858,7 +887,9 @@
                             this.getProvList.push({
                                 id: obj.propertiesVal.catPropId,
                                 content: obj.propertiesVal.id,
-                                selval: obj.propertiesVal.propVal
+                                selval: obj.propertiesVal.propVal,
+                                propType: obj.propType,
+                                idNull: obj.id,                             // 文本型的属性没有obj.propertiesVal.catPropId
                             })
                         }
                         let contentJson = JSON.parse(rs.data.content);
