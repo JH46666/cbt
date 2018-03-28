@@ -614,7 +614,6 @@
             // 加
             numPlus(item){
 
-                this.backupsData();
                 // 旧的数量
                 let oldVal = item.buyNum;
                 // 新的数量
@@ -688,8 +687,7 @@
                     this.address = JSON.parse(address);
                     delete sessionStorage.cart;
                     delete sessionStorage.address;
-                    this.recoveryData();
-                    this.upDate();
+                    this.update();
                 } else {
                     this.address = this.myData.receiveAddrList.filter(val => val.isDefault)[0] ? this.myData.receiveAddrList.filter(val => val.isDefault)[0] : {}
                 }
