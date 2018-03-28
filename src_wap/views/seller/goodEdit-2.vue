@@ -39,7 +39,7 @@
                 <div class="_add-title-small-box"></div>
                 商品详情展示
             </div>
-            <div class="_add-title-tips">
+            <div class="_add-title-tips" @click="picturesRule">
                 <i class="iconfont icon-chuangjianshangpinshuoming"></i>
                 <div>传图规范</div>
             </div>
@@ -667,6 +667,12 @@
                 console.log(this.previewFlag);
                 this.previewFlag = !this.previewFlag;
                 console.log(this.previewFlag);
+            },
+            // 如何创建商品
+            picturesRule() {
+                this.$router.push({
+                    name: '茶帮通商品详情规范'
+                })
             }
         },
         beforeRouteEnter(to, from, next) {
