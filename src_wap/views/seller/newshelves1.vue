@@ -916,7 +916,7 @@
                 /* justify-content: space-between; */
                 padding-top: 0rem; 
                 ._add-type_item {
-                    width: unset!important;
+                    width: unset!important;                   
                     padding-left: 0.20rem;
                     padding-right: 0.20rem; 
                     margin-top: 0.40rem!important;

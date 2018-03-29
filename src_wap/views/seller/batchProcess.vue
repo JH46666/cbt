@@ -99,15 +99,21 @@ import $api from 'api';
             this.$store.commit('SET_TITLE','批量处理');
             this.state = this.$route.query.state;
             this.keyWord = this.$route.query.keyWord;
+            // 进入时拉取数据
             this.getList(this.currentPage,this.state).then((res) => {
                 this.proList = res.data;
                 this.totalPage = res.total_record;
                 for(let obj of this.proList){
                     this.$set(obj,'checked',false);
                 }
+                Toast({
+                    message: `res.data:${res.data.length}，res.total_record:${res.total_record}`,
+                    iconClass: 'icon icon-success'
+                })
             })
         },
         methods:{
+            // 更多
             loadMore() {
                 try {
                     if(this.proList.length < this.totalPage){
@@ -128,6 +134,7 @@ import $api from 'api';
                 }
             },
             downMethod() {
+                // 已勾选的商品
                 let checkedId = [];
                 for(let obj of this.proList){
                     if(obj.checked){
@@ -137,7 +144,9 @@ import $api from 'api';
                 let states = 'ON_SHELF';
                 if(this.state === 'ON_SHELF'){
                     states = 'OFF_SHELF';
-                }else{
+                }
+                // 上架前判断是否违规
+                else{
                     let status = store.state.member.shop.shopStatus;
                     if(status == -2) {
                         return this.$messageBox({
@@ -169,6 +178,7 @@ import $api from 'api';
                     },500)
                 })
             },
+            // 上架或者下架
             upOrDown(data) {
                 return new Promise((resolve,reject) => {
                     this.$api.post('/oteao/productInfo/modifyOrgProInfoState',data,res => {
@@ -181,6 +191,7 @@ import $api from 'api';
                     })
                 })
             },
+            // 删除
             deleteMethod() {
                 let checkedId = [];
                 for(let obj of this.proList){
@@ -253,6 +264,7 @@ import $api from 'api';
                     }
                 }
             },
+            // 获取数据
             getList(pages,states) {
                 let data = {
                         'page.pageNumber': pages,
