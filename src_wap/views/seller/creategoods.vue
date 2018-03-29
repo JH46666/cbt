@@ -94,7 +94,7 @@
 export default {
   data() {
     return {
-      isShowArr: [true, false, false, false, false, false]
+      isShowArr:1
     };
   },
 
