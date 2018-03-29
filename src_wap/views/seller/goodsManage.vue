@@ -415,12 +415,14 @@ import $api from 'api';
                     }
                 })
             },
+            // 创建商品
             goCreate() {
                 this.$store.commit('SET_RESIZE');
                 this.$router.push({
                     name: '新品上架-1'
                 })
             },
+            // 批量处理
             goBrect() {
                 if(this.tabId === 'yes'){
                     this.$router.push({
@@ -665,6 +667,7 @@ import $api from 'api';
             selTab(str) {
                 this.tabId = str;
                 if(str === 'yes'){
+                    this.selectText = '上架时间';
                     this.$router.replace({
                         name: '商品管理',
                         query: {
