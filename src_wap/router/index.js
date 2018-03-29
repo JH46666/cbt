@@ -127,6 +127,24 @@ const router = new Router({
 						hideFooter: true
 					}
 				},
+				
+				{
+					path: 'buyerProcess',
+					name: '注册为茶帮通买家流程',
+					component: resolve => require(['@/views/seller/buyerProcess.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+				{
+					path: 'saleProcess',
+					name: '注册为茶帮通卖家流程',
+					component: resolve => require(['@/views/seller/saleProcess.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				},
+
 
 			]
 		},

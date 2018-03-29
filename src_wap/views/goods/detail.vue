@@ -1666,4 +1666,8 @@ export default {
             display: none;
         }
     }
+    .mint-tab-item-icon{
+        width: 0.4rem;
+        height: 0.4rem; 
+    }
 </style>
