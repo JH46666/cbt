@@ -35,9 +35,13 @@
         </section>
         <section class="count-entry">
             <router-link :to="{name: '账户余额'}" tag="div" class="entry-item">
-                <div class="num">{{ memberAccount.totalAmount | toFix2 }}</div>
-                <p class="count-text">账户余额(元)</p>
+                <div class="num">{{Number(memberAccount.totalAmount)<10000?(memberAccount.totalAmount | toFix2):((Number(memberAccount.totalAmount)/10000).toFixed(2) )+'万'}}</div>
+                <p class="count-text">账户余额</p>
             </router-link>
+            <div class="entry-item">
+              <div class="num">{{Number(memberAccount.totalRefundAmount)<10000?(memberAccount.totalRefundAmount | toFix2):((Number(memberAccount.totalRefundAmount)/10000).toFixed(2) )+'万'}}</div>
+              <p class="count-text">我的返现</p>
+            </div>
             <router-link :to="{name: '积分记录'}" tag="div" class="entry-item">
                 <div class="num">{{ memberAccount.totalIntegral }}</div>
                 <p class="count-text">我的积分</p>
@@ -137,7 +141,7 @@
                 signDialog: false,          // 签到弹窗
                 successSign: {},            // 成功记录
             }
-        },        
+        },
         computed: {
             ...mapState({
                 member: state => state.member.member,
@@ -191,22 +195,22 @@
                         return;
                     } else {
                         this.deleteCookie("oteaoSid")
-                        this.$http.get('/erp/account/logout',{});                        
+                        this.$http.get('/erp/account/logout',{});
                         //this.deleteCookie("JSESSIONID")
                         this.$api.get('/oteao/login/logout',{},res => {
                             this.$store.commit('SET_MEMBERDATA',{type:'member',val:{}})
                             //this.$router.go({path:'/'});
-                            //this.$router.push('/'); 
+                            //this.$router.push('/');
                             setTimeout(() => {
                                 location.href='/'
-                            },1000)                                                       
+                            },1000)
                         },res => {
                             this.$store.commit('SET_MEMBERDATA',{type:'member',val:{}})
                             //this.$router.go({path:'/'});
-                            //this.$router.push('/') 
+                            //this.$router.push('/')
                              setTimeout(() => {
                                 location.href='/'
-                            },1000)                          
+                            },1000)
                         })
                     }
                 })

@@ -2,7 +2,7 @@
 <div class="buy-process">
 <div class="steps-before">
 <h4 class="max-title"><span class="titleicons"><img :src="buyProcessData.titleiconsrc1" alt=""></span>{{buyProcessData.title.titletext1}}</h4>
-<p>{{buyProcessData.stepsBefore.text}} <span class="color-red">{{buyProcessData.stepsBefore.span}}</span></p>
+<p>{{buyProcessData.stepsBefore.text}} <span class="color-red" @click="toStep2()">{{buyProcessData.stepsBefore.span}}<i class="iconfont">&#xe744;</i></span></p>
 <img :src="buyProcessData.stepsBefore.imgSrc" alt="">
 </div>
 <div class="line"></div>
@@ -15,7 +15,7 @@
 </div>
 <img v-bind:src="buyProcessData.stepsOne.imgSrc" alt="">
 </div>
-<h5 class="title">{{buyProcessData.steps.title2}}</h5>
+<h5 class="title" id="step2">{{buyProcessData.steps.title2}}</h5>
 <div class="steps">
 <p class="small-t">{{buyProcessData.stepsTwo.stepsTwoBeforeT1}}</p>
 <img v-bind:src="buyProcessData.stepsTwo.stepsTwoBeforeSrcimg1" alt="">
@@ -168,10 +168,22 @@ export default {
 
     // this.getHot();
     // this.getData();
+  },
+  methods:{
+    toStep2(){
+      document.getElementById('step2').scrollIntoView(true);
+    }
   }
 };
 </script>
 <style scoped>
+.iconfont{
+    font-family:"iconfont" !important;
+    font-size: 0.28rem;
+    font-style:normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
 .max-title {
   font-size: 0.34rem;
     font-weight: normal;
@@ -271,7 +283,7 @@ p {
 }
 
 .color-red {
-  color: red;
+  color: #f08200;
 }
 
 #small-m {
