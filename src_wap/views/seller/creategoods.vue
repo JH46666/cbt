@@ -1,15 +1,15 @@
 <template>
 <div class="creatgoods-container">
-  <h5 class="title" @click="clickfun(1)">1.选择分类</h5>
-  <div class="steps" v-if="isShowArr[0]" >
+  <h5 class="title" id="1" @click="clickfun(1)">1.选择分类</h5>
+  <div class="steps" v-if="isShowArr == 1" >
     <div class="steps-text">
       <p>点选“商品分类”，选择您要上架的茶对应的品类，如您要上架的商品是正山小种，即选择红茶-正山小种。</p>
     </div>
     <img src="http://img0.oteao.com/WAPIMG/share/01fb.png" alt="">
     <img src="http://img1.oteao.com/WAPIMG/share/02fb.png" alt="">
   </div>
-  <h5 class="title" @click="clickfun(2)">2.商品基本信息</h5>
-  <div class="steps" v-if="isShowArr[1]">
+  <h5 class="title" id="2" @click="clickfun(2)">2.商品基本信息</h5>
+  <div class="steps" v-if="isShowArr == 2">
     <div class="steps-text">
       <p class="tips-text-wrap"> <span class="tips_icons"><img src="http://img2.oteao.com/WAPIMG/share/cbt_ts.png" alt=""></span>
       栏位均为 <span class="color-red">必填项</span> ，填写商品基本信息</p>
@@ -26,8 +26,8 @@
     </div>
       <img src="http://img3.oteao.com/WAPIMG/share/03fb.png" alt="">
   </div>
-  <h5 class="title" @click="clickfun(3)">3.商品价格信息</h5>
-  <div class="steps" v-if="isShowArr[2]">
+  <h5 class="title" id="3" @click="clickfun(3)">3.商品价格信息</h5>
+  <div class="steps" v-if="isShowArr == 3">
     <div class="steps-text">
       <p class="tips-text-wrap">
       <span class="tips_icons">
@@ -47,8 +47,8 @@
     <div id="small-m">对应价格在前台展示位置</div>
     <img src="http://img1.oteao.com/WAPIMG/share/05fb.png" alt="">
   </div>
-  <h5 class="title" @click="clickfun(4)">4.商品属性信息</h5>
-  <div class="steps" v-if="isShowArr[3]">
+  <h5 class="title" id="4" @click="clickfun(4)">4.商品属性信息</h5>
+  <div class="steps" v-if="isShowArr == 4">
     <div class="steps-text">
       <p class="tips-text-wrap">
       <span class="tips_icons">
@@ -62,8 +62,8 @@
     <p>商品属性信息前台展示效果</p>
     <img src="http://img4.oteao.com/WAPIMG/share/07fb.png" alt="">
   </div>
-  <h5 class="title" @click="clickfun(5)">5.商品轮播图</h5>
-  <div class="steps" v-if="isShowArr[4]">
+  <h5 class="title" id="5" @click="clickfun(5)">5.商品轮播图</h5>
+  <div class="steps" v-if="isShowArr==5">
     <div class="steps-text">
       <p class="tips-text-wrap"> <span class="tips_icons"><img src="http://img0.oteao.com/WAPIMG/share/cbt_ts.png" alt=""></span>第一张图为商品主图即封面图，将展示于搜索页面、活动页面等，主图白底更佳哦~</p>
       <p>支持拍照或相册传图方式，最少需上传1张，最多可传5张商品图片，上传后若不满意，可点选右上角“×”按钮将图片移除重新上传。<br>上传的图片建议800*800像素，等宽高，单张图片小于8M的清晰商品照片。</p>
@@ -74,8 +74,8 @@
     <!-- </div> -->
     <img src="http://img2.oteao.com/WAPIMG/share/09fb.png" alt="">
   </div>
-  <h5 class="title" @click="clickfun(6)">6.商品详情展示</h5>
-  <div class="steps" v-if="isShowArr[5]">
+  <h5 class="title" id="6" @click="clickfun(6)">6.商品详情展示</h5>
+  <div class="steps" v-if="isShowArr==6">
     <div class="steps-text">
       <p>支持图片拍照或相册图片上传，最多可传10张。建议图片宽度使用750像素，并且单张图片不得超过8M，系统会根据您上传的顺序，将图片拼接展示于商品详情中，考虑商品展示的美观度，图片尽量保持尺寸的一致及风格的统一。</p>
     </div>
@@ -109,48 +109,23 @@ export default {
     // this.getData();
   },
   methods: {
+    // 手风琴写法
     clickfun(index) {
-      if (index == 1) {
-        this.isShowArr[0] = !this.isShowArr[0];
-        this.isShowArr.splice(this.isShowArr.length);
-        //   console.log(this.isShowArr[0]);
-        // console.log(!this.isShowArr[0]);
-        //  this.isShowArr[0] = !this.isShowArr[0];
-        //  this.$set(isShowArr,isShowArr[0],false)
-        // this.isShowArr[0] = 2;
-        // this.flag = !this.flag;
+      if (this.isShowArr == index) {
+        this.isShowArr = 0;
+      } else {
+        this.isShowArr = index;
       }
-
-      if (index == 2) {
-        this.isShowArr[1] = !this.isShowArr[1];
-        this.isShowArr.splice(this.isShowArr.length);
-      }
-
-      if (index == 3) {
-        this.isShowArr[2] = !this.isShowArr[2];
-        this.isShowArr.splice(this.isShowArr.length);
-      }
-
-      if (index == 4) {
-        this.isShowArr[3] = !this.isShowArr[3];
-        this.isShowArr.splice(this.isShowArr.length);
-      }
-
-      if (index == 5) {
-        this.isShowArr[4] = !this.isShowArr[4];
-        this.isShowArr.splice(this.isShowArr.length);
-      }
-
-      if (index == 6) {
-        this.isShowArr[5] = !this.isShowArr[5];
-        this.isShowArr.splice(this.isShowArr.length);
-      }
-      //  console.log(this.isShowArr[0])
-      //  console.log(this.isShowArr[1])
-      //  console.log(this.isShowArr[2])
-      //  console.log(this.isShowArr[3])
-      //  console.log(this.isShowArr[4]+"/")
+      this.$nextTick(() => {
+        document.getElementById(index).scrollIntoView(true);
+      });
     }
+    // clickfun(index) {
+    //   if (index == 1) {
+    //     this.isShowArr[0] = !this.isShowArr[0];
+    //     this.isShowArr.splice(this.isShowArr.length);
+    //   }
+    // }
   }
 };
 </script>
