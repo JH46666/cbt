@@ -35,11 +35,13 @@
         </section>
         <section class="count-entry">
             <router-link :to="{name: '账户余额'}" tag="div" class="entry-item">
-                <div class="num">{{Number(memberAccount.totalAmount)<10000?(memberAccount.totalAmount | toFix2):((Number(memberAccount.totalAmount)/10000).toFixed(2) )+'万'}}</div>
+              <div class="num" v-if="memberAccount.totalAmount>=10000">{{((Number(memberAccount.totalAmount)/10000).toFixed(2))+'万'}}</div>
+              <div class="num" v-else>{{memberAccount.totalAmount | toFix2}}</div>
                 <p class="count-text">账户余额</p>
             </router-link>
             <div class="entry-item">
-              <div class="num">{{Number(memberAccount.totalRefundAmount)<10000?(memberAccount.totalRefundAmount | toFix2):((Number(memberAccount.totalRefundAmount)/10000).toFixed(2) )+'万'}}</div>
+              <div class="num" v-if="memberAccount.totalRefundAmount>=10000">{{((Number(memberAccount.totalRefundAmount)/10000).toFixed(2))+'万'}}</div>
+              <div class="num" v-else>{{memberAccount.totalRefundAmount | toFix2}}</div>
               <p class="count-text">我的返现</p>
             </div>
             <router-link :to="{name: '积分记录'}" tag="div" class="entry-item">
