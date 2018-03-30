@@ -85,25 +85,27 @@ import { mapState } from 'vuex'
             // console.log(this.$refs) 
             // console.log($(this.$refs.comment[0]).height());
             // console.log($(this.$refs.comment[0]).css('font-size').slice(0, -2));
-            for(let item of $(this.$refs.comment)){
-                // console.log($(item).height());
-                if($(item).height() > 3 * $(item).css('font-size').slice(0, -2) * 1.5){
+            this.$nextTick(()=>{
+                for (let item of $(this.$refs.comment)) {
                     // console.log($(item).height());
-                    // console.log(3 * $(item).css('font-size').slice(0, -2));
-                    // console.log($(item).height() >= Number(3 * $(item).css('font-size').slice(0, -2)))
-                    $(item).addClass('on');
-                    $(item).css({
-                    display: '-webkit-box',
-                    '-webkit-line-clamp': '3',
-                    overflow: 'hidden',
-                    'word-break': 'break-all',
-                    'text-overflow': 'ellipsis',
-                    '-webkit-box-orient': 'vertical',
-                    'max-height': '1.30rem',
-                    'padding-right': '0.3rem',
-                    })
+                    if ($(item).height() > 3 * $(item).css('font-size').slice(0, -2) * 1.5) {
+                        // console.log($(item).height());
+                        // console.log(3 * $(item).css('font-size').slice(0, -2));
+                        // console.log($(item).height() >= Number(3 * $(item).css('font-size').slice(0, -2)))
+                        $(item).addClass('on');
+                        $(item).css({
+                            display: '-webkit-box',
+                            '-webkit-line-clamp': '3',
+                            overflow: 'hidden',
+                            'word-break': 'break-all',
+                            'text-overflow': 'ellipsis',
+                            '-webkit-box-orient': 'vertical',
+                            'max-height': '1.30rem',
+                            'padding-right': '0.3rem',
+                        })
+                    }
                 }
-            }
+            })
         },
         methods: {
             // 点击查看完整评论
