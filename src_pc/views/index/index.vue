@@ -22,9 +22,9 @@
                         </li>
                         <li class="hover-li w200">
                             <i class="we"></i>联系我们
-                            <div class="hover-box concat">
-                                <p><i class="qq"></i>QQ客服</p>
-                                <a class="online" href="javscript:void(0);"><i></i></a>
+                            <div class="hover-box concat" style="height: 170px;">
+                                <!-- <p><i class="qq"></i>QQ客服</p> -->
+                                <!-- <a class="online" href="javscript:void(0);"><i></i></a> -->
                                 <p><i class="wx"></i>微信客服</p>
                                 <i class="cbt-code"></i>
                             </div>
@@ -58,9 +58,9 @@
                         </li>
                         <li class="hover-li w200">
                             <i class="we"></i>联系我们
-                            <div class="hover-box concat">
-                                <p><i class="qq"></i>QQ客服</p>
-                                <a class="online" href="javscript:void(0);"><i></i></a>
+                            <div class="hover-box concat" style="height: 170px;">
+                                <!-- <p><i class="qq"></i>QQ客服</p> -->
+                                <!-- <a class="online" href="javscript:void(0);"><i></i></a> -->
                                 <p><i class="wx"></i>微信客服</p>
                                 <i class="cbt-code"></i>
                             </div>
