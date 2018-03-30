@@ -159,7 +159,7 @@
                             if (this.$store.state.address.from.name === '忘记密码' || this.$store.state.address.from.name === this.$route.name) {
                                 return this.$router.push('/')
                             } else {
-                                Toast(this.$store.state.address.from.fullPath)
+                                // Toast(this.$store.state.address.from.fullPath)
                                 return this.$router.push(this.$store.state.address.from.fullPath);
                             }
                         }, res => {
