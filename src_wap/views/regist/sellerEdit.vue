@@ -230,7 +230,7 @@ export default {
         getAddress(obj) {
             this.formData.shopArea = obj.address;
             this.addressObj = obj;
-            this.addreeObj = obj;
+            // this.addreeObj = obj;
             this.addressShowOrHide = false;
         },
         // 获取数据
@@ -407,10 +407,10 @@ export default {
                 data = {
                     'alipayAccount': this.formData.shopPayNumber,
                     'businessTelephone': this.formData.shopResTel,
-                    "areaCode": this.addreeObj.area,                          // 区
-                    "cityCode": this.addreeObj.city,                          // 市
-                    "provinceCode": this.addreeObj.pro,                       // 省
-                    "detailAddress": this.formData.shopAddress,               // 详细地址
+                    "areaCode": this.addressObj.areaCode,                          // 区
+                    "cityCode": this.addressObj.cityCode,                          // 市
+                    "provinceCode": this.addressObj.provinceCode,                  // 省
+                    "detailAddress": this.formData.shopAddress,                    // 详细地址
                     "contactor": store.state.member.member.contactName,
                     "device": 'WAP',
                     "orgName": store.state.member.orgDTO.orgName,
