@@ -1,5 +1,5 @@
 <template>
-  <div style="overflow-x: hidden;">
+  <div :style="{'overflow-x': $tool.isAndroid ? '': 'hidden'}">
     <!-- 评价 -->
     <div class="comment_wrapper">
         <div class="scroll-div" ></div>
@@ -32,8 +32,8 @@
                     <span v-if="item.replyContent"><span style="color:#c29e74;display:block;">回复：</span>{{item.replyContent}}</span>
                     <!-- <span class="bg-white"><i class="iconfont down" :class="{on:item.pullFlag!=='' && item.pullFlag}" @click="pullOrDown(item)" :key="index+'11'">&#xe619;</i></span>
                     <span class="bg-white"><i class="iconfont pull" :class="{on:item.upFlag!=='' && item.upFlag}" @click="pullOrDown(item)" :key="index+'12'">&#xe618;</i></span> -->
-                    <i class="iconfont icon-single-down more"></i>
-                    <i class="iconfont icon-shang more" style="display: none;"></i>
+                    <i class="iconfont icon-single-down more" style="bottom: -0.10rem;"></i>
+                    <i class="iconfont icon-shang more" style="display: none; bottom: 0rem;"></i>
                 </div>
             </mt-cell>
             <div class="goods-loading" v-if="commentList.length < commentRecond">
@@ -64,46 +64,49 @@ import { mapState } from 'vuex'
           }
         },
         created() {
-          this.$store.commit('SET_TITLE','商品评论');
-          this.proSku = this.$route.query.proSku;
-            this.getCommentList().then((res)=>{
-              this.timeData = res.data.evaluations;
-              for(let item of this.timeData){
-                  this.$set(item,'onFlag','');
-                  this.$set(item,'pullFlag','');
-                  this.$set(item,'upFlag','');
-              }
-              this.commentRecond = res.total_record;
-              this.prectent = res.data.praiseRate == null ? 0 : res.data.praiseRate;
-              this.commentList  = this.timeData;
+            this.$store.commit('SET_TITLE', '商品评论');
+            this.proSku = this.$route.query.proSku;
+            this.getCommentList().then((res) => {
+                this.timeData = res.data.evaluations;
+                for (let item of this.timeData) {
+                    this.$set(item, 'onFlag', '');
+                    this.$set(item, 'pullFlag', '');
+                    this.$set(item, 'upFlag', '');
+                }
+                this.commentRecond = res.total_record;
+                this.prectent = res.data.praiseRate == null ? 0 : res.data.praiseRate;
+                this.commentList = this.timeData;
             })
+            // console.log('this.$tool.isAndroid', this.$tool.isAndroid)
+            // console.log('this.$tool.isiOS', this.$tool.isiOS)
         },
         // updated里才能操作refs
         updated(){
             // console.log(this.$refs) 
             // console.log($(this.$refs.comment[0]).height());
             // console.log($(this.$refs.comment[0]).css('font-size').slice(0, -2));
-            //  console.log($(item).height());
             for(let item of $(this.$refs.comment)){
-                if($(item).height() >= 3 * $(item).css('font-size').slice(0, -2) * 1.5){
-                    console.log($(item).height());
-                    console.log(3 * $(item).css('font-size').slice(0, -2));
-                    console.log($(item).height() >= Number(3 * $(item).css('font-size').slice(0, -2)))
+                // console.log($(item).height());
+                if($(item).height() > 3 * $(item).css('font-size').slice(0, -2) * 1.5){
+                    // console.log($(item).height());
+                    // console.log(3 * $(item).css('font-size').slice(0, -2));
+                    // console.log($(item).height() >= Number(3 * $(item).css('font-size').slice(0, -2)))
                     $(item).addClass('on');
                     $(item).css({
-                    // display: '-webkit-box',
-                    // '-webkit-line-clamp': '3',
-                    // overflow: 'hidden',
-                    // 'word-break': 'break-all',
-                    // 'text-overflow': 'ellipsis',
-                    // '-webkit-box-orient': 'vertical',
-                        'max-height': 65
+                    display: '-webkit-box',
+                    '-webkit-line-clamp': '3',
+                    overflow: 'hidden',
+                    'word-break': 'break-all',
+                    'text-overflow': 'ellipsis',
+                    '-webkit-box-orient': 'vertical',
+                    'max-height': '1.30rem',
+                    'padding-right': '0.3rem',
                     })
                 }
             }
         },
         methods: {
-            // 点击查看完成评论
+            // 点击查看完整评论
             more(e){
                 // console.log($(e.target).hasClass('on'));
                 if ($(e.target).hasClass('on active')) {
@@ -330,7 +333,7 @@ import { mapState } from 'vuex'
                 margin-top: .2rem;
                 .color(#666);
                 .line(1.5);
-                max-height: 1.26rem;
+                /* max-height: 1.26rem; */
                 width: 100%;
                 .fontSize(.28rem);
 
@@ -346,20 +349,20 @@ import { mapState } from 'vuex'
                 &.on{
                     .more{
                         position: absolute;
-                        right: -0.15rem;
-                        bottom: -0.10rem;
+                        right: -0.00rem;
                         display: block;
                         color: #f08200;
                     }
                 }
                 &.on.active{
-                    /* -webkit-line-clamp: unset!important; */
+                    -webkit-line-clamp: unset!important;
                     max-height: unset!important;
                 }
                 .more{
                     position: absolute;
-                    right: 0rem;
                     display: none;
+                    font-size: 0.38rem;
+                    line-height: 1.5;
                 }
                 .bg-white{
                     .position(a);
