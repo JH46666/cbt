@@ -12,6 +12,26 @@
                     <textarea rows="2" id="2" v-model="formData.shopName" placeholder="必填项，请填写店铺名称"></textarea>
                 </div>
             </div>
+            <!-- 补全地址 -->
+            <template v-if="addressIsComplete">
+                <div class="select_item">
+                    <div class="select_item_label">
+                        <label for="4">地区</label>
+                    </div>
+                    <div class="select_item_content" @click="addressShowOrHide = true">
+                        <input type="text" id="4" disabled v-model="formData.shopArea" placeholder="必填项，请选择地区" />
+                    </div>
+                    <i class="iconfont" @click="addressShowOrHide = true">&#xe744;</i>
+                </div>
+                <div class="select_item">
+                    <div class="select_item_label">
+                        <label for="5">详细地址</label>
+                    </div>
+                    <div class="select_item_content">
+                        <input type="text" id="5" v-model="formData.shopAddress" placeholder="必填项，请填写详细地址" maxlength="50" />
+                    </div>
+                </div>
+            </template>
             <div class="select_item seller_type" v-if="registClass === 1" style="padding-bottom: .28rem;border-bottom:1px solid #e5e5e5;">
                 <div class="select_item_label">
                     <label for="6">卖家类型</label>
@@ -81,14 +101,21 @@
             </div>
             <mt-button type="primary" class="to_index" @click="$router.push({name:'首页'})">去首页</mt-button>
         </div>
+        <!-- 地址选择 -->
+        <address-panel v-show="addressShowOrHide" @getAllData="getAddress" @closePannel="closeAddress" :provinceCode="provinceNum" :cityCode="cityNum" :areaCode="areaNum"></address-panel>
     </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import addressPanel from '../center/addressPanel.vue';
+import { mapState } from 'vuex';
 import store from 'store';
 import $api from 'api';
+import { Toast } from 'mint-ui';
 export default {
+    components: {
+        addressPanel,
+    },
     data() {
         return {
             loginNumber: 17605062109,
@@ -139,27 +166,68 @@ export default {
             registText: '立即注册',
             myData: {},
             loading: false,
+            addreeObj: {                                                    // 地址
+                pro: '110000',
+                city: '110100',
+                area: '110101'
+            },
+            addressIsComplete: false,                                       // 地址是否完整
         }
     },
     created() {
         // 设置title
-        this.$store.commit('SET_TITLE','茶帮通注册');
+        this.$store.commit('SET_TITLE', '茶帮通注册');
         this.getData(store.state.member.orgDTO.orgID);
         this.loginNumber = store.state.member.member.memberAccount;
         this.formData.shopName = store.state.member.member.unitName;
+        this.$api.get('/oteao/login/checkArea', {}, res => {
+            // console.log(res);
+            this.addressIsComplete = false;
+        }, res => {
+            // Toast({
+            //     message: res.errorMsg
+            // })
+            this.addressIsComplete = true;
+        })      
     },
     computed: {
         iSubmit() {
             if(this.registClass === 1){
-                if(this.licenseImg.length === 1 && this.formData.shopPayNumber != '' && this.formData.shopResTel != '' && this.formData.shopName != ''){
+                if(this.licenseImg.length === 1 && this.formData.shopPayNumber != '' && this.formData.shopResTel != '' && this.formData.shopName != '' && this.formData.shopArea != '' && this.formData.shopAddress != ''){
                     return false;
                 }else{
                     return true;
                 }
             }
+            else{
+                if(this.formData.shopArea != '' && this.formData.shopAddress != ''){
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            }
+        },
+        provinceNum() {
+            return this.addreeObj.pro;
+        },
+        cityNum() {
+            return this.addreeObj.city;
+        },
+        areaNum() {
+            return this.addreeObj.area;
         }
     },
     methods: {
+        //关闭地址弹窗
+        closeAddress() {
+            this.addressShowOrHide = false;
+        },
+        getAddress(obj) {
+            this.formData.shopArea = obj.address;
+            this.addressObj = obj;
+            this.addressShowOrHide = false;
+        },
         // 获取数据
         getData(id) {
             this.$api.post('/orgShop/getOrgShop',{
@@ -331,13 +399,13 @@ export default {
             let data = {
                 'alipayAccount': this.formData.shopPayNumber,
                 'businessTelephone': this.formData.shopResTel,
-                "areaCode": store.state.member.member.areaCode,
-                "cityCode": store.state.member.member.cityCode,
+                "areaCode": store.state.member.member.areaCode || this.addreeObj.areaCode,                          // 区
+                "cityCode": store.state.member.member.cityCode || this.addreeObj.cityCode,                          // 市
+                "provinceCode": store.state.member.member.provinceCode || this.addreeObj.provinceCode,              // 省
                 "contactor": store.state.member.member.contactName,
                 "detailAddress": store.state.member.orgDTO.address,
                 "device": 'WAP',
                 "orgName": store.state.member.orgDTO.orgName,
-                "provinceCode": store.state.member.member.provinceCode,
                 "shop": {}
             }
             if(this.sellerClass === 0){
