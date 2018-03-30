@@ -399,11 +399,12 @@ export default {
             let data = {
                 'alipayAccount': this.formData.shopPayNumber,
                 'businessTelephone': this.formData.shopResTel,
-                "areaCode": store.state.member.member.areaCode || this.addreeObj.areaCode,                          // 区
-                "cityCode": store.state.member.member.cityCode || this.addreeObj.cityCode,                          // 市
-                "provinceCode": store.state.member.member.provinceCode || this.addreeObj.provinceCode,              // 省
+                "areaCode": store.state.member.member.areaCode || this.addreeObj.area,                          // 区
+                "cityCode": store.state.member.member.cityCode || this.addreeObj.city,                          // 市
+                "provinceCode": store.state.member.member.provinceCode || this.addreeObj.pro,                   // 省
+                "detailAddress": store.state.member.orgDTO.address || this.formData.shopAddress,                // 详细地址
                 "contactor": store.state.member.member.contactName,
-                "detailAddress": store.state.member.orgDTO.address,
+                // "detailAddress": store.state.member.orgDTO.address,
                 "device": 'WAP',
                 "orgName": store.state.member.orgDTO.orgName,
                 "shop": {}
