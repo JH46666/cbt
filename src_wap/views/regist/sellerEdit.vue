@@ -192,20 +192,23 @@ export default {
         })      
     },
     computed: {
+        // 提交资料
         iSubmit() {
-            if(this.registClass === 1){
-                if(this.licenseImg.length === 1 && this.formData.shopPayNumber != '' && this.formData.shopResTel != '' && this.formData.shopName != '' && this.formData.shopArea != '' && this.formData.shopAddress != ''){
-                    return false;
-                }else{
-                    return true;
-                }
-            }
-            else{
-                if(this.formData.shopArea != '' && this.formData.shopAddress != ''){
-                    return false;
+            if (this.registClass === 1) {
+                if (this.addressIsComplete) {
+                    if (this.licenseImg.length === 1 && this.formData.shopPayNumber != '' && this.formData.shopResTel != '' && this.formData.shopName != '' && this.formData.shopArea != '' && this.formData.shopAddress != '') {
+                        return false;
+                    } else {
+                        return true;
+                    }
                 }
                 else {
-                    return true;
+
+                    if (this.licenseImg.length === 1 && this.formData.shopPayNumber != '' && this.formData.shopResTel != '' && this.formData.shopName != '') {
+                        return false;
+                    } else {
+                        return true;
+                    }
                 }
             }
         },
@@ -403,9 +406,9 @@ export default {
                 data = {
                     'alipayAccount': this.formData.shopPayNumber,
                     'businessTelephone': this.formData.shopResTel,
-                    "areaCode": this.addreeObj.area,                          // 区
-                    "cityCode": this.addreeObj.city,                          // 市
-                    "provinceCode": this.addreeObj.pro,                       // 省
+                    "areaCode": this.addressObj.area,                          // 区
+                    "cityCode": this.addressObj.city,                          // 市
+                    "provinceCode": this.addressObj.pro,                       // 省
                     "detailAddress": this.formData.shopAddress,               // 详细地址
                     "contactor": store.state.member.member.contactName,
                     "device": 'WAP',
