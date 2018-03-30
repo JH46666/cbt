@@ -580,9 +580,9 @@
        <div class="popup-tips" v-if="popupTipsFlag">
             <div class="tips-position-center cancel-tips-popup" v-if="cancelTipsFlag">
                 <div class="tips-box">
-                    <div class="tips-title"><h4><b>暂时无法取消订单</b></h4></div>
-                    <div class="tips-text">发起拼团24小时后，若未拼团成功将自动取消订单并退款哦</div>
-                    <div class="tips-btn" @click="popupTipsFlag = !popupTipsFlag; cancelTipsFlag = !cancelTipsFlag">我知道了</div>
+                    <div class="tips-title"><h4><b>{{ cancelJsonData['tips-title'] }}</b></h4></div>
+                    <div class="tips-text">{{ cancelJsonData['tips-text'] }}</div>
+                    <div class="tips-btn" @click="popupTipsFlag = !popupTipsFlag; cancelTipsFlag = !cancelTipsFlag">{{ cancelJsonData['tips-btn'] }}</div>
                 </div>
             </div>
              <div class="tips-position-center refund-tips-popup cancel-tips-popup" v-if="refundTipsFlag">
@@ -635,6 +635,7 @@ export default {
                 orgId: ''
             },
             isThirdShop: '',                            // 茶帮通或者第三方
+            cancelJsonData: {},                         // 取消订单静态块
         }
     },
     head: {
@@ -1285,6 +1286,15 @@ export default {
             // 获取商家信息
             this.shopInfo.shopName = res.data.shopName;
             this.shopInfo.orgId = res.data.sellerOrgId;
+        })
+        // 获取取消订单静态块数据
+        this.$store.dispatch('getBlock', 'cancelOrder').then(res => {
+            try {
+                this.cancelJsonData = JSON.parse(res.data.htmlText);
+            } catch (error) {
+
+            }
+            // console.log(this.cancelJsonData)
         })
     },
 }
