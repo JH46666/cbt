@@ -398,7 +398,7 @@
                 </div>
                 <template v-if="orderDetailData.payType!='CASH_DELIVERY'">
                     <div class="price_total_item">
-                        <span>{{  orderDetailData.orderSum | toFix2 }}</span>实际付款：
+                        <span>￥{{  orderDetailData.orderSum | toFix2 }}</span>实际付款：
                     </div>
                 </template>
                 <template v-else>
