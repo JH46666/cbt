@@ -31,7 +31,7 @@
                         </li>
                     </ul>
                     <div class="f_r">
-                        <p class="tele"><i></i>4006-996-339</p>
+                        <p class="tele"><i></i>400-996-3399</p>
                         <p>周一至周日8:45-22:30</p>
                     </div>
                 </div>
@@ -67,7 +67,7 @@
                         </li>
                     </ul>
                     <div class="f_r">
-                        <p class="tele"><i></i>4006-996-339</p>
+                        <p class="tele"><i></i>400-996-3399</p>
                         <p>周一至周日8:45-22:30</p>
                     </div>
                 </div>
