@@ -187,6 +187,7 @@ export default {
             // Toast({
             //     message: res.errorMsg
             // })
+            // 失败代表没有地址不完整
             this.addressIsComplete = true;
         })      
     },
@@ -396,18 +397,35 @@ export default {
             })
         },
         postMember() {
-            let data = {
-                'alipayAccount': this.formData.shopPayNumber,
-                'businessTelephone': this.formData.shopResTel,
-                "areaCode": store.state.member.member.areaCode || this.addreeObj.area,                          // 区
-                "cityCode": store.state.member.member.cityCode || this.addreeObj.city,                          // 市
-                "provinceCode": store.state.member.member.provinceCode || this.addreeObj.pro,                   // 省
-                "detailAddress": store.state.member.orgDTO.address || this.formData.shopAddress,                // 详细地址
-                "contactor": store.state.member.member.contactName,
-                // "detailAddress": store.state.member.orgDTO.address,
-                "device": 'WAP',
-                "orgName": store.state.member.orgDTO.orgName,
-                "shop": {}
+            let data={};
+            // this.addressIsComplete为true代表地址不完整
+            if(this.addressIsComplete){
+                data = {
+                    'alipayAccount': this.formData.shopPayNumber,
+                    'businessTelephone': this.formData.shopResTel,
+                    "areaCode": this.addreeObj.area,                          // 区
+                    "cityCode": this.addreeObj.city,                          // 市
+                    "provinceCode": this.addreeObj.pro,                       // 省
+                    "detailAddress": this.formData.shopAddress,               // 详细地址
+                    "contactor": store.state.member.member.contactName,
+                    "device": 'WAP',
+                    "orgName": store.state.member.orgDTO.orgName,
+                    "shop": {}
+                }
+            }
+            else {
+                data = {
+                    'alipayAccount': this.formData.shopPayNumber,
+                    'businessTelephone': this.formData.shopResTel,
+                    "areaCode": store.state.member.member.areaCode,                          // 区
+                    "cityCode": store.state.member.member.cityCode,                          // 市
+                    "provinceCode": store.state.member.member.provinceCode,                  // 省
+                    "detailAddress": store.state.member.orgDTO.address,                      // 详细地址
+                    "contactor": store.state.member.member.contactName,
+                    "device": 'WAP',
+                    "orgName": store.state.member.orgDTO.orgName,
+                    "shop": {}
+                }
             }
             if(this.sellerClass === 0){
                 data.shop = {
