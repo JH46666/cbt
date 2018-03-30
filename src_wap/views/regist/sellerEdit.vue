@@ -187,7 +187,7 @@ export default {
             // Toast({
             //     message: res.errorMsg
             // })
-            // 失败代表没有地址不完整
+            // 失败代表地址不完整
             this.addressIsComplete = true;
         })      
     },
