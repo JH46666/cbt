@@ -409,9 +409,9 @@ export default {
                     "areaCode": this.addressObj.areaCode,                          // 区
                     "cityCode": this.addressObj.cityCode,                          // 市
                     "provinceCode": this.addressObj.provinceCode,                  // 省
-                    "areaName ": this.addressObj.areaName,
-                    "cityName ": this.addressObj.cityName,
-                    "provinceName ": this.addressObj.provinceName,
+                    "areaName": this.addressObj.areaName,
+                    "cityName": this.addressObj.cityName,
+                    "provinceName": this.addressObj.provinceName,
                     "detailAddress": this.formData.shopAddress,                    // 详细地址
                     "contactor": store.state.member.member.contactName,
                     "device": 'WAP',
