@@ -237,6 +237,7 @@ const router = new Router({
 					}
 				},
 				{
+					// 第一次注册，不带出数据
 					path: 'select',
 					name: '茶帮通注册2',
 					component: resolve => require(['@/views/regist/select.vue'],resolve),
@@ -253,6 +254,7 @@ const router = new Router({
 					}
 				},
 				{
+					// 能带出之前的数据
 					path: 'seller',
 					name: '茶帮通注册4',
 					component: resolve => require(['@/views/regist/seller.vue'],resolve),
@@ -269,6 +271,7 @@ const router = new Router({
 					}
 				},
 				{
+					// 卖家完善资料
 					path: 'selleredit',
 					name: '茶帮通注册6',
 					component: resolve => require(['@/views/regist/sellerEdit.vue'],resolve),

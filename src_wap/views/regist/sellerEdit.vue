@@ -158,7 +158,7 @@ export default {
             ],
             exampleFlag: false,
             addressShowOrHide: false,
-            addressObj: {},
+            addressObj: {},                                                 // 地址
             region: 'oss-cn-hangzhou',
             bucket: 'imgcbt',
             path: 'test_path/',
@@ -166,7 +166,7 @@ export default {
             registText: '立即注册',
             myData: {},
             loading: false,
-            addreeObj: {                                                    // 地址
+            addreeObj: {                                                    // 貌似无用属性                         
                 pro: '110000',
                 city: '110100',
                 area: '110101'
@@ -230,7 +230,6 @@ export default {
         getAddress(obj) {
             this.formData.shopArea = obj.address;
             this.addressObj = obj;
-            // this.addreeObj = obj;
             this.addressShowOrHide = false;
         },
         // 获取数据
@@ -410,6 +409,9 @@ export default {
                     "areaCode": this.addressObj.areaCode,                          // 区
                     "cityCode": this.addressObj.cityCode,                          // 市
                     "provinceCode": this.addressObj.provinceCode,                  // 省
+                    "areaName ": this.addressObj.areaName,
+                    "cityName ": this.addressObj.cityName,
+                    "provinceName ": this.addressObj.provinceName,
                     "detailAddress": this.formData.shopAddress,                    // 详细地址
                     "contactor": store.state.member.member.contactName,
                     "device": 'WAP',
@@ -424,6 +426,9 @@ export default {
                     "areaCode": store.state.member.member.areaCode,                          // 区
                     "cityCode": store.state.member.member.cityCode,                          // 市
                     "provinceCode": store.state.member.member.provinceCode,                  // 省
+                    "areaName ": this.addressObj.areaName,
+                    "cityName ": this.addressObj.cityName,
+                    "provinceName ": this.addressObj.provinceName,
                     "detailAddress": store.state.member.orgDTO.address,                      // 详细地址
                     "contactor": store.state.member.member.contactName,
                     "device": 'WAP',
