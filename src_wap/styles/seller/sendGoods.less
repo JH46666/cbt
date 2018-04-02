@@ -1,0 +1,139 @@
+@import url('../base/tools.less');
+#sendGoods{
+    .position(r);
+    .fontSize(.3rem);
+    .line(1.5);
+    // 外部
+    .send-wrap{
+        .h(~'calc(100% - .95rem)');
+        .scroll-y(a);
+        .ipScroll;
+        .paddingB(.5rem);
+    }
+    // 地址
+    .address{
+        background: #fff url('~@/assets/images/address_pingpu.jpg') repeat-x;
+        background-size: .32rem .12rem;
+        margin-bottom: .2rem;
+        .paddingT(.5rem);
+        .paddingB(.2rem);
+        .paddingRow(.35rem);
+        // .h(1.66rem);
+        .flex;
+        .left{
+            .w(.556rem);
+        }
+        .center{
+            overflow: hidden;
+            .flex-1;
+            .user{
+                .fontSize(.3rem);
+                .color(@b-3);
+            }
+            p{
+                .fontSize(.28rem);
+                .line(1.5);
+                // .oneLine;
+                .color(@b-6);
+            }
+        }
+        .right{
+            margin-left: .2rem;
+            .paddingT(.2rem);
+            .algin(r);
+            .color(@b-6);
+        }
+        i{
+            .iconfont;
+        }
+    }
+
+    // 快递
+    .title{
+        font-weight: normal;
+        border-bottom: 1px solid @borCol;
+        .line(.88rem);
+        .bg(#fff);
+        .paddingRow(.35rem);
+    }
+    .pick-pannel{
+        padding: .4rem .35rem;
+        margin-bottom: .2rem;
+        .bg(#fff);
+        .flex;
+        .pick-item{
+            border: 1px solid @borCol;
+            margin-right: .35rem;
+            .w(3.22rem);
+            .line(1rem);
+            .algin(c);
+            &:nth-of-type(2){
+                margin: 0;
+            }
+            &.active{
+                border-color: @mainCol;
+                background: url('~@/assets/images/gou.png') right bottom no-repeat;
+                background-size: .3rem .23rem;
+            }
+        }
+    }
+    .express-pannel{
+        margin-bottom: .65rem;
+        .bg(#fff);
+        .express-row{
+            border-bottom: 1px solid @borCol;
+            .display(block);
+            .paddingRow(.35rem);
+            .color(@b-6);
+            .line(.98rem);
+            .head{
+                margin-right: .5rem;
+            }
+        }
+
+    }
+    .goods-item{
+        border-bottom: 1px solid @borCol;
+        .bg(#fff);
+        .padding(.35rem);
+        .flex;
+        .right{
+            .flex-1;
+            .paddingL(.2rem);
+        }
+        .goods-title{
+            .moreLine;
+            margin-bottom: .5rem;
+        }
+        .goods-bd{
+            .flex;
+            .fontSize(.32rem);
+            .line(1.5);
+            span{
+                .flex-1;
+            }
+            .price{
+                .color(@mainCol);
+            }
+            .num{
+                .algin(r);
+            }
+        }
+    }
+    .btn-bar{
+        bottom: 0;
+        z-index: 1000;
+        .position(a);
+        .w(100%);
+        .mint-button{
+            .w(100%);
+            .h(.95rem);
+            .bg(@mainCol);
+            .color(#fff);
+            .reduis(0);
+        }
+    }
+    .hide{
+        .display(none);
+    }
+}

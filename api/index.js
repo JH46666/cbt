@@ -1,6 +1,6 @@
-import Cookies from 'js-cookie';
 import router from '@/router';
 import Vue from 'vue'
+import { type } from 'os';
 // 配置API接口地址
 var root = '/api'
 // 引用axios
@@ -47,20 +47,11 @@ function todd(method,data){
   另外，不同的项目的处理方法也是不一致的，这里出错就是简单的alert
 */
 
-function apiAxios (method, url, params, success, failure,ignoreCookie) {
-  let cookie = Cookies.get('islogin');
-  if(cookie === ''){
-    Vue.prototype.$message('登录过期，请重新登录');
-    location.reload();
-  }
-  if (params) {
+function apiAxios (method, url, params, success, failure) {
+  if(method === 'POST' && typeof params === 'string') {
+    params = JSON.parse(params)
+  } else {
     params = todd(method,params)
-  }
-  if(!ignoreCookie) {
-    let cookie = Cookies.get('islogin');
-    if(!cookie) {
-      router.push('/login');
-    }
   }
   axios({
     method: method,
@@ -68,17 +59,31 @@ function apiAxios (method, url, params, success, failure,ignoreCookie) {
     data: method === 'POST' || method === 'PUT' ? params : null,
     params: method === 'GET' || method === 'DELETE' ? params : null,
     baseURL: root,
-    withCredentials: false
+    withCredentials: true
   }).then(function (res) {
     if (res.data.code === 0) {
       if (success) {
         success(res.data)
       }
     } else {
+      if(res.data.code === 3001) {
+        let toast = Vue.$toast({
+            message: '需要登录',
+            position: 'bottom',
+            duration: 500
+          })
+        return setTimeout(() => {
+          router.push('/login')
+        },200)
+      }
       if (failure) {
         failure(res.data)
       } else {
-        window.alert('error: ' + JSON.stringify(res.data))
+        let toast = Vue.$toast({
+            message: JSON.stringify(res.data.message),
+            position: 'bottom',
+            duration: 500
+          })
       }
     }
   }).catch(function (err) {
@@ -87,9 +92,6 @@ function apiAxios (method, url, params, success, failure,ignoreCookie) {
       window.alert('api error, HTTP CODE: ' + res.status)
     }
   })
-  let m = new Date();
-  let n = new Date(m.getTime() + 30*60*1000);
-  Cookies.set('islogin',true,{expires: n});
 }
 
 // 返回在vue模板中的调用接口

@@ -1,0 +1,108 @@
+@import url('../base/tools.less');
+
+#integral,#balance{
+    .ipScroll;
+    .hd{
+        background: url('~@/assets/images/bg_jifen.jpg') no-repeat;
+        background-size: 100% 100%;
+        margin-bottom: .2rem;
+        .h(1.5rem);
+        .paddingRow(.2rem);
+        .paddingT(.28rem);
+        .line(1.5);
+        .title{
+            .fontSize(.26rem);
+        }
+        .integral-num{
+            .fontSize(.48rem);
+            .color(@mainCol);
+        }
+    }
+    .bd{
+        .item-wrap{
+            .bg(#fff);
+        }
+        .item{
+            border-bottom: 1px solid @borCol;
+            .flex;
+            .paddingRow(.2rem);
+            .h(1.27rem);
+        }
+        .left,.right{
+            .w(50%);
+        }
+        .left{
+            .fontSize(.32rem);
+            .line(1.27rem);
+            .title{
+                .oneLine;
+            }
+        }
+        .right{
+            .algin(r);
+            .line(1.5);
+            .count{
+                .paddingT(.16rem);
+                .fontSize(.32rem);
+                margin-bottom: .1rem;
+            }
+            .date{
+                .fontSize(.24rem);
+                .color(@b-9);
+            }
+        }
+        .empty{
+            margin-top: .76rem;
+            img{
+                .display(block);
+                width: 1.42rem;
+                height: 1.54rem;
+                margin: 0 auto;
+            }
+            .tip{
+                margin-top: .5rem;
+                .fontSize(.3rem);
+                .line(1.5);
+                .color(@b-9);
+                .algin(c);
+            }
+        }
+    }
+}
+#balance{
+    .hd{
+        background: url('~@/assets/images/bg_yue.png') no-repeat;
+        .h(2.25rem);
+        .flex;
+        .paddingT(.6rem);
+        &>div{
+            .flex-1;
+        }
+        .right{
+            .algin(r);
+            .paddingT(.18rem);
+            button{
+                .bg(@mainCol);
+                .paddingRow(.5rem);
+                .fontSize(.26rem);
+                .color(#fff);
+            }
+        }
+    }
+    .bd{
+        .left{
+            .fontSize(.3rem);
+            .line(1.5);
+            .title{
+                .paddingT(.16rem);
+                .fontSize(.32rem);
+                .oneLine;
+                margin-bottom: .1rem;
+            }
+            .resdue{
+                color: @mainCol;
+                .fontSize(.24rem);
+            }
+        }
+    }
+}

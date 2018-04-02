@@ -1,0 +1,727 @@
+@import '~@/styles/base/tools.less';
+
+#balance{
+    .flex;
+    .flex-dir;
+    .main-top{
+        .scroll-y(a);
+        .ipScroll;
+        .paddingB(1.04rem);
+    }
+    .gold{
+        .color(@mainCol);
+    }
+    .address{
+        background: #fff url('~@/assets/images/address_pingpu.jpg') repeat-x;
+        background-size: .32rem .12rem;
+        margin-bottom: .2rem;
+        .paddingT(.5rem);
+        .paddingB(.4rem);
+        .paddingRow(.35rem);
+        // .h(1.66rem);
+        .flex;
+        .left{
+            .w(.556rem);
+        }
+        .center{
+            overflow: hidden;
+            .flex-1;
+            .user{
+                .fontSize(.3rem);
+                .color(@b-3);
+            }
+            p{
+                .fontSize(.28rem);
+                .line(1.5);
+                // .oneLine;
+                .color(@b-6);
+                &:nth-of-type(2) {
+                    .moreLine(2);
+                }
+            }
+        }
+        .right{
+            margin-left: .2rem;
+            .paddingT(.2rem);
+            .algin(r);
+            .color(@b-6);
+        }
+        i{
+            .iconfont;
+        }
+    }
+    .bd-address{
+        padding: .2rem .35rem;
+        margin-bottom: .2rem;
+        .fontSize(.28rem);
+        .line(1.5);
+        .bg(#fff);
+    }
+    .goods-pannel{
+        margin-bottom: .2rem;
+        .bg(#fff);
+        .title{
+            border-bottom: 1px solid @borCol;
+            .oneLine;
+            .fontSize(.3rem);
+            .line(.84rem);
+            .paddingRow(.35rem);
+            img{
+                .position(r);
+                max-width: 1.74rem;
+                margin-right: .1rem;
+            }
+            i{
+                .iconfont;
+                margin-right: .1rem;
+            }
+            .third-shop{
+                .w(.4rem);
+                top: .1rem;
+            }
+        }
+        .goods-item{
+            border-bottom: 1px solid @borCol;
+            .padding(.35rem);
+            .flex;
+            .right{
+                .flex-1;
+                .paddingL(.2rem);
+            }
+            .goods-title{
+                .moreLine;
+                margin-bottom: .5rem;
+                .fontSize(.28rem);
+            }
+            .goods-bd{
+                .flex;
+                .fontSize(.32rem);
+                .line(1.5);
+                span{
+                    .flex-1;
+                }
+                .price{
+                    .color(@mainCol);
+                }
+                .num{
+                    .algin(r);
+                }
+                .pro_number{
+                    position: absolute;
+                    right: 0;
+                    span{
+                        display: block;
+                        float: left;
+                        .color(#666);
+                        .w(.6rem);
+                        .h(.64rem);
+                        .line(.64rem);
+                        border: 1px solid #ccc;
+                        .algin(c);
+                        cursor: pointer;
+                        i{
+                            .color(#666);
+                            .fontSize(.3rem);
+                        }
+                        &.decrease,&.plus{
+                            .iconfont {
+                                .fontSize(.24rem);
+                                .position(r);
+                                .line(.64rem);
+                                top: -.02rem;
+                            }
+                        }
+                        &.decrease{
+                            border-radius: 3px 0 0 3px;
+                        }
+                        &.isGary{
+                            background-color: #f5f5f5;
+                            & i{
+                                color: #cccccc;
+                            }
+                        }
+                        &.plus{
+                            border-radius: 0 3px 3px 0;
+                        }
+                    }
+                    input{
+                        float: left;
+                        .w(1rem);
+                        .h(.64rem);
+                        .line(.64rem);
+                        .fontSize(.3rem);
+                        border-top: 1px solid #ccc;
+                        border-bottom: 1px solid #ccc;
+                        .algin(c);
+                        border-radius: 0;
+                    }
+                }
+            }
+        }
+        .sum{
+            .fontSize(.3rem);
+            .line(.94rem);
+            .paddingRow(.35rem);
+            .algin(r);
+        }
+        .pro_free_caption{
+            .fontSize(.3rem);
+            padding-top: .3rem;
+            padding-left: .35rem;
+            .full_free{
+                .fontSize(.24rem);
+                padding: .02rem .1rem;
+                border: 1px solid #f08200;
+                .color(#f08200);
+                margin-right: .1rem;
+            }
+            .ruletitle{
+                display: inline-block;
+                max-width: 50%;
+                .oneLine;
+                position: relative;
+                top: .06rem;
+            }
+        }
+        .gold{
+            .color(@mainCol);
+        }
+    }
+    .pay-pannel{
+        margin-bottom: .2rem;
+        overflow: hidden;
+        .position(r);
+        .bg(#fff);
+        .fontSize(.28rem);
+        .line(1.5);
+        &::before{
+            content: '';
+            display: block;
+            .position(a);
+            .w(10px);
+            .h(10px);
+            .reduis(50%);
+            .bg(@borCol);
+            top: 1.56rem;
+            left: -5px;
+            z-index: 2;
+        }
+        &::after{
+            content: '';
+            display: block;
+            .position(a);
+            .w(10px);
+            .h(10px);
+            .reduis(50%);
+            .bg(@borCol);
+            top: 1.56rem;
+            right: -5px;
+            z-index: 2;
+
+        }
+        .express{
+            border-bottom: 1px dashed @borCol;
+            .color(@b-6);
+            .h(1.66rem);
+            .flex;
+            .paddingRow(.35rem);
+            // .paddingR(.26rem);
+            .left{
+                .flex-1;
+                .paddingT(.35rem);
+            }
+            .center{
+                .flex-1;
+                .algin(r);
+                .paddingT(.35rem);
+                .paddingR(.1rem);
+            }
+            .right{
+                .w(.4rem);
+                .line(1.66rem);
+                .algin(r);
+            }
+            i{
+                .iconfont;
+            }
+        }
+        .redpacket{
+            border-bottom: 1px solid @borCol;
+            .flex;
+            .line(.98rem);
+            .color(@b-6);
+            .paddingRow(.35rem);
+            // .paddingR(.26rem);
+            i{
+                .iconfont;
+            }
+            .left,.center{
+                .flex-1;
+            }
+            .center{
+                .algin(r);
+                .color(@mainCol);
+            }
+            .right{
+                .w(.4rem);
+                .algin(r);
+            }
+        }
+        .redpacket-list-wrap{
+            padding: .25rem .35rem;
+            .redpacket-list{
+                margin-bottom: .1rem;
+                .flex;
+                .left{
+                    .flex-1;
+                    .paddingL(.4rem);
+                    .oneLine;
+                    background: url('~@/assets/images/cu.png') no-repeat 0 .06rem;
+                    background-size: .3rem .3rem;
+                }
+                .right{
+                    .flex-1;
+                    .algin(r);
+                    .color(@mainCol);
+                }
+            }
+        }
+    }
+    .invoice-pannel{
+        margin-bottom: .2rem;
+        .bg(#fff);
+        .fontSize(.3rem);
+        .line(1.5);
+        i{
+            .iconfont;
+        }
+        .invoice{
+            border-bottom: 1px solid @borCol;
+            .paddingRow(.35rem);
+            .flex;
+            .line(.98rem);
+            .left,.center{
+                .flex-1;
+            }
+            .center{
+                .algin(r);
+            }
+            .right{
+                .w(.4rem);
+                .algin(r);
+            }
+        }
+    }
+    // 保存按钮
+    .save-order{
+        .w(100%);
+        .bg(#fff);
+        .line(1.04rem);
+        .position(a);
+        .flex;
+        bottom: 0;
+        z-index: 100;
+        .left{
+            .flex-1;
+            &.serverPrice{
+                .paddingT(.2rem);
+                p{
+                    .line(1.5);
+                    .algin(r);
+                    .paddingR(.3rem);
+                }
+            }
+            .price{
+                .line(1.04rem);
+                .algin(r);
+                .paddingR(.3rem);
+                .fontSize(.3rem);
+            }
+            .tips{
+                .color(@b-9);
+            }
+        }
+        .mint-button{
+            .w(2.46rem);
+            .h(1.04rem);
+            .reduis(0);
+            .bg(@mainCol);
+            .fontSize(.3rem);
+            .color(#fff);
+            box-shadow: none;
+        }
+    }
+    // 备注
+    .remark{
+        .flex;
+        padding: .3rem .35rem .2rem;
+        .textarea{
+            border: none;
+            .w(5.6rem);
+            resize: none;
+        }
+        .left{
+            margin-right: .6rem;
+        }
+        .right{
+            input{
+                .w(5.6rem);
+            }
+            .count{
+                .algin(r);
+                .color(@b-9);
+            }
+        }
+    }
+}
+
+// 支付方式弹窗
+.pay-type-pannel{
+    z-index: 500;
+    top: 0;
+    .position(f);
+    .w(100%);
+    .h(100%);
+    .bg(rgba(0, 0, 0, .5));
+    .pay-type-content{
+        bottom: 0;
+        .flex;
+        .flex-dir;
+        .w(100%);
+        .h(6.64rem);
+        .bg(#fff);
+        .position(a);
+        .fontSize(.3rem);
+        .line(1.5);
+        .pannel{
+            border-bottom: 1px solid @borCol;
+            height: 1.97rem;
+        }
+        .pannel+.pannel{
+            border: none;
+            height: 3.78rem;
+        }
+        i{
+            margin-right: .2rem;
+            .iconfont;
+            .fontSize(.41rem);
+            .position(r);
+            display: inline-block;
+            vertical-align: top;
+            line-height: 1;
+        }
+        .title{
+            font-weight: normal;
+            .paddingRow(.35rem);
+            .line(1rem);
+        }
+        .check-item{
+            margin-bottom: .2rem;
+            .paddingRow(.35rem);
+            padding-top: .15rem;
+            .flex;
+            &.online i{
+                .color(#59b9fc);
+            }
+            &.delivery i{
+                .color(#ffb53d);
+            }
+        }
+        .left{
+            .flex_num(2);
+            .line(1.5);
+        }
+        .center{
+            .flex_num(1);
+            .line(1.5);
+            span{
+                .line(1.5);
+                .position(r);
+            }
+        }
+        .right{
+            .algin(r);
+            .flex_num(3);
+            label{
+                background: url('~@/assets/images/check_bg.png') no-repeat;
+                background-size: 100% 100%;
+                .position(r);
+                .display(inline-block);
+                .w(.48rem);
+                .h(.48rem);
+                &.checked{
+                    background: url('~@/assets/images/checked_bg.png') no-repeat;
+                    background-size: 100% 100%;
+                }
+            }
+        }
+        .edit-12-25{
+            margin-bottom: .4rem;
+            .left{
+                .flex_num(3);
+                .flex;
+                .text-right{
+                    .position(r);
+                    top: .1rem;
+                }
+                .tips{
+                    .fontSize(.22rem);
+                    .color(@b-9);
+                }
+            }
+            .right{
+                .flex-1;
+            }
+        }
+        span.icon{
+            margin-right: .2rem;
+            .display(inline-block);
+            .w(.41rem);
+            .h(.41rem);
+            .position(r);
+            img{
+                .w(.41rem);
+                .h(.41rem);
+            }
+        }
+        .pannel-wrap{
+            .flex-1;
+        }
+        .btn-wrap{
+            .h(0.88rem);
+            .mint-button{
+                .w(100%);
+                .h(100%);
+                .reduis(0);
+                .color(#fff);
+                .bg(@mainCol);
+            }
+        }
+        .tip-third{
+            .position(r);
+            top: .2rem;
+        }
+        // 门店自提
+        .indoor-wrap{
+            .bg(#fafafa);
+            .h(2.3rem);
+            .tips{
+                .paddingRow(.35rem);
+                .fontSize(.28rem);
+                .line(1.5);
+                .color(@error);
+                &.border{
+                    border-top: 1px solid #e5e5e5;
+                    padding-top: .1rem;
+                }
+            }
+            .contack{
+                .paddingRow(.35rem);
+                .fontSize(.28rem);
+                .line(1.5);
+            }
+        }
+        input{
+            display: none;
+        }
+    }
+}
+
+
+// 红包弹框
+.readpacket-pannel{
+    z-index: 200;
+    top: 0;
+    .position(f);
+    .w(100%);
+    .h(100%);
+    .bg(rgba(0, 0, 0, .5));
+    .redpacket-wrap{
+        bottom: 0;
+        .flex;
+        .flex-dir;
+        .w(100%);
+        .h(9rem);
+        .bg(#f5f5f5);
+        .position(a);
+        .fontSize(.3rem);
+        .line(1.5);
+    }
+    // 红包父级块
+    .redpacket-content{
+        .fontSize(.28rem);
+        .h(~'calc(100% - 1.9rem)');
+        .paddingRow(.35rem);
+        padding-top: .28rem;
+        .scroll-y(a);
+        .ipScroll;
+    }
+    // 激活红包
+    .active-red{
+        padding: 0 0 .28rem;
+        .mint-button{
+            .w(100%);
+            .h(.84rem);
+            .color(@mainCol);
+            .bg(#fff);
+        }
+    }
+    // 红包样式
+    .redpacket-item{
+        border: 1px solid #fff;
+        border-left: none;
+        margin-bottom: .24rem;
+        .bg(#fff);
+        .hd{
+            padding: .08rem 0;
+            overflow: hidden;
+            border-bottom: 1px dashed @borCol;
+            .flex;
+            .h(1.34rem);
+            .position(r);
+            .left{
+                border-right: 1px dashed @borCol;
+                .w(1.94rem);
+                .algin(c);
+                .type{
+                    .color(@mainCol);
+                }
+                .num{
+                    .fontSize(.5rem);
+                    .color(@mainCol);
+                }
+                .limit-text{
+                    .fontSize(.24rem);
+                }
+            }
+            .right{
+                .w(~'calc(100% - 1.94rem)');
+                .paddingL(.24rem);
+                .sell-type{
+                    border: 1px solid @mainCol;
+                    margin-right: .14rem;
+                    .fontSize(.24rem);
+                    .line(.36rem);
+                    .paddingRow(.1rem);
+                    .color(@mainCol);
+                    .reduis(2px);
+                }
+                .title{
+                    margin-bottom: .2rem;
+                    .t{
+                        vertical-align: middle;
+                        .display(inline-block);
+                        .w(~'calc(100% - 1.16rem)');
+                        .oneLine;
+                    }
+                }
+                .date{
+                    .fontSize(.24rem);
+                    .color(@b-9);
+                }
+            }
+            .round-wrap{
+                top: .06rem;
+                left: -.08rem;
+                .w(.16rem);
+                .fontSize(0);
+                .position(a);
+                .round{
+                    border: 1px solid #f5f5f5;
+                    margin-bottom: .1rem;
+                    .display(inline-block);
+                    .w(.16rem);
+                    .h(.16rem);
+                    .bg(#f5f5f5);
+                    .reduis(50%);
+                }
+            }
+        }
+        .bd{
+            .flex;
+            padding: .08rem .2rem;
+            .color(@b-9);
+            .tips{
+                min-height: .28rem;
+                .flex-1;
+                .fontSize(.24rem);
+                .line(1.5);
+                &.onlyone{
+                    .oneLine;
+                    .line(.54rem);
+                }
+            }
+            i{
+                .iconfont;
+                .fontSize(.36rem);
+                .line(.54rem);
+            }
+        }
+        // 红包激活样式
+        &.disabled{
+            color: @b-9 !important;
+            .type,.num,.sell-type{
+                color: @b-9 !important;
+                border-color:  @b-9 !important;
+            }
+        }
+        // 红包激活样式
+        &.active{
+            border: 1px solid @mainCol;
+            background: #fff url('~@/assets/images/Selected.png') no-repeat right 0;
+            background-size: .5rem .44rem;
+            .round-wrap{
+                .display(none);
+            }
+        }
+    }
+    // 底部按钮
+    .btn-bar{
+        box-shadow: 0 1px 2px #adadad;
+        .flex;
+        .h(1.05rem);
+        .mint-button{
+            .h(100%);
+            .flex-1;
+            .reduis(0);
+            .bg(#fff);
+            .color(@b-3);
+            box-shadow: none;
+        }
+        .mint-button:nth-of-type(2){
+            .bg(@mainCol);
+            .color(#fff);
+        }
+    }
+
+    // 重置样式
+    .mint-navbar .mint-tab-item.is-selected{
+        border: none;
+        color: @mainCol;
+    }
+    .mint-navbar .mint-tab-item{
+        padding:.3rem 0;
+        .fontSize(.28rem);
+    }
+    .mint-navbar{
+        .h(.85rem);
+        border-bottom: 1px solid @borCol;
+    }
+    .goods-loading,.no-more{
+        .bg(#f5f5f5);
+    }
+    .no-redpacket{
+        img{
+            .display(block);
+            .w(1.54rem);
+            .h(1.8rem);
+            margin: 1.62rem auto .4rem;
+        }
+        p{
+            .fontSize(.28rem);
+            .line(1.5);
+            .color(@b-6);
+            .algin(c);
+        }
+    }
+}

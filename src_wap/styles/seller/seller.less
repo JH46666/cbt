@@ -1,0 +1,270 @@
+@import url('../base/tools.less');
+
+
+#seller{
+    .line(1.5);
+    i{
+        .iconfont;
+        .fontSize(.5rem);
+    }
+    // 头部
+    .head{
+        background: linear-gradient(to right, #15c21f, #7fd64d);
+        padding: .44rem;
+        .flex;
+        .position(r);
+        .h(2.4rem);
+        .icon-wrap{
+            .display(inline-block);
+            .w(.94rem);
+            .h(.94rem);
+            .bg(#e1fae6);
+            .algin(c);
+            .line(.94rem);
+            .reduis(50%);
+            .color(#15c21f);
+        }
+        .right{
+            .flex-1;
+            .paddingL(.16rem);
+            .color(#fff);
+        }
+        .user{
+            margin-bottom: .1rem;
+            .fontSize(.32rem);
+        }
+        .level-wrap{
+            margin-bottom: .1rem;
+            .display(inline-block);
+            .paddingRow(.16rem);
+            .h(.38rem);
+            .line(.38rem);
+            .bg(#fff);
+            .color(@mainCol);
+            .reduis(20px);
+            .clearfix;
+            .level-left{
+                float: left;
+                margin-right: .08rem;
+                .h(.38rem);
+                .fontSize(0);
+            }
+            .level-right{
+                float: left;
+                .h(.38rem);
+            }
+            .level{
+                .w(.2rem);
+                .h(.2rem);
+                .display(inline-block);
+                .position(r);
+                top: .1rem;
+                margin-right: .06rem;
+            }
+            .level-1{
+                background: url('~@/assets/images/s_rate_red.png') no-repeat;
+                background-size: 100% .16rem;
+            }
+            .level-2{
+                background: url('~@/assets/images/s_rate_blue.png') no-repeat;
+                background-size: 100% .16rem;
+            }
+            .level-3{
+                background: url('~@/assets/images/s_rate_cap.png') no-repeat;
+                background-size: 100% .16rem;
+            }
+            .level-4{
+                background: url('~@/assets/images/s_rate_crown.png') no-repeat;
+                background-size: 100% .2rem;
+            }
+        }
+        .sum-count{
+            .fontSize(.26rem);
+            .line(.32rem);
+        }
+        .goback{
+            border-radius: 20px 0 0 20px;
+            top: 1rem;
+            right: 0;
+            .position(a);
+            .fontSize(.24rem);
+            .line(.56rem);
+            .bg(#fff);
+            .color(@mainCol);
+            .paddingRow(.2rem);
+        }
+    }
+    // 收入入口
+    .count-entry{
+        margin-bottom: .24rem;
+        .flex;
+        .bg(#fff);
+        .paddingT(.32rem);
+        .paddingB(.3rem);
+        .count-item{
+            border-right: 1px solid #f5f5f5;
+            .flex-1;
+            .algin(c);
+            .line(1);
+            .num{
+                margin-bottom: .2rem;
+                .fontSize(.32rem);
+                .color(@mainCol);
+                font-weight: bold;
+            }
+            .tips{
+                .fontSize(.26rem);
+                .color(@b-6);
+                margin-bottom: .2rem;
+            }
+            .day{
+                .color(@b-9);
+                .fontSize(.22rem);
+            }
+            &:nth-last-of-type(1){
+                border: none;
+            }
+        }
+    }
+    // 订单入口
+    .order-wrap{
+        margin-bottom: .24rem;
+        .bg(#fff);
+        .title{
+            border-bottom: 1px solid #f5f5f5;
+            .flex;
+            .paddingRow(.35rem);
+            .line(.88rem);
+            h3,.entry{
+                font-weight: normal;
+                .flex-1;
+                .fontSize(.3rem);
+                .color(#666)
+            }
+            .entry{
+                .algin(r);
+                .color(@b-9);
+            }
+        }
+        .order-entry{
+            padding: .35rem 0;
+            .h(1.54rem);
+            .flex;
+            .item{
+                // .flex-1;
+                .position(r);
+                .w(25%);
+                .algin(c);
+                i {
+                    .iconfont;
+                    .color(@mainCol);
+                    .fontSize(.4rem);
+                    .line(1);
+                }
+                &:nth-last-child(1){
+                    i{
+                        .color(#c2c2c2);
+                    }
+                }
+                p{
+                    margin-top: .08rem;
+                    .color(@b-6);
+                    .fontSize(.26rem);
+                    .line(1.5);
+                }
+                .mint-badge{
+                    // .position(a);
+                    // .fontSize(.18rem);
+                    // .line(.3rem);
+                    // .bg(#fff);
+                    // .color(#f44336);
+                    // border: 1px solid #f44336;
+                    // top: -.2rem;
+                    // left: 50%;
+                    // padding: 0 .08rem;
+                    .position(a);
+                    .fontSize(.18rem);
+                    .line(.24rem);
+                    .bg(#fff);
+                    .color(#f44336);
+                    border: 1px solid #f44336;
+                    top: -.13rem;
+                    left: 50%;
+                    padding: 0 .1rem;
+                    height: .26rem;
+                    &.one{
+                        right: .42rem;
+                        padding: 0;
+                        width: .34rem;
+                        height: .34rem;
+                        line-height: .34rem;
+                        border-radius: 50%;
+                    }
+                }
+            }
+        }
+    }
+    .tools-pannel{
+        margin-bottom: .48rem;
+        .bg(#fff);
+        .tools-row{
+            border-bottom: 1px solid #f5f5f5;
+            // .paddingRow(.35rem);
+            .flex;
+            &:nth-last-of-type(1){
+                border: none;
+            }
+        }
+        .item{
+            .w(25%);
+            .h(1.6rem);
+            .algin(c);
+            .paddingT(.3rem);
+            .paddingB(.3rem);
+            i {
+                display: block;
+                .iconfont;
+                .color(#f2b449);
+                .fontSize(.4rem);
+                .line(1);
+                &.blue{
+                    .color(#49bbf2);
+                }
+                &.small{
+                    .fontSize(.3rem);
+                    .line(.4rem);
+                }
+            }
+            p{
+                margin-top: .08rem;
+                .color(@b-6);
+                .fontSize(.26rem);
+                .line(1.5);
+            }
+        }
+    }
+    .new-up{
+        .paddingB(.2rem);
+        .paddingRow(.3rem);
+        .mint-button{
+            border: 1px solid @mainCol;
+            .w(100%);
+            .bg(#fff);
+            .fontSize(.3rem);
+            .h(0.88rem)
+        }
+        .add{
+            margin-right: .2rem;
+            .display(inline-block);
+            .w(.48rem);
+            .h(.48rem);
+            .bg(@mainCol);
+            .color(#fff);
+            .line(.48rem);
+            .reduis(50%);
+            i{
+                .fontSize(.24rem);
+            }
+        }
+    }
+}

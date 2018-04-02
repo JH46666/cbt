@@ -1,0 +1,162 @@
+@import url('../base/tools.less');
+
+.shop-detail{
+    .fontSize(.28rem);
+    .line(1.5);
+    .hd{
+        padding: .3rem .3rem .02rem;
+        margin-bottom: .2rem;
+        .bg(#fff);
+        .shop-img{
+            margin-bottom: .4rem;
+            .h(3.86rem);
+            img{
+                .w(100%);
+                .h(100%);
+            }
+        }
+        .detai-row{
+            border-bottom: 1px solid #e5e5e5;
+            margin-bottom: .2rem;
+            h4{
+                font-weight: normal;
+                margin-bottom: .1rem;
+            }
+            p{
+                .color(@b-9);
+                margin-bottom: .26rem;
+            }
+            &:nth-last-of-type(1) {
+                border: none;
+            }
+        }
+    }
+    .bd{
+        margin-bottom: .6rem;
+        .paddingRow(.3rem);
+        .bg(#fff);
+        .type-row{
+            border-bottom:1px solid #e5e5e5;
+            .flex;
+            .line(.98rem);
+            .left{
+                .w(1.7rem);
+            }
+            .center{
+                .flex-1;
+                .color(@b-9);
+            }
+            .right{
+                .algin(r);
+            }
+            &:nth-last-of-type(1) {
+                border: none;
+                .center{
+                    .color(@b-9);
+                }
+            }
+            .tag{
+                border: 1px solid @mainCol;
+                padding: .04rem .06rem;
+                .reduis(4px);
+                .fontSize(.24rem);
+                .color(@mainCol);
+            }
+            .level{
+                display: inline-block;
+                margin-right: .1rem;
+                .w(.32rem);
+                .h(.32rem);
+            }
+            .level-1{
+                background: url('~@/assets/images/s_rate_red_b.png') no-repeat;
+                background-size: 100% 100%;
+            }
+            .level-2{
+                background: url('~@/assets/images/s_rate_blue_b.png') no-repeat;
+                background-size: 100% 100%;
+            }
+            .level-3{
+                background: url('~@/assets/images/s_rate_cap_b.png') no-repeat;
+                background-size: 100% 100%;
+            }
+            .level-4{
+                background: url('~@/assets/images/s_rate_crown_b.png') no-repeat;
+                background-size: 100% 100%;
+            }
+        }
+    }
+    .dialog-bg{
+        top: 0;
+        left: 0;
+        z-index: 101;
+        .bg(rgba(0,0,0,.3));
+        .position(f);
+        .w(100%);
+        .h(100%);
+        .dialog{
+            top: 50%;
+            left: 50%;
+            margin-left: -3.05rem;;
+            margin-top: -2.1rem;
+            overflow: hidden;
+            .w(6.1rem);
+            .h(4.2rem);
+            .position(a);
+            .bg(#fff);
+            .reduis(4px);
+            .paddingT(.5rem);
+            .title{
+                .algin(c);
+                .fontSize(.32rem);
+                .line(.32rem);
+                margin-bottom: .5rem;
+            }
+            .input-row{
+                margin-bottom: .24rem;
+                .paddingRow(.4rem);
+                input{
+                    .w(100%);
+                    .h(.88rem);
+                    .paddingL(.2rem);
+                    border: 1px solid @borCol;
+                }
+            }
+            .tips{
+                .paddingRow(.4rem);
+                .color(@b-9);
+                .fontSize(.24rem);
+                .line(.24rem);
+            }
+            .btn-bar{
+                bottom: 0;
+                border-top: 1px solid #e5e5e5;
+                .position(a);
+                .w(100%);
+                .mint-button{
+                    .w(50%);
+                    .h(.98rem);
+                    .bg(#fff);
+                    .reduis(0);
+                    .color(@b-3);
+                    .fontSize(.36rem);
+                    box-shadow: none;
+                    &:nth-of-type(2){
+                        .bg(@mainCol);
+                        .color(#fff);
+                    }
+                }
+            }
+        }
+        .big-img{
+            max-height: 100%;
+            max-width: 100%;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+            .position(a);
+        }
+    }
+}

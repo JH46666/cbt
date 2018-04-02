@@ -6,11 +6,41 @@ import router from './router'
 import store from 'store';
 import $api from 'api';
 import axios from 'axios';
-import * as utils from 'utils';
+import * as utils from 'utils/index.js';
+import VueHead from 'vue-head';
+import cbtComponents from './components';
+import {MessageBox,Toast} from 'mint-ui';
+import filters from '../filters';
+import VueClipboard from 'vue-clipboard2'
+
+
+
+// 全局方法
+Vue.prototype.$messageBox = MessageBox;
+Vue.prototype.$toast = Toast;
+
+
+// UI 框架
+import MintUI from 'mint-ui'
+import 'mint-ui/lib/style.css'
+Vue.use(MintUI)
+
+// SEO
+Vue.use(VueHead)
+
+// 茶帮通组件
+Vue.use(cbtComponents)
+// 剪切板
+Vue.use(VueClipboard)
+
+// 全局过滤
+Vue.use(filters);
+
+
+import './styles/less/common.less'
+
 
 Vue.config.productionTip = false
-
-
 
 // 全局方法
 Vue.prototype.$api = $api;
@@ -20,12 +50,13 @@ Vue.prototype.$tool = utils;
 
 
 
-
-
 new Vue({
   el: '#app',
   router,
   store,
   template: '<App/>',
-  components: { App }
+  components: { App },
+  created() {
+    this.$store.commit('SET_DEVICE','WAP')
+  }
 })

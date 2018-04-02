@@ -1,0 +1,407 @@
+@import url('../base/tools.less');
+
+#order-list{
+    .mint-button-text{
+        vertical-align: top;
+    }
+    .fontSize(.3rem);
+    .line(1.5);
+    // 订单部分
+    .order-list-wrap{
+        .paddingT(.24rem);
+        .h(~'calc(100% - .94rem)');
+        .scroll-y(a);
+        .ipScroll;
+    }
+    .order-pannel{
+        margin-bottom: .24rem;
+        .bg(#fff);
+        .head{
+            border-bottom: 1px solid @borCol;
+            .paddingRow(.35rem);
+            .flex;
+            .fontSize(.28rem);
+            .line(.86rem);
+            .title{
+                font-weight: normal;
+                .flex_num(8);
+                .fontSize(.28rem);
+            }
+            .type{
+                .color(#13c23c);
+            }
+        }
+        .goods-item{
+            border-bottom: 1px solid @borCol;
+            .padding(.35rem);
+            .flex;
+            .right{
+                .flex-1;
+                .paddingL(.2rem);
+            }
+            .goods-title{
+                .moreLine;
+                .color(@b-3);
+                margin-bottom: .5rem;
+                .fontSize(.28rem);
+            }
+            .goods-bd{
+                .flex;
+                .fontSize(.32rem);
+                .line(1.5);
+                span{
+                    .flex-1;
+                }
+                .price{
+                    .color(@mainCol);
+                }
+                .num{
+                    .algin(r);
+                }
+            }
+        }
+        .foot{
+            .paddingRow(.35rem);
+            .paddingT(.24rem);
+            .paddingB(.35rem);
+            .text{
+                margin-bottom: .1rem;
+                .flex;
+                p{
+                    .flex-1;
+                }
+                p:nth-last-of-type(1){
+                    .algin(r);
+                }
+                .gold{
+                    .color(@mainCol);
+                }
+            }
+            .btn-wrap{
+                .algin(r);
+                .mint-button--small{
+                    margin-left: .2rem;
+                    border: 1px solid @b-9;
+                    padding: 0;
+                    .color(@b-6);
+                    .bg(#fff);
+                    .w(1.64rem);
+                    .h(.56rem);
+                    .line(.56rem);
+                    .reduis(20px);
+                }
+                .mint-button--small.gold{
+                    border: 1px solid @mainCol;
+                    .color(@mainCol);
+                }
+            }
+        }
+    }
+
+    // 关闭订单弹出层样式
+    .close-wrap{
+        .w(100%);
+        .algin(c);
+        .fontSize(.3rem);
+        .line(.98rem);
+        h3{
+            font-weight: normal;
+            .line(.8rem);
+            .bg(#f5f5f5);
+        }
+        .close-tip{
+            border-bottom: 1px solid @borCol;
+        }
+        .close-tip:nth-last-of-type(1){
+            border:none;
+            .color(@mainCol);
+        }
+    }
+    .close-wrap-send{
+        .w(100%);
+        .bg(#fff);
+        .hd{
+            .paddingRow(.3rem);
+            .top{
+                border-bottom: 1px solid #e5e5e5;
+                .fontSize(.3rem);
+                .flex;
+                .line(1.09rem);
+                .left{
+                    .flex-1;
+                    .color(@b-9);
+                }
+                .right{
+                    .flex-1;
+                    .algin(r);
+                }
+            }
+            .bottom{
+                margin-bottom: .2rem;
+                .fontSize(.24rem);
+                .line(.68rem);
+                .color(@mainCol);
+                i{
+                    margin-right: .1rem;
+                    top: .04rem;
+                    .position(r);
+                }
+            }
+        }
+        .bd{
+            .title{
+                .paddingRow(.3rem);
+                .bg(#f5f5f5);
+                .fontSize(.3rem);
+                .line(.8rem);
+                .color(@b-9);
+            }
+            .item-wrap{
+                .paddingRow(.3rem);
+                .item{
+                    border-bottom: 1px solid #e5e5e5;
+                    .line(.99rem);
+                    &:nth-of-type(3){
+                        border: none;
+                    }
+                    .iconfont{
+                        float: right;
+                        .color(@mainCol);
+                    }
+                }
+            }
+        }
+        .btn-bar{
+            border-top: 1px solid #e5e5e5;
+            .mint-button{
+                .w(50%);
+                .reduis(0);
+                .h(.97rem);
+                .bg(#fff);
+                .color(@mainCol);
+                .fontSize(.3rem);
+                box-shadow: none;
+                border-right: 1px solid #e5e5e5;
+                &:nth-of-type(2){
+                    border: none;
+                }
+
+            }
+        }
+    }
+
+    // 没有订单
+     .mt_empty_wrapper {
+        text-align: center;
+        .empty_text{
+            font-size: 0.28rem;
+            color: #999;
+            line-height: 1;
+            text-align: center;
+        }
+        img{
+            width: 1.25rem;
+            margin: 1.3rem auto .48rem;
+            display: block;
+        }
+    }
+
+    // 重置样式
+    .mint-navbar{
+        .h(.94rem);
+        border-bottom: 1px solid @borCol;
+    }
+    .mint-navbar .mint-tab-item.is-selected{
+        border: none;
+        .color(@mainCol);
+        .fontSize(.28rem);
+    }
+    .mint-tab-item-label{
+        font-size: .28rem !important;
+    }
+    .mint-popup{
+        .w(100%);
+    }
+} 
+
+
+
+#order-list.detail{
+    .head-bar{
+        .flex;
+        .mint-navbar{
+            .flex_num(3);
+        }
+        .screen-bar{
+            .flex-1;
+            .algin(c);
+            .h(.94rem);
+            .line(.94rem);
+            .bg(#fff);
+            .fontSize(.28rem);
+            border-bottom: 1px solid @borCol;
+            &.active{
+                .color(@mainCol);
+            }
+        }
+    }
+}
+
+
+.popup-filter{
+    display: block;
+    .h(8.4rem);
+    .w(100%);
+    .popup-content{
+        padding: 0 0rem 1rem;
+        .h(7.4rem);
+        .bg(#f5f5f5);
+        overflow-y: auto; 
+    }
+    .title{
+        .line(.97rem);
+        .fontSize(.3rem);
+        .color(#666);
+        .paddingL(.36rem);
+        font-weight: normal;
+        border-bottom: 1px solid #e5e5e5;
+    }
+    .date-row{
+        border-bottom: 1px solid #e5e5e5;
+        .bg(#fff);
+        .paddingRow(.36rem);
+        .flex;
+        .line(.97rem);
+        .left{
+            .w(1.8rem);
+        }
+        .left,.center{
+            .color(#333);
+        }
+        .center{
+            .flex-1;
+            .color(#666);
+        }
+        .right{
+            .algin(r);
+            .w(.4rem);
+        }
+    }
+    .date-block{
+        justify-content: space-around;
+        margin-bottom: .2rem;
+        .bg(#fff);
+        .paddingRow(.36rem);
+        .flex;
+        .paddingT(.3rem);
+        .paddingB(.3rem);
+        .item{
+            .w(2.1rem);
+            .line(.8rem);
+            .color(#666);
+            .algin(c);
+            .bg(#f5f5f5);
+            &.active{
+                .color(@mainCol);
+            }
+        }
+    }
+    .input-row{
+        margin-bottom: .2rem;
+        .bg(#fff);
+        .paddingRow(.36rem);
+        .flex;
+        .line(.97rem);
+        .left{
+            .w(1.8rem);
+        }
+        .center{
+            .flex-1;
+            input{
+                .w(100%);
+            }
+        }
+    }
+    .pop-btns{
+        .w(100%);
+        .position(a);
+        bottom: 0;
+        .h(1rem);
+        .line(1rem);
+        .algin(c);
+        .fontSize(.3rem);
+        .bg(#fff);
+        border: 1px solid #e6e6e6;
+        .confirm{
+            .bg(#f08200);
+            .color(#fff);
+        }
+        a{
+            .color(@b-3);
+        }
+    }
+}
+
+
+
+
+.dialog-bg{
+    top: 0;
+    left: 0;
+    z-index: 3001;
+    .bg(rgba(0,0,0,.3));
+    .position(f);
+    .w(100%);
+    .h(100%);
+    .dialog{
+        top: 50%;
+        left: 50%;
+        margin-left: -3.05rem;;
+        margin-top: -2rem;
+        overflow: hidden;
+        .w(6.1rem);
+        .h(4rem);
+        .position(a);
+        .bg(#fff);
+        .reduis(4px);
+        .paddingT(.5rem);
+        .title{
+            .algin(c);
+            .fontSize(.32rem);
+            .line(.32rem);
+            margin-bottom: .5rem;
+        }
+        .input-row{
+            margin-bottom: .24rem;
+            .paddingRow(.4rem);
+            .fontSize(.3rem);
+            .algin(c);
+        }
+        .tips{
+            .algin(c);
+            .paddingRow(.4rem);
+            .color(@mainCol);
+            .fontSize(.4rem);
+            .line(1.5);
+        }
+        .btn-bar{
+            bottom: 0;
+            border-top: 1px solid #e5e5e5;
+            .position(a);
+            .w(100%);
+            .mint-button{
+                .w(50%);
+                .h(.98rem);
+                .bg(#fff);
+                .reduis(0);
+                .color(@b-3);
+                .fontSize(.36rem);
+                box-shadow: none;
+                &:nth-of-type(2){
+                    .bg(@mainCol);
+                    .color(#fff);
+                }
+            }
+        }
+    }
+}
