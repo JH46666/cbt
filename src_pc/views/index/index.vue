@@ -320,7 +320,7 @@
                     </div>
                 </div>
                 <a class="become-seller" href="javascript:void(0);"  @click="sellerFlag=true">成为卖家</a>
-                <address>Copyright 2010 - 2017 oteao.com All Rights Reserved 闽ICP备10200063号-3  厦门醉品春秋网络科技有限公司</address>
+                <address>Copyright 2010 - 2018 oteao.com All Rights Reserved 闽ICP备10200063号-3  厦门醉品春秋网络科技有限公司</address>
             </div>
         </div>
         <!-- 右边悬浮 -->
