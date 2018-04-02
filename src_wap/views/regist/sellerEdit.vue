@@ -426,9 +426,9 @@ export default {
                     "areaCode": store.state.member.member.areaCode,                          // 区
                     "cityCode": store.state.member.member.cityCode,                          // 市
                     "provinceCode": store.state.member.member.provinceCode,                  // 省
-                    "areaName ": store.state.member.orgDTO.countyName,
-                    "cityName ": store.state.member.orgDTO.cityName,
-                    "provinceName ": store.state.member.orgDTO.provinceName,
+                    "areaName": store.state.member.orgDTO.countyName,
+                    "cityName": store.state.member.orgDTO.cityName,
+                    "provinceName": store.state.member.orgDTO.provinceName,
                     "detailAddress": store.state.member.orgDTO.address,                      // 详细地址
                     "contactor": store.state.member.member.contactName,
                     "device": 'WAP',
