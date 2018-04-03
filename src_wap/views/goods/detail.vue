@@ -574,7 +574,7 @@ export default {
     },
     // updated里才能操作refs
     updated() {
-        // console.log(this.$refs) 
+        // console.log(this.$refs)
         // console.log($(this.$refs.comment[0]).height());
         // console.log($(this.$refs.comment[0]).css('font-size').slice(0, -2));
         this.$nextTick(()=>{
@@ -1167,6 +1167,7 @@ export default {
                     var layim = mobile.layim,
                         laytpl = layui.laytpl,
                         layer = mobile.layer;
+                    layer.closeAll();
                     var $ =layui.jquery;
                     var selfFlag = false;
                     //基础配置
@@ -1206,7 +1207,7 @@ export default {
                         token:`/erp/layim/getToKenById?id=${selfId}`,
                         // token:'/erp/layim/token',
                         server:wsServer,
-                        //server:'ws://192.168.7.8:8888',
+                        // server:'ws://192.168.7.8:8888',
                         //server: 'wss://java.im.test.yipicha.com',
                         reconn: true
                     });
@@ -1671,6 +1672,6 @@ export default {
     }
     .mint-tab-item-icon{
         width: 0.4rem;
-        height: 0.4rem; 
+        height: 0.4rem;
     }
 </style>

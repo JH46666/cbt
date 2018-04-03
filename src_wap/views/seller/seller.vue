@@ -179,6 +179,10 @@
             },
         },
         created() {
+            if(sessionStorage.IM_user=='buyer'){
+              sessionStorage.IM_user='seller'
+              this.$router.go(0);
+            }
             // 设置title
             this.$store.commit('SET_TITLE','卖家中心');
 
