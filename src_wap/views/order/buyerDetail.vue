@@ -954,6 +954,7 @@ export default {
                     var layim = mobile.layim,
                         laytpl = layui.laytpl,
                         layer = mobile.layer;
+                    layer.closeAll();
                     var $ = layui.jquery;
                     var selfFlag = false;
                     //基础配置
@@ -993,7 +994,7 @@ export default {
                         token: `/erp/layim/getToKenById?id=${selfId}`,
                         // token:'/erp/layim/token',
                         server: wsServer,
-                        //server:'ws://192.168.7.8:8888',
+                        // server:'ws://192.168.7.8:8888',
                         //server: 'wss://java.im.test.yipicha.com',
                         reconn: true
                     });
