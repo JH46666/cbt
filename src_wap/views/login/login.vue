@@ -136,6 +136,7 @@
             //提交登录信息
             submit(){
                 if(!this.disabledFlag){
+                    // 密码登录
                     if(this.selected == '2'){
                         let data = {
                             memberAccount: this.regInfo.phone,
@@ -144,54 +145,58 @@
                             sysId:1
                         }
                         this.$api.post('/oteao/login/doLoginByPwd',data,
-                        res=>{
+                        res => {
                             for (let attr in res.data) {
-                                this.$store.commit('SET_MEMBERDATA',{type:attr,val:res.data[attr]})
+                                this.$store.commit('SET_MEMBERDATA', { type: attr, val: res.data[attr] })
                             }
                             let status = this.$store.state.member.memberAccount.status;
-                            if(status === 'WAIT_AUDIT' || status === 'AUDIT_NO_PASS'){
-                                return this.$router.push({name: '茶帮通注册3'})
+                            if (status === 'WAIT_AUDIT' || status === 'AUDIT_NO_PASS') {
+                                return this.$router.push({ name: '茶帮通注册3' })
                             }
-                            if(status === 'INACTIVE') {
-                                return this.$router.push({name: '茶帮通注册2'})
+                            if (status === 'INACTIVE') {
+                                return this.$router.push({ name: '茶帮通注册2' })
                             }
-                            if(this.$store.state.address.from.name === '忘记密码' || this.$store.state.address.from.name === this.$route.name) {
+                            if (this.$store.state.address.from.name === '忘记密码' || this.$store.state.address.from.name === this.$route.name) {
                                 return this.$router.push('/')
                             } else {
+                                // Toast(this.$store.state.address.from.fullPath)
                                 return this.$router.push(this.$store.state.address.from.fullPath);
                             }
-                        },res=>{
-                            if(res.code === 4064){
+                        }, res => {
+                            if (res.code === 4064) {
                                 return this.illegalFlag = true;
-                            }else{
+                            } else {
                                 return Toast('账号或密码错误，请核实后重新输入');
                             }
                         });
-                    }else if(this.selected == '1'){
+                    }
+                    // 短信登录
+                    else if(this.selected == '1'){
                         let data = {
                             memberAccount: this.regInfo.phone,
                             smsCode: this.regInfo.mesCode,
                             device: 'WAP'
                         }
                         this.$api.post('/oteao/login/doLoginBySms',data,
-                        res=>{
+                        res => {
                             for (let attr in res.data) {
-                                this.$store.commit('SET_MEMBERDATA',{type:attr,val:res.data[attr]})
+                                this.$store.commit('SET_MEMBERDATA', { type: attr, val: res.data[attr] })
                             }
                             let status = res.data.memberAccount.status;
-                            if(status === 'WAIT_AUDIT' || status === 'AUDIT_NO_PASS') {
-                                return this.$router.push({name: '茶帮通注册3'})
+                            if (status === 'WAIT_AUDIT' || status === 'AUDIT_NO_PASS') {
+                                return this.$router.push({ name: '茶帮通注册3' })
                             }
-                            if(status === 'INACTIVE') {
-                                return this.$router.push({name: '茶帮通注册2'})
+                            if (status === 'INACTIVE') {
+                                return this.$router.push({ name: '茶帮通注册2' })
                             }
-                            if(this.$store.state.address.from.name === '忘记密码' || this.$store.state.address.from.name === this.$route.name) {
+                            if (this.$store.state.address.from.name === '忘记密码' || this.$store.state.address.from.name === this.$route.name) {
                                 return this.$router.push('/')
-                            } else {
+                            }
+                            else {
                                 return this.$router.push(this.$store.state.address.from.fullPath);
                             }
-                        },res=>{
-                            if(res.code === 2000) {
+                        }, res => {
+                            if (res.code === 2000) {
                                 return Toast('该账户未注册');
                             }
                             Toast('您输入的验证码错误，请核实后重新输入');

@@ -22,16 +22,16 @@
                         </li>
                         <li class="hover-li w200">
                             <i class="we"></i>联系我们
-                            <div class="hover-box concat">
-                                <p><i class="qq"></i>QQ客服</p>
-                                <a class="online" href="javscript:void(0);"><i></i></a>
+                            <div class="hover-box concat" style="height: 170px;">
+                                <!-- <p><i class="qq"></i>QQ客服</p> -->
+                                <!-- <a class="online" href="javscript:void(0);"><i></i></a> -->
                                 <p><i class="wx"></i>微信客服</p>
                                 <i class="cbt-code"></i>
                             </div>
                         </li>
                     </ul>
                     <div class="f_r">
-                        <p class="tele"><i></i>4006-996-339</p>
+                        <p class="tele"><i></i>400-996-3399</p>
                         <p>周一至周日8:45-22:30</p>
                     </div>
                 </div>
@@ -58,16 +58,16 @@
                         </li>
                         <li class="hover-li w200">
                             <i class="we"></i>联系我们
-                            <div class="hover-box concat">
-                                <p><i class="qq"></i>QQ客服</p>
-                                <a class="online" href="javscript:void(0);"><i></i></a>
+                            <div class="hover-box concat" style="height: 170px;">
+                                <!-- <p><i class="qq"></i>QQ客服</p> -->
+                                <!-- <a class="online" href="javscript:void(0);"><i></i></a> -->
                                 <p><i class="wx"></i>微信客服</p>
                                 <i class="cbt-code"></i>
                             </div>
                         </li>
                     </ul>
                     <div class="f_r">
-                        <p class="tele"><i></i>4006-996-339</p>
+                        <p class="tele"><i></i>400-996-3399</p>
                         <p>周一至周日8:45-22:30</p>
                     </div>
                 </div>
@@ -320,7 +320,7 @@
                     </div>
                 </div>
                 <a class="become-seller" href="javascript:void(0);"  @click="sellerFlag=true">成为卖家</a>
-                <address>Copyright 2010 - 2017 oteao.com All Rights Reserved 闽ICP备10200063号-3  厦门醉品春秋网络科技有限公司</address>
+                <address>Copyright 2010 - 2018 oteao.com All Rights Reserved 闽ICP备10200063号-3  厦门醉品春秋网络科技有限公司</address>
             </div>
         </div>
         <!-- 右边悬浮 -->

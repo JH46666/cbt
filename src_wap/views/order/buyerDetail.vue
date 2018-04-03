@@ -396,9 +396,9 @@
                     <span>返积分：{{  orderDetailData.giveJfSum }}分</span>
                     <span>余额支付：￥{{ orderDetailData.useStoreValue | toFix2 }}</span>
                 </div>
-                <template v-if="orderDetailData.payType!='CASH_DELIVERY'">
+                <template v-if="orderDetailData.payType!='CASH_DELIVERY' && orderDetailData.orderStatus !== 'WAIT_PAY'">
                     <div class="price_total_item">
-                        <span>{{  orderDetailData.orderSum | toFix2 }}</span>实际付款：
+                        <span>￥{{  orderDetailData.orderSum | toFix2 }}</span>实际付款：
                     </div>
                 </template>
                 <template v-else>
@@ -424,10 +424,10 @@
          </div>
         <!-- 下单时间 -->
         <div class="order_date">
-            <div class="number order_date_item" style="align-items: center;">
+            <div class="number order_date_item" style="align-items: center; display: flex;">
                 订单编号：{{ orderDetailData.orderNo }}
                 <div style="border: solid 0.02rem #999999; border-radius: 0.05rem; font-size: 0.26rem; padding: 0.12rem 0.25rem;"
-                    v-clipboard:copy="orderDetailData.orderNo" v-clipboard:success="clipboardData"
+                    v-clipboard:copy="orderDetailData.orderNo" v-clipboard:success="clipboardData" v-clipboard:error="copyFail"
                 >
                     复制
                 </div>
@@ -580,9 +580,9 @@
        <div class="popup-tips" v-if="popupTipsFlag">
             <div class="tips-position-center cancel-tips-popup" v-if="cancelTipsFlag">
                 <div class="tips-box">
-                    <div class="tips-title"><h4><b>暂时无法取消订单</b></h4></div>
-                    <div class="tips-text">发起拼团24小时后，若未拼团成功将自动取消订单并退款哦</div>
-                    <div class="tips-btn" @click="popupTipsFlag = !popupTipsFlag; cancelTipsFlag = !cancelTipsFlag">我知道了</div>
+                    <div class="tips-title"><h4><b>{{ cancelJsonData['tips-title'] }}</b></h4></div>
+                    <div class="tips-text">{{ cancelJsonData['tips-text'] }}</div>
+                    <div class="tips-btn" @click="popupTipsFlag = !popupTipsFlag; cancelTipsFlag = !cancelTipsFlag">{{ cancelJsonData['tips-btn'] }}</div>
                 </div>
             </div>
              <div class="tips-position-center refund-tips-popup cancel-tips-popup" v-if="refundTipsFlag">
@@ -635,6 +635,7 @@ export default {
                 orgId: ''
             },
             isThirdShop: '',                            // 茶帮通或者第三方
+            cancelJsonData: {},                         // 取消订单静态块
         }
     },
     head: {
@@ -1225,7 +1226,11 @@ export default {
         // 复制
         clipboardData(e){
             return Toast('复制成功');
-        }
+        },
+        // 复制失败
+         copyFail(e) {
+            return Toast('复制失败');
+        },
     },
     mounted() {
         // this.height2 = true;
@@ -1238,7 +1243,7 @@ export default {
             return `tel//${this.orderDetailData.shopPhone}`;
         },
         height2() {
-            if (this.orderDetailData.groupSuccess === 2) return true;
+            if (this.orderDetailData.groupSuccess === 2 && this.orderDetailData.orderStatus !== 'WAIT_PAY') return true;
             else if (this.orderDetailData.orderStatus === 'PAY_WAIT_AUDIT' && this.orderDetailData.groupSuccess == 1) return true;
             else if (this.orderDetailData.orderStatus === 'DELIVERED' && this.orderDetailData.groupSuccess == 1) return true;
             else if (this.orderDetailData.orderStatus === 'PACKING' && this.orderDetailData.groupSuccess != 2) return true;
@@ -1285,6 +1290,15 @@ export default {
             // 获取商家信息
             this.shopInfo.shopName = res.data.shopName;
             this.shopInfo.orgId = res.data.sellerOrgId;
+        })
+        // 获取取消订单静态块数据
+        this.$store.dispatch('getBlock', 'cancelOrder').then(res => {
+            try {
+                this.cancelJsonData = JSON.parse(res.data.htmlText);
+            } catch (error) {
+
+            }
+            // console.log(this.cancelJsonData)
         })
     },
 }
@@ -1434,5 +1448,9 @@ export default {
             font-size: 0.28rem;
             color: #333;
         }
+    }
+
+    .detail .order_date .order_date_item{
+        display: block;
     }
 </style>

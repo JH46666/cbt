@@ -268,14 +268,14 @@ import $api from 'api';
                         'pro.sysId': 1,
                         'pro.device': 'WAP',
                         'pro.state': states,
-                        'pro.seachKey': this.keyWord
+                        'pro.seachKey': this.keyWord ? this.keyWord : ''
                     }
                 return new Promise((resolve,reject) => {
                     this.$api.post('/oteao/productInfo/seachFrontOrgProduct',data,res => {
-                         Toast({
-                            message: `res.data:${res.data.length}，res.total_record:${res.total_record}`,
-                            iconClass: 'icon icon-success'
-                        })
+                        // Toast({
+                        //     message: `res.data:${res.data.length}，res.total_record:${res.total_record}`,
+                        //     iconClass: 'icon icon-success'
+                        // })
                         resolve(res);
                     },res=>{
                         return Toast({
