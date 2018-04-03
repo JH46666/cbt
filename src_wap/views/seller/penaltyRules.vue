@@ -32,14 +32,14 @@
             <p class="thirdtitle">{{penaltyRulesData.steps4.texeTwoContent.text2}}</p>
             <div class="preview-img-list">
                 <img class="preview-img-item spelImg" 
-                    :src="penaltyRulesData.steps4.texeTwoContent.imgSrc" @click="$photoswipe.open(2, penaltyRulesData.items)">
+                    :src="penaltyRulesData.steps4.text.imgSrc" @click="$photoswipe.open(2, penaltyRulesData.items)">
             </div>
             <p class="thirdtitle">{{penaltyRulesData.steps4.texeTwoContent.text3}}</p>
             <p>{{penaltyRulesData.steps4.text.text3}}</p>
             <p>{{penaltyRulesData.steps4.text.text4}}</p>
             <div class="preview-img-list">
                 <img class="preview-img-item img " 
-                    :src="penaltyRulesData.steps4.text.imgSrc" @click="$photoswipe.open(3, penaltyRulesData.items)">
+                    :src="penaltyRulesData.steps4.texeTwoContent.imgSrc" @click="$photoswipe.open(3, penaltyRulesData.items)">
             </div>
             <p>{{penaltyRulesData.steps4.text.text5}}</p>
         </div>
@@ -48,7 +48,7 @@
             <p>{{penaltyRulesData.steps5.text.text1}}</p>
             <p>{{penaltyRulesData.steps5.text.text2}}</p>
             <div class="thirdtitle" v-for="item in penaltyRulesData.steps5.texeTwoContent">
-                <p  class="thirdtitle" v-html="item.text"></p>
+                <p v-html="item.text"></p>
             </div>
             <p>{{penaltyRulesData.steps5.text.text3}}</p>
             <div v-for="item in penaltyRulesData.steps5.texeThirdContent">
