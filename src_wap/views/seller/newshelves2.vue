@@ -450,13 +450,17 @@ import $api from 'api';
                 // 组合标题
                 let titles = '';
                 for(let i=0;i<this.resize.proValList.length;i++){
+                    let str = '采摘季节香型工艺';
                     if(this.resize.proValList[i].propValList.length === 0){
                         data.catProps.push({
                             propType: 2,
                             propId: this.resize.proValList[i].id,
                             propertyVal: this.resize.proValList[i].proVal
                         });
-                        titles = titles + this.resize.proValList[i].proVal;
+                        // 采摘季节、香型、工艺
+                        if (str.indexOf(this.resize.proValList[i].propName) != -1) {
+                            titles = titles + this.resize.proValList[i].proVal;
+                        }
                     }else{
                         data.catProps.push({
                             propType: 1,
@@ -464,7 +468,10 @@ import $api from 'api';
                             propertyVal: this.resize.proValList[i].proVal,
                             propValId: this.resize.proValList[i].proValId
                         });
-                        titles = titles + this.resize.proValList[i].proVal;
+                        // 采摘季节、香型、工艺
+                        if (str.indexOf(this.resize.proValList[i].propName) != -1) {
+                            titles = titles + this.resize.proValList[i].proVal;
+                        }
                     }
                 }
                 // 组合标题 = 商品卖点 + 商品品类 + 属性
