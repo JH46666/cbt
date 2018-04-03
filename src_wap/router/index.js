@@ -127,7 +127,7 @@ const router = new Router({
 						hideFooter: true
 					}
 				},
-				
+
 				{
 					path: 'buyerProcess',
 					name: '注册为茶帮通买家流程',
@@ -620,10 +620,10 @@ router.beforeEach((to,from,next) => {
 		}
 	}
 	// 计数，为1才去执行微信的登录
-	count++;
+	// count++;
 	// 需要判断是否在微信内部，是的话要授权登录
-	if($tool.isWx && count === 1) {
-
+	// if($tool.isWx && count === 1) {
+	if($tool.isWx) {
 		// 从 localStorage 获取数据并删除
 		window.isWxLogin = Boolean(localStorage.isWxLogin)
 		delete localStorage.isWxLogin;

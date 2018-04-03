@@ -200,6 +200,7 @@
                         layim.off('tool(history)').on('tool(history)', function (insert, f, thatChat) {
                             var friendId = thatChat.data.id
                             var kefuName1 = thatChat.data.name
+                            var selfId = layim.cache().mine.id;
                             var param = "?id=" + friendId + "&userId=" + layim.cache().mine.id;
                             $.get('/erp/layim/getChatLog/0/10000' + param, {}, function (res) {
                                 console.log(res.data.data)
@@ -207,7 +208,7 @@
                                 layim.panel({
                                     title: '与 ' + kefuName1 + ' 的聊天记录' //标题
                                     , tpl: ['<div class="layim-chat-main"><ul id="LAY_view">'
-                                        , '{{# layui.each(d.data, function(index, item){  if(item.id == 200512){ }}'
+                                        , '{{# layui.each(d.data, function(index, item){  if(item.id == '+selfId+'){ }}'
                                         , '    <li class="layim-chat-mine"><div class="layim-chat-user"><img src="{{ item.avatar }}" />'
                                         , '    <cite><i>{{ layui.data.date(item.timestamp) }}</i>{{ item.username }}</cite>'
                                         , '    </div><div class="layim-chat-text">{{layui.mobile.layim.content(item.content)}}</div></li>'
