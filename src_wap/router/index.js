@@ -620,10 +620,10 @@ router.beforeEach((to,from,next) => {
 		}
 	}
 	// 计数，为1才去执行微信的登录
-	// count++;
+	count++;
 	// 需要判断是否在微信内部，是的话要授权登录
-	// if($tool.isWx && count === 1) {
-	if($tool.isWx) {
+	if($tool.isWx && count === 1) {
+
 		// 从 localStorage 获取数据并删除
 		window.isWxLogin = Boolean(localStorage.isWxLogin)
 		delete localStorage.isWxLogin;
@@ -633,19 +633,12 @@ router.beforeEach((to,from,next) => {
 			// chiputaobutuputaopi 与文哥商量的 key 值
 			// console.log(encodeURI(location.origin + `/api/wap/wechatAutoLogin?chiputaobutuputaopi=${location.origin}/#/${to.fullPath}`))
 			location.href = encodeURI(location.origin + `/api/wap/wechatAutoLogin?chiputaobutuputaopi=${location.origin}`) + `/%23` + encodeURI(to.fullPath)
-			// let url = encodeURI(location.origin + `/api/wap/wechatAutoLogin?chiputaobutuputaopi=${location.origin}`) + `/%23` + encodeURI(to.fullPath);
-			// new Promise((resolve,reject)=>{
-      //   this.$api.get(url,res=>{
-      //     resolve(res)
-      //   })
-      // })
 		} else {
 			next()
 		}
 	} else {
 		next()
 	}
-
 	// // 规避掉注册页面
 	// const nextRoute = ['account', 'order', 'course'];
 	// const auth = store.state.auth;
