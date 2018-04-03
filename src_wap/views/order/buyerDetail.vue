@@ -954,6 +954,7 @@ export default {
                     var layim = mobile.layim,
                         laytpl = layui.laytpl,
                         layer = mobile.layer;
+                    layer.closeAll();
                     var $ = layui.jquery;
                     var selfFlag = false;
                     //基础配置
