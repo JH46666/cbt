@@ -1,5 +1,5 @@
 <template>
-    <div class="penalty-rules">
+    <div class="penalty-rules" v-if="penaltyRulesData ? true :false">
   
         <h4 class="title">{{penaltyRulesData.titletext.title1}}</h4>
         <div class="steps">
