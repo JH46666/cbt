@@ -144,14 +144,6 @@ const router = new Router({
 						hideFooter: true
 					}
 				},
-				{
-					path: 'penaltyRules',
-					name: '茶帮通处罚规则',
-					component: resolve => require(['@/views/seller/penaltyRules.vue'],resolve),
-					meta: {
-						hideFooter: true
-					}
-				},
 
 
 			]
