@@ -396,7 +396,7 @@
                     <span>返积分：{{  orderDetailData.giveJfSum }}分</span>
                     <span>余额支付：￥{{ orderDetailData.useStoreValue | toFix2 }}</span>
                 </div>
-                <template v-if="orderDetailData.payType!='CASH_DELIVERY'">
+                <template v-if="orderDetailData.payType!='CASH_DELIVERY' && orderDetailData.orderStatus !== 'WAIT_PAY'">
                     <div class="price_total_item">
                         <span>￥{{  orderDetailData.orderSum | toFix2 }}</span>实际付款：
                     </div>
@@ -424,10 +424,10 @@
          </div>
         <!-- 下单时间 -->
         <div class="order_date">
-            <div class="number order_date_item" style="align-items: center;">
+            <div class="number order_date_item" style="align-items: center; display: flex;">
                 订单编号：{{ orderDetailData.orderNo }}
                 <div style="border: solid 0.02rem #999999; border-radius: 0.05rem; font-size: 0.26rem; padding: 0.12rem 0.25rem;"
-                    v-clipboard:copy="orderDetailData.orderNo" v-clipboard:success="clipboardData"
+                    v-clipboard:copy="orderDetailData.orderNo" v-clipboard:success="clipboardData" v-clipboard:error="copyFail"
                 >
                     复制
                 </div>
@@ -1226,7 +1226,11 @@ export default {
         // 复制
         clipboardData(e){
             return Toast('复制成功');
-        }
+        },
+        // 复制失败
+         copyFail(e) {
+            return Toast('复制失败');
+        },
     },
     mounted() {
         // this.height2 = true;
@@ -1239,7 +1243,7 @@ export default {
             return `tel//${this.orderDetailData.shopPhone}`;
         },
         height2() {
-            if (this.orderDetailData.groupSuccess === 2) return true;
+            if (this.orderDetailData.groupSuccess === 2 && this.orderDetailData.orderStatus !== 'WAIT_PAY') return true;
             else if (this.orderDetailData.orderStatus === 'PAY_WAIT_AUDIT' && this.orderDetailData.groupSuccess == 1) return true;
             else if (this.orderDetailData.orderStatus === 'DELIVERED' && this.orderDetailData.groupSuccess == 1) return true;
             else if (this.orderDetailData.orderStatus === 'PACKING' && this.orderDetailData.groupSuccess != 2) return true;
@@ -1444,5 +1448,9 @@ export default {
             font-size: 0.28rem;
             color: #333;
         }
+    }
+
+    .detail .order_date .order_date_item{
+        display: block;
     }
 </style>
