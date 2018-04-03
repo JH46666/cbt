@@ -11,8 +11,8 @@
                 <form>
                     <div class="form_item">
                         <div class="flex align_items_end">
-                            <label for="">登录账号</label>
-                            <p  class="flex-1">{{ member.phone }}</p>
+                            <label for="">企业名称</label>
+                            <p  class="flex-1">{{ myData.shopName }}</p>
                         </div>
                         <p  class="error_txt"></p>
                     </div>
