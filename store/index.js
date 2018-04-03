@@ -17,11 +17,15 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        device: ''
+        device: '',
+        IM_user:'buyer'
     },
     mutations: {
         SET_DEVICE(state,val) {
             state.device = val
+        },
+        SET_IMUSER(state,val){
+          state.IM_user = val
         }
     },
     actions: {

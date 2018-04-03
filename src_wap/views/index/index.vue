@@ -358,6 +358,7 @@ import { mapState } from 'vuex'
             }
         },
         created(){
+            sessionStorage.IM_user='buyer';
             // 设置title
             store.commit('SET_TITLE','茶帮通商城');
             store.dispatch('getBlock','WAP_CAT').then((res)=>{

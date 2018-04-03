@@ -32,6 +32,7 @@
                     }).use(['mobile', 'socket', 'req'], function (mobile, socket, req) {
                         var layim = mobile.layim,
                             layer = mobile.layer;
+                        layer.closeAll();
                         var $ = layui.jquery;
                         var selfFlag = false;
                         console.log(_this.myData);
@@ -75,7 +76,7 @@
                             log: true,
                             token: `/erp/layim/getToKenById?id=${_this.userid}`,
                             // token:'/erp/layim/token',
-                            //server:'ws://192.168.7.8:8888',
+                            // server:'ws://192.168.7.8:8888',
                             server: wsServer,
                             //server: 'wss://java.im.test.yipicha.com'
                             //server: 'ws://java.im.test.yipicha.com:8888',
