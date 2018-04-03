@@ -208,7 +208,7 @@
         // 进来先判断登陆与否，若登录则跳转
         beforeRouteEnter(to, from, next) {
             store.dispatch('getMemberData').then((res) => {
-                next(vm => vm.$router.go(-2));
+                next(vm => vm.$router.push('/'));
             }).catch(res => {
                 next();
             })
