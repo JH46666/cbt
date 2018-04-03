@@ -31,6 +31,7 @@
 <script>
     import Verify from '../../../utils/validator.js';
     import { Toast } from 'mint-ui';
+    import store from 'store';
     export default {
         data(){
             return {
@@ -203,6 +204,14 @@
                 this.logoImg = res.data.htmlText;
             })
                 
+        },
+        // 进来先判断登陆与否，若登录则跳转
+        beforeRouteEnter(to, from, next) {
+            store.dispatch('getMemberData').then((res) => {
+                next(vm => vm.$router.go(-2));
+            }).catch(res => {
+                next();
+            })
         }
     }
 </script>
