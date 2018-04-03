@@ -75,6 +75,14 @@ layui.define(['jquery', 'layer'], function(exports) {
                 }
             }
         },
+        close: function() {
+            tool.options.reconn = false;
+            if (this.wsUseful()) {
+              if (this.ws) {
+                this.ws.close();
+              }
+            }
+        },
         regWsEvent: function() {
             if (this.ws) {
                 this.ws.onmessage = function(event) {
@@ -140,6 +148,9 @@ layui.define(['jquery', 'layer'], function(exports) {
     }
     socket.prototype.send = function(data) {
         tool.send(data);
+    }
+    socket.prototype.close = function() {
+        tool.close();
     }
     socket.prototype.mtype = msgType;
     exports('socket', new socket());
