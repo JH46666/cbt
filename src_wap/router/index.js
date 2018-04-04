@@ -7,7 +7,7 @@ import $api from '../../api';
 Vue.use(Router)
 
 const router = new Router({
-	mode: 'history',
+	// mode: 'history',
 	// scrollBehavior (to, from, savedPosition) {
 	// 	if (to.hash) {
 	// 	  return {
