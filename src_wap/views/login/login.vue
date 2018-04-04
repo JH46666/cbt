@@ -144,6 +144,12 @@
                 if(!this.disabledFlag){
                     // 密码登录
                     if(this.selected == '2'){
+                        let openId = '';
+                        this.$api.get('/oteao/memberAccount/getOpenId', {}, res => {
+                            openId = res.data;
+                        }, res => {
+                            this.$toast(res.message);
+                        })
                         let data = {
                             memberAccount: this.regInfo.phone,
                             password: this.regInfo.password,
@@ -179,6 +185,12 @@
                     }
                     // 短信登录
                     else if(this.selected == '1'){
+                        let openId = '';
+                        this.$api.get('/oteao/memberAccount/getOpenId', {}, res => {
+                            openId = res.data;
+                        }, res => {
+                            this.$toast(res.message);
+                        })
                         let data = {
                             memberAccount: this.regInfo.phone,
                             smsCode: this.regInfo.mesCode,
