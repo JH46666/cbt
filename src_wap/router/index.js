@@ -7,14 +7,14 @@ import $api from '../../api';
 Vue.use(Router)
 
 const router = new Router({
-	mode: 'history',
-	scrollBehavior (to, from, savedPosition) {
-		if (to.hash) {
-		  return {
-			selector: to.hash
-		  }
-		}
-	},
+	// mode: 'history',
+	// scrollBehavior (to, from, savedPosition) {
+	// 	if (to.hash) {
+	// 	  return {
+	// 		selector: to.hash
+	// 	  }
+	// 	}
+	// },
 	routes: [
 		{
 			path: '/',
@@ -632,6 +632,8 @@ router.beforeEach((to,from,next) => {
 			localStorage.setItem('isWxLogin',true);
 			// chiputaobutuputaopi 与文哥商量的 key 值
 			// console.log(encodeURI(location.origin + `/api/wap/wechatAutoLogin?chiputaobutuputaopi=${location.origin}/#/${to.fullPath}`))
+			console.log(location.origin)
+			console.log(to.fullPath)
 			location.href = encodeURI(location.origin + `/api/wap/wechatAutoLogin?chiputaobutuputaopi=${location.origin}`) + `/%23` + encodeURI(to.fullPath)
 		} else {
 			next()
