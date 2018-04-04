@@ -632,6 +632,8 @@ router.beforeEach((to,from,next) => {
 			localStorage.setItem('isWxLogin',true);
 			// chiputaobutuputaopi 与文哥商量的 key 值
 			// console.log(encodeURI(location.origin + `/api/wap/wechatAutoLogin?chiputaobutuputaopi=${location.origin}/#/${to.fullPath}`))
+			console.log(location.origin)
+			console.log(to.fullPath)
 			location.href = encodeURI(location.origin + `/api/wap/wechatAutoLogin?chiputaobutuputaopi=${location.origin}`) + `/%23` + encodeURI(to.fullPath)
 		} else {
 			next()
@@ -658,5 +660,19 @@ router.beforeEach((to,from,next) => {
 	// next();
 });
 
+router.afterEach( ( to, from, next ) => {
+ setTimeout(()=>{
+   var _hmt = _hmt || [];
+   (function() {
+    //每次执行前，先移除上次插入的代码
+    document.getElementById('baidu_tj') && document.getElementById('baidu_tj').remove();
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?cdab7e8597c7ef0982765c6e4e156df2";
+    hm.id = "baidu_tj"
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+   })();
+ },0);
+} );
 
 export default router
