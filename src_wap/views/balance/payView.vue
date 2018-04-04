@@ -63,7 +63,7 @@
                     <mt-button type="default" @click="$router.push('/')">返回首页</mt-button>
                 </div>
             </template> -->
-            <div class="back-home" @click="$router.push('/')"  v-if="$route.name === '结算显示' && !$route.query.fail">返回首页</div>
+            <div class="back-home" @click="$router.push('/')"  v-if="$route.name === '结算显示'">返回首页</div>
         </div>
         <div class="bd">
             <div class="text-item">
@@ -124,9 +124,9 @@
                 </div>
             </div>
         </div>
-        <div class="go-index" v-if="$route.query.fail">
+        <!-- <div class="go-index" v-if="$route.query.fail">
             <mt-button type="default" @click="$router.push('/')" class="goback-index">返回首页</mt-button>
-        </div>
+        </div> -->
     </div>
 </template>
 

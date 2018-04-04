@@ -7,14 +7,14 @@ import $api from '../../api';
 Vue.use(Router)
 
 const router = new Router({
-	// mode: 'history',
-	// scrollBehavior (to, from, savedPosition) {
-	// 	if (to.hash) {
-	// 	  return {
-	// 		selector: to.hash
-	// 	  }
-	// 	}
-	// },
+	mode: 'history',
+	scrollBehavior (to, from, savedPosition) {
+		if (to.hash) {
+		  return {
+			selector: to.hash
+		  }
+		}
+	},
 	routes: [
 		{
 			path: '/',
@@ -127,7 +127,7 @@ const router = new Router({
 						hideFooter: true
 					}
 				},
-				
+
 				{
 					path: 'buyerProcess',
 					name: '注册为茶帮通买家流程',
@@ -144,6 +144,14 @@ const router = new Router({
 						hideFooter: true
 					}
 				},
+				{
+					path: 'penaltyRules',
+					name: '茶帮通处罚规则',
+					component: resolve => require(['@/views/seller/penaltyRules.vue'],resolve),
+					meta: {
+						hideFooter: true
+					}
+				}
 
 
 			]
@@ -237,6 +245,7 @@ const router = new Router({
 					}
 				},
 				{
+					// 第一次注册，不带出数据
 					path: 'select',
 					name: '茶帮通注册2',
 					component: resolve => require(['@/views/regist/select.vue'],resolve),
@@ -253,6 +262,7 @@ const router = new Router({
 					}
 				},
 				{
+					// 能带出之前的数据
 					path: 'seller',
 					name: '茶帮通注册4',
 					component: resolve => require(['@/views/regist/seller.vue'],resolve),
@@ -269,6 +279,7 @@ const router = new Router({
 					}
 				},
 				{
+					// 卖家完善资料
 					path: 'selleredit',
 					name: '茶帮通注册6',
 					component: resolve => require(['@/views/regist/sellerEdit.vue'],resolve),
@@ -602,7 +613,7 @@ let count = 0;
 router.beforeEach((to,from,next) => {
 	store.commit('RECORD_ROUTER',{type:'to',data:to});
 	store.commit('RECORD_ROUTER',{type:'from',data:from});
-	if(to.path !== "/message/"){
+	if(to.path !== "/message/" &&to.path!=="/seller/myMessage/"){
 		let ele = document.getElementsByClassName("layui-m-layer");
 		for(let i = 0; i<ele.length; i++){
 			ele[i].style.display = "none";
@@ -622,37 +633,44 @@ router.beforeEach((to,from,next) => {
 			// chiputaobutuputaopi 与文哥商量的 key 值
 			// console.log(encodeURI(location.origin + `/api/wap/wechatAutoLogin?chiputaobutuputaopi=${location.origin}/#/${to.fullPath}`))
 			location.href = encodeURI(location.origin + `/api/wap/wechatAutoLogin?chiputaobutuputaopi=${location.origin}`) + `/%23` + encodeURI(to.fullPath)
-			// let url = encodeURI(location.origin + `/api/wap/wechatAutoLogin?chiputaobutuputaopi=${location.origin}`) + `/%23` + encodeURI(to.fullPath);
-			// new Promise((resolve,reject)=>{
-      //   this.$api.get(url,res=>{
-      //     resolve(res)
-      //   })
-      // })
 		} else {
 			next()
 		}
 	} else {
 		next()
 	}
-
 	// // 规避掉注册页面
 	// const nextRoute = ['account', 'order', 'course'];
 	// const auth = store.state.auth;
-	// //跳转至上述3个页面  
+	// //跳转至上述3个页面
 	// if (nextRoute.indexOf(to.name) >= 0) {
-	// 	//未登录  
+	// 	//未登录
 	// 	if (!store.state.auth.IsLogin) {
 	// 		vueRouter.push({ name: 'login' })
 	// 	}
 	// }
-	// //已登录的情况再去登录页，跳转至首页  
+	// //已登录的情况再去登录页，跳转至首页
 	// if (to.name === 'login') {
 	// 	if (auth.IsLogin) {
 	// 		vueRouter.push({ name: 'home' });
 	// 	}
 	// }
-	// next();  
+	// next();
 });
 
+router.afterEach( ( to, from, next ) => {
+ setTimeout(()=>{
+   var _hmt = _hmt || [];
+   (function() {
+    //每次执行前，先移除上次插入的代码
+    document.getElementById('baidu_tj') && document.getElementById('baidu_tj').remove();
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?cdab7e8597c7ef0982765c6e4e156df2";
+    hm.id = "baidu_tj"
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+   })();
+ },0);
+} );
 
 export default router

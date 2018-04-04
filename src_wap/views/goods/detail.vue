@@ -574,28 +574,30 @@ export default {
     },
     // updated里才能操作refs
     updated() {
-        // console.log(this.$refs) 
+        // console.log(this.$refs)
         // console.log($(this.$refs.comment[0]).height());
         // console.log($(this.$refs.comment[0]).css('font-size').slice(0, -2));
-        for (let item of $(this.$refs.comment)) {
-            // console.log($(item).height());
-            if ($(item).height() > 3 * $(item).css('font-size').slice(0, -2) * 1.5) {
+        this.$nextTick(()=>{
+            for (let item of $(this.$refs.comment)) {
                 // console.log($(item).height());
-                // console.log(3 * $(item).css('font-size').slice(0, -2));
-                // console.log($(item).height() >= Number(3 * $(item).css('font-size').slice(0, -2)))
-                $(item).addClass('on');
-                $(item).css({
-                    display: '-webkit-box',
-                    '-webkit-line-clamp': '3',
-                    overflow: 'hidden',
-                    'word-break': 'break-all',
-                    'text-overflow': 'ellipsis',
-                    '-webkit-box-orient': 'vertical',
-                    'max-height': '1.30rem',
-                    'padding-right': '0.3rem',
-                })
+                if ($(item).height() > 3 * $(item).css('font-size').slice(0, -2) * 1.5) {
+                    // console.log($(item).height());
+                    // console.log(3 * $(item).css('font-size').slice(0, -2));
+                    // console.log($(item).height() >= Number(3 * $(item).css('font-size').slice(0, -2)))
+                    $(item).addClass('on');
+                    $(item).css({
+                        display: '-webkit-box',
+                        '-webkit-line-clamp': '3',
+                        overflow: 'hidden',
+                        'word-break': 'break-all',
+                        'text-overflow': 'ellipsis',
+                        '-webkit-box-orient': 'vertical',
+                        'max-height': '1.30rem',
+                        'padding-right': '0.3rem',
+                    })
+                }
             }
-        }
+        })
     },
     methods: {
         // 点击查看完整评论
@@ -1165,6 +1167,7 @@ export default {
                     var layim = mobile.layim,
                         laytpl = layui.laytpl,
                         layer = mobile.layer;
+                    layer.closeAll();
                     var $ =layui.jquery;
                     var selfFlag = false;
                     //基础配置
@@ -1204,7 +1207,7 @@ export default {
                         token:`/erp/layim/getToKenById?id=${selfId}`,
                         // token:'/erp/layim/token',
                         server:wsServer,
-                        //server:'ws://192.168.7.8:8888',
+                        // server:'ws://192.168.7.8:8888',
                         //server: 'wss://java.im.test.yipicha.com',
                         reconn: true
                     });
@@ -1345,6 +1348,7 @@ export default {
                     layim.off('tool(history)').on('tool(history)', function(insert,f,thatChat){
                         var friendId = thatChat.data.id
                         var kefuName1 = thatChat.data.name
+                        var selfId = layim.cache().mine.id;
                         var param = "?id="+friendId+"&userId="+layim.cache().mine.id;
                         $.get('/erp/layim/getChatLog/0/10000'+param, {}, function(res){
                             console.log(res.data.data)
@@ -1352,7 +1356,7 @@ export default {
                             layim.panel({
                                 title: '与 '+ kefuName1 +' 的聊天记录' //标题
                                 ,tpl: ['<div class="layim-chat-main"><ul id="LAY_view">'
-                                ,'{{# layui.each(d.data, function(index, item){  if(item.id == 200512){ }}'
+                                ,'{{# layui.each(d.data, function(index, item){  if(item.id == '+selfId+'){ }}'
                                 ,'    <li class="layim-chat-mine"><div class="layim-chat-user"><img src="{{ item.avatar }}" />'
                                 ,'    <cite><i>{{ layui.data.date(item.timestamp) }}</i>{{ item.username }}</cite>'
                                 ,'    </div><div class="layim-chat-text">{{layui.mobile.layim.content(item.content)}}</div></li>'
@@ -1653,7 +1657,7 @@ export default {
                 position: absolute;
                 right: -0.00rem;
                 display: block;
-                color: #f08200;
+                color: #f08200!important;
             }
         }
         &.on.active{
@@ -1669,6 +1673,6 @@ export default {
     }
     .mint-tab-item-icon{
         width: 0.4rem;
-        height: 0.4rem; 
+        height: 0.4rem;
     }
 </style>

@@ -12,7 +12,8 @@ import cbtComponents from './components';
 import {MessageBox,Toast} from 'mint-ui';
 import filters from '../filters';
 import VueClipboard from 'vue-clipboard2'
-
+import pSW from './components/pswIndex'
+Vue.use(pSW);
 
 
 // 全局方法

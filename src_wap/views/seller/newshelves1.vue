@@ -296,7 +296,7 @@
                 </div> -->
             </div>
         </mt-popup>
-        <div v-if="dialogTypeBol" class="dialog_type_wrapper" style="position: fixed; z-index: 2020; bottom: 0rem; height: 0.99rem;">
+        <div v-if="dialogTypeBol" class="dialog_type_wrapper" style="position: fixed; z-index: 2058; bottom: 0rem; height: 0.99rem;">
             <div class="dialog_type_bottom _fix-dialog_type_bottom">
                 <mt-button type="primary" @click.native="cancelType">取消</mt-button>
                 <mt-button type="primary" @click.native="sureType" :disabled="clickSure">确定</mt-button>

@@ -219,6 +219,10 @@
             }
         },
         created() {
+            if(sessionStorage.IM_user=='seller'){
+              sessionStorage.IM_user='buyer'
+              location.reload();
+            }
             // 设置title
             this.$store.commit('SET_TITLE','我的中心');
 

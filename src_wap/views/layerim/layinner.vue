@@ -32,6 +32,7 @@ import store from 'store';
                     }).use(['mobile','socket','req'], function(mobile,socket,req){
                         var layim = mobile.layim,
                             layer = mobile.layer;
+                        layer.closeAll();
                         var $ =layui.jquery;
                         var selfFlag = false;
                         console.log(_this.myData);
@@ -74,7 +75,7 @@ import store from 'store';
                             log:true,
                             token:`/erp/layim/getToKenById?id=${_this.userid}`,
                             // token:'/erp/layim/token',
-                            //server:'ws://192.168.7.8:8888',
+                            // server:'ws://192.168.7.8:8888',
                             server:wsServer,
                             //server: 'wss://java.im.test.yipicha.com'
                             //server: 'ws://java.im.test.yipicha.com:8888',
@@ -196,8 +197,10 @@ import store from 'store';
                         });
                         //监听自定义工具栏点击，以添加代码为例
                         layim.off('tool(history)').on('tool(history)', function(insert,f,thatChat){
+                            // $(".layui-m-layer").css('z-index','120');
                             var friendId = thatChat.data.id
                             var kefuName1 = thatChat.data.name
+                            var selfId = layim.cache().mine.id;
                             var param = "?id="+friendId+"&userId="+layim.cache().mine.id;
                             $.get('/erp/layim/getChatLog/0/10000'+param, {}, function(res){
                                 console.log(res.data.data)
@@ -205,7 +208,7 @@ import store from 'store';
                                 layim.panel({
                                     title: '与 '+ kefuName1 +' 的聊天记录' //标题
                                     ,tpl: ['<div class="layim-chat-main"><ul id="LAY_view">'
-                                    ,'{{# layui.each(d.data, function(index, item){  if(item.id == 200512){ }}'
+                                    ,'{{# layui.each(d.data, function(index, item){  if(item.id == '+selfId+'){ }}'
                                     ,'    <li class="layim-chat-mine"><div class="layim-chat-user"><img src="{{ item.avatar }}" />'
                                     ,'    <cite><i>{{ layui.data.date(item.timestamp) }}</i>{{ item.username }}</cite>'
                                     ,'    </div><div class="layim-chat-text">{{layui.mobile.layim.content(item.content)}}</div></li>'

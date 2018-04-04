@@ -150,6 +150,8 @@
                 </div>
                 <!-- 取消 -->
                 <div v-else-if="orderDetailData.orderStatus === 'CANCEL'"><img src="../../assets/images/order_6.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
+                <!-- 处理中 -->
+                <div v-else-if="orderDetailData.orderStatus === 'DEALING'"><img src="../../assets/images/order_3.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                 <!-- 关闭 -->
                 <div v-else-if="orderDetailData.orderStatus === 'CLOSE' && orderDetailData.groupSuccess == 3"><img src="../../assets/images/order_6.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                 <!-- 关闭，未成团 -->
@@ -396,7 +398,7 @@
                     <span>返积分：{{  orderDetailData.giveJfSum }}分</span>
                     <span>余额支付：￥{{ orderDetailData.useStoreValue | toFix2 }}</span>
                 </div>
-                <template v-if="orderDetailData.payType!='CASH_DELIVERY'">
+                <template v-if="orderDetailData.payType!='CASH_DELIVERY' && orderDetailData.orderStatus !== 'WAIT_PAY'">
                     <div class="price_total_item">
                         <span>￥{{  orderDetailData.orderSum | toFix2 }}</span>实际付款：
                     </div>
@@ -424,10 +426,10 @@
          </div>
         <!-- 下单时间 -->
         <div class="order_date">
-            <div class="number order_date_item" style="align-items: center;">
+            <div class="number order_date_item" style="align-items: center; display: flex;">
                 订单编号：{{ orderDetailData.orderNo }}
                 <div style="border: solid 0.02rem #999999; border-radius: 0.05rem; font-size: 0.26rem; padding: 0.12rem 0.25rem;"
-                    v-clipboard:copy="orderDetailData.orderNo" v-clipboard:success="clipboardData"
+                    v-clipboard:copy="orderDetailData.orderNo" v-clipboard:success="clipboardData" v-clipboard:error="copyFail"
                 >
                     复制
                 </div>
@@ -954,6 +956,7 @@ export default {
                     var layim = mobile.layim,
                         laytpl = layui.laytpl,
                         layer = mobile.layer;
+                    layer.closeAll();
                     var $ = layui.jquery;
                     var selfFlag = false;
                     //基础配置
@@ -1134,6 +1137,7 @@ export default {
                     layim.off('tool(history)').on('tool(history)', function (insert, f, thatChat) {
                         var friendId = thatChat.data.id
                         var kefuName1 = thatChat.data.name
+                        var selfId = layim.cache().mine.id;
                         var param = "?id=" + friendId + "&userId=" + layim.cache().mine.id;
                         $.get('/erp/layim/getChatLog/0/10000' + param, {}, function (res) {
                             console.log(res.data.data)
@@ -1141,7 +1145,7 @@ export default {
                             layim.panel({
                                 title: '与 ' + kefuName1 + ' 的聊天记录' //标题
                                 , tpl: ['<div class="layim-chat-main"><ul id="LAY_view">'
-                                    , '{{# layui.each(d.data, function(index, item){  if(item.id == 200512){ }}'
+                                    , '{{# layui.each(d.data, function(index, item){  if(item.id == '+selfId+'){ }}'
                                     , '    <li class="layim-chat-mine"><div class="layim-chat-user"><img src="{{ item.avatar }}" />'
                                     , '    <cite><i>{{ layui.data.date(item.timestamp) }}</i>{{ item.username }}</cite>'
                                     , '    </div><div class="layim-chat-text">{{layui.mobile.layim.content(item.content)}}</div></li>'
@@ -1226,7 +1230,11 @@ export default {
         // 复制
         clipboardData(e){
             return Toast('复制成功');
-        }
+        },
+        // 复制失败
+         copyFail(e) {
+            return Toast('复制失败');
+        },
     },
     mounted() {
         // this.height2 = true;
@@ -1239,7 +1247,7 @@ export default {
             return `tel//${this.orderDetailData.shopPhone}`;
         },
         height2() {
-            if (this.orderDetailData.groupSuccess === 2) return true;
+            if (this.orderDetailData.groupSuccess === 2 && this.orderDetailData.orderStatus !== 'WAIT_PAY') return true;
             else if (this.orderDetailData.orderStatus === 'PAY_WAIT_AUDIT' && this.orderDetailData.groupSuccess == 1) return true;
             else if (this.orderDetailData.orderStatus === 'DELIVERED' && this.orderDetailData.groupSuccess == 1) return true;
             else if (this.orderDetailData.orderStatus === 'PACKING' && this.orderDetailData.groupSuccess != 2) return true;
@@ -1444,5 +1452,9 @@ export default {
             font-size: 0.28rem;
             color: #333;
         }
+    }
+
+    .detail .order_date .order_date_item{
+        display: block;
     }
 </style>
