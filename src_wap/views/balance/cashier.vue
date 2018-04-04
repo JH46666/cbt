@@ -158,8 +158,7 @@
                         // 微信支付需要判断是在浏览器还是微信内
 
                         let isWx = this.$tool.isWx;
-                        // if(isWx) {
-                        if(0) {                            
+                        if(isWx) {                            
                             // 微信内部
                             this.$api.post('/payOrder/wxPay',{
                                 payId: this.payId,
