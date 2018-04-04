@@ -155,7 +155,7 @@
                             password: this.regInfo.password,
                             device: 'WAP',
                             sysId:1,
-                            openId: this.$store.state.member.openId,
+                            openId: openId,
                         }
                         this.$api.post('/oteao/login/doLoginByPwd',data,
                         res => {
@@ -195,7 +195,7 @@
                             memberAccount: this.regInfo.phone,
                             smsCode: this.regInfo.mesCode,
                             device: 'WAP',
-                            openId: this.$store.state.member.openId,
+                            openId: openId,
                         }
                         this.$api.post('/oteao/login/doLoginBySms',data,
                         res => {
