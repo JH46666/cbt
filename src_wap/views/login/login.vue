@@ -120,14 +120,20 @@
                     reCaptcha: val,
                 }
                 this.$api.get('/oteao/login/doSendSms',data,res=>{
-                    this.verifyFlag = false;
-                    this.getFlag = false;
-                    this.errorTips = "";
-                    this.$refs.imgCode.hide();
-                    this.errorTips = "";
-                    Toast('验证码己发至您的手机，5分钟内有效，请注意查收');
-                    this.getCount++;
-                    this.countTime();
+                    if(res.data){
+                        Toast('您输入的账号不存在，请重新输入');
+                        this.$refs.imgCode.hide();
+                    }
+                    else{
+                        this.verifyFlag = false;
+                        this.getFlag = false;
+                        this.errorTips = "";
+                        this.$refs.imgCode.hide();
+                        this.errorTips = "";
+                        Toast('验证码己发至您的手机，5分钟内有效，请注意查收');
+                        this.getCount++;
+                        this.countTime();
+                    }
                 },res=>{
                     this.$refs.imgCode.reset();
                     this.errorTips = "您输入的图片验证码错误，请核对后重新输入";
