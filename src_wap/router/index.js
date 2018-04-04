@@ -7,7 +7,7 @@ import $api from '../../api';
 Vue.use(Router)
 
 const router = new Router({
-	mode: 'history',
+	// mode: 'history',
 	// scrollBehavior (to, from, savedPosition) {
 	// 	if (to.hash) {
 	// 	  return {
@@ -634,7 +634,7 @@ router.beforeEach((to,from,next) => {
 			// console.log(encodeURI(location.origin + `/api/wap/wechatAutoLogin?chiputaobutuputaopi=${location.origin}/#/${to.fullPath}`))
 			console.log(location.origin)
 			console.log(to.fullPath)
-			location.href = encodeURI(location.origin + `/api/wap/wechatAutoLogin?chiputaobutuputaopi=${location.origin}`) + `/%23` + encodeURI(to.fullPath)
+			location.href = encodeURI(location.origin + `/api/wap/wechatAutoLogin?chiputaobutuputaopi=${location.origin}`) + `/%3F%23` + encodeURI(to.fullPath)
 		} else {
 			next()
 		}
