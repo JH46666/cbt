@@ -359,7 +359,7 @@
                       "useRedPacketId": val.useRedPacketId === null ? -1 : val.useRedPacketId
                   })
               })
-
+                // console.log(orgSettleRequestList)
 
               let data = {
                   "cartIds": this.cartList,
@@ -397,7 +397,8 @@
                           "useRedPacketId": val.useRedPacketId === null ? -1 : val.useRedPacketId
                       })
                   })
-
+                //   console.log('upDate',this.pannel[0].useRedPacketId)
+                //   console.log('upDate',orgSettleRequestList[0]);
 
                   let data = {
                       "cartIds": this.cartList,
@@ -456,6 +457,8 @@
 
 
                 })
+                // console.log('upOrder',this.pannel[0].useRedPacketId)
+                // console.log('upOrder',orgSettleRequestList[0]);
 
                 let data = {
                     "cartIds": this.cartList,
@@ -469,11 +472,10 @@
                 if(this.$tool.isWx){
                   data.faceImg = store.state.member.wechatHeadImg;
                 }
+
                 // 禁用提交按钮，防止重复提交
                 this.disabled = true;
-
                 this.$api.post('/oteao/shoppingCart/submitOrder',JSON.stringify(data),res => {
-
                     // 都是在线支付
                     if(online && !delivery) {
                         this.$router.push({name: '收银台',query: {payId: res.data.payId,type:'online'}});
@@ -496,6 +498,7 @@
 
                 },res => {
                     // console.log(1)
+                    // console.log('upOrder之后', orgSettleRequestList[0]);
                     if(res.code === 4064) {
                         return this.$messageBox({
                             title:'提示',
@@ -549,7 +552,7 @@
 
                 this.pannel.forEach((val, i) => {
                     val.remark = remark[i];
-                    val.useRedPacketId = redpacket[i];
+                    // val.useRedPacketId = redpacket[i];
                     val.currentPayMethod = paymethod[i];
                     val.currentDeliveryMethod = express[i];
                 })
@@ -557,6 +560,7 @@
                 delete sessionStorage.redpacket;
                 delete sessionStorage.paymethod;
                 delete sessionStorage.express;
+                // console.log('recoveryData', this.pannel)
 
             },
             //更新选中的数量
