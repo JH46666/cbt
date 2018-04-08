@@ -154,10 +154,12 @@
                 },res => {
                     this.myData = res.data
                     let data = this.myData;
+                    // console.log(data.detailAddress)                    
+                    // console.log(data.detailAddress.slice(0,-data.streetAddress.length))
                     // 对应表单 
                     this.data.name = data.receiptName
                     this.data.phone = data.receiptPhone
-                    this.data.address = data.detailAddress
+                    this.data.address = data.detailAddress.slice(0, -data.streetAddress.length)
                     this.data.detail = data.streetAddress
 
                     this.detail.provinceCode = data.provinceCode
