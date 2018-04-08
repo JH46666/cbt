@@ -790,6 +790,7 @@
         /* 商品详情图 */
         ._fix-detail-imgs {
             margin-top: 0rem!important;
+            padding-bottom: 2.1rem;
         }
 
         /* 预览大图 */
