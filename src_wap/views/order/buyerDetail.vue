@@ -667,7 +667,7 @@ export default {
                     });
                     return setTimeout(()=>{
                         location.reload();
-                    },200)
+                    },1000)
                 },res=>{
                     this.$toast({
                         message: res.errorMsg,
