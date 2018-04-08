@@ -449,7 +449,7 @@ export default {
     if (window.__wxjs_is_wkwebview === true) {
      url = this.$store.state.url
     } else {
-     url = window.location.href.split('&')[0]
+     url = window.location.href
     }
      let data = {
        'url':url
