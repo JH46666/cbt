@@ -454,6 +454,7 @@ export default {
     } else {
      url = window.location.href.split('?')[0]
     }
+    url = window.location.href.split('&')[0]
     alert(url)
      let data = {
        'url':url
