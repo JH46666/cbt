@@ -66,20 +66,22 @@
                 </div>
             </div>
         </div>
-        <!-- 底部按钮 -->
-        <div class="flex btns">
-            <mt-button type="primary" @click="$router.go(-1)">上一步</mt-button>
-            <mt-button type="primary" :disabled="disabledBol || loading1" @click="saveMethod('0')">
-                <img src="../../assets/images/loading3.gif" height="20" width="20" slot="icon" :class="{on: loading1 && !flag}"> 保存
-            </mt-button>
-        </div>
-        <div class="save-rackup" v-if="$route.query.state == 'OFF_SHELF'">
-            <mt-button type="primary" :disabled="disabledBol || loading2" @click="saveMethod('1')">
-                <img src="../../assets/images/loading3.gif" height="20" width="20" slot="icon" :class="{on: loading2 && flag}"> 保存并上架
-            </mt-button>
-        </div>
         <!-- 底部空白 -->
         <div class="bottom-blank" style="background-color: #fff"></div>
+        <!-- 底部按钮 -->
+        <div style="position: fixed;bottom: 0rem; left: 0rem; width: 100%;">
+            <div class="flex btns">
+                <mt-button type="primary" @click="$router.go(-1)">上一步</mt-button>
+                <mt-button type="primary" :disabled="disabledBol || loading1" @click="saveMethod('0')">
+                    <img src="../../assets/images/loading3.gif" height="20" width="20" slot="icon" :class="{on: loading1 && !flag}"> 保存
+                </mt-button>
+            </div>
+            <div class="save-rackup" v-if="$route.query.state == 'OFF_SHELF'">
+                <mt-button type="primary" :disabled="disabledBol || loading2" @click="saveMethod('1')">
+                    <img src="../../assets/images/loading3.gif" height="20" width="20" slot="icon" :class="{on: loading2 && flag}"> 保存并上架
+                </mt-button>
+            </div>
+        </div>
         <!-- 预览大图 -->
         <div class="popup suc_popup _add-preview" v-if="previewFlag">
             <div class="preview-inner">
