@@ -445,12 +445,8 @@ export default {
    },
    getWxConfig(){
     let  url = ''
-    // 判断是否是ios微信浏览器
-    if (window.__wxjs_is_wkwebview === true) {
+    // 获取vue第一次进来的url
      url = this.$store.state.url
-    } else {
-     url = window.location.href.split('&')[0]
-    }
      let data = {
        'url':url
      }
