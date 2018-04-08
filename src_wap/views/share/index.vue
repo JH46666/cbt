@@ -459,7 +459,7 @@ export default {
    },
    setWxShare(wxConfig){
        wx.config({
-          debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+          debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
           appId: wxConfig.appId, // 必填，公众号的唯一标识
           timestamp: wxConfig.timestamp,  // 必填，生成签名的时间戳
           nonceStr: wxConfig.nonceStr,  // 必填，生成签名的随机串
@@ -471,7 +471,7 @@ export default {
       let shareLink = window.location.href.split('&')[0];
       let shareImg = 'https:'+this.detailData.productImgList[0].imgUrl;
         wx.ready(function(){
-          alert(shareTitle);
+          // alert(shareTitle);
           wx.onMenuShareAppMessage({
               title: shareTitle, // 分享标题
               desc: shareDesc, // 分享描述
