@@ -621,7 +621,7 @@ router.beforeEach((to,from,next) => {
 	}
 	// 获取第一次进来的url
 	if (store.state.url=='') {
-  	store.commit('SET_URL', document.URL)
+  	store.commit('SET_URL', window.location.href.split('&')[0])
  	}
 	// 计数，为1才去执行微信的登录
 	count++;
