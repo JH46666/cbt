@@ -519,6 +519,12 @@
                     退款
                 </mt-button>
             </template>
+            <!-- 打包中（第三方、非团购） -->
+            <template v-if="orderDetailData.orderStatus === 'PACKING' && orderDetailData.groupSuccess == '3' && orderDetailData.sellerOrgId">
+                <mt-button plain @click.native="refund(orderDetailData)">
+                    退款
+                </mt-button>
+            </template>
             <!-- 己发货 -->
             <template>
                  <!-- && orderListDetail.subOrder.lenght == 0 -->
@@ -1250,7 +1256,7 @@ export default {
             if (this.orderDetailData.groupSuccess === 2 && this.orderDetailData.orderStatus !== 'WAIT_PAY') return true;
             else if (this.orderDetailData.orderStatus === 'PAY_WAIT_AUDIT' && this.orderDetailData.groupSuccess == 1) return true;
             else if (this.orderDetailData.orderStatus === 'DELIVERED' && this.orderDetailData.groupSuccess == 1) return true;
-            else if (this.orderDetailData.orderStatus === 'PACKING' && this.orderDetailData.groupSuccess != 2) return true;
+            else if (this.orderDetailData.orderStatus === 'PACKING' && this.orderDetailData.groupSuccess == 1) return true;
             else if (this.orderDetailData.orderStatus === 'CLOSE' && this.orderDetailData.groupSuccess == 2) return true;
             else if (this.orderDetailData.orderStatus === 'CLOSE' && this.orderDetailData.groupSuccess == 1) return true;
             else if (this.orderDetailData.orderStatus === 'FINISH' && this.orderDetailData.isComment && this.orderDetailData.groupSuccess == 1) return true;
@@ -1260,7 +1266,7 @@ export default {
             if (this.orderDetailData.groupSuccess === 2) return true;
             else if (this.orderDetailData.orderStatus === 'PAY_WAIT_AUDIT' && this.orderDetailData.groupSuccess == 1) return true;
             else if (this.orderDetailData.orderStatus === 'DELIVERED' && this.orderDetailData.groupSuccess == 1) return true;
-            else if (this.orderDetailData.orderStatus === 'PACKING' && this.orderDetailData.groupSuccess != 2) return true;
+            else if (this.orderDetailData.orderStatus === 'PACKING' && this.orderDetailData.groupSuccess == 1) return true;
             else if (this.orderDetailData.orderStatus === 'CLOSE' && this.orderDetailData.groupSuccess == 2) return true;
             else if (this.orderDetailData.orderStatus === 'CLOSE' && this.orderDetailData.groupSuccess == 1) return true;
             else if (this.orderDetailData.orderStatus === 'FINISH' && this.orderDetailData.isComment && this.orderDetailData.groupSuccess == 1) return true;

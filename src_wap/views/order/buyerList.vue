@@ -122,6 +122,12 @@
                                         退款
                                     </mt-button>
                                 </template>
+                                <!-- 打包中（第三方、非团购） -->
+                                <template v-if="item.orderStatus === 'PACKING' && item.groupSuccess == '3' && item.sellerOrgId">
+                                    <mt-button plain @click.native="refund(item)">
+                                        退款
+                                    </mt-button>
+                                </template>
                                 <!-- 己发货 -->
                                 <template>
                                     <mt-button plain v-if="(item.orderStatus === 'DELIVERED' || item.orderStatus === 'CBT_BUYER') && (item.sellerOrgId!=null||(item.sellerOrgId==null && !item.subOrderSize))"
