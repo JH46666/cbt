@@ -18,7 +18,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         device: '',
-        IM_user:'buyer'
+        IM_user:'buyer',
+        url:''
     },
     mutations: {
         SET_DEVICE(state,val) {
@@ -26,6 +27,9 @@ export default new Vuex.Store({
         },
         SET_IMUSER(state,val){
           state.IM_user = val
+        },
+        SET_URL(state,val){
+          state.url = val
         }
     },
     actions: {

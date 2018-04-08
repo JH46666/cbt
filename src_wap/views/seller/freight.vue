@@ -516,11 +516,11 @@ import $api from 'api';
             }
         },
         beforeRouteEnter(to, from, next) {
-            if(from.name === '卖家中心'){
-                next(vm => {
-                    vm.$router.go(0);
-                })
-            }
+            // if(from.name === '卖家中心'){
+            //     next(vm => {
+            //         vm.$router.go(0);
+            //     })
+            // }
             if(store.state.member.member.id) {
                 next();
             } else {

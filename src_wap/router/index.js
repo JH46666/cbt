@@ -619,6 +619,10 @@ router.beforeEach((to,from,next) => {
 			ele[i].style.display = "none";
 		}
 	}
+	// 获取第一次进来的url
+	if (store.state.url=='') {
+  	store.commit('SET_URL', document.URL)
+ 	}
 	// 计数，为1才去执行微信的登录
 	count++;
 	// 需要判断是否在微信内部，是的话要授权登录

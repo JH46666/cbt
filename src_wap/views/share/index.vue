@@ -187,7 +187,8 @@
 </template>
 <script>
 import store from 'store';
-import wx from 'weixin-js-sdk';
+// import wx from 'weixin-js-sdk';
+let wx = require('weixin-js-sdk');
 export default {
   data(){
     return{
@@ -233,10 +234,7 @@ export default {
     if(this.$route.query.open){
       this.shareDialogFlag = true
     }
-    this.getWxConfig().then((res)=>{
-      this.wxConfig = res.data;
-      this.setWxShare();
-    })
+
     // 获取团购信息
     this.searchGroup().then((res) =>{
       this.groupData = res.data;
@@ -251,6 +249,9 @@ export default {
             this.$set(item,'lastTime',this.sortTime(item.createTime,item.systemTime));
           }
           this.timeOut();
+      })
+      this.getWxConfig().then((res)=>{
+        this.setWxShare(res.data);
       })
       // 获取商品信息
       this.getProInfo().then((res) =>{
@@ -279,6 +280,11 @@ export default {
           this.orderNo = res.data.mainOrder.mainrNo;
       });
     }
+  },
+  mounted(){
+    this.getWxConfig().then((res)=>{
+      this.setWxShare(res.data);
+    })
   },
   methods: {
     searchGroup(){
@@ -441,28 +447,41 @@ export default {
        })
    },
    getWxConfig(){
+    let  url = ''
+    // 判断是否是ios微信浏览器
+    if (window.__wxjs_is_wkwebview === true) {
+     url = this.$store.state.url.split('?')[0]
+    } else {
+     url = window.location.href.split('?')[0]
+    }
+    url = window.location.href.split('&')[0]
+    alert(url)
      let data = {
-       'url':window.location.href.split('#')[0] + '#' + window.location.href.split('#')[1]
+       'url':url
      }
      return new Promise((resolve,reject)=>{
        this.$api.get('/wap/wechatShareConfig',data,res=>{
+         alert(111)
          resolve(res)
+       },res=>{
+         alert(222)
+         reject(res)
        })
      })
    },
-   setWxShare(){
+   setWxShare(wxConfig){
+     alert(this.wxConfig)
        wx.config({
-          debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-          appId: this.wxConfig.appId, // 必填，公众号的唯一标识
-          timestamp: this.wxConfig.timestamp,  // 必填，生成签名的时间戳
-          nonceStr: this.wxConfig.nonceStr,  // 必填，生成签名的随机串
-          signature: this.wxConfig.signature, // 必填，签名，见附录1
+          debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+          appId: wxConfig.appId, // 必填，公众号的唯一标识
+          timestamp: wxConfig.timestamp,  // 必填，生成签名的时间戳
+          nonceStr: wxConfig.nonceStr,  // 必填，生成签名的随机串
+          signature: wxConfig.signature, // 必填，签名，见附录1
           jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
       });
       let shareTitle = '【仅剩'+(this.groupData.groupPurchase.groupNumber - this.groupData.groupPurchase.offerNumber)+'个名额】我超低价拼了'+this.detailData.productExtInfo.title;
       let shareDesc = '雷军、李开复领投茶电商交易平台，茶帮通让茶叶买卖更轻松【茶帮通】';
-      let href = window.location.host;
-      let shareLink = href+'/#/share?orderId='+this.orderId;
+      let shareLink = window.location.href.split('&')[0];
       let shareImg = 'https:'+this.detailData.productImgList[0].imgUrl;
         wx.ready(function(){
           wx.onMenuShareAppMessage({
