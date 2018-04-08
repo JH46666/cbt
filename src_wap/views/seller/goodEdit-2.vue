@@ -255,42 +255,48 @@
                             secure: true
                         })
                         for (let i = 0; i < this.resize.mainImgFile.length; i++) {            // 主图
-                            // 如果有就是新增图
-                            if (this.resize.mainImgFile[i]) {
-                                let random_name = res.data.basePath + 'goods/' + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.mainImgFile[i].name.split('.').pop()
-                                client.multipartUpload(random_name, this.resize.mainImgFile[i]).then((results) => {
-                                    const url = '//img3.oteao.com/' + results.name;
-                                    this.urls.main.push(url);
+                            // 设置延时尽量按顺序上传
+                            setTimeout(() => {
+                                // 如果有就是新增图
+                                if (this.resize.mainImgFile[i]) {
+                                    let random_name = res.data.basePath + 'goods/' + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.mainImgFile[i].name.split('.').pop()
+                                    client.multipartUpload(random_name, this.resize.mainImgFile[i]).then((results) => {
+                                        const url = '//img3.oteao.com/' + results.name;
+                                        this.urls.main.push(url);
+                                        flags.main++;
+                                        isFlag(resolve, reject);
+                                    }).catch((err) => {
+                                        flags.main++;
+                                        isFlag(resolve, reject);
+                                    })
+                                } else {
+                                    this.urls.main.push(this.resize.imgs.mainImg[i]);
                                     flags.main++;
                                     isFlag(resolve, reject);
-                                }).catch((err) => {
-                                    flags.main++;
-                                    isFlag(resolve, reject);
-                                })
-                            } else {
-                                this.urls.main.push(this.resize.imgs.mainImg[i]);
-                                flags.main++;
-                                isFlag(resolve, reject);
-                            }
+                                }
+                            }, i * 1500);
                         }
                         for (let i = 0; i < this.resize.oneImgFile.length; i++) {            // 1图
-                            // 如果有就是新增图
-                            if (this.resize.oneImgFile[i]) {
-                                let random_name = res.data.basePath + 'goods/' + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.oneImgFile[i].name.split('.').pop()
-                                client.multipartUpload(random_name, this.resize.oneImgFile[i]).then((results) => {
-                                    const url = '//img1.oteao.com/' + results.name;
-                                    this.urls.one.push(url);
+                            // 设置延时尽量按顺序上传
+                            setTimeout(() => {
+                                // 如果有就是新增图
+                                if (this.resize.oneImgFile[i]) {
+                                    let random_name = res.data.basePath + 'goods/' + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.oneImgFile[i].name.split('.').pop()
+                                    client.multipartUpload(random_name, this.resize.oneImgFile[i]).then((results) => {
+                                        const url = '//img1.oteao.com/' + results.name;
+                                        this.urls.one.push(url);
+                                        flags.one++;
+                                        isFlag(resolve, reject);
+                                    }).catch((err) => {
+                                        flags.one++;
+                                        isFlag(resolve, reject);
+                                    })
+                                } else {
+                                    this.urls.one.push(this.resize.imgs.detailImg1[i]);
                                     flags.one++;
                                     isFlag(resolve, reject);
-                                }).catch((err) => {
-                                    flags.one++;
-                                    isFlag(resolve, reject);
-                                })
-                            } else {
-                                this.urls.one.push(this.resize.imgs.detailImg1[i]);
-                                flags.one++;
-                                isFlag(resolve, reject);
-                            }
+                                }
+                            }, i * 1500);
                         }
                         // for(let i=0; i<this.resize.secondImgFile.length; i++){            // 2图
                         //     let random_name = res.data.basePath +'goods/' + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.secondImgFile[i].name.split('.').pop()
