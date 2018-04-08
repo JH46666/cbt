@@ -137,7 +137,7 @@
                                     </mt-button>
                                     <!-- 自营 -->
                                     <mt-button plain v-if="(item.orderStatus === 'DELIVERED' || item.orderStatus === 'CBT_BUYER') && item.sellerOrgId==null && item.subOrderSize == 1"
-                                        class="pay_now" @click.native="confrimMethod(item.orderNo)">
+                                        class="pay_now" @click.native="confrimMethodsMoreChild(item.orderId,item.orderNo)">
                                         确认收货
                                     </mt-button>
                                     <!-- 拆单的情况下不显示 -->
@@ -275,7 +275,7 @@ export default {
                     });
                     return setTimeout(()=>{
                         location.reload();
-                    },200)
+                    },1000)
                 },res=>{
                     this.$toast({
                         message: res.errorMsg,
@@ -283,23 +283,44 @@ export default {
                     });
                     return setTimeout(()=>{
                         location.reload();
-                    },200)
+                    },1000)
                 })
             })
         },
-        confrimMethodsMoreChild(child,parent) {
-            this.$messageBox({
-                title:'提示',
-                message:`确定确认收货?`,
-                showCancelButton: true,
-                cancelButtonText: '取消',
-                confirmButtonText: '确定'
-            }).then(res => {
-                if(res === 'cancel') {
-                    console.log('cancel!');
-                } else {
-                    this.confirmGoodAll(child,parent).then(()=>{})
-                }
+        // 自营收货
+        confrimMethodsMoreChild(orderId,parent) {
+            this.getOrderList(orderId).then((ress)=>{
+                let child =  ress.data.subOrder[0].subOrderNo;
+                this.$messageBox({
+                    title: '提示',
+                    message: `确定确认收货?`,
+                    showCancelButton: true,
+                    cancelButtonText: '取消',
+                    confirmButtonText: '确定'
+                }).then(res => {
+                    if (res === 'cancel') {
+                        console.log('cancel!');
+                    } else {
+                        this.confirmGoodAll(child, parent).then(() => { })
+                    }
+                })
+            })
+        },
+        // 获取订单商品详情
+        getOrderList(orderId) {
+            let data = {
+                orderId: orderId,
+                device: 'WAP'
+            }
+            return new Promise((resolve, reject) => {
+                this.$api.post('/oteao/order/orderProductList', data, res => {
+                    resolve(res);
+                }, res => {
+                    return this.$toast({
+                        message: res.errorMsg,
+                        iconClass: 'icon icon-fail'
+                    });
+                })
             })
         },
         confrimMethod(orderCode) {
