@@ -250,9 +250,6 @@ export default {
           }
           this.timeOut();
       })
-      this.getWxConfig().then((res)=>{
-        this.setWxShare(res.data);
-      })
       // 获取商品信息
       this.getProInfo().then((res) =>{
         this.detailData = res.data
@@ -448,29 +445,19 @@ export default {
    },
    getWxConfig(){
     let  url = ''
-    // 判断是否是ios微信浏览器
-    if (window.__wxjs_is_wkwebview === true) {
-     url = this.$store.state.url.split('?')[0]
-    } else {
-     url = window.location.href.split('?')[0]
-    }
     url = window.location.href.split('&')[0]
-    alert(url)
      let data = {
        'url':url
      }
      return new Promise((resolve,reject)=>{
        this.$api.get('/wap/wechatShareConfig',data,res=>{
-         alert(111)
          resolve(res)
        },res=>{
-         alert(222)
          reject(res)
        })
      })
    },
    setWxShare(wxConfig){
-     alert(this.wxConfig)
        wx.config({
           debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
           appId: wxConfig.appId, // 必填，公众号的唯一标识
@@ -484,6 +471,7 @@ export default {
       let shareLink = window.location.href.split('&')[0];
       let shareImg = 'https:'+this.detailData.productImgList[0].imgUrl;
         wx.ready(function(){
+          alert(shareTitle);
           wx.onMenuShareAppMessage({
               title: shareTitle, // 分享标题
               desc: shareDesc, // 分享描述
