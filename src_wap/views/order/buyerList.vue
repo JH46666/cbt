@@ -130,7 +130,13 @@
                                 </template>
                                 <!-- 己发货 -->
                                 <template>
+                                    <!-- 第三方 -->
                                     <mt-button plain v-if="(item.orderStatus === 'DELIVERED' || item.orderStatus === 'CBT_BUYER') && (item.sellerOrgId!=null||(item.sellerOrgId==null && !item.subOrderSize))"
+                                        class="pay_now" @click.native="confrimMethod(item.orderNo)">
+                                        确认收货
+                                    </mt-button>
+                                    <!-- 自营 -->
+                                    <mt-button plain v-if="(item.orderStatus === 'DELIVERED' || item.orderStatus === 'CBT_BUYER') && item.sellerOrgId==null && item.subOrderSize == 1"
                                         class="pay_now" @click.native="confrimMethod(item.orderNo)">
                                         确认收货
                                     </mt-button>
