@@ -253,6 +253,7 @@ import $api from 'api';
                             secure:true
                         })
                         for(let i=0; i<this.resize.mainImgFile.length; i++){            // 主图
+                            // 设置延时尽量按顺序上传
                             setTimeout(() => {
                                 let random_name = res.data.basePath + 'goods/' + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.mainImgFile[i].name.split('.').pop()
                                 client.multipartUpload(random_name, this.resize.mainImgFile[i]).then((results) => {
@@ -263,10 +264,11 @@ import $api from 'api';
                                 }).catch((err) => {
                                     flags.main++;
                                     isFlag(resolve, reject);
-                                }, i * 1000)
+                                }, i * 1500)
                             })
                         }
                         for(let i=0; i<this.resize.oneImgFile.length; i++){            // 1图
+                            // 设置延时尽量按顺序上传
                             setTimeout(() => {
                                 let random_name = res.data.basePath + 'goods/' + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.oneImgFile[i].name.split('.').pop()
                                 client.multipartUpload(random_name, this.resize.oneImgFile[i]).then((results) => {
@@ -277,7 +279,7 @@ import $api from 'api';
                                 }).catch((err) => {
                                     flags.one++;
                                     isFlag(resolve, reject);
-                                }, i * 1000)
+                                }, i * 1500)
                             })
                         }
                         // for(let i=0; i<this.resize.secondImgFile.length; i++){            // 2图
