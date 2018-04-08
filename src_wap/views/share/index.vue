@@ -250,6 +250,10 @@ export default {
           }
           this.timeOut();
       })
+      this.getWxConfig().then((res)=>{
+        this.wxConfig = res.data;
+        this.setWxShare();
+      })
       // 获取商品信息
       this.getProInfo().then((res) =>{
         this.detailData = res.data
@@ -446,7 +450,7 @@ export default {
    },
    getWxConfig(){
      let data = {
-       'url':window.location.href.split('#')[0] + '#' + window.location.href.split('#')[1]
+       'url':window.location.href.split('&')[0]
      }
      return new Promise((resolve,reject)=>{
        this.$api.get('/wap/wechatShareConfig',data,res=>{
