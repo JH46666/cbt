@@ -450,9 +450,9 @@ export default {
     let  url = ''
     // 判断是否是ios微信浏览器
     if (window.__wxjs_is_wkwebview === true) {
-     url = this.$store.state.url.split('#')[0]
+     url = this.$store.state.url.split('?')[0]
     } else {
-     url = window.location.href.split('#')[0]
+     url = window.location.href.split('?')[0]
     }
     alert(url)
      let data = {
