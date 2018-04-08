@@ -461,9 +461,8 @@ export default {
       });
       let shareTitle = '【仅剩'+(this.groupData.groupPurchase.groupNumber - this.groupData.groupPurchase.offerNumber)+'个名额】我超低价拼了'+this.detailData.productExtInfo.title;
       let shareDesc = '雷军、李开复领投茶电商交易平台，茶帮通让茶叶买卖更轻松【茶帮通】';
-      // let shareTitle = '茶帮通';
-      // let shareDesc = '茶帮通';
-      let shareLink = window.location.href.split('&')[0];
+      let href = window.location.host;
+      let shareLink = href+'/#/share?orderId='+this.orderId;
       let shareImg = 'https:'+this.detailData.productImgList[0].imgUrl;
         wx.ready(function(){
           wx.onMenuShareAppMessage({
