@@ -1220,7 +1220,7 @@ export default {
                         ,avatar: 'http://tp1.sinaimg.cn/1571889140/180/40030060651/1'
                     });
 
-
+                    $(".layui-m-layer").css('z-index','120');
                     socket.on('open',function (e) {
                         console.log("监听到事件：open");
                     });
@@ -1449,7 +1449,6 @@ export default {
                 this.$http.post("/erp/account/ajaxLogin",ret).then(res=>{
                     let userid = res.data.data;//res.data.data.split(",")[0];
                     this.getBase(userid);
-                    $(".layui-m-layer").css('z-index','120');
                 });
             }).catch(res => {
                 this.$router.replace('/login');

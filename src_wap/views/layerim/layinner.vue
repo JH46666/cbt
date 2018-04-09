@@ -310,9 +310,6 @@ import store from 'store';
     body .layim-panel,body .layim-content{
         bottom: .98rem;
     }
-    .layui-layim-tab{
-        display: none;
-    }
     body .layui-m-anim-lout,body .layui-m-anim-left{
         bottom:0 ;
     }
