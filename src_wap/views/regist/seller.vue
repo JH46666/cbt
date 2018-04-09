@@ -13,7 +13,7 @@
                 </div>
             </div>
             <!-- 补全地址 -->
-            <template v-if="">
+            <template v-if="addressIsComplete">
                 <div class="select_item">
                     <div class="select_item_label">
                         <label for="4">地区</label>
@@ -169,6 +169,7 @@ export default {
                 city: '110100',
                 area: '110101'
             },
+            addressIsComplete: false,                                       // 地址是否完整
         }
     },
     created() {
@@ -176,14 +177,33 @@ export default {
         this.$store.commit('SET_TITLE','卖家注册');
         this.loginNumber = store.state.member.member.memberAccount;
         this.formData.shopName = store.state.member.member.unitName;
+        this.$api.get('/oteao/login/checkArea', {}, res => {
+            // console.log(res);
+            this.addressIsComplete = false;
+        }, res => {
+            // Toast({
+            //     message: res.errorMsg
+            // })
+            // 失败代表地址不完整
+            this.addressIsComplete = true;
+        })      
     },
     computed: {
         iSubmit() {
             if(this.registClass === 1){
-                if(this.licenseImg.length === 1 && this.formData.shopPayNumber != '' && this.formData.shopResTel != '' && this.formData.shopName != '' && this.formData.shopArea != '' && this.formData.shopAddress != ''){
-                    return false;
-                }else{
-                    return true;
+                 if (this.addressIsComplete) {
+                    if (this.licenseImg.length === 1 && this.formData.shopPayNumber != '' && this.formData.shopResTel != '' && this.formData.shopName != '' && this.formData.shopArea != '' && this.formData.shopAddress != '') {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
+                else {
+                    if (this.licenseImg.length === 1 && this.formData.shopPayNumber != '' && this.formData.shopResTel != '' && this.formData.shopName != '') {
+                        return false;
+                    } else {
+                        return true;
+                    }
                 }
             }
         },
@@ -327,32 +347,41 @@ export default {
             })
         },
         postMember() {
-            // let data = {
-            //     'alipayAccount': this.formData.shopPayNumber,
-            //     'businessTelephone': this.formData.shopResTel,
-            //     "areaCode": store.state.member.member.areaCode,
-            //     "cityCode": store.state.member.member.cityCode,
-            //     "contactor": store.state.member.member.contactName,
-            //     "detailAddress": store.state.member.orgDTO.address,
-            //     "device": 'WAP',
-            //     "orgName": store.state.member.orgDTO.orgName,
-            //     "provinceCode": store.state.member.member.provinceCode,
-            //     "shop": {}
-            // }
-            let data = {
-                'alipayAccount': this.formData.shopPayNumber,
-                'businessTelephone': this.formData.shopResTel,
-                "areaCode": this.addressObj.areaCode,                          // 区
-                "cityCode": this.addressObj.cityCode,                          // 市
-                "provinceCode": this.addressObj.provinceCode,                  // 省
-                "areaName": this.addressObj.areaName,
-                "cityName": this.addressObj.cityName,
-                "provinceName": this.addressObj.provinceName,
-                "detailAddress": this.formData.shopAddress,                    // 详细地址
-                "contactor": store.state.member.member.contactName,
-                "device": 'WAP',
-                "orgName": store.state.member.orgDTO.orgName,
-                "shop": {}
+            let data = {};
+            // this.addressIsComplete为true代表地址不完整
+            if (this.addressIsComplete) {
+                data = {
+                    'alipayAccount': this.formData.shopPayNumber,
+                    'businessTelephone': this.formData.shopResTel,
+                    "areaCode": this.addressObj.areaCode,                          // 区
+                    "cityCode": this.addressObj.cityCode,                          // 市
+                    "provinceCode": this.addressObj.provinceCode,                  // 省
+                    "areaName": this.addressObj.areaName,
+                    "cityName": this.addressObj.cityName,
+                    "provinceName": this.addressObj.provinceName,
+                    "detailAddress": this.formData.shopAddress,                    // 详细地址
+                    "contactor": store.state.member.member.contactName,
+                    "device": 'WAP',
+                    "orgName": store.state.member.orgDTO.orgName,
+                    "shop": {}
+                }
+            }
+            else {
+                data = {
+                    'alipayAccount': this.formData.shopPayNumber,
+                    'businessTelephone': this.formData.shopResTel,
+                    "areaCode": store.state.member.member.areaCode,                          // 区
+                    "cityCode": store.state.member.member.cityCode,                          // 市
+                    "provinceCode": store.state.member.member.provinceCode,                  // 省
+                    "areaName": store.state.member.orgDTO.countyName,
+                    "cityName": store.state.member.orgDTO.cityName,
+                    "provinceName": store.state.member.orgDTO.provinceName,
+                    "detailAddress": store.state.member.orgDTO.address,                      // 详细地址
+                    "contactor": store.state.member.member.contactName,
+                    "device": 'WAP',
+                    "orgName": store.state.member.orgDTO.orgName,
+                    "shop": {}
+                }
             }
             if(this.sellerClass === 0){
                 data.shop = {
