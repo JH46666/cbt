@@ -993,7 +993,6 @@ export default {
                             , iconUnicode: '&#xe60e;' //图标字体的unicode，可不填
                             , iconClass: '' //图标字体的class类名
                         }],
-                        brief:true
                     });
                     let wsServer = window.location.host=='m.oteao.com'?'wss://im.oteao.com':'wss://mdemows.oteao.com';
                     socket.config({
