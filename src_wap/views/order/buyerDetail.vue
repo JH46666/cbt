@@ -15,7 +15,7 @@
                     </div>
                     <!-- 拼团成员头像 -->
                     <div class="groupping-member-info">
-                        <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key=index>
+                        <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key="index">
                             <div style="color: #fff; font-size: 0.28rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
                             <!-- <img src="../../assets/images/p.gif" alt=""> -->
                             <img :src=item.memberFace alt="" v-if="item.memberFace">
@@ -24,7 +24,7 @@
                             </div>
                         </div>
                         <template v-if="grouppingMemberInfo.length < 5">
-                            <div class="groupping-member-icon" :key=index v-for="n in (grouppingInfo.groupNumber - grouppingInfo.offerNumber)">
+                            <div class="groupping-member-icon" v-for="n in (grouppingInfo.groupNumber - grouppingInfo.offerNumber)">
                                 <img src="../../assets/images/cbt_icwctportrait.png" alt="">
                             </div>
                         </template>
@@ -37,7 +37,7 @@
                     <div><img src="../../assets/images/order_3.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                     <!-- 拼团成员头像 -->
                     <div class="groupping-member-info">
-                        <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key=index>
+                        <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key="index">
                             <div style="color: #fff; font-size: 0.28rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
                             <img :src=item.memberFace alt="" v-if="item.memberFace">
                             <div class="master-face" v-if="index == 0">
@@ -45,7 +45,7 @@
                             </div>
                         </div>
                         <template v-if="grouppingMemberInfo.length < 5">
-                            <div class="groupping-member-icon" :key=index v-for="n in (grouppingInfo.groupNumber - grouppingInfo.offerNumber)">
+                            <div class="groupping-member-icon"  v-for="n in (grouppingInfo.groupNumber - grouppingInfo.offerNumber)">
                                 <img src="../../assets/images/cbt_icwctportrait.png" alt="">
                             </div>
                         </template>
@@ -60,7 +60,7 @@
                 <div v-if="orderDetailData.orderStatus === 'PAY_WAIT_AUDIT' && orderDetailData.groupSuccess == 1" style="width: 100%; display: block; position: relative;">
                     <div><img src="../../assets/images/order_3.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                     <div class="groupping-member-info">
-                        <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key=index>
+                        <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key="index">
                             <div style="color: #fff; font-size: 0.28rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
                             <!-- <img src="../../assets/images/p.gif" alt=""> -->
                             <img :src=item.memberFace alt="" v-if="item.memberFace">
@@ -69,7 +69,7 @@
                             </div>
                         </div>
                         <template v-if="grouppingMemberInfo.length < 5">
-                            <div class="groupping-member-icon" :key=index v-for="n in (grouppingInfo.groupNumber - grouppingInfo.offerNumber)">
+                            <div class="groupping-member-icon" v-for="n in (grouppingInfo.groupNumber - grouppingInfo.offerNumber)">
                                 <img src="../../assets/images/cbt_icwctportrait.png" alt="">
                             </div>
                         </template>
@@ -82,7 +82,7 @@
                 <div v-else-if="orderDetailData.orderStatus === 'DELIVERED' && orderDetailData.groupSuccess == 1" style="width: 100%; display: block; position: relative;">
                     <div><img src="../../assets/images/order_2.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                     <div class="groupping-member-info">
-                        <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key=index>
+                        <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key="index">
                             <div style="color: #fff; font-size: 0.28rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
                             <!-- <img src="../../assets/images/p.gif" alt=""> -->
                             <img :src=item.memberFace alt="" v-if="item.memberFace">
@@ -91,7 +91,7 @@
                             </div>
                         </div>
                         <template v-if="grouppingMemberInfo.length < 5">
-                            <div class="groupping-member-icon" :key=index v-for="n in (grouppingInfo.groupNumber - grouppingInfo.offerNumber)">
+                            <div class="groupping-member-icon"  v-for="n in (grouppingInfo.groupNumber - grouppingInfo.offerNumber)">
                                 <img src="../../assets/images/cbt_icwctportrait.png" alt="">
                             </div>
                         </template>
@@ -106,7 +106,7 @@
                 <div v-else-if="orderDetailData.orderStatus === 'FINISH' && orderDetailData.isComment  && orderDetailData.groupSuccess == 1" style="width: 100%; display: block; position: relative;">
                     <div><img src="../../assets/images/order_1.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                     <div class="groupping-member-info">
-                        <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key=index>
+                        <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key="index">
                             <div style="color: #fff; font-size: 0.28rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
                             <!-- <img src="../../assets/images/p.gif" alt=""> -->
                             <img :src=item.memberFace alt="" v-if="item.memberFace">
@@ -115,7 +115,7 @@
                             </div>
                         </div>
                         <template v-if="grouppingMemberInfo.length < 5">
-                            <div class="groupping-member-icon" :key=index v-for="n in (grouppingInfo.groupNumber - grouppingInfo.offerNumber)">
+                            <div class="groupping-member-icon"  v-for="n in (grouppingInfo.groupNumber - grouppingInfo.offerNumber)">
                                 <img src="../../assets/images/cbt_icwctportrait.png" alt="">
                             </div>
                         </template>
@@ -130,7 +130,7 @@
                 <div v-else-if="!orderDetailData.isComment && orderDetailData.orderStatus === 'FINISH' && orderDetailData.groupSuccess == 1" style="width: 100%; display: block; position: relative;">
                     <div><img src="../../assets/images/order_1.png" />待评价</div>
                     <div class="groupping-member-info">
-                        <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key=index>
+                        <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key="index">
                             <div style="color: #fff; font-size: 0.28rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
                             <!-- <img src="../../assets/images/p.gif" alt=""> -->
                             <img :src=item.memberFace alt="" v-if="item.memberFace">
@@ -139,7 +139,7 @@
                             </div>
                         </div>
                         <template v-if="grouppingMemberInfo.length < 5">
-                            <div class="groupping-member-icon" :key=index v-for="n in (grouppingInfo.groupNumber - grouppingInfo.offerNumber)">
+                            <div class="groupping-member-icon"  v-for="n in (grouppingInfo.groupNumber - grouppingInfo.offerNumber)">
                                 <img src="../../assets/images/cbt_icwctportrait.png" alt="">
                             </div>
                         </template>
@@ -158,7 +158,7 @@
                 <div v-else-if="orderDetailData.orderStatus === 'CLOSE' && orderDetailData.groupSuccess == 2"  style="width: 100%; display: block; position: relative;">
                     <div><img src="../../assets/images/cbt_icddxqqx.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                     <div class="groupping-member-info">
-                        <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key=index>
+                        <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key="index">
                             <div style="color: #fff; font-size: 0.28rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
                             <!-- <img src="../../assets/images/p.gif" alt=""> -->
                             <img :src=item.memberFace alt="" v-if="item.memberFace">
@@ -167,7 +167,7 @@
                             </div>
                         </div>
                         <template v-if="grouppingMemberInfo.length < 5">
-                            <div class="groupping-member-icon" :key=index v-for="n in (grouppingInfo.groupNumber - grouppingInfo.offerNumber)">
+                            <div class="groupping-member-icon" v-for="n in (grouppingInfo.groupNumber - grouppingInfo.offerNumber)">
                                 <img src="../../assets/images/cbt_icwctportrait.png" alt="">
                             </div>
                         </template>
@@ -180,7 +180,7 @@
                 <div v-else-if="orderDetailData.orderStatus === 'CLOSE' && orderDetailData.groupSuccess == 1"  style="width: 100%; display: block; position: relative;">
                     <div><img src="../../assets/images/cbt_icddxqqx.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                     <div class="groupping-member-info">
-                        <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key=index>
+                        <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key="index">
                             <div style="color: #fff; font-size: 0.28rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
                             <!-- <img src="../../assets/images/p.gif" alt=""> -->
                             <img :src=item.memberFace alt="" v-if="item.memberFace">
@@ -189,7 +189,7 @@
                             </div>
                         </div>
                         <template v-if="grouppingMemberInfo.length < 5">
-                            <div class="groupping-member-icon" :key=index v-for="n in (grouppingInfo.groupNumber - grouppingInfo.offerNumber)">
+                            <div class="groupping-member-icon" v-for="n in (grouppingInfo.groupNumber - grouppingInfo.offerNumber)">
                                 <img src="../../assets/images/cbt_icwctportrait.png" alt="">
                             </div>
                         </template>
@@ -919,7 +919,6 @@ export default {
                 this.$http.post("/erp/account/ajaxLogin", ret).then(res => {
                     let userid = res.data.data;//res.data.data.split(",")[0];
                     this.getBase(userid);
-                    $(".layui-m-layer").css('z-index','120');
                 });
             }).catch(res => {
                 this.$router.replace('/login');
@@ -1014,8 +1013,9 @@ export default {
                         , type: 'friend' //friend、group等字符，如果是group，则创建的是群聊
                         , avatar: 'http://tp1.sinaimg.cn/1571889140/180/40030060651/1'
                     });
-
-
+                    // 点开会话改变css
+                    $(".layui-m-layer").css('z-index','120');
+                    $(".order_btn").css('display','none');
                     socket.on('open', function (e) {
                         console.log("监听到事件：open");
                     });
@@ -1138,6 +1138,7 @@ export default {
                     //监听返回
                     layim.on('back', function(){
                       $(".layui-m-layer").css('z-index','10');
+                      $(".order_btn").css('display','flex');
                     });
                     //监听自定义工具栏点击，以添加代码为例
                     layim.off('tool(history)').on('tool(history)', function (insert, f, thatChat) {
