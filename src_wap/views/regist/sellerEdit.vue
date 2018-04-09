@@ -166,7 +166,7 @@ export default {
             registText: '立即注册',
             myData: {},
             loading: false,
-            addreeObj: {                                                    // 貌似无用属性                         
+            addreeObj: {                                                    //                          
                 pro: '110000',
                 city: '110100',
                 area: '110101'
@@ -203,7 +203,6 @@ export default {
                     }
                 }
                 else {
-
                     if (this.licenseImg.length === 1 && this.formData.shopPayNumber != '' && this.formData.shopResTel != '' && this.formData.shopName != '') {
                         return false;
                     } else {
@@ -393,6 +392,7 @@ export default {
                 })
             })
         },
+        // 提交注册
         submitMethod() {
             this.loading = true;
             this.doUpload().then(() => {

@@ -12,6 +12,26 @@
                     <textarea rows="2" id="2" disabled v-model="formData.shopName" placeholder="必填项，请填写店铺名称"></textarea>
                 </div>
             </div>
+            <!-- 补全地址 -->
+            <template v-if="">
+                <div class="select_item">
+                    <div class="select_item_label">
+                        <label for="4">地区</label>
+                    </div>
+                    <div class="select_item_content" @click="addressShowOrHide = true">
+                        <input type="text" id="4" disabled v-model="formData.shopArea" placeholder="必填项，请选择地区" />
+                    </div>
+                    <i class="iconfont" @click="addressShowOrHide = true">&#xe744;</i>
+                </div>
+                <div class="select_item">
+                    <div class="select_item_label">
+                        <label for="5">详细地址</label>
+                    </div>
+                    <div class="select_item_content">
+                        <input type="text" id="5" v-model="formData.shopAddress" placeholder="必填项，请填写详细地址" maxlength="50" />
+                    </div>
+                </div>
+            </template>
             <div class="select_item seller_type" v-if="registClass === 1" style="padding-bottom: .28rem;border-bottom:1px solid #e5e5e5;">
                 <div class="select_item_label">
                     <label for="6">卖家类型</label>
@@ -81,14 +101,20 @@
             </div>
             <mt-button type="primary" class="to_index" @click="$router.push({name:'首页'})">去首页</mt-button>
         </div>
+        <!-- 地址选择 -->
+        <address-panel v-show="addressShowOrHide" @getAllData="getAddress" @closePannel="closeAddress" :provinceCode="provinceNum" :cityCode="cityNum" :areaCode="areaNum"></address-panel>
     </div>
 </template>
 
 <script>
+import addressPanel from '../center/addressPanel.vue';
 import { mapState } from 'vuex'
 import store from 'store';
 import $api from 'api';
 export default {
+    components: {
+        addressPanel,
+    },
     data() {
         return {
             loginNumber: 17605062109,
@@ -138,6 +164,11 @@ export default {
             eximain: false,
             registText: '立即注册',
             loading: false,
+            addreeObj: {                                                    //                          
+                pro: '110000',
+                city: '110100',
+                area: '110101'
+            },
         }
     },
     created() {
@@ -149,15 +180,33 @@ export default {
     computed: {
         iSubmit() {
             if(this.registClass === 1){
-                if(this.licenseImg.length === 1 && this.formData.shopPayNumber != '' && this.formData.shopResTel != '' && this.formData.shopName != ''){
+                if(this.licenseImg.length === 1 && this.formData.shopPayNumber != '' && this.formData.shopResTel != '' && this.formData.shopName != '' && this.formData.shopArea != '' && this.formData.shopAddress != ''){
                     return false;
                 }else{
                     return true;
                 }
             }
+        },
+        provinceNum() {
+            return this.addreeObj.pro;
+        },
+        cityNum() {
+            return this.addreeObj.city;
+        },
+        areaNum() {
+            return this.addreeObj.area;
         }
     },
     methods: {
+        //关闭地址弹窗
+        closeAddress() {
+            this.addressShowOrHide = false;
+        },
+        getAddress(obj) {
+            this.formData.shopArea = obj.address;
+            this.addressObj = obj;
+            this.addressShowOrHide = false;
+        },
         selectSellerType(index) {
             this.sellerClass = index;
         },
@@ -270,6 +319,7 @@ export default {
                 })
             })
         },
+        // 提交注册
         submitMethod() {
             this.loading = true;
             this.doUpload().then(() => {
@@ -277,16 +327,31 @@ export default {
             })
         },
         postMember() {
+            // let data = {
+            //     'alipayAccount': this.formData.shopPayNumber,
+            //     'businessTelephone': this.formData.shopResTel,
+            //     "areaCode": store.state.member.member.areaCode,
+            //     "cityCode": store.state.member.member.cityCode,
+            //     "contactor": store.state.member.member.contactName,
+            //     "detailAddress": store.state.member.orgDTO.address,
+            //     "device": 'WAP',
+            //     "orgName": store.state.member.orgDTO.orgName,
+            //     "provinceCode": store.state.member.member.provinceCode,
+            //     "shop": {}
+            // }
             let data = {
                 'alipayAccount': this.formData.shopPayNumber,
                 'businessTelephone': this.formData.shopResTel,
-                "areaCode": store.state.member.member.areaCode,
-                "cityCode": store.state.member.member.cityCode,
+                "areaCode": this.addressObj.areaCode,                          // 区
+                "cityCode": this.addressObj.cityCode,                          // 市
+                "provinceCode": this.addressObj.provinceCode,                  // 省
+                "areaName": this.addressObj.areaName,
+                "cityName": this.addressObj.cityName,
+                "provinceName": this.addressObj.provinceName,
+                "detailAddress": this.formData.shopAddress,                    // 详细地址
                 "contactor": store.state.member.member.contactName,
-                "detailAddress": store.state.member.orgDTO.address,
                 "device": 'WAP',
                 "orgName": store.state.member.orgDTO.orgName,
-                "provinceCode": store.state.member.member.provinceCode,
                 "shop": {}
             }
             if(this.sellerClass === 0){
