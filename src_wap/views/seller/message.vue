@@ -37,3 +37,8 @@
         },
     }
 </script>
+<style>
+.layui-layim-tab {
+    display: none;
+}
+</style>
