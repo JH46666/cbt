@@ -630,7 +630,7 @@ router.beforeEach((to,from,next) => {
 
 		// 从 localStorage 获取数据并删除
 		window.isWxLogin = Boolean(localStorage.isWxLogin)
-		// delete localStorage.isWxLogin;
+		delete localStorage.isWxLogin;
 
 		if(! window.isWxLogin) {
 			localStorage.setItem('isWxLogin',true);
