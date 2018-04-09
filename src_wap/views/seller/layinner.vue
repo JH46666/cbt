@@ -317,7 +317,7 @@
 
     body .layim-panel,
     body .layim-content {
-        bottom: .98rem;
+        /* bottom: .98rem; */
     }
 
     .layui-layim-tab {
