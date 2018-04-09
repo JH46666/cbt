@@ -187,9 +187,9 @@
             <div class="detail_tab" ref="tab">
                 <mt-navbar v-model="tabSelected" :class="{'on': tabFixed , 'wxon': wxFixed}" ref='heihghj'>
                     <i class="iconfont fixIndex" :class="{'on': tabFixed || wxFixed }" v-if="tabFixed || wxFixed" @click="$router.push({name: '首页'})">&#xe61b;</i>
-                    <mt-tab-item id="1">商品</mt-tab-item>
-                    <mt-tab-item id="2">评论</mt-tab-item>
-                    <mt-tab-item id="3">详情</mt-tab-item>
+                    <mt-tab-item id="1" class="tab-item">商品</mt-tab-item>
+                    <mt-tab-item id="2" class="tab-item">评论</mt-tab-item>
+                    <mt-tab-item id="3" class="tab-item">详情</mt-tab-item>
                 </mt-navbar>
                 <!-- 评价 -->
                 <div class="comment_wrapper">
@@ -201,7 +201,7 @@
                         <div class="comment_total" @click="toCommentList">共 <span>{{ commentRecond }}</span> 条<i class="icon-icon07" v-if="commentList.length >2 "></i></div>
                     </div>
                 </div>
-                <div class="mint_cell_wrapper"  >
+                <div class="mint_cell_wrapper commentTotal"  >
                     <template v-if="commentList.length === 0 ">
                         <div class="no-comment" style="min-height: unset; padding: 0.50rem 0;">
                             <!-- <img src="../../assets/images/no-comment.png" alt=""> -->
@@ -489,7 +489,9 @@ export default {
             listDialogFlag:false,
             groupIndex:0,
             groupnum:0,
-            marketPrice:0 //市场价
+            marketPrice:0, //市场价
+            scrollFlag : true,                          // 是否适用滚动
+            clickFlag: false,                           // 是否点击过tab项
         }
     },
     computed:{
@@ -991,6 +993,39 @@ export default {
         },
         docScroll() {               // 判断页面滚动
             let scrollTop = this.$refs.wrapper.scrollTop;
+            // 评论scrollTop
+            let commentTotalOffsetTop = $('#commentTotal').offset().top;
+            let commentTotalPositionTop = Math.abs($('#commentTotal').position().top);
+            // 评论高度
+            let commentTotalHeight = $('.commentTotal').height();
+            // 详情scrollTop
+            let regulerOffsetTop = $('#reguler').offset().top;
+            let regulerPositionTop = Math.abs($('#reguler').position().top);
+            // 页面高度
+            let clientHeight = $(window).height();
+            // 找到所有tab项
+            var tabItem = $('.tab-item');
+            // console.log(commentTotalScrollTop, regulerScrollTop, clientHeight, commentTotalHeight);
+            // console.log(scrollTop, commentTotalOffsetTop, commentTotalPositionTop)
+            // if(scrollTop> commentTotalScrollTop){console.log(123)}
+            if(this.scrollFlag){
+                if (regulerOffsetTop - regulerPositionTop <= 0) {
+                    tabItem.eq(2).addClass('is-selected').siblings().removeClass('is-selected');
+                    console.log(2)
+                }
+                else if (commentTotalOffsetTop - commentTotalPositionTop <= 0) {
+                    tabItem.eq(1).addClass('is-selected').siblings().removeClass('is-selected');
+                    console.log(1)
+                }
+                else {
+                    tabItem.eq(0).addClass('is-selected').siblings().removeClass('is-selected');
+                    console.log(0)
+                }
+            }
+            else if(this.clickFlag){
+                this.scrollFlag = true;
+                this.clickFlag = false;
+            }
             if(scrollTop > 0){
                 if(!this.wxFlag){
                     this.tabFixed = true;
@@ -1588,7 +1623,12 @@ export default {
             },
             deep:true
         },
+        // 点击tab项
         tabSelected(val) {
+            // 此处有虫子，有时点击事件不触发
+            $('.tab-item').removeClass('is-selected');
+            this.scrollFlag = false;
+            this.clickFlag = true;
             switch (val) {
                 case '1':
                     this.$refs.wrapper.scrollTop = 0;
