@@ -993,6 +993,7 @@ export default {
                             , iconUnicode: '&#xe60e;' //图标字体的unicode，可不填
                             , iconClass: '' //图标字体的class类名
                         }],
+                        brief:true
                     });
                     let wsServer = window.location.host=='m.oteao.com'?'wss://im.oteao.com':'wss://mdemows.oteao.com';
                     socket.config({
@@ -1012,9 +1013,8 @@ export default {
                         , type: 'friend' //friend、group等字符，如果是group，则创建的是群聊
                         , avatar: 'http://tp1.sinaimg.cn/1571889140/180/40030060651/1'
                     });
-                    // 点开会话改变css
+
                     $(".layui-m-layer").css('z-index','120');
-                    $(".order_btn").css('display','none');
                     socket.on('open', function (e) {
                         console.log("监听到事件：open");
                     });
@@ -1137,7 +1137,6 @@ export default {
                     //监听返回
                     layim.on('back', function(){
                       $(".layui-m-layer").css('z-index','10');
-                      $(".order_btn").css('display','flex');
                     });
                     //监听自定义工具栏点击，以添加代码为例
                     layim.off('tool(history)').on('tool(history)', function (insert, f, thatChat) {

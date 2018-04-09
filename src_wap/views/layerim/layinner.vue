@@ -286,7 +286,7 @@ import store from 'store';
         }
     }
 </script>
-<style>
+<style scoped>
     body .layim-title{
         height: .88rem;
         line-height: .88rem;
