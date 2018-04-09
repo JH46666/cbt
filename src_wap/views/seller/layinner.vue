@@ -286,7 +286,7 @@
         }
     }
 </script>
-<style>
+<style scoped>
     body .layim-title {
         height: .88rem;
         line-height: .88rem;
@@ -317,12 +317,9 @@
 
     body .layim-panel,
     body .layim-content {
-        bottom: .98rem;
+        /* bottom: .98rem; */
     }
 
-    .layui-layim-tab {
-        display: none;
-    }
 
     body .layui-m-anim-lout,
     body .layui-m-anim-left {

@@ -1,5 +1,5 @@
 <template>
-    <div id="container">  
+    <div id="container">
         <!-- <cbt-header v-if="!$tool.isWx && $route.name !== '首页'"></cbt-header> -->
         <layinner></layinner>
         <!-- <cbt-Footer></cbt-Footer> -->
@@ -37,4 +37,8 @@
         },
     }
 </script>
-
+<style>
+.layui-layim-tab{
+    display: none;
+}
+</style>
