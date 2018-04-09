@@ -371,7 +371,6 @@
                     this.$http.post("/erp/account/ajaxLogin", ret).then(res => {
                         let userid = res.data.data;//res.data.data.split(",")[0];
                         this.getBase(userid);
-                        $(".layui-m-layer").css('z-index','120');
                     });
                 }).catch(res => {
                     this.$router.replace('/login');
