@@ -88,7 +88,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 10;
+    z-index: 110;
     height: .98rem;
     border-top: 1px solid #e5e5e5;
     .line(1);
