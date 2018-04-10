@@ -574,12 +574,12 @@ export default {
 
         this.addLike();
     },
-    // updated里才能操作refs
     updated() {
         // console.log(this.$refs)
         // console.log($(this.$refs.comment[0]).height());
         // console.log($(this.$refs.comment[0]).css('font-size').slice(0, -2));
         this.$nextTick(()=>{
+            console.log(this.$refs.comment)
             for (let item of $(this.$refs.comment)) {
                 // console.log($(item).height());
                 if ($(item).height() > 3 * $(item).css('font-size').slice(0, -2) * 1.5) {
@@ -1007,19 +1007,18 @@ export default {
             var tabItem = $('.tab-item');
             // console.log(commentTotalScrollTop, regulerScrollTop, clientHeight, commentTotalHeight);
             // console.log(scrollTop, commentTotalOffsetTop, commentTotalPositionTop)
-            // if(scrollTop> commentTotalScrollTop){console.log(123)}
             if(this.scrollFlag){
                 if (regulerOffsetTop - regulerPositionTop <= 0) {
                     tabItem.eq(2).addClass('is-selected').siblings().removeClass('is-selected');
-                    console.log(2)
+                    // console.log(2)
                 }
                 else if (commentTotalOffsetTop - commentTotalPositionTop <= 0) {
                     tabItem.eq(1).addClass('is-selected').siblings().removeClass('is-selected');
-                    console.log(1)
+                    // console.log(1)
                 }
                 else {
                     tabItem.eq(0).addClass('is-selected').siblings().removeClass('is-selected');
-                    console.log(0)
+                    // console.log(0)
                 }
             }
             else if(this.clickFlag){
@@ -1649,14 +1648,36 @@ export default {
             }
         }
     },
-    mounted () {
+    mounted() {
         // this.setLine();             // 判断超出隐藏或者显示
         this.wxFlag = this.$tool.isWx;
         let sss = document.querySelectorAll('.mint-tab-container-item');
-        for(let i=0;i<sss.length;i++){
+        for (let i = 0; i < sss.length; i++) {
             sss[i].style['min-height'] = window.screen.height + 'px'
         }
-  　},
+        // 评论折叠
+        this.$nextTick(() => {
+            for (let item of $(this.$refs.comment)) {
+                // console.log($(item).height());
+                if ($(item).height() > 3 * $(item).css('font-size').slice(0, -2) * 1.5) {
+                    // console.log($(item).height());
+                    // console.log(3 * $(item).css('font-size').slice(0, -2));
+                    // console.log($(item).height() >= Number(3 * $(item).css('font-size').slice(0, -2)))
+                    $(item).addClass('on');
+                    $(item).css({
+                        display: '-webkit-box',
+                        '-webkit-line-clamp': '3',
+                        overflow: 'hidden',
+                        'word-break': 'break-all',
+                        'text-overflow': 'ellipsis',
+                        '-webkit-box-orient': 'vertical',
+                        'max-height': '1.30rem',
+                        'padding-right': '0.3rem',
+                    })
+                }
+            }
+        })
+    },
     // 进来先判断登陆与否
     beforeRouteEnter(to, from, next) {
         if(!store.state.member.member.id) {
@@ -1671,9 +1692,14 @@ export default {
     }
 }
 </script>
-
-<style lang="less">
+<!-- 再次引入因为有些类data-v-属性没有覆盖到 -->
+<style  lang="less">
     @import '~@/styles/less/detail.less';
+</style>
+<!-- 单页面应用 -->
+<style lang="less" scoped>
+    @import '~@/styles/less/detail.less';
+    
     .comment_footer{
         margin-top: .2rem;
         .color(#666);
@@ -1706,7 +1732,7 @@ export default {
         .more{
             position: absolute;
             display: none;
-            font-size: 0.38rem;
+            font-size: 0.38rem!important;
             line-height: 1.5;
         }
     }

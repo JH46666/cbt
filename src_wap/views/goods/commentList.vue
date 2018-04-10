@@ -27,14 +27,14 @@
                     </div>
                     <div class="comment_head_time">{{ item.createTime }}</div>
                 </div>
-                <div class="comment_footer" ref="comment" :class="{on: item.onFlag}" @click="more($event)">
+                <p class="comment_footer" ref="comment" :class="{on: item.onFlag}" @click="more($event)">
                     {{ item.content }}
                     <span v-if="item.replyContent"><span style="color:#c29e74;display:block;">回复：</span>{{item.replyContent}}</span>
                     <!-- <span class="bg-white"><i class="iconfont down" :class="{on:item.pullFlag!=='' && item.pullFlag}" @click="pullOrDown(item)" :key="index+'11'">&#xe619;</i></span>
                     <span class="bg-white"><i class="iconfont pull" :class="{on:item.upFlag!=='' && item.upFlag}" @click="pullOrDown(item)" :key="index+'12'">&#xe618;</i></span> -->
                     <i class="iconfont icon-single-down more" style="bottom: -0.10rem;"></i>
                     <i class="iconfont icon-shang more" style="display: none; bottom: 0rem;"></i>
-                </div>
+                </p>
             </mt-cell>
             <div class="goods-loading" v-if="commentList.length < commentRecond">
               <mt-spinner type="fading-circle" color="#f08200" ></mt-spinner>
@@ -80,7 +80,31 @@ import { mapState } from 'vuex'
             // console.log('this.$tool.isAndroid', this.$tool.isAndroid)
             // console.log('this.$tool.isiOS', this.$tool.isiOS)
         },
-        // updated里才能操作refs
+        mounted(){
+            // 评论折叠
+            this.$nextTick(() => {
+                console.log(this.$refs.comment)
+                for (let item of $(this.$refs.comment)) {
+                    console.log($(item).height());
+                    if ($(item).height() > 3 * $(item).css('font-size').slice(0, -2) * 1.5) {
+                        console.log($(item).height());
+                        console.log(3 * $(item).css('font-size').slice(0, -2));
+                        console.log($(item).height() >= Number(3 * $(item).css('font-size').slice(0, -2)))
+                        $(item).addClass('on');
+                        $(item).css({
+                            display: '-webkit-box',
+                            '-webkit-line-clamp': '3',
+                            overflow: 'hidden',
+                            'word-break': 'break-all',
+                            'text-overflow': 'ellipsis',
+                            '-webkit-box-orient': 'vertical',
+                            'max-height': '1.30rem',
+                            'padding-right': '0.3rem',
+                        })
+                    }
+                }
+            })
+        },
         updated(){
             // console.log(this.$refs) 
             // console.log($(this.$refs.comment[0]).height());
