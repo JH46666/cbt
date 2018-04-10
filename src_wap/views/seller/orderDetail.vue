@@ -27,7 +27,8 @@
                 </p>
                 <div class="detail-wrap">
                     <p class="detail" :class="{'limit-2':!showMoreAddress}">
-                        {{ myData.detailAddress + myData.streetAddress }}
+                        <!--  detailAddress有时会附带上streetAddress-->
+                        {{ myData.detailAddress.replace(myData.streetAddress,'') + myData.streetAddress }}
                     </p>
                     <span @click="showMoreAddress = !showMoreAddress" v-if="myData.detailAddress ? myData.detailAddress.length >44 : false"><i :class="{'icon-single-down':!showMoreAddress,'icon-shang':showMoreAddress}"></i></span>
                 </div>

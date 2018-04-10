@@ -209,7 +209,10 @@
                         <span>{{ regStar(orderDetailData.receiptPhone) }}</span>
                     </template>
                 </div>
-                <div class="line_2">{{ orderDetailData.detailAddress }}</div>
+                <div class="line_2">
+                    <!--  detailAddress有时会附带上streetAddress-->
+                    {{ orderDetailData.detailAddress.replace(orderDetailData.streetAddress,'') + orderDetailData.streetAddress}}
+                </div>
             </div>
         </div>
         <div class="order">
