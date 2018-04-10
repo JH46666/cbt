@@ -38,6 +38,7 @@
     }
 </script>
 <style>
+@import '~@/styles/layim/layim.less';
 .layui-layim-tab {
     display: none;
 }
