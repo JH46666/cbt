@@ -275,6 +275,7 @@
                 return new Promise((resolve, reject) => {
                     this.$api.get('/oteao/memberAccount/getOpenId', {}, res => {
                         this.openId = res.data;
+                        this.$store.commit('SET_OPENID',res.data);
                         resolve(res);
                     }, res => {
                         reject(res);

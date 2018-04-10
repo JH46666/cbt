@@ -19,7 +19,8 @@ export default new Vuex.Store({
     state: {
         device: '',
         IM_user:'buyer',
-        url:''
+        url:'',
+        openId:''
     },
     mutations: {
         SET_DEVICE(state,val) {
@@ -30,6 +31,9 @@ export default new Vuex.Store({
         },
         SET_URL(state,val){
           state.url = val
+        },
+        SET_OPENID(state,val){
+          state.openId = val
         }
     },
     actions: {
