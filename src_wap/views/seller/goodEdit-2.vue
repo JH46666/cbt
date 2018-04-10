@@ -622,6 +622,8 @@
                     }
                     this.resize.fourImgFile.push(e.target.files[0]);
                 }
+                // 上传同一张图片也可以触发input的change事件
+                e.target.value = '';
             },
             goShopMange() {
                 let status = '';
