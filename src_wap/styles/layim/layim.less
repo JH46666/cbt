@@ -33,9 +33,11 @@ body .layim-title{
     border-color: transparent #fff transparent transparent;
 }
 .layim-chat-li.layim-chat-mine .layim-chat-text{
-  background-color: #facb96
+  background-color: #facb96;
+  color: #333;
 }
 .layim-chat-li.layim-chat-mine .layim-chat-text::after{
+  left: auto;
   right: -17px;
   border-color: transparent  transparent transparent #facb96;
 }
@@ -44,4 +46,8 @@ body .layim-title{
 }
 .layim-chat-main .layim-chat-system span{
   background-color: #c7c5c3;
+}
+// 历史记录
+.layim-panel.layui-m-anim-left .layim-chat-main{
+  height: calc(100% - 8rem)
 }
