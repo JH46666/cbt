@@ -58,6 +58,8 @@ import store from 'store';
                             ,voice: false //开启提示音
                             ,initSkin: '5.jpg' //1-5 设置初始背景
                             ,notice: true //是否开启桌面消息提醒，默认false
+                            ,title:'我的消息'
+                            ,chatTitleColor:'#fafafa'
                             ,msgbox: '/erp/layim/msgbox'
                             ,find: layui.cache.dir + 'css/modules/layim/html/find.html' //发现页面地址，若不开启，剔除该项即可
                             ,chatLog: layui.cache.dir + 'css/modules/layim/html/chatLog.html' //聊天记录页面地址，若不开启，剔除该项即可
