@@ -560,9 +560,13 @@
                 this.resize.form['goodsPtsj'] = parseFloat(this.resize.form['goodsSx'] * 2).toFixed(2);
             },
             goStep3() {
-                this.$router.push({
-                    name: '新品上架-2'
-                })
+                // 阻止没有触发blur事件直接点击下一步
+                setTimeout(() => {
+                    if (!this.flagGoodsSj || !this.flagGoodsGroup || !this.flagGoodsGroupNum) return;
+                    this.$router.push({
+                        name: '新品上架-2'
+                    })
+                }, 100);
             },
             selectRightList(index) {
                 this.selectClass = index;
