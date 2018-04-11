@@ -562,10 +562,14 @@
             goStep3() {
                 // 阻止没有触发blur事件直接点击下一步
                 setTimeout(() => {
-                    if (!this.flagGoodsSj || !this.flagGoodsGroup || !this.flagGoodsGroupNum) return;
-                    this.$router.push({
-                        name: '新品上架-2'
-                    })
+                    if (this.flagGoodsSj || this.flagGoodsGroup || this.flagGoodsGroupNum){
+                        return;
+                    } 
+                    else{
+                        this.$router.push({
+                            name: '新品上架-2'
+                        })
+                    }
                 }, 100);
             },
             selectRightList(index) {
