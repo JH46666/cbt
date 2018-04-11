@@ -208,7 +208,8 @@
                             propId: 2
                         },
                     ]
-                }]
+                }],
+                clickFlag: false,                           // 点击时不触发滚动加载更多事件
             }
         },
         computed:{
@@ -419,6 +420,7 @@
             },
             //加载更多
             loadMore(){
+                if(this.clickFlag) retrun;
                 if(this.resultData.length < this.totalSize){
                     this.pageNumber++;
                     if(this.activePropId==''){
@@ -503,6 +505,8 @@
                     maxSupplyPrice:this.maxSupplyPrice,
                     priceType:487
                 }
+                
+                   
                 this.$api.post(`/oteao/productInfo/seachProduct?page.pageNumber=${this.pageNumber}&page.pageSize=${this.pageSize}`,JSON.stringify(data),res=>{
                     if(!res.data.length){
                         this.noresult = true;
@@ -544,7 +548,21 @@
                         // this.$set(item,'tasteVal','滋味');
                         this.$set(item,'tasteStar',stars);
                     }
-                    this.resultData = this.resultData.concat(tempArr);
+                    
+                    console.log(this.pageNumber)
+                    if(this.pageNumber==1){
+                        this.resultData = [];    
+                        this.resultData = this.resultData.concat(tempArr);   
+                        // this.noresult = false;
+                    }else{
+                        this.resultData = this.resultData.concat(tempArr);   
+                        // this.noresult = false;
+                    }
+                    this.clickFlag = false;
+                    
+
+                    // this.resultData = [];
+                    // this.resultData = this.resultData.concat(tempArr);
                     this.totalSize = res.total_record;
                     if(this.resultData.length === this.totalSize){
                         if(this.pageNumber > 1){
@@ -587,6 +605,8 @@
             },
             // 搜索一级分类
             searchFirstCat(index,id,e){
+                this.pageNumber=1;
+                this.resultData=[];
                 this.scrollTop = 0;
                 let o_w = e.parentNode.offsetWidth;
                 let o_l = e.parentNode.offsetLeft;
@@ -608,6 +628,10 @@
             },
             // 搜索二级分类
             searchSub(index,item){
+                this.clickFlag = true;
+                console.log('搜索二级分类')
+                this.pageNumber=1;
+                this.resultData=[];
                 this.resetSupplyPrice();
                 this.resetPullFlag(item);
                 for(let third of item.propVal){
@@ -627,6 +651,7 @@
             },
             // 搜索三级
             searchThird(subItem,thirdItem,index){
+                console.log('搜索三级分类')
                 this.resultData = [];
                 this.pageNumber = 1;
                 this.totalSize = 0;
