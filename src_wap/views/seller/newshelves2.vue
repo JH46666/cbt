@@ -759,7 +759,9 @@ import $api from 'api';
                     margin: 0.2rem auto 0;
                 }
                 ._add-up-num{
-                    margin-top: 0.10rem;
+                    /* margin-top: 0.10rem; */
+                    position: absolute;
+                    bottom: 0rem;
                 }
              }
         }
