@@ -199,7 +199,7 @@ import store from 'store';
                         });
                         //监听自定义工具栏点击，以添加代码为例
                         layim.off('tool(history)').on('tool(history)', function(insert,f,thatChat){
-                            // $(".layui-m-layer").css('z-index','120');
+
                             var friendId = thatChat.data.id
                             var kefuName1 = thatChat.data.name
                             var selfId = layim.cache().mine.id;
@@ -222,6 +222,11 @@ import store from 'store';
                                     ,data: res.data.data
                                 });
                             });
+                            setTimeout(()=>{
+                              $(".cbt_footer").css('display','none');
+                            },100)
+
+
                         });
 
                         //监听查看更多记录
@@ -272,7 +277,7 @@ import store from 'store';
                     }else{
                         this.getBase(this.userid);
                     }
-                    $(".layui-m-layer").css('z-index','10');
+                    // $(".layui-m-layer").css('z-index','10');
                 });
 
             },

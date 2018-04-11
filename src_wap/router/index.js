@@ -632,6 +632,7 @@ router.beforeEach((to,from,next) => {
 					resolve(res);
 			})
 		}).then(res=>{
+			// 如果当前没有openid,重新获取微信授权
 			if(openId==''){
 				localStorage.setItem('isWxLogin',true);
 				location.href = encodeURI(location.origin + `/api/wap/wechatAutoLogin?chiputaobutuputaopi=${location.origin}`) + `/%3F%23` + encodeURI(to.fullPath)
@@ -677,6 +678,7 @@ router.beforeEach((to,from,next) => {
 	// 	}
 	// }
 	// next();
+	$(".cbt_footer").css('display','flex');
 });
 
 router.afterEach( ( to, from, next ) => {
