@@ -553,14 +553,13 @@
                     if(this.pageNumber==1){
                         this.resultData = [];    
                         this.resultData = this.resultData.concat(tempArr);   
-                        // this.noresult = false;
+                        this.noresult = false;
                     }else{
                         this.resultData = this.resultData.concat(tempArr);   
-                        // this.noresult = false;
+                        this.noresult = false;
                     }
                     this.clickFlag = false;
-                    
-
+                     
                     // this.resultData = [];
                     // this.resultData = this.resultData.concat(tempArr);
                     this.totalSize = res.total_record;
@@ -578,6 +577,11 @@
                             this.sessionFlag = false;
                         },100);
                     }
+                    // 没有任何商品时 显示没有商品那个提示图片
+                    if(this.resultData.length ==0){
+                         this.noresult = true;
+                     }
+
                 });
             },
             // 设置一级分类
