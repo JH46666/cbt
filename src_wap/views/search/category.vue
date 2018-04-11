@@ -317,7 +317,7 @@
                         message: res.errorMsg,
                         iconClass: 'icon icon-fail'
                     });
-                    console.log(res);
+                    // console.log(res);
                 });
             }
             // 判断是否为IOS
@@ -380,7 +380,7 @@
                     this.$api.get('/oteao/proCat/queryCatTree',{sysId: 1},res=>{
                         resolve(res);
                     },res=>{
-                        console.log(res);
+                        // console.log(res);
                     });
                 });
 
@@ -549,7 +549,7 @@
                         this.$set(item,'tasteStar',stars);
                     }
                     
-                    console.log(this.pageNumber)
+                    // console.log(this.pageNumber)
                     if(this.pageNumber==1){
                         this.resultData = [];    
                         this.resultData = this.resultData.concat(tempArr);   
@@ -629,7 +629,7 @@
             // 搜索二级分类
             searchSub(index,item){
                 this.clickFlag = true;
-                console.log('搜索二级分类')
+                // console.log('搜索二级分类')
                 this.pageNumber=1;
                 this.resultData=[];
                 this.resetSupplyPrice();
@@ -651,7 +651,7 @@
             },
             // 搜索三级
             searchThird(subItem,thirdItem,index){
-                console.log('搜索三级分类')
+                // console.log('搜索三级分类')
                 this.resultData = [];
                 this.pageNumber = 1;
                 this.totalSize = 0;
