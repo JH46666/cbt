@@ -623,6 +623,24 @@ router.beforeEach((to,from,next) => {
 	if (store.state.url=='') {
   	store.commit('SET_URL', window.location.href.split('&')[0])
  	}
+	//获取微信openid
+	if($tool.isWx){
+		let openId = '';
+		new Promise((resolve,reject)=>{
+			$api.get('/oteao/memberAccount/getOpenId', {}, res => {
+					openId = res.data;
+					resolve(res);
+			})
+		}).then(res=>{
+			if(openId==''){
+				localStorage.setItem('isWxLogin',true);
+				location.href = encodeURI(location.origin + `/api/wap/wechatAutoLogin?chiputaobutuputaopi=${location.origin}`) + `/%3F%23` + encodeURI(to.fullPath)
+			}
+
+		})
+	}
+
+
 	// 计数，为1才去执行微信的登录
 	count++;
 	// 需要判断是否在微信内部，是的话要授权登录
@@ -635,9 +653,6 @@ router.beforeEach((to,from,next) => {
 		if(! window.isWxLogin) {
 			localStorage.setItem('isWxLogin',true);
 			// chiputaobutuputaopi 与文哥商量的 key 值
-			// console.log(encodeURI(location.origin + `/api/wap/wechatAutoLogin?chiputaobutuputaopi=${location.origin}/#/${to.fullPath}`))
-			console.log(location.origin)
-			console.log(to.fullPath)
 			location.href = encodeURI(location.origin + `/api/wap/wechatAutoLogin?chiputaobutuputaopi=${location.origin}`) + `/%3F%23` + encodeURI(to.fullPath)
 		} else {
 			next()
