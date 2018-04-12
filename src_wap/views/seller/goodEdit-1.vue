@@ -84,7 +84,7 @@
                         </div>
                         <div class="item _fix-item">
                             <label class="item-left" for="11" style="white-space: nowrap;">
-                                单买价
+                                单批价
                             </label>
                             <div class="item-right">
                                 <input type="number" id="11" placeholder="必填，应高于商品团购价格" v-model="resize.form.goodsSj" @blur="comparePrice(resize.form.goodsSj,'goodsSj')"
@@ -97,7 +97,7 @@
                         </div>
                         <div class="item">
                             <label class="item-left" for="12" style="white-space: nowrap;">
-                                团购价
+                                团批价
                             </label>
                             <div class="item-right">
                                 <input type="number" id="12" placeholder="必填，应低于商品单买价格" v-model="resize.form.goodsGroup" @blur="comparePrice(resize.form.goodsGroup,'goodsGroup')"
