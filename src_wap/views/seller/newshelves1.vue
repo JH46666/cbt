@@ -89,7 +89,7 @@
                                 市场价
                             </label>
                             <div class="item-right">
-                                <input type="number" id="10" placeholder="必填，市场价高于单买价" v-model="resize.form.goodsPtsj" @blur="comparePrice(resize.form.goodsPtsj,'goodsPtsj')"
+                                <input type="number" id="10" placeholder="必填，市场价高于单批价" v-model="resize.form.goodsPtsj" @blur="comparePrice(resize.form.goodsPtsj,'goodsPtsj')"
                                 />
                                 <p style="float:right">元</p>
                             </div>
@@ -99,12 +99,12 @@
                                 单批价
                             </label>
                             <div class="item-right">
-                                <input type="number" id="11" placeholder="必填，应高于商品团购价格" v-model="resize.form.goodsSj" @blur="comparePrice(resize.form.goodsSj,'goodsSj')"
+                                <input type="number" id="11" placeholder="必填，应高于商品团批价格" v-model="resize.form.goodsSj" @blur="comparePrice(resize.form.goodsSj,'goodsSj')"
                                 />
                                 <p style="float:right">元</p>
                             </div>
                             <div class="_add-price-error-tips" v-if="flagGoodsSj">
-                                <i class="iconfont icon-tishi"> 市场价需高于单买价</i>
+                                <i class="iconfont icon-tishi"> 市场价需高于单批价</i>
                             </div>
                         </div>
                         <div class="item">
@@ -112,7 +112,7 @@
                                 团批价
                             </label>
                             <div class="item-right">
-                                <input type="number" id="12" placeholder="必填，应低于商品单买价格" v-model="resize.form.goodsGroup" @blur="comparePrice(resize.form.goodsGroup,'goodsGroup')"
+                                <input type="number" id="12" placeholder="必填，应低于商品单批价格" v-model="resize.form.goodsGroup" @blur="comparePrice(resize.form.goodsGroup,'goodsGroup')"
                                 />
                                 <p style="float:right">元</p>
                             </div>
@@ -127,7 +127,7 @@
                                 <p style="float:right">人</p>
                             </div>
                             <div class="_add-price-error-tips" v-if="flagGoodsGroup">
-                                <i class="iconfont icon-tishi"> 团购价需低于单买价</i>
+                                <i class="iconfont icon-tishi"> 团购价需低于单批价</i>
                             </div>
                             <div class="_add-num-error-tips" v-if="flagGoodsGroupNum">
                                 <i class="iconfont icon-tishi"> 人数需介于2和10之间</i>
