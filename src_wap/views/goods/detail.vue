@@ -1436,22 +1436,6 @@ export default {
                             ).render({
                                 data: res.data.data
                             });
-
-                            // var html = laytpl(
-                            //     [
-                            //       '<textarea title="消息模版" id="LAY_tpl" style="display:none;">'
-                            //     ,'{{# layui.each(d.data, function(index, item){  if(item.id == 200512){ }}'
-                            //     ,'    <li class="layim-chat-mine"><div class="layim-chat-user"><img src="{{ item.avatar }}" />'
-                            //     ,'    <cite><i>{{ layui.data.date(item.timestamp) }}</i>{{ item.username }}</cite>'
-                            //     ,'    </div></li>'
-                            //     ,'  {{# } else { }}'
-                            //     ,'  {{# } }); }}'
-                            //     ,'</textarea> '
-                            //     ].join('')
-                            // ).render({
-                            //     data: res.data.data
-                            // });
-
                             //$('#LAY_view').html(html);
                             //弹出一个更多聊天记录面板
                             layim.panel({
