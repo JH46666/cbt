@@ -755,15 +755,16 @@ import $api from 'api';
                 position: relative;
                 background-color: #f5f5f5;
                 ._fix-camera-bg{
-                    position: unset;
-                    width: 0.88rem;
-                    /* height: 0.88rem; */
+                    position: relative;
+                    width: 0.80rem;
+                    height: 100%;
                     top: 0rem;
                     left: 0rem;
                     margin: 0.2rem auto 0rem;
                 }
                 ._add-up-num{
                     padding-top: 0.10rem;
+                    margin: 0 auto;
                 }
              }
         }
