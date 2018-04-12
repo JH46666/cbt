@@ -424,6 +424,7 @@
 import { Toast,Indicator,MessageBox  } from 'mint-ui'
 import store from 'store';
 import { mapState } from 'vuex'
+import wx from 'weixin-js-sdk';
 export default {
     data() {
         return {
