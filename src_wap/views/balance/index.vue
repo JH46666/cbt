@@ -302,7 +302,7 @@
             closeRedpacket(data) {
                 this.showRedpacket = false;
                 if(data === 'confirm') {
-                    this.redpackUpdate();
+                    this.commonUpdate();
                 }
             },
             // 点击底下地址返回顶部
@@ -319,7 +319,7 @@
             },
             // 初始化数据
             initData() {
-                this.backupsData() //先备份
+
                 return new Promise((resolve,reject) => {
                     this.$api.post('/oteao/shoppingCart/initSettle',{
                         cartIds: this.cartList,
@@ -344,7 +344,7 @@
                     })
                 })
             },
-            redpackUpdate(){
+            commonUpdate(){
               let orgSettleRequestList = [];
               // 遍历每个店铺，更新数据
               this.pannel.forEach(val => {
@@ -382,6 +382,7 @@
             },
             // 更新数据
             upDate() {
+                this.backupsData() //先备份
                 this.initData().then((res)=>{
                   let orgSettleRequestList = [];
                   // 遍历每个店铺，更新数据
@@ -691,7 +692,8 @@
                     this.address = JSON.parse(address);
                     delete sessionStorage.cart;
                     delete sessionStorage.address;
-                    this.update();
+                    this.recoveryData();
+                    this.commonUpdate();
                 } else {
                     this.address = this.myData.receiveAddrList.filter(val => val.isDefault)[0] ? this.myData.receiveAddrList.filter(val => val.isDefault)[0] : {}
                 }
