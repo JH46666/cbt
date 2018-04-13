@@ -418,7 +418,7 @@
                 // this.sortVisible = false;
             },
             //加载更多
-            loadMore(){
+            loadMore(){         
                 if(this.resultData.length < this.totalSize){
                     this.pageNumber++;
                     if(this.activePropId==''){
@@ -544,8 +544,8 @@
                         // this.$set(item,'tasteVal','滋味');
                         this.$set(item,'tasteStar',stars);
                     }
-                    this.resultData = this.resultData.concat(tempArr);
-                    this.totalSize = res.total_record;
+                    this.resultData = this.resultData.concat(tempArr);   
+                    this.totalSize = res.total_record;                    
                     if(this.resultData.length === this.totalSize){
                         if(this.pageNumber > 1){
                             this.pageNumber--;
