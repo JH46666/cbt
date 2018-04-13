@@ -1320,7 +1320,7 @@ export default {
 <style lang="less" scoped>
     @import '~@/styles/order/detail.less';
     .height2{
-        height: unset!important;
+        height: auto!important;
         padding-top: 0.36rem!important;
     }
     .width100{
