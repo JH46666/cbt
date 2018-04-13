@@ -1371,7 +1371,7 @@ export default {
                 &:nth-child(1){
                     border-radius: 50%;
                     position: absolute;
-                    left: rem;
+                    
                 }
             }
             .master-face{
