@@ -45,8 +45,8 @@
                 <span>已选 (<span>{{ checkedNum }}</span>)</span>
             </div>
             <a class="delete-btn" href="javascript:void(0);" @click="deleteMethod" v-if="state === 'OFF_SHELF'">删除</a>
-            <a class="rackup-btn" href="javascript:void(0);" @click="downMethod" v-if="state === 'ON_SHELF'">下架</a>
-            <a class="rackup-btn" href="javascript:void(0);" @click="downMethod" v-else>上架</a>
+            <a class="rackup-btn" :style="{'background-color': checkedNum ? '' : '#999'}" href="javascript:void(0);" @click="downMethod" v-if="state === 'ON_SHELF'">下架</a>
+            <a class="rackup-btn" :style="{'background-color': checkedNum ? '' : '#999'}" href="javascript:void(0);" @click="downMethod" v-else>上架</a>
         </div>
     </div>
 </template>
@@ -137,6 +137,8 @@ import $api from 'api';
                         checkedId.push(obj.proExtId)
                     }
                 }
+                // 没有勾选商品就不进行下一步
+                if(!checkedId.length) return;
                 let states = 'ON_SHELF';
                 if(this.state === 'ON_SHELF'){
                     states = 'OFF_SHELF';
@@ -195,6 +197,8 @@ import $api from 'api';
                         checkedId.push(obj.proExtId)
                     }
                 }
+                // 没有勾选商品就不进行下一步
+                if (!checkedId.length) return;
                 let data = {
                     proExtIds: checkedId.join(',')
                 }

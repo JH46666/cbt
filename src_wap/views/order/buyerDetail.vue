@@ -321,7 +321,7 @@
                             </template>
 
                         </div>
-                        <div class="order_head"  v-if="orderDetailData.expressDeliveryCode != 'get_self'">
+                        <div class="order_head"  v-if="orderDetailData.expressDeliveryCode != 'get_self' && orderDetailData.expressNo">
                             <div class="order_express" v-if="orderDetailData.payType!='CASH_DELIVERY'">
                                 <img src="../../assets/images/sfkd.png" v-if="orderDetailData.expressDeliveryCode == 'ship_sf' || orderDetailData.expressDeliveryCode == 'SF'" />
                                 <img src="../../assets/images/stkd.png" v-if="orderDetailData.expressDeliveryCode == 'ship_sto' || orderDetailData.expressDeliveryCode == 'STO'" />
@@ -1319,7 +1319,7 @@ export default {
 <style lang="less" scoped>
     @import '~@/styles/order/detail.less';
     .height2{
-        height: unset!important;
+        height: auto!important;
         padding-top: 0.36rem!important;
     }
     .width100{
@@ -1328,9 +1328,9 @@ export default {
     .groupping{
         display: block!important;
         .countdown{
-            width: 2.62rem;
+            // width: 2.62rem;
             height: 0.50rem;
-            padding: 0.18rem 0rem 0.12rem 0.2rem;
+            padding: 0.18rem 0.1rem 0.12rem 0.2rem;
             color: #fe9900;
             font-size: 0.22rem;
             position: absolute;
