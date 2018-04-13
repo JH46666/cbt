@@ -258,6 +258,7 @@
                             // 设置延时尽量按顺序上传
                             setTimeout(() => {
                                 // 如果有就是新增图
+                                // console.log(this.resize.mainImgFile[i])
                                 if (this.resize.mainImgFile[i]) {
                                     let random_name = res.data.basePath + 'goods/' + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.mainImgFile[i].name.split('.').pop()
                                     client.multipartUpload(random_name, this.resize.mainImgFile[i]).then((results) => {
@@ -280,6 +281,7 @@
                             // 设置延时尽量按顺序上传
                             setTimeout(() => {
                                 // 如果有就是新增图
+                                // console.log(this.resize.oneImgFile[i])
                                 if (this.resize.oneImgFile[i]) {
                                     let random_name = res.data.basePath + 'goods/' + this.random_string(6) + '_' + new Date().getTime() + '.' + this.resize.oneImgFile[i].name.split('.').pop()
                                     client.multipartUpload(random_name, this.resize.oneImgFile[i]).then((results) => {

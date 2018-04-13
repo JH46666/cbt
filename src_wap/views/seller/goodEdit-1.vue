@@ -538,7 +538,7 @@
                     }
                     else {
                         this.$router.push({
-                            name: '新品上架-2'
+                            name: '商品编辑-2'
                         })
                     }
                 }, 100);
