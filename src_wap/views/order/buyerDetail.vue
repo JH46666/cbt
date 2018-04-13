@@ -10,13 +10,13 @@
                     </div>
                     <div class="countdown">
                         <i class="iconfont icon-pintuanshijianzhuangtai" style="font-size: 0.24rem; margin-top: -0.03rem;"></i>
-                        <div class="countdown-text">{{ grouppingLeftTime ? grouppingLeftTime : "00:00:00.0" }}后结束</div>
+                        <div class="countdown-text">{{ grouppingLeftTime ? grouppingLeftTime : "00:00:00.0" }}&nbsp后结束</div>
                     </div>
                     </div>
                     <!-- 拼团成员头像 -->
                     <div class="groupping-member-info">
                         <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key="index">
-                            <div style="color: #fff; font-size: 0.28rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
+                            <div  class="pt-name" style="color: #fff; font-size: 0.28rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
                             <!-- <img src="../../assets/images/p.gif" alt=""> -->
                             <img :src=item.memberFace alt="" v-if="item.memberFace">
                             <div class="master-face" v-if="index == 0">
@@ -38,7 +38,6 @@
                     <!-- 拼团成员头像 -->
                     <div class="groupping-member-info">
                         <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key="index">
-                            <div style="color: #fff; font-size: 0.28rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
                             <img :src=item.memberFace alt="" v-if="item.memberFace">
                             <div class="master-face" v-if="index == 0">
                                 团长
@@ -61,7 +60,7 @@
                     <div><img src="../../assets/images/order_3.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                     <div class="groupping-member-info">
                         <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key="index">
-                            <div style="color: #fff; font-size: 0.28rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
+                            <div  class="pt-name" style="color: #fff; font-size: 0.28rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
                             <!-- <img src="../../assets/images/p.gif" alt=""> -->
                             <img :src=item.memberFace alt="" v-if="item.memberFace">
                             <div class="master-face" v-if="index == 0">
@@ -83,7 +82,7 @@
                     <div><img src="../../assets/images/order_2.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                     <div class="groupping-member-info">
                         <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key="index">
-                            <div style="color: #fff; font-size: 0.28rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
+                            <div  class="pt-name" style="color: #fff; font-size: 0.28rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
                             <!-- <img src="../../assets/images/p.gif" alt=""> -->
                             <img :src=item.memberFace alt="" v-if="item.memberFace">
                             <div class="master-face" v-if="index == 0">
@@ -107,7 +106,7 @@
                     <div><img src="../../assets/images/order_1.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                     <div class="groupping-member-info">
                         <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key="index">
-                            <div style="color: #fff; font-size: 0.28rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
+                            <div  class="pt-name" style="color: #fff; font-size: 0.28rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
                             <!-- <img src="../../assets/images/p.gif" alt=""> -->
                             <img :src=item.memberFace alt="" v-if="item.memberFace">
                             <div class="master-face" v-if="index == 0">
@@ -131,7 +130,7 @@
                     <div><img src="../../assets/images/order_1.png" />待评价</div>
                     <div class="groupping-member-info">
                         <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key="index">
-                            <div style="color: #fff; font-size: 0.28rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
+                            <div  class="pt-name" style="color: #fff; font-size: 0.28rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
                             <!-- <img src="../../assets/images/p.gif" alt=""> -->
                             <img :src=item.memberFace alt="" v-if="item.memberFace">
                             <div class="master-face" v-if="index == 0">
@@ -159,7 +158,7 @@
                     <div><img src="../../assets/images/cbt_icddxqqx.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                     <div class="groupping-member-info">
                         <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key="index">
-                            <div style="color: #fff; font-size: 0.28rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
+                            <div class="pt-name" style="color: #fff; font-size: 0.28rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
                             <!-- <img src="../../assets/images/p.gif" alt=""> -->
                             <img :src=item.memberFace alt="" v-if="item.memberFace">
                             <div class="master-face" v-if="index == 0">
@@ -181,7 +180,7 @@
                     <div><img src="../../assets/images/cbt_icddxqqx.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                     <div class="groupping-member-info">
                         <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key="index">
-                            <div style="color: #fff; font-size: 0.28rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
+                            <div  class="pt-name" style="color: #fff; font-size: 0.28rem" v-if="!item.memberFace">{{ item.memberUnitName.slice(0,2) }}</div>
                             <!-- <img src="../../assets/images/p.gif" alt=""> -->
                             <img :src=item.memberFace alt="" v-if="item.memberFace">
                             <div class="master-face" v-if="index == 0">
@@ -1473,4 +1472,17 @@ export default {
     .detail .order_btn .mint-button--default.is-plain{
         width: auto;
     }
+    .groupping .countdown{
+        width: 2.8rem
+    }
+    .groupping .countdown .countdown-text{
+        padding-left:0.2rem;
+    }
+    .pt-name{
+        top: 50%;
+        position: relative;
+        transform: translateY(-50%);
+        text-align: center;
+    }
+
 </style>
