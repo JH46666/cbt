@@ -419,12 +419,8 @@
                 // this.sortVisible = false;
             },
             //加载更多
-<<<<<<< HEAD
-            loadMore(){         
-=======
             loadMore(){
                 if(this.clickFlag) retrun;
->>>>>>> f44a6d5e6d0af0476400651813f7cecd18ae169f
                 if(this.resultData.length < this.totalSize){
                     this.pageNumber++;
                     if(this.activePropId==''){
@@ -552,10 +548,6 @@
                         // this.$set(item,'tasteVal','滋味');
                         this.$set(item,'tasteStar',stars);
                     }
-<<<<<<< HEAD
-                    this.resultData = this.resultData.concat(tempArr);   
-                    this.totalSize = res.total_record;                    
-=======
                     
                     // console.log(this.pageNumber)
                     if(this.pageNumber==1){
@@ -571,7 +563,6 @@
                     // this.resultData = [];
                     // this.resultData = this.resultData.concat(tempArr);
                     this.totalSize = res.total_record;
->>>>>>> f44a6d5e6d0af0476400651813f7cecd18ae169f
                     if(this.resultData.length === this.totalSize){
                         if(this.pageNumber > 1){
                             this.pageNumber--;
