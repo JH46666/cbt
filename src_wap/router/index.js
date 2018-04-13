@@ -621,7 +621,12 @@ router.beforeEach((to,from,next) => {
 	}
 	// 获取第一次进来的url
 	if (store.state.url=='') {
-  	store.commit('SET_URL', window.location.href.split('&')[0])
+		if(from.name == '茶帮通拼团'){
+			  store.commit('SET_URL', window.location.href.split('&')[0])
+		}else{
+			  store.commit('SET_URL', window.location.href)
+		}
+
  	}
 	//获取微信openid
 	if($tool.isWx){

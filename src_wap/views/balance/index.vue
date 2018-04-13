@@ -701,7 +701,11 @@
             })
         },
         beforeRouteEnter(to, from, next){
-
+            if(from.name == '收银台'){
+              next(vm => {
+                  vm.$router.go(-1);
+              })
+            }
             // 先获取会员的id
             if(!store.state.member.member.id) {
                 store.dispatch('getMemberData').then((res) => {
