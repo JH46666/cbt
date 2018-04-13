@@ -783,7 +783,7 @@
                 ._fix-camera-bg {
                     position: relative;
                     width: 0.80rem;
-                    height: 100%;
+                    height: 0.80rem;
                     top: 0rem;
                     left: 0rem;
                     margin: 0.2rem auto 0rem;
