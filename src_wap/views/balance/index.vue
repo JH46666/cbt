@@ -703,7 +703,7 @@
         beforeRouteEnter(to, from, next){
             if(from.name == '收银台'){
               next(vm => {
-                  vm.$router.go(-1);
+                  vm.$router.push({name: '订单列表',query: {orderStatus:'waitPay'}});
               })
             }
             // 先获取会员的id
