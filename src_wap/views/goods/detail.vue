@@ -1579,8 +1579,7 @@ export default {
         let  url = ''
         // 判断是否是ios微信浏览器
         if (window.__wxjs_is_wkwebview === true) {
-         url = this.$store.state.url.replace('from=singlemessage&isappinstalled=0','')
-         url = this.$store.state.url.replace('from=singlemessage&isappinstalled=1','')
+         url = this.$store.state.url
         } else {
          url = window.location.href
         }
@@ -1607,7 +1606,7 @@ export default {
           });
           let shareTitle = this.detailData.productExtInfo.title;
           let shareDesc = '雷军、李开复领投茶电商交易平台，茶帮通让茶叶买卖更轻松【茶帮通】';
-          let shareLink = window.location.href;
+          let shareLink = 'https://'+location.host+'/#/detail?proSKU='+this.proSku;
           let shareImg = 'https:'+this.detailData.productImgList[0].imgUrl;
             wx.ready(function(){
               wx.onMenuShareAppMessage({
