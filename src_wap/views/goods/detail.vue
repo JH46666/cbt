@@ -1605,7 +1605,7 @@ export default {
           });
           let shareTitle = this.detailData.productExtInfo.title;
           let shareDesc = '雷军、李开复领投茶电商交易平台，茶帮通让茶叶买卖更轻松【茶帮通】';
-          let shareLink = 'https://'+location.host+'/#/detail?proSku'+this.proSku;
+          let shareLink = 'https://'+location.host+'/#/detail?proSku='+this.proSku;
           let shareImg = 'https:'+this.detailData.productImgList[0].imgUrl;
             wx.ready(function(){
               wx.onMenuShareAppMessage({
