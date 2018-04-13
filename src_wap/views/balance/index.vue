@@ -696,6 +696,7 @@
                     this.commonUpdate();
                 } else {
                     this.address = this.myData.receiveAddrList.filter(val => val.isDefault)[0] ? this.myData.receiveAddrList.filter(val => val.isDefault)[0] : {}
+                    this.recoveryData();
                 }
             })
         },
