@@ -952,8 +952,7 @@ export default {
                 if(res.data.code == 1){
                     Toast({
                         message: res.data.msg,
-                        position: 'center',
-                        duration: 1000
+                        position: 'center'
                     });
                     return;
                 }
