@@ -1579,8 +1579,7 @@ export default {
         let  url = ''
         // 判断是否是ios微信浏览器
         if (window.__wxjs_is_wkwebview === true) {
-         url = this.$store.state.url.replace('from=singlemessage&isappinstalled=0','')
-         url = this.$store.state.url.replace('from=singlemessage&isappinstalled=1','')
+         url = this.$store.state.url
         } else {
          url = window.location.href
         }
