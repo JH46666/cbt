@@ -5,7 +5,7 @@
                 <!-- 拼团中 -->
                 <div v-if="orderDetailData.groupSuccess === 2 && orderDetailData.orderStatus !== 'CANCEL' && orderDetailData.orderStatus !== 'CLOSE' && orderDetailData.orderStatus !== 'WAIT_PAY'" class="groupping">
                     <div style="position: relative;">
-                        <div><img src="../../assets/images/cbt_icddxqpt.png" />
+                        <div class="pt-wrap"><img src="../../assets/images/cbt_icddxqpt.png" />
                         拼团中,差<span style="color: #f08200">{{ grouppingInfo.groupNumber - grouppingInfo.offerNumber }}</span>人
                     </div>
                     <div class="countdown">
@@ -1469,5 +1469,8 @@ export default {
 
     .detail .order_date .order_date_item{
         display: block;
+    }
+    .detail .order_btn .mint-button--default.is-plain{
+        width: auto;
     }
 </style>
