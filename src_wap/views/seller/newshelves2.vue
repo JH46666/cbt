@@ -580,7 +580,7 @@ import $api from 'api';
                         this.resize.imgs.mainImg.push(e.target.result);
                     }
                     this.resize.mainImgFile.push(e.target.files[0]);
-                    console.log(this.resize.mainImgFile[this.resize.mainImgFile.length - 1].name)
+                    // console.log(this.resize.mainImgFile[this.resize.mainImgFile.length - 1].name)
                 }else if(type === 'one'){
                     reader.onload = (e)=>{
                         this.resize.imgs.detailImg1.push(e.target.result);
