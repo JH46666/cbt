@@ -5,7 +5,7 @@
                 <!-- 拼团中 -->
                 <div v-if="orderDetailData.groupSuccess === 2 && orderDetailData.orderStatus !== 'CANCEL' && orderDetailData.orderStatus !== 'CLOSE' && orderDetailData.orderStatus !== 'WAIT_PAY'" class="groupping">
                     <div style="position: relative;">
-                        <div><img src="../../assets/images/cbt_icddxqpt.png" />
+                        <div class="ptrs"><img src="../../assets/images/cbt_icddxqpt.png" />
                         拼团中,差<span style="color: #f08200">{{ grouppingInfo.groupNumber - grouppingInfo.offerNumber }}</span>人
                     </div>
                     <div class="countdown">
@@ -1328,18 +1328,26 @@ export default {
     .groupping{
         display: block!important;
         .countdown{
-            width: 2.62rem;
+            // 拼团样式修改
+            // width: 2.62rem;
             height: 0.50rem;
-            padding: 0.18rem 0rem 0.12rem 0.2rem;
+            padding: 0.18rem 0.1rem 0.12rem 0.2rem;
             color: #fe9900;
             font-size: 0.22rem;
-            position: absolute;
-            right: -0.35rem;
+            // 拼团样式修改
+            float: right;
+            margin-right: -0.35rem;
+            // position: absolute;
+            // right: -0.35rem;
             background-color: #525150;
             border-radius: 0.25rem 0rem 0rem 0.25rem;
             display: flex;
             font-size: 0.24rem;
             .countdown-text{
+                // 拼团样式修改
+                float: left;
+                margin-top: -0.07rem;
+                // end
                 margin-left: 0.07rem;
                 color: #fff;
                 line-height: 0.34rem;
@@ -1347,9 +1355,17 @@ export default {
         }
     }
     .groupping-member-info{
+        //拼团样式修改
+        overflow: hidden;
+        display: block;
+        clear: both;
+        //end
         flex-wrap: wrap;
         padding-bottom: 0.3rem;
         .groupping-member-icon{
+            // 拼团样式修改
+            float: left;
+            // end
             margin-top: 0.3rem;
             position: relative;
             width: 1.00rem;
