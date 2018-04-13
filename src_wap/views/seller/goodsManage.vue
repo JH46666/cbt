@@ -67,7 +67,6 @@
                                 <span class="stock">库存<span class="number"> {{item.stockNum}} </span></span>
                             </div>
                         </div>
-<<<<<<< HEAD
                         <div class="flex-1 pro-txt _fix-pro-txt">
                             <h4 class="tit">{{ item.proName }}</h4>
                             <!-- 成团 -->
@@ -75,22 +74,6 @@
                                 <div class="_add-groupnum">{{ item.memberNum }}人团价&emsp;&nbsp;</div>
                                 <div class="price _fix-price" style="position:static">￥{{ toFixed(item.priceFightGroup) }}</div>
                                 <div class="_add-single-price">单买价：￥{{ toFixed(item.proPrice) }}</div>
-=======
-                        <!-- 中间商品 -->
-                        <div class="good-info flex">
-                            <div class="pro-img">
-                                <img :src="item.proImg" />
-                            </div>
-                            <div class="flex-1 pro-txt _fix-pro-txt">
-                                <h4 class="tit">{{ item.proName }}</h4>
-                                <!-- 成团 -->
-                                <div class="_add-tuan">
-                                    <div class="_add-groupnum">{{ item.memberNum }}人团价&emsp;&nbsp;</div>
-                                    <div class="price _fix-price">￥{{ toFixed(item.priceFightGroup) }}</div>
-                                    <div class="_add-single-price">单批价：￥{{ toFixed(item.proPrice) }}</div>
-                                </div>
-                                <p class="time_tag" v-if="item.isSales">限时特价</p>
->>>>>>> f44a6d5e6d0af0476400651813f7cecd18ae169f
                             </div>
                         </div>
                         <!-- 商品操作按钮 -->
@@ -126,7 +109,6 @@
                                 <span class="stock">库存<span class="number"> {{item.stockNum}} </span></span>
                             </div>
                         </div>
-<<<<<<< HEAD
                         <div class="flex-1 pro-txt _fix-pro-txt">
                             <h4 class="tit">{{item.proName}}</h4>
                             <!-- 成团 -->
@@ -134,22 +116,6 @@
                                 <div class="_add-groupnum">{{item.memberNum}}人团价&emsp;&nbsp;</div>
                                 <div class="price _fix-price"  style="position:static">￥{{toFixed(item.priceFightGroup)}}</div>
                                 <div class="_add-single-price" >单买价：￥{{toFixed(item.proPrice)}}</div>
-=======
-                        <!-- 中间商品 -->
-                        <div class="good-info flex">
-                            <div class="pro-img">
-                                <img :src="item.proImg" />
-                            </div>
-                            <div class="flex-1 pro-txt _fix-pro-txt">
-                                <h4 class="tit">{{item.proName}}</h4>
-                                <!-- 成团 -->
-                                <div class="_add-tuan">
-                                    <div class="_add-groupnum">{{item.memberNum}}人团价&emsp;&nbsp;</div>
-                                    <div class="price _fix-price">￥{{toFixed(item.priceFightGroup)}}</div>
-                                    <div class="_add-single-price">单批价：￥{{toFixed(item.proPrice)}}</div>
-                                </div>
-                                <p class="time_tag" v-if="item.isSales">限时特价</p>
->>>>>>> f44a6d5e6d0af0476400651813f7cecd18ae169f
                             </div>
                         </div>
                         <!-- 商品操作按钮 -->
