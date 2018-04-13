@@ -77,30 +77,30 @@
                                 市场价
                             </label>
                             <div class="item-right">
-                                <input type="number" id="10" placeholder="必填，市场价高于单买价" v-model="resize.form.goodsPtsj" @blur="comparePrice(resize.form.goodsPtsj,'goodsPtsj')"
+                                <input type="number" id="10" placeholder="必填，市场价高于单批价" v-model="resize.form.goodsPtsj" @blur="comparePrice(resize.form.goodsPtsj,'goodsPtsj')"
                                 />
                                 <p style="float:right">元</p>
                             </div>
                         </div>
                         <div class="item _fix-item">
                             <label class="item-left" for="11" style="white-space: nowrap;">
-                                单买价
+                                单批价
                             </label>
                             <div class="item-right">
-                                <input type="number" id="11" placeholder="必填，应高于商品团购价格" v-model="resize.form.goodsSj" @blur="comparePrice(resize.form.goodsSj,'goodsSj')"
+                                <input type="number" id="11" placeholder="必填，应高于商品团批价格" v-model="resize.form.goodsSj" @blur="comparePrice(resize.form.goodsSj,'goodsSj')"
                                 />
                                 <p style="float:right">元</p>
                             </div>
                             <div class="_add-price-error-tips" v-if="flagGoodsSj">
-                                <i class="iconfont icon-tishi"> 市场价需高于单买价</i>
+                                <i class="iconfont icon-tishi"> 市场价需高于单批价</i>
                             </div>
                         </div>
                         <div class="item">
                             <label class="item-left" for="12" style="white-space: nowrap;">
-                                团购价
+                                团批价
                             </label>
                             <div class="item-right">
-                                <input type="number" id="12" placeholder="必填，应低于商品单买价格" v-model="resize.form.goodsGroup" @blur="comparePrice(resize.form.goodsGroup,'goodsGroup')"
+                                <input type="number" id="12" placeholder="必填，应低于商品单批价格" v-model="resize.form.goodsGroup" @blur="comparePrice(resize.form.goodsGroup,'goodsGroup')"
                                 />
                                 <p style="float:right">元</p>
                             </div>
@@ -115,7 +115,7 @@
                                 <p style="float:right">人</p>
                             </div>
                             <div class="_add-price-error-tips" v-if="flagGoodsGroup">
-                                <i class="iconfont icon-tishi"> 团购价需低于市场价</i>
+                                <i class="iconfont icon-tishi"> 团批价需低于市场价</i>
                             </div>
                             <div class="_add-num-error-tips" v-if="flagGoodsGroupNum">
                                 <i class="iconfont icon-tishi"> 人数需介于2和10之间</i>
@@ -531,12 +531,17 @@
                 this.resize.form['goodsPtsj'] = parseFloat(this.resize.form['goodsSx'] * 2).toFixed(2);
             },
             goStep3() {
-                this.$router.push({
-                    name: '商品编辑-2',
-                    query: {
-                        state: this.$route.query.state
+                // 阻止没有触发blur事件直接点击下一步
+                setTimeout(() => {
+                    if (this.flagGoodsSj || this.flagGoodsGroup || this.flagGoodsGroupNum) {
+                        return;
                     }
-                })
+                    else {
+                        this.$router.push({
+                            name: '新品上架-2'
+                        })
+                    }
+                }, 100);
             },
             selectRightList(index) {
                 this.selectClass = index;

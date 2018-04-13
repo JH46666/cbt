@@ -5,7 +5,7 @@
                 <!-- 拼团中 -->
                 <div v-if="orderDetailData.groupSuccess === 2 && orderDetailData.orderStatus !== 'CANCEL' && orderDetailData.orderStatus !== 'CLOSE' && orderDetailData.orderStatus !== 'WAIT_PAY'" class="groupping">
                     <div style="position: relative;">
-                        <div><img src="../../assets/images/cbt_icddxqpt.png" />
+                        <div class="pt-wrap"><img src="../../assets/images/cbt_icddxqpt.png" />
                         拼团中,差<span style="color: #f08200">{{ grouppingInfo.groupNumber - grouppingInfo.offerNumber }}</span>人
                     </div>
                     <div class="countdown">
@@ -321,17 +321,17 @@
                             </template>
 
                         </div>
-                        <div class="order_head"  v-if="orderDetailData.expressDeliveryCode != 'get_self'">
+                        <div class="order_head"  v-if="orderDetailData.expressDeliveryCode != 'get_self' && orderDetailData.expressNo">
                             <div class="order_express" v-if="orderDetailData.payType!='CASH_DELIVERY'">
-                                <img src="../../assets/images/sfkd.png" v-if="orderDetailData.expressDeliveryCode == 'ship_sf' || orderDetailData.expressDeliveryCode == 'SF'" />
-                                <img src="../../assets/images/stkd.png" v-if="orderDetailData.expressDeliveryCode == 'ship_sto' || orderDetailData.expressDeliveryCode == 'STO'" />
-                                <img src="../../assets/images/emskd.png" v-if="orderDetailData.expressDeliveryCode == 'ship_ems' || orderDetailData.expressDeliveryCode == 'EMS'" /> {{ orderDetailData.expressDeliveryName }}
+                                <img src="../../assets/images/sfkd.png" v-if="!orderDetailData.sellerOrgId && (orderDetailData.expressDeliveryCode == 'ship_sf' || orderDetailData.expressDeliveryCode == 'SF')" />
+                                <img src="../../assets/images/stkd.png" v-if="!orderDetailData.sellerOrgId && (orderDetailData.expressDeliveryCode == 'ship_sto' || orderDetailData.expressDeliveryCode == 'STO')" />
+                                <img src="../../assets/images/emskd.png" v-if="!orderDetailData.sellerOrgId && (orderDetailData.expressDeliveryCode == 'ship_ems' || orderDetailData.expressDeliveryCode == 'EMS')" /> {{ orderDetailData.expressDeliveryName }}
                                 <span>{{ orderDetailData.expressNo }}</span>
                             </div>
                             <div class="order_express" v-else>
-                                <img src="../../assets/images/sfkd.png" v-if="orderDetailData.expressDeliveryCode == 'ship_sf' || orderDetailData.expressDeliveryCode == 'SF'" />
-                                <img src="../../assets/images/stkd.png" v-if="orderDetailData.expressDeliveryCode == 'ship_sto' || orderDetailData.expressDeliveryCode == 'STO'" />
-                                <img src="../../assets/images/emskd.png" v-if="orderDetailData.expressDeliveryCode == 'ship_ems' || orderDetailData.expressDeliveryCode == 'EMS'" /> {{ orderDetailData.expressDeliveryName }}-货到付款
+                                <img src="../../assets/images/sfkd.png" v-if="!orderDetailData.sellerOrgId && (orderDetailData.expressDeliveryCode == 'ship_sf' || orderDetailData.expressDeliveryCode == 'SF')" />
+                                <img src="../../assets/images/stkd.png" v-if="!orderDetailData.sellerOrgId && (orderDetailData.expressDeliveryCode == 'ship_sto' || orderDetailData.expressDeliveryCode == 'STO')" />
+                                <img src="../../assets/images/emskd.png" v-if="!orderDetailData.sellerOrgId && (orderDetailData.expressDeliveryCode == 'ship_ems' || orderDetailData.expressDeliveryCode == 'EMS')" /> {{ orderDetailData.expressDeliveryName }}-货到付款
                                 <span>{{ orderDetailData.expressNo }}</span>
                             </div>
                         </div>
@@ -949,11 +949,10 @@ export default {
             }
             this.$http.get(`/erp/layim/addFriend?friend=${addId}&userId=${selfId}`).then(res => {
                 let friendId = res.data.data;
-                if (friendId == selfId) {
+                if(res.data.code == 1){
                     Toast({
-                        message: '不能和自己聊天！',
-                        position: 'center',
-                        duration: 1000
+                        message: res.data.msg,
+                        position: 'center'
                     });
                     return;
                 }
@@ -1319,7 +1318,7 @@ export default {
 <style lang="less" scoped>
     @import '~@/styles/order/detail.less';
     .height2{
-        height: unset!important;
+        height: auto!important;
         padding-top: 0.36rem!important;
     }
     .width100{
@@ -1328,7 +1327,7 @@ export default {
     .groupping{
         display: block!important;
         .countdown{
-            width: 2.62rem;
+            width: 2.75rem;
             height: 0.50rem;
             padding: 0.18rem 0rem 0.12rem 0.2rem;
             color: #fe9900;
@@ -1343,6 +1342,11 @@ export default {
                 margin-left: 0.07rem;
                 color: #fff;
                 line-height: 0.34rem;
+                // 样式修改
+                display: block;
+                position: absolute;
+                padding-left: 0.28rem;
+                top: 0.1rem;
             }
         }
     }
@@ -1358,6 +1362,7 @@ export default {
             justify-content: center;
             background-color: #fe9900;
             border-radius: 50%;
+            border: #fff solid 0.02rem;
             img{
                 width: 1.04rem!important;
                 height: 1.04rem!important;
@@ -1365,7 +1370,7 @@ export default {
                 &:nth-child(1){
                     border-radius: 50%;
                     position: absolute;
-                    left: 0rem;
+                    
                 }
             }
             .master-face{
@@ -1464,5 +1469,8 @@ export default {
 
     .detail .order_date .order_date_item{
         display: block;
+    }
+    .detail .order_btn .mint-button--default.is-plain{
+        width: auto;
     }
 </style>

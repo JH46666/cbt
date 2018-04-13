@@ -399,11 +399,10 @@
                 }
                 this.$http.get(`/erp/layim/addFriendByMember?friend=${addId}&userId=${selfId}`).then(res => {
                     let friendId = res.data.data;
-                    if (friendId == selfId) {
+                    if(res.data.code == 1){
                         Toast({
-                            message: '不能和自己聊天！',
-                            position: 'center',
-                            duration: 1000
+                            message: res.data.msg,
+                            position: 'center'
                         });
                         return;
                     }

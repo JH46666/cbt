@@ -67,7 +67,7 @@
             </div>
         </div>
         <!-- 底部空白 -->
-        <div class="bottom-blank" style="background-color: #fff"></div>
+        <div class="bottom-blank" style="background-color: #fff; min-height: 3.34rem;"></div>
         <!-- 底部按钮 -->
         <div style="position: fixed;bottom: 0rem; left: 0rem; width: 100%;">
             <div class="flex btns">
@@ -735,6 +735,10 @@
                 ._add-title-small-box {
                     position: absolute;
                     left: 0rem;
+                    right: 0rem;
+                    margin: auto 0;
+                    top: 0rem;
+                    bottom: 0rem;
                     width: 0.08rem;
                     height: 0.24rem;
                     background-color: #f08200;
@@ -777,17 +781,16 @@
                 position: relative;
                 background-color: #f5f5f5;
                 ._fix-camera-bg {
-                    position: unset;
-                    width: 0.88rem;
-                    height: 0.88rem;
+                    position: relative;
+                    width: 0.80rem;
+                    height: 0.80rem;
                     top: 0rem;
                     left: 0rem;
-                    margin: 0.2rem auto 0;
+                    margin: 0.2rem auto 0rem;
                 }
                 ._add-up-num {
-                    /* margin-top: 0.10rem; */
-                    position: absolute;
-                    bottom: 0;
+                    padding-top: 0.10rem;
+                    margin: 0 auto;
                 }
             }
         }

@@ -365,6 +365,7 @@ export default {
         // 设置参数
         this.text = query.q;
         this.sortClass = query.c;
+        if(query.brand)this.selectedBrand = query.brand;
         switch (query.c) {
           case '1':
             this.sortName = 'salesNum';

@@ -3,7 +3,7 @@
     <div class="zuipin-section index-wrapper">
         <div class="model lists">
             <!-- start -->
-                <router-link :to="{name: '搜索',query:{q:'醉品朴茶',c:1,sort:'desc'}}">
+                <router-link :to="{name: '搜索',query:{q:'醉品朴茶',c:1,sort:'desc',brand:'醉品朴茶'}}">
                     <img class="lazy" data-original="https://img3.zuipin.cn/new-wap/%E5%93%81%E7%89%8C%E5%88%97%E8%A1%A8%E9%A1%B5_wap/zppucha.jpg" src="https://img1.zuipin.cn/staticPpg/images/preload.png" alt="">
                     <div class="title">
                         <h1>醉品朴茶</h1><span class="r-price">25元起</span></div>
@@ -27,7 +27,7 @@
                         <h1>魏荫</h1><span class="r-price">143元起</span></div>
                     <p class="desc clearfix"><span class="l-txt">中国地理标志、国家地理标志保护产品</span></p>
                 </router-link>
-                <router-link :to="{name: '搜索',query:{q:'正山堂红茶',c:1,sort:'desc'}}">
+                <router-link :to="{name: '搜索',query:{q:'正山堂红茶',c:1,sort:'desc',brand:'正山堂茶业'}}">
                     <img class="lazy" data-original="https://img3.zuipin.cn/new-wap/%E5%93%81%E7%89%8C%E5%88%97%E8%A1%A8%E9%A1%B5_wap/08zhengshantang.jpg" src="https://img1.zuipin.cn/staticPpg/images/preload.png" alt="">
                     <div class="title">
                         <h1>正山堂红茶</h1><span class="r-price">256元起</span></div>

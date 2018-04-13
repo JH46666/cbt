@@ -187,8 +187,8 @@
 </template>
 <script>
 import store from 'store';
-// import wx from 'weixin-js-sdk';
-let wx = require('weixin-js-sdk');
+import wx from 'weixin-js-sdk';
+// let wx = require('weixin-js-sdk');
 export default {
   data(){
     return{

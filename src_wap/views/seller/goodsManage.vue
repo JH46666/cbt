@@ -1,75 +1,73 @@
 <template>
-    <div class="goods_manage_wrapper" :class="{'empty':isEmpty}" @scroll="doScroll" ref="scroll_wrapper" :style="style">
-        <!-- 搜索框 -->
-        <div class="search-wrapper flex" v-show="!isEmpty">
-            <div class="flex search-inner">
-                <div class="search-txt">
-                    <input type="text" name="" value="" v-model="searchTxt" placeholder="搜索商品">
-                    <a href="javascript:void(0)" class="clear-txt" v-show="clearFlag" @click="clearTxt">
-                        <i class="iconfont">&#xe651;</i>
+    <!-- 把底部fixed栏与滚动div同级 -->
+    <div>
+        <div class="goods_manage_wrapper content_inner" :class="{'empty':isEmpty}" @scroll="doScroll" ref="scroll_wrapper" :style="style">
+            <!-- 搜索框 -->
+            <div class="search-wrapper flex" v-show="!isEmpty">
+                <div class="flex search-inner">
+                    <div class="search-txt">
+                        <input type="text" name="" value="" v-model="searchTxt" placeholder="搜索商品">
+                        <a href="javascript:void(0)" class="clear-txt" v-show="clearFlag" @click="clearTxt">
+                            <i class="iconfont">&#xe651;</i>
+                        </a>
+                    </div>
+                    <a class="flex-1 search-btn" href="javascript:void(0)" @click="searchMethod">
+                        <i class="iconfont">&#xe649;</i>
                     </a>
                 </div>
-                <a class="flex-1 search-btn" href="javascript:void(0)" @click="searchMethod">
-                    <i class="iconfont">&#xe649;</i>
-                </a>
+                <div class="cancel" @click="cancelText">取消</div>
             </div>
-            <div class="cancel" @click="cancelText">取消</div>
-        </div>
-        <!-- tab按钮 -->
-        <div class="tab-btn-wrapper" ref="tabs">
-            <div class="flex">
-                <a class="flex-1" :class="{on: tabId == 'yes'}" @click="selTab('yes')" href="javascript:void(0);">已上架({{ onShelf.totalPage }})</a>
-                <a class="flex-1" :class="{on: tabId == 'no'}" @click="selTab('no')" href="javascript:void(0);">未上架({{ offShelf.totalPage }})</a>
+            <!-- tab按钮 -->
+            <div class="tab-btn-wrapper" ref="tabs">
+                <div class="flex">
+                    <a class="flex-1" :class="{on: tabId == 'yes'}" @click="selTab('yes')" href="javascript:void(0);">已上架({{ onShelf.totalPage }})</a>
+                    <a class="flex-1" :class="{on: tabId == 'no'}" @click="selTab('no')" href="javascript:void(0);">未上架({{ offShelf.totalPage }})</a>
+                </div>
             </div>
-        </div>
-        <!-- 排序条件 -->
-        <div class="sort-wrapper flex" :class="{'fixed-sort': fixedFlag,'wx-fixed':wxFixedFlag}" v-show="!isEmpty">
-            <label class="flex-1 sort-item" :class="{on:sortCondition=='1'}">
-                {{ selectText }}
-                <input type="radio" name="" value="1" hidden v-model="sortCondition" @click="resMethod('1')">
-                <span class="sort-icons">
-                    <i class="iconfont sort-asce" :class="{on: descFlag}">&#xe610;</i>
-                    <i class="iconfont sort-desc" :class="{on: !descFlag}">&#xe950;</i>
-                </span>
-            </label>
-            <label class="flex-1 sort-item" :class="{on:sortCondition=='2'}">
-                销量
-                <input type="radio" name="" value="2" hidden v-model="sortCondition" @click="resMethod('2')">
-                <span class="sort-icons">
-                    <i class="iconfont sort-asce" :class="{on: descFlag}">&#xe610;</i>
-                    <i class="iconfont sort-desc" :class="{on: !descFlag}">&#xe950;</i>
-                </span>
-            </label>
-            <label class="flex-1 sort-item" :class="{on:sortCondition=='3'}">
-                库存
-                <input type="radio" name="" value="3" hidden v-model="sortCondition" @click="resMethod('3')">
-                <span class="sort-icons">
-                    <i class="iconfont sort-asce" :class="{on: descFlag}">&#xe610;</i>
-                    <i class="iconfont sort-desc" :class="{on: !descFlag}">&#xe950;</i>
-                </span>
-            </label>
-        </div>
-        <!-- 商品 -->
-        <div class="tab-content-wrapper">
-            <!-- 已上架 -->
-            <div v-show="tabId == 'yes'" class="rack-up" v-infinite-scroll="loadMore1" infinite-scroll-disabled="true" infinite-scroll-distance="10">
-                <div class="good-item" v-if="onShelf.listData.length>0" v-for="(item,index) in onShelf.listData" :key="index">
-                    <!-- 头部 caption -->
-                    <div class="item-caption flex">
-                        <div class="cap-l flex flex-1 align_items_c">
-                            <!-- <label class="check-cir" :class="{'checked':item.checked}" @click="item.checked = !item.checked"></label> -->
-                            <span>上架 {{item.createTime}}</span>
+            <!-- 排序条件 -->
+            <div class="sort-wrapper flex" :class="{'fixed-sort': fixedFlag,'wx-fixed':wxFixedFlag}" v-show="!isEmpty">
+                <label class="flex-1 sort-item" :class="{on:sortCondition=='1'}">
+                    {{ selectText }}
+                    <input type="radio" name="" value="1" hidden v-model="sortCondition" @click="resMethod('1')">
+                    <span class="sort-icons">
+                        <i class="iconfont sort-asce" :class="{on: descFlag}">&#xe610;</i>
+                        <i class="iconfont sort-desc" :class="{on: !descFlag}">&#xe950;</i>
+                    </span>
+                </label>
+                <label class="flex-1 sort-item" :class="{on:sortCondition=='2'}">
+                    销量
+                    <input type="radio" name="" value="2" hidden v-model="sortCondition" @click="resMethod('2')">
+                    <span class="sort-icons">
+                        <i class="iconfont sort-asce" :class="{on: descFlag}">&#xe610;</i>
+                        <i class="iconfont sort-desc" :class="{on: !descFlag}">&#xe950;</i>
+                    </span>
+                </label>
+                <label class="flex-1 sort-item" :class="{on:sortCondition=='3'}">
+                    库存
+                    <input type="radio" name="" value="3" hidden v-model="sortCondition" @click="resMethod('3')">
+                    <span class="sort-icons">
+                        <i class="iconfont sort-asce" :class="{on: descFlag}">&#xe610;</i>
+                        <i class="iconfont sort-desc" :class="{on: !descFlag}">&#xe950;</i>
+                    </span>
+                </label>
+            </div>
+            <!-- 商品 -->
+            <div class="tab-content-wrapper">
+                <!-- 已上架 -->
+                <div v-show="tabId == 'yes'" class="rack-up" v-infinite-scroll="loadMore1" infinite-scroll-disabled="true" infinite-scroll-distance="10">
+                    <div class="good-item" v-if="onShelf.listData.length>0" v-for="(item,index) in onShelf.listData" :key="index">
+                        <!-- 头部 caption -->
+                        <div class="item-caption flex">
+                            <div class="cap-l flex flex-1 align_items_c">
+                                <!-- <label class="check-cir" :class="{'checked':item.checked}" @click="item.checked = !item.checked"></label> -->
+                                <span>上架 {{item.createTime}}</span>
+                            </div>
+                            <div class="cap-r algin_r">
+                                <span class="saled">已售<span class="number" v-if="item.salesNum"> {{item.salesNum}} </span><span class="number" v-else> 0 </span></span>
+                                <span class="stock">库存<span class="number"> {{item.stockNum}} </span></span>
+                            </div>
                         </div>
-                        <div class="cap-r algin_r">
-                            <span class="saled">已售<span class="number" v-if="item.salesNum"> {{item.salesNum}} </span><span class="number" v-else> 0 </span></span>
-                            <span class="stock">库存<span class="number"> {{item.stockNum}} </span></span>
-                        </div>
-                    </div>
-                    <!-- 中间商品 -->
-                    <div class="good-info flex">
-                        <div class="pro-img">
-                            <img :src="item.proImg" />
-                        </div>
+<<<<<<< HEAD
                         <div class="flex-1 pro-txt _fix-pro-txt">
                             <h4 class="tit">{{ item.proName }}</h4>
                             <!-- 成团 -->
@@ -77,48 +75,58 @@
                                 <div class="_add-groupnum">{{ item.memberNum }}人团价&emsp;&nbsp;</div>
                                 <div class="price _fix-price" style="position:static">￥{{ toFixed(item.priceFightGroup) }}</div>
                                 <div class="_add-single-price">单买价：￥{{ toFixed(item.proPrice) }}</div>
+=======
+                        <!-- 中间商品 -->
+                        <div class="good-info flex">
+                            <div class="pro-img">
+                                <img :src="item.proImg" />
                             </div>
-                            <p class="time_tag" v-if="item.isSales">限时特价</p>
+                            <div class="flex-1 pro-txt _fix-pro-txt">
+                                <h4 class="tit">{{ item.proName }}</h4>
+                                <!-- 成团 -->
+                                <div class="_add-tuan">
+                                    <div class="_add-groupnum">{{ item.memberNum }}人团价&emsp;&nbsp;</div>
+                                    <div class="price _fix-price">￥{{ toFixed(item.priceFightGroup) }}</div>
+                                    <div class="_add-single-price">单批价：￥{{ toFixed(item.proPrice) }}</div>
+                                </div>
+                                <p class="time_tag" v-if="item.isSales">限时特价</p>
+>>>>>>> f44a6d5e6d0af0476400651813f7cecd18ae169f
+                            </div>
+                        </div>
+                        <!-- 商品操作按钮 -->
+                        <div class="flex options">
+                            <a href="javascript:void(0);" class="flex-1 algin_c" @click="$router.push({name: '商品详情',query: {proSku:item.proSku}})"><i class="iconfont">&#xe681;</i>预览</a>
+                            <a href="javascript:void(0);" class="flex-1 algin_c" @click="goEditPage(item,'ON_SHELF')"><i class="iconfont">&#xe682;</i>编辑</a>
+                            <a href="javascript:void(0);" class="flex-1 algin_c" @click="stateMethod(item.proExtId,'down')"><i class="iconfont">&#xe683;</i>下架</a>
                         </div>
                     </div>
-                    <!-- 商品操作按钮 -->
-                    <div class="flex options">
-                        <a href="javascript:void(0);" class="flex-1 algin_c" @click="$router.push({name: '商品详情',query: {proSku:item.proSku}})"><i class="iconfont">&#xe681;</i>预览</a>
-                        <a href="javascript:void(0);" class="flex-1 algin_c" @click="goEditPage(item,'ON_SHELF')"><i class="iconfont">&#xe682;</i>编辑</a>
-                        <a href="javascript:void(0);" class="flex-1 algin_c" @click="stateMethod(item.proExtId,'down')"><i class="iconfont">&#xe683;</i>下架</a>
+                    <div class="goods-loading" v-if="onShelf.listData.length < onShelf.totalPage">
+                        <mt-spinner type="fading-circle" color="#f08200"></mt-spinner>
+                        <span class="loading-text">正在努力加载中~</span>
+                    </div>
+                    <div class="no-more" v-if="onShelf.listData.length == onShelf.totalPage && onShelf.totalPage > 0">没有更多了呦~</div>
+                    <div v-if="onShelf.totalPage==0">
+                        <div class="no-item">
+                            <img src="../../assets/images/wusousoushuju.jpg" alt="">
+                            <p>暂无已上架商品~</p>
+                        </div>
                     </div>
                 </div>
-                <div class="goods-loading" v-if="onShelf.listData.length < onShelf.totalPage">
-                    <mt-spinner type="fading-circle" color="#f08200"></mt-spinner>
-                    <span class="loading-text">正在努力加载中~</span>
-                </div>
-                <div class="no-more" v-if="onShelf.listData.length == onShelf.totalPage && onShelf.totalPage > 0">没有更多了呦~</div>
-                <div v-if="onShelf.totalPage==0">
-                    <div class="no-item">
-                        <img src="../../assets/images/wusousoushuju.jpg" alt="">
-                        <p>暂无已上架商品~</p>
-                    </div>
-                </div>
-            </div>
-            <!-- 未上架 -->
-            <div v-show="tabId == 'no'" class="no-shelves" v-infinite-scroll="loadMore2" infinite-scroll-disabled="true" infinite-scroll-distance="10">
-                <div class="good-item" v-for="(item,index) in offShelf.listData" v-if="offShelf.listData.length>0" :key="index">
-                    <!-- 头部 caption -->
-                    <div class="item-caption flex">
-                        <div class="cap-l flex flex-1 align_items_c">
-                            <!-- <label class="check-cir" :class="{'checked':item.checked}" @click="item.checked = !item.checked"></label> -->
-                            <span>创建 {{item.createTime}}</span>
+                <!-- 未上架 -->
+                <div v-show="tabId == 'no'" class="no-shelves" v-infinite-scroll="loadMore2" infinite-scroll-disabled="true" infinite-scroll-distance="10">
+                    <div class="good-item" v-for="(item,index) in offShelf.listData" v-if="offShelf.listData.length>0" :key="index">
+                        <!-- 头部 caption -->
+                        <div class="item-caption flex">
+                            <div class="cap-l flex flex-1 align_items_c">
+                                <!-- <label class="check-cir" :class="{'checked':item.checked}" @click="item.checked = !item.checked"></label> -->
+                                <span>创建 {{item.createTime}}</span>
+                            </div>
+                            <div class="cap-r algin_r">
+                                <span class="saled">已售<span class="number" v-if="item.salesNum"> {{item.salesNum}} </span><span class="number" v-else> 0 </span></span>
+                                <span class="stock">库存<span class="number"> {{item.stockNum}} </span></span>
+                            </div>
                         </div>
-                        <div class="cap-r algin_r">
-                            <span class="saled">已售<span class="number" v-if="item.salesNum"> {{item.salesNum}} </span><span class="number" v-else> 0 </span></span>
-                            <span class="stock">库存<span class="number"> {{item.stockNum}} </span></span>
-                        </div>
-                    </div>
-                    <!-- 中间商品 -->
-                    <div class="good-info flex">
-                        <div class="pro-img">
-                            <img :src="item.proImg" />
-                        </div>
+<<<<<<< HEAD
                         <div class="flex-1 pro-txt _fix-pro-txt">
                             <h4 class="tit">{{item.proName}}</h4>
                             <!-- 成团 -->
@@ -126,50 +134,66 @@
                                 <div class="_add-groupnum">{{item.memberNum}}人团价&emsp;&nbsp;</div>
                                 <div class="price _fix-price"  style="position:static">￥{{toFixed(item.priceFightGroup)}}</div>
                                 <div class="_add-single-price" >单买价：￥{{toFixed(item.proPrice)}}</div>
+=======
+                        <!-- 中间商品 -->
+                        <div class="good-info flex">
+                            <div class="pro-img">
+                                <img :src="item.proImg" />
                             </div>
-                            <p class="time_tag" v-if="item.isSales">限时特价</p>
+                            <div class="flex-1 pro-txt _fix-pro-txt">
+                                <h4 class="tit">{{item.proName}}</h4>
+                                <!-- 成团 -->
+                                <div class="_add-tuan">
+                                    <div class="_add-groupnum">{{item.memberNum}}人团价&emsp;&nbsp;</div>
+                                    <div class="price _fix-price">￥{{toFixed(item.priceFightGroup)}}</div>
+                                    <div class="_add-single-price">单批价：￥{{toFixed(item.proPrice)}}</div>
+                                </div>
+                                <p class="time_tag" v-if="item.isSales">限时特价</p>
+>>>>>>> f44a6d5e6d0af0476400651813f7cecd18ae169f
+                            </div>
+                        </div>
+                        <!-- 商品操作按钮 -->
+                        <div class="flex options">
+                            <a href="javascript:void(0);" class="flex-1 algin_c" @click="$router.push({name: '商品详情',query: {proSku:item.proSku}})"><i class="iconfont">&#xe681;</i>预览</a>
+                            <a href="javascript:void(0);" class="flex-1 algin_c" @click="goEditPage(item,'OFF_SHELF')"><i class="iconfont">&#xe682;</i>编辑</a>
+                            <a href="javascript:void(0);" class="flex-1 algin_c" @click="stateMethod(item.proExtId,'up')"><i class="iconfont">&#xe680;</i>上架</a>
                         </div>
                     </div>
-                    <!-- 商品操作按钮 -->
-                    <div class="flex options">
-                        <a href="javascript:void(0);" class="flex-1 algin_c" @click="$router.push({name: '商品详情',query: {proSku:item.proSku}})"><i class="iconfont">&#xe681;</i>预览</a>
-                        <a href="javascript:void(0);" class="flex-1 algin_c" @click="goEditPage(item,'OFF_SHELF')"><i class="iconfont">&#xe682;</i>编辑</a>
-                        <a href="javascript:void(0);" class="flex-1 algin_c" @click="stateMethod(item.proExtId,'up')"><i class="iconfont">&#xe680;</i>上架</a>
+                    <div class="goods-loading" v-if="offShelf.listData.length < offShelf.totalPage">
+                        <mt-spinner type="fading-circle" color="#f08200"></mt-spinner>
+                        <span class="loading-text">正在努力加载中~</span>
                     </div>
-                </div>
-                <div class="goods-loading" v-if="offShelf.listData.length < offShelf.totalPage">
-                    <mt-spinner type="fading-circle" color="#f08200"></mt-spinner>
-                    <span class="loading-text">正在努力加载中~</span>
-                </div>
-                <div class="no-more" v-if="offShelf.listData.length == offShelf.totalPage && offShelf.totalPage > 0">没有更多了呦~</div>
-                <div v-if="offShelf.totalPage==0">
-                    <div class="no-item">
-                        <img src="../../assets/images/wusousoushuju.jpg" alt="">
-                        <p>暂无未上架商品~</p>
+                    <div class="no-more" v-if="offShelf.listData.length == offShelf.totalPage && offShelf.totalPage > 0">没有更多了呦~</div>
+                    <div v-if="offShelf.totalPage==0">
+                        <div class="no-item">
+                            <img src="../../assets/images/wusousoushuju.jpg" alt="">
+                            <p>暂无未上架商品~</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- 底部fixed栏 -->
-        <div class="flex fix-bottom align_items_c">
-            <div class="seller-center" @click="$router.push({name: '卖家中心'})">
-                <i class="iconfont">&#xe676;</i>
-                <p>卖家中心</p>
+        <div class="goods_manage_wrapper">
+            <!-- 底部fixed栏 -->
+            <div class="flex fix-bottom align_items_c">
+                <div class="seller-center" @click="$router.push({name: '卖家中心'})">
+                    <i class="iconfont">&#xe676;</i>
+                    <p>卖家中心</p>
+                </div>
+                <a v-show="!isEmpty" class="flex-1 noshelves-btn batch-btn" href="javascript:void(0);" @click="goBrect">批量处理</a>
+                <a class="flex-1 noshelves-btn created-btn" href="javascript:void(0);" @click="goCreate">创建商品</a>
             </div>
-            <a v-show="!isEmpty" class="flex-1 noshelves-btn batch-btn" href="javascript:void(0);" @click="goBrect">批量处理</a>
-            <a class="flex-1 noshelves-btn created-btn" href="javascript:void(0);" @click="goCreate">创建商品</a>
+            <!-- 底部fixed栏 -->
+            <!-- <div class="flex fix-bottom align_items_c">
+                        <div class="flex-1 flex align_items_c" style="padding-left: .3rem;">
+                            <label class="check-cir" :class="{checked: isAll}" @click="checkedAll"></label>
+                            <span>已选 (<span>{{ checkedNum }}</span>)</span>
+                        </div>
+                        <a class="delete-btn" href="javascript:void(0);" @click="deleteMethod" v-if="tabId === 'no'">删除</a>
+                        <a class="rackup-btn" href="javascript:void(0);" @click="downMethod" v-if="tabId === 'yes'">下架</a>
+                        <a class="rackup-btn" href="javascript:void(0);" @click="downMethod" v-else>上架</a>
+                    </div> -->
         </div>
-         <!-- 底部fixed栏 -->
-        <!-- 底部fixed栏 -->
-        <!-- <div class="flex fix-bottom align_items_c">
-            <div class="flex-1 flex align_items_c" style="padding-left: .3rem;">
-                <label class="check-cir" :class="{checked: isAll}" @click="checkedAll"></label>
-                <span>已选 (<span>{{ checkedNum }}</span>)</span>
-            </div>
-            <a class="delete-btn" href="javascript:void(0);" @click="deleteMethod" v-if="tabId === 'no'">删除</a>
-            <a class="rackup-btn" href="javascript:void(0);" @click="downMethod" v-if="tabId === 'yes'">下架</a>
-            <a class="rackup-btn" href="javascript:void(0);" @click="downMethod" v-else>上架</a>
-        </div> -->
     </div>
 </template>
 <script>
