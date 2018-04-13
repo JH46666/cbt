@@ -276,7 +276,7 @@
                 <div class="dialog_type_title">
                     选择品类
                 </div>
-                <div class="dialog_type_content" style="display: unset;">
+                <div class="dialog_type_content" style="display: block;">
                     <div class="type_1">
                         <div class="type_item" v-for="(item, index) in oneTypeList" :key="index" :class="{on: item.id === resize.oneClass}" @click="selectOneType(item, index)">
                             {{ item.name }}
@@ -924,7 +924,7 @@
                 /* justify-content: space-between; */
                 padding-top: 0rem; 
                 ._add-type_item {
-                    width: unset!important;                   
+                    width: auto!important;                   
                     padding-left: 0.20rem;
                     padding-right: 0.20rem; 
                     margin-top: 0.40rem!important;
