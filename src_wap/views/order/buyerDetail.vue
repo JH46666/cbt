@@ -323,15 +323,15 @@
                         </div>
                         <div class="order_head"  v-if="orderDetailData.expressDeliveryCode != 'get_self' && orderDetailData.expressNo">
                             <div class="order_express" v-if="orderDetailData.payType!='CASH_DELIVERY'">
-                                <img src="../../assets/images/sfkd.png" v-if="orderDetailData.expressDeliveryCode == 'ship_sf' || orderDetailData.expressDeliveryCode == 'SF'" />
-                                <img src="../../assets/images/stkd.png" v-if="orderDetailData.expressDeliveryCode == 'ship_sto' || orderDetailData.expressDeliveryCode == 'STO'" />
-                                <img src="../../assets/images/emskd.png" v-if="orderDetailData.expressDeliveryCode == 'ship_ems' || orderDetailData.expressDeliveryCode == 'EMS'" /> {{ orderDetailData.expressDeliveryName }}
+                                <img src="../../assets/images/sfkd.png" v-if="!orderDetailData.sellerOrgId && (orderDetailData.expressDeliveryCode == 'ship_sf' || orderDetailData.expressDeliveryCode == 'SF')" />
+                                <img src="../../assets/images/stkd.png" v-if="!orderDetailData.sellerOrgId && (orderDetailData.expressDeliveryCode == 'ship_sto' || orderDetailData.expressDeliveryCode == 'STO')" />
+                                <img src="../../assets/images/emskd.png" v-if="!orderDetailData.sellerOrgId && (orderDetailData.expressDeliveryCode == 'ship_ems' || orderDetailData.expressDeliveryCode == 'EMS')" /> {{ orderDetailData.expressDeliveryName }}
                                 <span>{{ orderDetailData.expressNo }}</span>
                             </div>
                             <div class="order_express" v-else>
-                                <img src="../../assets/images/sfkd.png" v-if="orderDetailData.expressDeliveryCode == 'ship_sf' || orderDetailData.expressDeliveryCode == 'SF'" />
-                                <img src="../../assets/images/stkd.png" v-if="orderDetailData.expressDeliveryCode == 'ship_sto' || orderDetailData.expressDeliveryCode == 'STO'" />
-                                <img src="../../assets/images/emskd.png" v-if="orderDetailData.expressDeliveryCode == 'ship_ems' || orderDetailData.expressDeliveryCode == 'EMS'" /> {{ orderDetailData.expressDeliveryName }}-货到付款
+                                <img src="../../assets/images/sfkd.png" v-if="!orderDetailData.sellerOrgId && (orderDetailData.expressDeliveryCode == 'ship_sf' || orderDetailData.expressDeliveryCode == 'SF')" />
+                                <img src="../../assets/images/stkd.png" v-if="!orderDetailData.sellerOrgId && (orderDetailData.expressDeliveryCode == 'ship_sto' || orderDetailData.expressDeliveryCode == 'STO')" />
+                                <img src="../../assets/images/emskd.png" v-if="!orderDetailData.sellerOrgId && (orderDetailData.expressDeliveryCode == 'ship_ems' || orderDetailData.expressDeliveryCode == 'EMS')" /> {{ orderDetailData.expressDeliveryName }}-货到付款
                                 <span>{{ orderDetailData.expressNo }}</span>
                             </div>
                         </div>
