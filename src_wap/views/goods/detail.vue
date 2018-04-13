@@ -1583,7 +1583,6 @@ export default {
         } else {
          url = window.location.href
         }
-        alert(url)
          let data = {
            'url':url
          }
@@ -1597,7 +1596,7 @@ export default {
        },
        setWxShare(wxConfig){
            wx.config({
-              debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+              debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
               appId: wxConfig.appId, // 必填，公众号的唯一标识
               timestamp: wxConfig.timestamp,  // 必填，生成签名的时间戳
               nonceStr: wxConfig.nonceStr,  // 必填，生成签名的随机串
@@ -1606,7 +1605,7 @@ export default {
           });
           let shareTitle = this.detailData.productExtInfo.title;
           let shareDesc = '雷军、李开复领投茶电商交易平台，茶帮通让茶叶买卖更轻松【茶帮通】';
-          let shareLink = 'https://'+location.host+'/#/detail?proSKU='+this.proSku;
+          let shareLink = 'https://'+location.host+'/#/detail?proSku'+this.proSku;
           let shareImg = 'https:'+this.detailData.productImgList[0].imgUrl;
             wx.ready(function(){
               wx.onMenuShareAppMessage({
