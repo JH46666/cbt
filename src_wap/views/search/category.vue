@@ -566,7 +566,6 @@
                     // this.resultData = [];
                     // this.resultData = this.resultData.concat(tempArr);
                     this.totalSize = res.total_record;
-                    this.resetSort();
                     if(this.resultData.length === this.totalSize){
                         if(this.pageNumber > 1){
                             this.pageNumber--;
@@ -725,13 +724,20 @@
             },
             //排序
             selectSort(list,item,index){
+                // console.log(list,item,index);
+                // this.resetSort();
                 list.sortIndex = index;
                 this.sort = item.propId;
+                if(this.sort === 1 ){
+                    this.resetSort()
+                }
                 if(index === 1){
                     this.sortDesc = true;
                 }else if(index === 2){
                     this.sortDesc = false;
                 }
+
+
             },
             //去详情时存储当前浏览的分类下标和滚动高度
             setSession(){
