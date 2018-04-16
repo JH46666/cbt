@@ -10,7 +10,7 @@
                     </div>
                     <div class="countdown">
                         <i class="iconfont icon-pintuanshijianzhuangtai" style="font-size: 0.24rem; margin-top: -0.03rem;"></i>
-                        <div class="countdown-text">{{ grouppingLeftTime ? grouppingLeftTime : "00:00:00.0" }}<span class="is-over">后结束</span></div>
+                        <div class="countdown-text">{{ grouppingLeftTime ? grouppingLeftTime : "00:00:00.0" }}&nbsp后结束</div>
                     </div>
                     </div>
                     <!-- 拼团成员头像 -->
@@ -1476,12 +1476,11 @@ export default {
         width: 2.8rem
     }
     .groupping .countdown .countdown-text{
-        padding-left:0.2rem;
-        // width: 2rem;
-    }
-    .is-over{
-        float: right;
-        margin-left: 0.02rem;
+        // padding-left:0.2rem;
+        // 样式修改
+        .flex;
+        .flex-dir(row);
+        .align-items;
     }
     .pt-name{
         top: 50%;
