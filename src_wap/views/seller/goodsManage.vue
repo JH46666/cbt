@@ -800,15 +800,16 @@ import $api from 'api';
             position: relative;
             border-radius: 0.04rem 0rem 0rem 0.04rem;
             &:after{
-                content:'';
-                display:block;
-                width:0.2rem;
-                height:0.4rem;
-                position:absolute;
-                transform:skewX(30deg);
-                background:#fff;
-                top:0;
-                right:-0.1rem;
+                content: '';
+                display: block;
+                width: 0.25rem;
+                height: 0.45rem;
+                position: absolute;
+                -webkit-transform: skewX(30deg);
+                transform: skewX(30deg);
+                background: #fff;
+                top: -1px;
+                right: -0.12rem;
             }
         }
         ._add-single-price{
