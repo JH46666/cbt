@@ -718,4 +718,7 @@ export default {
             }
         }
     }
+    .mint-button--normal{
+        padding: 0 0.05rem;
+    }
 </style>

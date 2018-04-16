@@ -3,14 +3,14 @@
         <div class="detail_type" :class="{'height2': height2}">
             <div class="type" :class="{'width100': width100}">
                 <!-- 拼团中 -->
-                <div v-if="orderDetailData.groupSuccess === 2 && orderDetailData.orderStatus !== 'CANCEL' && orderDetailData.orderStatus !== 'CLOSE' && orderDetailData.orderStatus !== 'WAIT_PAY'" class="groupping">
+                <div  v-if="orderDetailData.groupSuccess === 2 && orderDetailData.orderStatus !== 'CANCEL' && orderDetailData.orderStatus !== 'CLOSE' && orderDetailData.orderStatus !== 'WAIT_PAY'" class="groupping">
                     <div style="position: relative;">
                         <div class="pt-wrap"><img src="../../assets/images/cbt_icddxqpt.png" />
                         拼团中,差<span style="color: #f08200">{{ grouppingInfo.groupNumber - grouppingInfo.offerNumber }}</span>人
                     </div>
                     <div class="countdown">
                         <i class="iconfont icon-pintuanshijianzhuangtai" style="font-size: 0.24rem; margin-top: -0.03rem;"></i>
-                        <div class="countdown-text">{{ grouppingLeftTime ? grouppingLeftTime : "00:00:00.0" }}&nbsp后结束</div>
+                        <div class="countdown-text"><span class="conunt-num">{{ grouppingLeftTime ? grouppingLeftTime : "00:00:00.0" }}</span>后结束</div>
                     </div>
                     </div>
                     <!-- 拼团成员头像 -->
@@ -31,9 +31,9 @@
                     </div>
                 </div>
                 <!-- 待发货 -->
-                <div v-if="orderDetailData.orderStatus === 'PACKING' && orderDetailData.groupSuccess == 3"><img src="../../assets/images/order_3.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
+                <div class="pro-status" v-if="orderDetailData.orderStatus === 'PACKING' && orderDetailData.groupSuccess == 3"><img src="../../assets/images/order_3.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                 <!-- 待发货，已成团 -->
-                <div v-if="orderDetailData.orderStatus === 'PACKING' && orderDetailData.groupSuccess == 1" style="width: 100%; display: block; position: relative;">
+                <div class="pro-status" v-if="orderDetailData.orderStatus === 'PACKING' && orderDetailData.groupSuccess == 1" style="width: 100%; display: block; position: relative;">
                     <div><img src="../../assets/images/order_3.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                     <!-- 拼团成员头像 -->
                     <div class="groupping-member-info">
@@ -54,9 +54,9 @@
                     </div>
                 </div>
                 <!-- 支付成功，待审核 -->
-                <div v-if="orderDetailData.orderStatus === 'PAY_WAIT_AUDIT' && orderDetailData.groupSuccess == 3"><img src="../../assets/images/order_3.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
+                <div class="pro-status" v-if="orderDetailData.orderStatus === 'PAY_WAIT_AUDIT' && orderDetailData.groupSuccess == 3"><img src="../../assets/images/order_3.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                 <!-- 支付成功，待审核，已成团 -->
-                <div v-if="orderDetailData.orderStatus === 'PAY_WAIT_AUDIT' && orderDetailData.groupSuccess == 1" style="width: 100%; display: block; position: relative;">
+                <div class="pro-status" v-if="orderDetailData.orderStatus === 'PAY_WAIT_AUDIT' && orderDetailData.groupSuccess == 1" style="width: 100%; display: block; position: relative;">
                     <div><img src="../../assets/images/order_3.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                     <div class="groupping-member-info">
                         <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key="index">
@@ -76,9 +76,9 @@
                     <div><img src="../../assets/images/cbt_xqptcg.png" alt="" style="width: 1.00rem; height: 1.00rem; position: absolute; right: 0rem; top: 0rem"></div>
                 </div>
                 <!-- 待收货 -->
-                <div v-else-if="orderDetailData.orderStatus === 'DELIVERED' && orderDetailData.groupSuccess != 1"><img src="../../assets/images/order_2.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
+                <div class="pro-status" v-else-if="orderDetailData.orderStatus === 'DELIVERED' && orderDetailData.groupSuccess != 1"><img src="../../assets/images/order_2.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                 <!-- 已发货，已成团-->
-                <div v-else-if="orderDetailData.orderStatus === 'DELIVERED' && orderDetailData.groupSuccess == 1" style="width: 100%; display: block; position: relative;">
+                <div class="pro-status" v-else-if="orderDetailData.orderStatus === 'DELIVERED' && orderDetailData.groupSuccess == 1" style="width: 100%; display: block; position: relative;">
                     <div><img src="../../assets/images/order_2.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                     <div class="groupping-member-info">
                         <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key="index">
@@ -98,11 +98,11 @@
                     <div><img src="../../assets/images/cbt_xqptcg.png" alt="" style="width: 1.00rem; height: 1.00rem; position: absolute; right: 0rem; top: 0rem"></div>
                 </div>
                 <!-- 待付款 -->
-                <div v-else-if="orderDetailData.orderStatus === 'WAIT_PAY'"><img src="../../assets/images/order_4.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
+                <div class="pro-status" v-else-if="orderDetailData.orderStatus === 'WAIT_PAY'"><img src="../../assets/images/order_4.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                 <!-- 已评价，未成团 -->
-                <div v-else-if="orderDetailData.orderStatus === 'FINISH' && orderDetailData.isComment  && orderDetailData.groupSuccess == 3"><img src="../../assets/images/order_1.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
+                <div class="pro-status" v-else-if="orderDetailData.orderStatus === 'FINISH' && orderDetailData.isComment  && orderDetailData.groupSuccess == 3"><img src="../../assets/images/order_1.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                 <!-- 已评价，已成团 -->
-                <div v-else-if="orderDetailData.orderStatus === 'FINISH' && orderDetailData.isComment  && orderDetailData.groupSuccess == 1" style="width: 100%; display: block; position: relative;">
+                <div class="pro-status" v-else-if="orderDetailData.orderStatus === 'FINISH' && orderDetailData.isComment  && orderDetailData.groupSuccess == 1" style="width: 100%; display: block; position: relative;">
                     <div><img src="../../assets/images/order_1.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                     <div class="groupping-member-info">
                         <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key="index">
@@ -124,9 +124,9 @@
                     </div>
                 </div>
                 <!-- 待评价，未成团 -->
-                <div v-else-if="!orderDetailData.isComment && orderDetailData.orderStatus === 'FINISH' && orderDetailData.groupSuccess == 3"><img src="../../assets/images/order_1.png" />待评价</div>
+                <div class="pro-status" v-else-if="!orderDetailData.isComment && orderDetailData.orderStatus === 'FINISH' && orderDetailData.groupSuccess == 3"><img src="../../assets/images/order_1.png" />待评价</div>
                 <!-- 待评价，已成团 -->
-                <div v-else-if="!orderDetailData.isComment && orderDetailData.orderStatus === 'FINISH' && orderDetailData.groupSuccess == 1" style="width: 100%; display: block; position: relative;">
+                <div class="pro-status" v-else-if="!orderDetailData.isComment && orderDetailData.orderStatus === 'FINISH' && orderDetailData.groupSuccess == 1" style="width: 100%; display: block; position: relative;">
                     <div><img src="../../assets/images/order_1.png" />待评价</div>
                     <div class="groupping-member-info">
                         <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key="index">
@@ -148,13 +148,13 @@
                     </div>
                 </div>
                 <!-- 取消 -->
-                <div v-else-if="orderDetailData.orderStatus === 'CANCEL'"><img src="../../assets/images/order_6.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
+                <div class="pro-status" v-else-if="orderDetailData.orderStatus === 'CANCEL'"><img src="../../assets/images/order_6.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                 <!-- 处理中 -->
-                <div v-else-if="orderDetailData.orderStatus === 'DEALING'"><img src="../../assets/images/order_3.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
+                <div class="pro-status" v-else-if="orderDetailData.orderStatus === 'DEALING'"><img src="../../assets/images/order_3.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                 <!-- 关闭 -->
-                <div v-else-if="orderDetailData.orderStatus === 'CLOSE' && orderDetailData.groupSuccess == 3"><img src="../../assets/images/order_6.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
+                <div class="pro-status" v-else-if="orderDetailData.orderStatus === 'CLOSE' && orderDetailData.groupSuccess == 3"><img src="../../assets/images/order_6.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                 <!-- 关闭，未成团 -->
-                <div v-else-if="orderDetailData.orderStatus === 'CLOSE' && orderDetailData.groupSuccess == 2"  style="width: 100%; display: block; position: relative;">
+                <div class="pro-status" v-else-if="orderDetailData.orderStatus === 'CLOSE' && orderDetailData.groupSuccess == 2"  style="width: 100%; display: block; position: relative;">
                     <div><img src="../../assets/images/cbt_icddxqqx.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                     <div class="groupping-member-info">
                         <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key="index">
@@ -176,7 +176,7 @@
                     </div>
                 </div>
                 <!-- 关闭，已成团 -->
-                <div v-else-if="orderDetailData.orderStatus === 'CLOSE' && orderDetailData.groupSuccess == 1"  style="width: 100%; display: block; position: relative;">
+                <div class="pro-status" v-else-if="orderDetailData.orderStatus === 'CLOSE' && orderDetailData.groupSuccess == 1"  style="width: 100%; display: block; position: relative;">
                     <div><img src="../../assets/images/cbt_icddxqqx.png" />{{ orderStatus[orderDetailData.orderStatus] }}</div>
                     <div class="groupping-member-info">
                         <div class="groupping-member-icon" v-for="(item, index) in grouppingMemberInfo" :key="index">
@@ -1470,23 +1470,37 @@ export default {
         display: block;
     }
     .detail .order_btn .mint-button--default.is-plain{
-        width: auto;
+        // width: auto;
+        padding: 0 0.05rem;
     }
     .groupping .countdown{
-        width: 2.8rem
+        // width: 2.8rem
+        // 样式修改
+                // .flex;
+                // .flex-dir(row);
+                // .align-items;
     }
     .groupping .countdown .countdown-text{
-        // padding-left:0.2rem;
-        // 样式修改
-        .flex;
-        .flex-dir(row);
-        .align-items;
+        padding-left:0.2rem;
     }
+    
+    .groupping .countdown .countdown-text .conunt-num{
+        width: 1.3rem;
+        display: inline-block;
+    }
+
     .pt-name{
         top: 50%;
         position: relative;
         transform: translateY(-50%);
         text-align: center;
     }
-
+    // 订单状态居中
+    .pro-status{
+        line-height: 0.65rem;
+    }
+    //团长行高正常
+    .master-face{
+        line-height:normal
+    }
 </style>
