@@ -411,8 +411,11 @@
             },
             //重置排序
             resetSort(){
+                // console.log(this.sortData);
+
                 for(let item of this.sortData){
                     item.sortIndex = 0;
+
                 }
                 this.sort = 1;
                 this.sortDesc = true;
@@ -563,6 +566,7 @@
                     // this.resultData = [];
                     // this.resultData = this.resultData.concat(tempArr);
                     this.totalSize = res.total_record;
+                    this.resetSort();
                     if(this.resultData.length === this.totalSize){
                         if(this.pageNumber > 1){
                             this.pageNumber--;
