@@ -1474,7 +1474,7 @@ export default {
         padding: 0 0.05rem;
     }
     .groupping .countdown{
-        // width: 2.8rem
+        width: 2.8rem
         // 样式修改
                 // .flex;
                 // .flex-dir(row);
